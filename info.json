@@ -1,0 +1,12 @@
+{
+	"name": "NicerFeedsAndSpeeds",
+	"version": "0.1.0",
+	"title": "Adjust the Feeds and Speeds",
+	"author": "kashmira-qeel",
+	"description": "Lots of values in the game are a little off, so here's a few fixes.",
+	"factorio_version": "2.0",
+	"quality_required": false,
+	"dependencies" : [
+		"base"
+	]
+}
