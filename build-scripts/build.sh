@@ -1,11 +1,11 @@
 #! /usr/bin/env bash
 
-if [[ ! ($ZIPFILE && $ZIPFILE_NAME && $NAME_VERSION && $OUTPUT_DIR) ]]; then
-    echo '$ZIPFILE' and '$OUTPUT_DIR' must be set >&2
+if [[ ! ( $ZIPFILE && $NAME_VERSION ) ]]; then
+    echo '$ZIPFILE' must be set >&2
     exit 1
 fi
 
-git archive -o $ZIPFILE
+git archive --worktree-attributes --prefix=$NAME_VERSION/ HEAD -o $ZIPFILE
 
 if [[ -e $ZIPFILE ]]; then
     echo $ZIPFILE built
