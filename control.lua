@@ -1,4 +1,4 @@
 
-require('tweaks.lua')
+require('tweaks')
 
-chest_tweaks.control()
+tweaks.control()
