@@ -5,6 +5,7 @@ shopt -s nullglob
 cd "$(git rev-parse --show-toplevel)"
 
 export MODS_DIR="${HOME}/.factorio/mods"
+export MOD_LIST="mod-list.json"
 export OUTPUT_DIR="./output"
 export NAME=$(jq -r '.name' info.json)
 export VERSION=$(jq -r '.version' info.json)

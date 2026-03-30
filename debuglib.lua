@@ -79,16 +79,17 @@ function debug.__sprint_table(buffer, data)
     return
   end
 
-  if buffer.indent >= buffer.max_indent then
-    buffer:push("{ ... }")
-    return
-  end
 
   local is_array = debug.is_populated_table_array(data)
   local is_hash = debug.is_populated_table_hash(data)
 
   if not (is_array or is_hash) then
     buffer:push("{}")
+  end
+
+  if buffer.indent >= buffer.max_indent then
+    buffer:push("{ ... }")
+    return
   end
 
   buffer:push('{\n')

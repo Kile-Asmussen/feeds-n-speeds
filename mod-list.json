@@ -1,0 +1,61 @@
+
+{
+  "mods": 
+  [
+    
+    {
+      "name": "base",
+      "enabled": true
+    },
+    
+    {
+      "name": "elevated-rails",
+      "enabled": true
+    },
+    
+    {
+      "name": "quality",
+      "enabled": true
+    },
+    
+    {
+      "name": "space-age",
+      "enabled": true
+    },
+    
+    {
+      "name": "arrowplates",
+      "enabled": true
+    },
+    
+    {
+      "name": "EditorExtensions",
+      "enabled": true
+    },
+    
+    {
+      "name": "even-more-text-plates-2_0",
+      "enabled": true
+    },
+    
+    {
+      "name": "flib",
+      "enabled": true
+    },
+    
+    {
+      "name": "RealisticOres",
+      "enabled": true
+    },
+    
+    {
+      "name": "RealisticReactorGlow",
+      "enabled": true
+    },
+    
+    {
+      "name": "textplates",
+      "enabled": true
+    }
+  ]
+}

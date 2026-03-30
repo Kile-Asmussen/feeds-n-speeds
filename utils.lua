@@ -1,3 +1,8 @@
+--! Utility functions for tables
+
+--- Create or update a table with a metatable
+--- containing the `table' namespace as extra
+--- methods
 function table.new(res)
     if res == nil then
         res = {}
@@ -6,20 +11,7 @@ function table.new(res)
     return res
 end
 
-function table.descend(tbl, keys, ...)
-    if type(keys) == 'string' then
-        keys = table.pack(keys, ...)
-    end
-    
-    for _, key in ipairs(keys) do
-        if type(tbl) ~= 'table' then
-            return nil
-        end
-        tbl = tbl[key]
-    end
-    return tbl
-end
-
+-- Internally used metatable
 table.__table_mt = {
     __index = _G.table,
     __newindex = function(table, k, v)
@@ -30,11 +22,35 @@ table.__table_mt = {
     end,
 }
 
+-- Extra methods for the metatable
+table.rawget = rawget
+table.rawset = rawset
+table.pairs = pairs
+table.ipairs = ipairs
+
+--- Recurse into a table containing other tables
+--- using a list of keys
+function table.descend(tbl, ...)
+    keys = table.pack(...)
+    
+    for _, key in ipairs(keys) do
+        if type(tbl) ~= 'table' then
+            return nil
+        end
+        tbl = tbl[key]
+    end
+    return tbl
+end
+
+--- Remove the metatable from a table
 function table.unmeta(self)
     setmetatable(self, nil)
 end
 
+--- Remove an element matching a predicate from a table
+--- (searches the numeric keys)
 function table.remove_matching(array, predicate)
+    assert(type(predicate) == 'function', "predicate must be a function")
 
     local index = 0
 
@@ -54,6 +70,7 @@ function table.remove_matching(array, predicate)
     return value
 end
 
+--- Find an element matching a predicate among the numeric keys
 function table.find_matching(array, predicate)
     for _, e in ipairs(array) do
         if predicate(e) then
@@ -62,11 +79,9 @@ function table.find_matching(array, predicate)
     end
 end
 
-table.rawget = rawget
-table.rawset = rawset
-table.pairs = pairs
-table.ipairs = ipairs
 
+--- Check if a reference table contains the same keys and elements
+--- as a candidate table. If candidate is not given, returns a predicate function instead.
 function table.matches(reference, candidate)
     assert(type(reference) == "table", "Cannot match on non-table data of type " .. type(reference))
 

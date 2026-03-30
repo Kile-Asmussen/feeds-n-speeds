@@ -12,3 +12,9 @@ if [[ -e $MOD_FILE ]]; then
 else
     echo $ZIPFILE_NAME is not installed
 fi
+
+JQEXPR="del(.mods | select(.name == \"$NAME\"))"
+
+if jq "$JQEXPR" $MODS_DIR/$MOD_LIST > $MODS_DIR/$MOD_LIST; then
+    echo updated $MODS_DIR/$MOD_LIST
+fi

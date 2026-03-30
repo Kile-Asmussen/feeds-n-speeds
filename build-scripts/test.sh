@@ -6,7 +6,7 @@ TESTS=0
 SUCCESSES=0
 FAILURES=0
 
-DUMP=./output/test.$$.dump
+DUMP=$OUTPUT_DIR/test.$$.dump
 
 for TEST_FILE in test-*.lua; do
     TESTS=$(( $TESTS + 1 ))

@@ -37,25 +37,40 @@ function tweaks.concrete.data_update()
         recipe = 'chemical-plant'
     })
 
+    -- Also concrete now requires fluid handling, because that's fun.
+
     table.insert(tech.concrete.prerequisites, 'fluid-handling')
 
     -- We also make sure to make oil processing depend on concrete
-
-
-    table.insert(tech['oil-processing'].prerequisites, 'concrete')
-
     -- And remove that it unlocks the chemical plant, making concrete
-    -- a mandatory technology! First we gotta find where it is in the list, though:
+    -- a truly mandatory technology, and also we make oil refinery
+    -- require concrete
     
     table.remove_matching(tech['oil-processing'].effects,
         table.matches{ type = 'unlock-recipe', recipe = 'chemical-plant'}
     )
+    
+    table.insert(tech['oil-processing'].prerequisites, 'concrete')
+
+    table.find_matching(recipes['oil-refinery'].ingredients,
+        table.matches{ name = 'stone-brick', type = 'item' }
+    ).name = 'concrete'
+
+    -- Next, we make electrical energy distribution 1 depend on concrete,
+    -- and make all the electric poles require it, too, and remove iron
+    -- sticks from its recipes
+
+    table.insert(tech['electric-energy-distribution-1'].prerequisites, 'concrete')
+
+    table.remove_matching(tech['electric-energy-distribution-1'].effects, 
+        table.matches{ type = 'unlock-recipe', recipe = 'iron-stick'}
+    )
+
+    table.insert()
 
     -- Finally we make a few recipes dependent on concrete instead of bricks
 
-    is_stone_brick = table.matches{ name = 'stone-brick', type = 'item' }
 
-    table.find_matching(recipes['oil-refinery'].ingredients, is_stone_brick).name = 'concrete'
 
     -- Unfortunately to make electric furnaces depend on concrete, we gotta
     -- make the tech depend on it as well
