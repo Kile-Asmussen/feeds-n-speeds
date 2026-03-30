@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-shopt -s nullglob
+shopt -s nullglob extglob
 
 cd "$(git rev-parse --show-toplevel)"
 

@@ -3,11 +3,11 @@ require('utils')
 tweaks = tweaks or {}
 tweaks.concrete = tweaks.concrete or {}
 
-tweak.concrete.toggle = 'feeds-n-speeds-tweaks-concrete-enable'
+tweaks.concrete.toggle = 'feeds-n-speeds-tweaks-concrete-enable'
 
 function tweaks.concrete.data_updates()
 
-    if not tweaks.chest.enabled then return end
+    if not tweaks.concrete.enabled then return end
 
     local recipes = data.raw.recipe
     local tech = data.raw.technology

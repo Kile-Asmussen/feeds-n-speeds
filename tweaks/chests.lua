@@ -7,7 +7,7 @@ tweaks.chests.toggle = 'feeds-n-speeds-tweaks-chests-enable'
 
 function tweaks.chests.data()
 
-    if not tweaks.chest.enabled then return end
+    if not tweaks.chests.enabled then return end
 
     local container = data.raw.container
     local logistic = data.raw['logistic-container']

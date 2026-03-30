@@ -16,7 +16,7 @@ function tweaks.__execute(name, extra)
 end
 
 function tweaks.__create_toggle(domain)
-    if typeof(domain.toggle) == 'string' then
+    if type(domain.toggle) == 'string' then
         data:extend{
             type = 'bool-setting',
             name = domain.toggle,
@@ -27,7 +27,7 @@ function tweaks.__create_toggle(domain)
 end
 
 function tweaks.__read_toggle(domain)
-    if typeof(domain.toggle) == 'string' then
+    if type(domain.toggle) == 'string' then
         domain.enabled = settings.global[domain.toggle]
     end
 end

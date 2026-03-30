@@ -3,13 +3,13 @@ require('utils')
 tweaks = tweaks or {}
 tweaks.electric = tweaks.electric or {}
 
-tweak.electric.toggle = 'feeds-n-speeds-tweaks-electric-enable'
+tweaks.electric.toggle = 'feeds-n-speeds-tweaks-electric-enable'
 
 function tweaks.electric.data_updates()
 
     if not tweaks.electric.enabled then return end
 
-    local electric_pole = data.raw.electric_pole
+    local electric_pole = data.raw['electric-pole']
 
     local small = electric_pole['small-electric-pole']
     local medium = electric_pole['medium-electric-pole']

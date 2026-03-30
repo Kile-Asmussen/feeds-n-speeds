@@ -3,20 +3,25 @@ all: test build
 
 PRELUDE := ./build-scripts/prelude.sh
 
-LUA_FILES := $(filter-out debug*.lua test*.lua, $(wildcard *.lua))
+ALL_LUA_FILES := $(wildcard *.lua **/*.lua)
+EXCLUDED_LUA_FILES := $(wildcard data/raw.lua debug*.lua debug/* test*.lua test/*)
+LUA_FILES := $(filter-out $(EXCLUDED_LUA_FILES), $(ALL_LUA_FILES))
 LOCALE_FILES := $(wildcard locale/**/*.cfg)
 MIGRATION_FILES := $(wildcard scenarios/**/*.lua, scenarios/**/*.json)
 METADATA_FILES := $(wildcard thumbnail.png info.json changelog.txt)
 
-ALL_FILES := $(LUA_FILES) $(LOCALE_FILES) $(MIGRATION_FILES) $(METADATA_FILES)
+MOD_FILES := $(LUA_FILES) $(LOCALE_FILES) $(MIGRATION_FILES) $(METADATA_FILES)
 
 .PHONY: all build clean install uninstall test download debug
 
 debug:
-	@echo ALL_FILES := $(ALL_FILES)
+	@echo LOCALE_FILES := $(LOCALE_FILES)
+	@echo MIGRATION_FILES := $(MIGRATION_FILES)
+	@echo METADATA_FILES := $(METADATA_FILES)
+	@echo LUA_FILES := $(LUA_FILES)
 
-build: $(ALL_FILES)
-	@$(PRELUDE) ./build-scripts/build.sh $(ALL_FILES)
+build: $(MOD_FILES)
+	@$(PRELUDE) ./build-scripts/build.sh $(MOD_FILES)
 
 clean:
 	rm -rf ./output/* ./data/raw.lua
