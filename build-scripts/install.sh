@@ -14,11 +14,10 @@ if cp $ZIPFILE $MODS_DIR/$ZIPFILE_NAME; then
     echo $ZIPFILE installed in $MODS_DIR
 fi
 
-JQEXPR=".mods += [{ \"name\": \"$NAME\", \"enabled\": true }]"
+JQEXPR="if any(.mods[]; .name == \"$NAME\") then . else .mods += [{ name: \"$NAME\", enabled: true }] end"
 
 if
 jq "$JQEXPR" $MODS_DIR/$MOD_LIST > $OUTPUT_DIR/$MOD_LIST && \
-cp $MODS_DIR/$MOD_LIST $MODS_DIR/$MOD_LIST~ && \
 cp $OUTPUT_DIR/$MOD_LIST $MODS_DIR/$MOD_LIST
 then
     echo updated $MODS_DIR/$MOD_LIST

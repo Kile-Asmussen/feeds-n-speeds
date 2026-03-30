@@ -3,7 +3,11 @@ require('utils')
 tweaks = tweaks or {}
 tweaks.concrete = tweaks.concrete or {}
 
-function tweaks.concrete.data_update()
+tweak.concrete.toggle = 'feeds-n-speeds-tweaks-concrete-enable'
+
+function tweaks.concrete.data_updates()
+
+    if not tweaks.chest.enabled then return end
 
     local recipes = data.raw.recipe
     local tech = data.raw.technology
@@ -66,16 +70,32 @@ function tweaks.concrete.data_update()
         table.matches{ type = 'unlock-recipe', recipe = 'iron-stick'}
     )
 
-    table.insert()
+    table.remove_matching(recipes['medium-electric-pole'].ingredients,
+        table.matches{ type = "item", name = "iron-stick" }
+    )
 
-    -- Finally we make a few recipes dependent on concrete instead of bricks
+    table.remove_matching(recipes['big-electric-pole'].ingredients,
+        table.matches{ type = "item", name = "iron-stick" }
+    )
 
+    table.insert(recipes['medium-electric-pole'].ingredients,
+        { type = "item", name = "concrete", amount = 2 }
+    )
 
+    table.insert(recipes['big-electric-pole'].ingredients,
+        { type = "item", name = "concrete", amount = 5 }
+    )
 
+    table.insert(recipes['substation'].ingredients,
+        { type = "item", name = "concrete", amount = 10 }
+    )
+    
     -- Unfortunately to make electric furnaces depend on concrete, we gotta
     -- make the tech depend on it as well
 
-    table.find_matching(recipes['electric-furnace'].ingredients, is_stone_brick).name = 'concrete'
+    table.find_matching(recipes['electric-furnace'].ingredients,
+        table.matches{ name = 'stone-brick', type = 'item' }
+    ).name = 'concrete'
     table.insert(tech['advanced-material-processing-2'].prerequisites, 'concrete')
 
     -- And make the nuclear reactor dependent on refined concrete and a bit less on steel

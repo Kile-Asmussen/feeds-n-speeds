@@ -3,7 +3,11 @@ require('utils')
 tweaks = tweaks or {}
 tweaks.chests = tweaks.chests or {}
 
-function tweaks.chests.data_update()
+tweaks.chests.toggle = 'feeds-n-speeds-tweaks-chests-enable'
+
+function tweaks.chests.data()
+
+    if not tweaks.chest.enabled then return end
 
     local container = data.raw.container
     local logistic = data.raw['logistic-container']

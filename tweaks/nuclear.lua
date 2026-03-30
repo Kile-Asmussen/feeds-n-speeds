@@ -3,7 +3,10 @@ require('utils')
 tweaks = tweaks or {}
 tweaks.nuclear = tweaks.nuclear or {}
 
-function tweaks.nuclear.data_update()
+function tweaks.nuclear.data_updates()
+
+    if not tweaks.nuclear.enabled then return end
+
     -- A lot of the ratios are caused by the wonky temperature
     -- difference between ambient and max of 985 degrees
     local ambient_temperature = 15

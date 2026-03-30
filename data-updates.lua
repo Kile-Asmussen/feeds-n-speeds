@@ -1,3 +1,3 @@
 require('tweaks')
 
-tweaks.data_update()
+tweaks.data_updates()

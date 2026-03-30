@@ -4,7 +4,9 @@ tweaks = tweaks or {}
 tweaks.inserter = tweaks.inserter or {}
 
 
-function tweaks.inserter.data_update()
+function tweaks.inserter.data_updates()
+
+    if not tweaks.inserter.enabled then return end
 
     inserter = data.raw.inserter
 

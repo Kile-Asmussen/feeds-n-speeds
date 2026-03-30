@@ -3,5 +3,5 @@ require('debuglib')
 require('utils')
 require('tweaks')
 
-tweaks.data_update()
+tweaks.data_updates()
 debug.print(table.descend(data.raw, ...))

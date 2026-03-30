@@ -1,12 +1,12 @@
 {
 	"name": "FeedsNSpeeds",
 	"version": "0.1.0",
-	"title": "Adjust the Feeds and Speeds",
+	"title": "Feeds 'n' Speeds",
 	"author": "kashmira-qeel",
 	"description": "Mostly value tweaks, but also a few new game objects",
 	"factorio_version": "2.0",
 	"quality_required": false,
 	"dependencies" : [
-		"core", "base"
+		"base"
 	]
 }

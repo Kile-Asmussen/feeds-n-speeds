@@ -72,11 +72,14 @@ end
 
 --- Find an element matching a predicate among the numeric keys
 function table.find_matching(array, predicate)
+    assert(type(array) == 'table', "argument #1 must be a table")
+    assert(type(predicate) == 'function', "argument #2 must be a function")
     for _, e in ipairs(array) do
         if predicate(e) then
             return e
         end
     end
+    return nil
 end
 
 

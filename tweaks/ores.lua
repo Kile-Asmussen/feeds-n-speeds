@@ -3,7 +3,10 @@ require('utils')
 tweaks = tweaks or {}
 tweaks.ores = tweaks.ores or {}
 
-function tweaks.ores.data_update()
+function tweaks.ores.data_final_fixes()
+
+    if not tweaks.nuclear.enabled then return end
+
     for _, resource in pairs(data.raw.resource) do
 
         resource.infinite_depletion_amount = 0
