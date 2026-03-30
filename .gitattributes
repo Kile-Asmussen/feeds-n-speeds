@@ -1,0 +1,17 @@
+* text=auto
+
+*.png binary
+
+*.md export-ignore
+
+/.* export-ignore
+
+/build-scripts/** export-ignore
+Makefile export-ignore
+
+debug*.lua export-ignore
+test*.lua export-ignore
+
+flake.* export-ignore
+
+data/**/* export-ignore

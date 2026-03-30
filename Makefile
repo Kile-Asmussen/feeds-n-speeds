@@ -21,7 +21,7 @@ debug:
 	@echo LUA_FILES := $(LUA_FILES)
 
 build: $(MOD_FILES)
-	@$(PRELUDE) ./build-scripts/build.sh $(MOD_FILES)
+	@$(PRELUDE) ./build-scripts/build.sh
 
 clean:
 	rm -rf ./output/* ./data/raw.lua

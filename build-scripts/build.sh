@@ -5,12 +5,7 @@ if [[ ! ($ZIPFILE && $ZIPFILE_NAME && $NAME_VERSION && $OUTPUT_DIR) ]]; then
     exit 1
 fi
 
-for file in $@; do
-    mkdir -p $OUTPUT_DIR/$NAME_VERSION/$(dirname $file)
-    cp $file $OUTPUT_DIR/$NAME_VERSION/$file
-done
-
-( cd $OUTPUT_DIR && zip -q $ZIPFILE_NAME $NAME_VERSION/**/* $NAME_VERSION/* )
+git archive -o $ZIPFILE
 
 if [[ -e $ZIPFILE ]]; then
     echo $ZIPFILE built
