@@ -16,6 +16,12 @@ fi
 
 JQEXPR=".mods += [{ \"name\": \"$NAME\", \"enabled\": true }]"
 
-if jq "$JQEXPR" $MODS_DIR/$MOD_LIST > $MODS_DIR/$MOD_LIST; then
+if
+jq "$JQEXPR" $MODS_DIR/$MOD_LIST > $OUTPUT_DIR/$MOD_LIST && \
+cp $MODS_DIR/$MOD_LIST $MODS_DIR/$MOD_LIST~ && \
+cp $OUTPUT_DIR/$MOD_LIST $MODS_DIR/$MOD_LIST
+then
     echo updated $MODS_DIR/$MOD_LIST
+else
+    echo failed to update $MODS_DIR/$MOD_LIST
 fi

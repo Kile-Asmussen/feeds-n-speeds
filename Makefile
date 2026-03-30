@@ -19,7 +19,7 @@ build: $(ALL_FILES)
 	@$(PRELUDE) ./build-scripts/build.sh
 
 clean:
-	rm ./output/*.zip ./data/raw.lua
+	rm ./output/*.zip ./output/*.json ./data/raw.lua
 
 install: build
 	@$(PRELUDE) ./build-scripts/install.sh
