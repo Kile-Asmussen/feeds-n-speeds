@@ -1,4 +1,4 @@
-require('utils')
+require('table-upgrades')
 
 mytable = table.new()
 

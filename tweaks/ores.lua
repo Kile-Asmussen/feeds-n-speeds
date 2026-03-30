@@ -1,4 +1,4 @@
-require('utils')
+require('table-upgrades')
 
 tweaks = tweaks or {}
 tweaks.ores = tweaks.ores or {}

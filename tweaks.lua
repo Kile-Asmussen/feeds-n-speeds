@@ -1,4 +1,4 @@
-require('utils')
+require('table-upgrades')
 
 tweaks = tweaks or {}
 
@@ -17,18 +17,18 @@ end
 
 function tweaks.__create_toggle(domain)
     if type(domain.toggle) == 'string' then
-        data:extend{
+        data:extend{{
             type = 'bool-setting',
             name = domain.toggle,
             setting_type = 'startup',
             default_value = true
-        }
+        }}
     end
 end
 
 function tweaks.__read_toggle(domain)
     if type(domain.toggle) == 'string' then
-        domain.enabled = settings.global[domain.toggle]
+        domain.enabled = settings.startup[domain.toggle]
     end
 end
 

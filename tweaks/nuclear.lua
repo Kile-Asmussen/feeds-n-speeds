@@ -1,4 +1,4 @@
-require('utils')
+require('table-upgrades')
 
 tweaks = tweaks or {}
 tweaks.nuclear = tweaks.nuclear or {}

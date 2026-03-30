@@ -10,7 +10,7 @@ for file in $@; do
     cp $file $OUTPUT_DIR/$NAME_VERSION/$file
 done
 
-( cd $OUTPUT_DIR && zip -q $ZIPFILE_NAME $NAME_VERSION/* )
+( cd $OUTPUT_DIR && zip -q $ZIPFILE_NAME $NAME_VERSION/**/* $NAME_VERSION/* )
 
 if [[ -e $ZIPFILE ]]; then
     echo $ZIPFILE built

@@ -1,40 +1,40 @@
-debug = {
+debuglib = {
   recursion_limit = tonumber(os.getenv("DEPTH")) or 2
 }
 
-function debug.print(data)
-  print(debug.sprint(data))
+function debuglib.print(data)
+  print(debuglib.sprint(data))
 end
 
-function debug.buffer()
+function debuglib.buffer()
   return {
     indent = 0,
-    max_indent = debug.recursion_limit or 1e10,
+    max_indent = debuglib.recursion_limit or 2,
     push = table.insert,
     tostring = table.concat,
-    print = debug.__sprint_any,
+    print = debuglib.__sprint_any,
   }
 end
 
-function debug.sprint(data)  
-  buffer = debug.buffer()
+function debuglib.sprint(data)  
+  buffer = debuglib.buffer()
   buffer:print(data)
   return buffer:tostring()
 end
 
-function debug.__sprint_any(buffer, data)
-  debug.__type_sprinters = debug.__type_sprinters or {
-    ['string'] = debug.__sprint_string,
-    ['boolean'] = debug.__sprint_boolean,
-    ['nil'] = debug.__sprint_nil,
-    ['number'] = debug.__sprint_number, 
-    ['table'] = debug.__sprint_table,
-    ['userdata'] = debug.__sprint_userdata,
+function debuglib.__sprint_any(buffer, data)
+  debuglib.__type_sprinters = debuglib.__type_sprinters or {
+    ['string'] = debuglib.__sprint_string,
+    ['boolean'] = debuglib.__sprint_boolean,
+    ['nil'] = debuglib.__sprint_nil,
+    ['number'] = debuglib.__sprint_number, 
+    ['table'] = debuglib.__sprint_table,
+    ['userdata'] = debuglib.__sprint_userdata,
     ['coroutine'] = function() return "coroutine()" end,
-    ['function'] = debug.__sprint_function,
+    ['function'] = debuglib.__sprint_function,
   }
 
-  local sprinter = debug.__type_sprinters[type(data)]
+  local sprinter = debuglib.__type_sprinters[type(data)]
 
   if sprinter then
     return sprinter(buffer, data)
@@ -43,51 +43,51 @@ function debug.__sprint_any(buffer, data)
   end
 end
 
-function debug.__sprint_function(buffer, data)
+function debuglib.__sprint_function(buffer, data)
   buffer:push("function() ... end")
 end
 
-function debug.__sprint_userdata(buffer, data)
+function debuglib.__sprint_userdata(buffer, data)
   buffer:push("userdata")
 
   local meta = getmetatable(data)
   if meta then
-    return debug:print(meta)
+    return debuglib.__sprint_table(buffer, meta)
   end
 end
 
-function debug.__sprint_string(buffer, data)
+function debuglib.__sprint_string(buffer, data)
   buffer:push("'" .. data .. "'")
 end
 
-function debug.__sprint_number(buffer, data)
+function debuglib.__sprint_number(buffer, data)
   buffer:push(tostring(data))
 end
 
-function debug.__sprint_boolean(buffer, data)
+function debuglib.__sprint_boolean(buffer, data)
   if data then buffer:push("true") else buffer:push("false") end
 end
 
-function debug.__sprint_nil(buffer, data)
+function debuglib.__sprint_nil(buffer, data)
   buffer:push("nil")
 end
 
-function debug.__sprint_table(buffer, data)
+function debuglib.__sprint_table(buffer, data)
 
   if data == _G and buffer.indent > 0 then
     buffer:push("_G")
     return
   end
 
-
-  local is_array = debug.is_populated_table_array(data)
-  local is_hash = debug.is_populated_table_hash(data)
+  local is_array = debuglib.is_populated_table_array(data)
+  local is_hash = debuglib.is_populated_table_hash(data)
 
   if not (is_array or is_hash) then
     buffer:push("{}")
+    return
   end
 
-  if buffer.indent >= buffer.max_indent then
+  if buffer.indent >= debuglib.recursion_limit then
     buffer:push("{ ... }")
     return
   end
@@ -98,19 +98,19 @@ function debug.__sprint_table(buffer, data)
 
   if is_array and is_hash then
     
-    debug.__sprint_elements(buffer, data)
+    debuglib.__sprint_elements(buffer, data)
     
     buffer:push(',\n')
     
-    debug.__sprint_keyval_pairs(buffer)
+    debuglib.__sprint_keyval_pairs(buffer)
 
   elseif is_array then
     
-    debug.__sprint_elements(buffer, data)
+    debuglib.__sprint_elements(buffer, data)
   
   elseif is_hash then 
     
-    debug.__sprint_keyval_pairs(buffer, data)
+    debuglib.__sprint_keyval_pairs(buffer, data)
 
   end
 
@@ -120,13 +120,13 @@ function debug.__sprint_table(buffer, data)
 
 end
 
-function debug.is_populated_table_array(data)
+function debuglib.is_populated_table_array(data)
   for _ in ipairs(data) do
       return true
   end
 end
 
-function debug.is_populated_table_hash(data)
+function debuglib.is_populated_table_hash(data)
   for k, _ in pairs(data) do
     if type(k) == 'string' then
       return true
@@ -135,7 +135,7 @@ function debug.is_populated_table_hash(data)
   return false
 end
 
-function debug.__sprint_elements(buffer, data)
+function debuglib.__sprint_elements(buffer, data)
   local first = true
   for _, v in ipairs(data) do
 
@@ -151,7 +151,7 @@ function debug.__sprint_elements(buffer, data)
   end
 end
 
-function debug.__sprint_keyval_pairs(buffer, data)
+function debuglib.__sprint_keyval_pairs(buffer, data)
 
   local order = {
     insert = table.insert,
