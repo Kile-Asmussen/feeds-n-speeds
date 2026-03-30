@@ -16,10 +16,10 @@ debug:
 	@echo ALL_FILES := $(ALL_FILES)
 
 build: $(ALL_FILES)
-	@$(PRELUDE) ./build-scripts/build.sh
+	@$(PRELUDE) ./build-scripts/build.sh $(ALL_FILES)
 
 clean:
-	rm ./output/*.zip ./output/*.json ./data/raw.lua
+	rm -rf ./output/* ./data/raw.lua
 
 install: build
 	@$(PRELUDE) ./build-scripts/install.sh
@@ -30,6 +30,6 @@ uninstall:
 test: download
 	@$(PRELUDE) ./build-scripts/test.sh
 
-
-download: $(wildcard ./data/raw.lua)
+download: ./data/raw.lua
+./data/raw.lua:
 	@$(PRELUDE) ./build-scripts/download.sh

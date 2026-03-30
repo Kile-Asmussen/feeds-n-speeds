@@ -8,8 +8,10 @@ mkdir -p $DATA_DIR
 echo "data = data or {}" > $DATA_RAW
 echo "data.raw = {" >> $DATA_RAW
 
-wget -qO- $DATA_RAW_URL | tail -n +2 >> $DATA_RAW || {
-    rm $DATA_RAW
+if wget -qO- $DATA_RAW_URL | tail -n +2 >> $DATA_RAW; then
+    echo downloaded $DATA_RAW
+else
+    rm -f $DATA_RAW
     echo downloading $DATA_RAW failed >&2
     exit 1
-}
+fi
