@@ -1,3 +1,39 @@
+function table.new(res)
+    if res == nil then
+        res = {}
+    end
+    setmetatable(res, _G.table.__table_mt)
+    return res
+end
+
+function table.descend(tbl, keys, ...)
+    if type(keys) == 'string' then
+        keys = table.pack(keys, ...)
+    end
+    
+    for _, key in ipairs(keys) do
+        if type(tbl) ~= 'table' then
+            return nil
+        end
+        tbl = tbl[key]
+    end
+    return tbl
+end
+
+table.__table_mt = {
+    __index = _G.table,
+    __newindex = function(table, k, v)
+        if _G.table[k] then
+            error("Don't overwrite method names")
+        end
+        table.rawset(table, k, v)
+    end,
+}
+
+function table.unmeta(self)
+    setmetatable(self, nil)
+end
+
 function table.remove_matching(array, predicate)
 
     local index = 0
@@ -26,17 +62,18 @@ function table.find_matching(array, predicate)
     end
 end
 
-utils = {}
+table.rawget = rawget
+table.rawset = rawset
+table.pairs = pairs
+table.ipairs = ipairs
 
-function utils.matches(reference, candidate)
-    if type(reference) ~= "table" then
-        error("Cannot match on non-table data of type " .. type(reference))
-    end
+function table.matches(reference, candidate)
+    assert(type(reference) == "table", "Cannot match on non-table data of type " .. type(reference))
 
     if candidate == nil then
         return function(candidate)
             if candidate == nil then return false end
-            return utils.matches(reference, candidate)
+            return table.matches(reference, candidate)
         end
     end
 

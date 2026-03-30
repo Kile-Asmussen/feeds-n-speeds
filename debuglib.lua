@@ -1,109 +1,128 @@
-debug = {}
+debug = {
+  recursion_limit = tonumber(os.getenv("DEPTH")) or 2
+}
 
-function debug.print(data, indent)
-  indent = indent or 0
+function debug.print(data)
+  print(debug.sprint(data))
+end
 
-  debug.print_depth_limit = debug.print_depth_limit or 1e10
-  
-  debug.__traversers = debug.__traversers or {
-    string = debug.print_string,
-    boolean = debug.print_boolean,
-    ['nil'] = debug.print_nil,
-    number = debug.print_number, 
-    table = debug.print_table,
-    userdata = debug.print_userdata,
-    ['function'] = debug.print_function
+function debug.buffer()
+  return {
+    indent = 0,
+    max_indent = debug.recursion_limit or 1e10,
+    push = table.insert,
+    tostring = table.concat,
+    print = debug.__sprint_any,
+  }
+end
+
+function debug.sprint(data)  
+  buffer = debug.buffer()
+  buffer:print(data)
+  return buffer:tostring()
+end
+
+function debug.__sprint_any(buffer, data)
+  debug.__type_sprinters = debug.__type_sprinters or {
+    ['string'] = debug.__sprint_string,
+    ['boolean'] = debug.__sprint_boolean,
+    ['nil'] = debug.__sprint_nil,
+    ['number'] = debug.__sprint_number, 
+    ['table'] = debug.__sprint_table,
+    ['userdata'] = debug.__sprint_userdata,
+    ['coroutine'] = function() return "coroutine()" end,
+    ['function'] = debug.__sprint_function,
   }
 
-  local traverser = debug.__traversers[type(data)]
+  local sprinter = debug.__type_sprinters[type(data)]
 
-  if traverser then
-    traverser(data, indent)
+  if sprinter then
+    return sprinter(buffer, data)
   else
-    io.write("unknown value of " .. type(data))
+    return nil
   end
 end
 
-function debug.print_function(data, indent)
-  io.write("function() ... end")
+function debug.__sprint_function(buffer, data)
+  buffer:push("function() ... end")
 end
 
-function debug.print_userdata(data, indent)
-  io.write("userdata ")
+function debug.__sprint_userdata(buffer, data)
+  buffer:push("userdata")
+
   local meta = getmetatable(data)
   if meta then
-    debug.print(meta, indent + 1)
+    return debug:print(meta)
   end
 end
 
-function debug.print_string(data, indent)
-  io.write("'" .. data .. "'")
+function debug.__sprint_string(buffer, data)
+  buffer:push("'" .. data .. "'")
 end
 
-function debug.print_number(data, indent)
-  io.write(tostring(data))
+function debug.__sprint_number(buffer, data)
+  buffer:push(tostring(data))
 end
 
-function debug.print_boolean(data, indent)
-  if data then io.write("true") else io.write("false") end
+function debug.__sprint_boolean(buffer, data)
+  if data then buffer:push("true") else buffer:push("false") end
 end
 
-function debug.print_nil(data, indent)
-  io.write("nil")
+function debug.__sprint_nil(buffer, data)
+  buffer:push("nil")
 end
 
-function debug.print_table(data, indent)
+function debug.__sprint_table(buffer, data)
 
-  if data == _G and indent > 0 then
-    io.write("_G")
+  if data == _G and buffer.indent > 0 then
+    buffer:push("_G")
     return
   end
 
-  if debug.print_depth_limit < indent then
-    io.write("{ ... }")
+  if buffer.indent >= buffer.max_indent then
+    buffer:push("{ ... }")
     return
   end
 
   local is_array = debug.is_populated_table_array(data)
   local is_hash = debug.is_populated_table_hash(data)
 
+  if not (is_array or is_hash) then
+    buffer:push("{}")
+  end
+
+  buffer:push('{\n')
+
+  buffer.indent = buffer.indent + 1
+
   if is_array and is_hash then
-
-    io.write('{\n')
     
-    debug.print_array(data, indent + 1)
+    debug.__sprint_elements(buffer, data)
     
-    io.write(',\n')
+    buffer:push(',\n')
     
-    debug.print_keyval(data, indent + 1)
-
-    io.write('\n' .. string.rep('  ', indent) .. "}")
-
+    debug.__sprint_keyval_pairs(buffer)
 
   elseif is_array then
-
-    io.write('{\n')
     
-    debug.print_array(data, indent + 1)
-
-    io.write('\n' .. string.rep('  ', indent) .. "}")
+    debug.__sprint_elements(buffer, data)
   
   elseif is_hash then 
-
-    io.write('{\n')
     
-    debug.print_keyval(data, indent + 1)
+    debug.__sprint_keyval_pairs(buffer, data)
 
-    io.write('\n' .. string.rep('  ', indent) .. "}")
-
-  else
-    io.write("{}")
   end
+
+  buffer.indent = buffer.indent - 1
+
+  buffer:push('\n' .. string.rep('  ', buffer.indent) .. "}")
 
 end
 
 function debug.is_populated_table_array(data)
-  return #data > 0
+  for _ in ipairs(data) do
+      return true
+  end
 end
 
 function debug.is_populated_table_hash(data)
@@ -115,48 +134,53 @@ function debug.is_populated_table_hash(data)
   return false
 end
 
-function debug.print_array(data, indent)
+function debug.__sprint_elements(buffer, data)
   local first = true
   for _, v in ipairs(data) do
 
     if not first then
-      io.write(',\n')
+      buffer:push(',\n')
     end
 
-    io.write(string.rep('  ', indent))
-    debug.print(v, indent)
+    buffer:push(string.rep('  ', buffer.indent))
+
+    buffer:print(v)
 
     first = false
   end
 end
 
-function debug.print_keyval(data, indent)
+function debug.__sprint_keyval_pairs(buffer, data)
 
-  local order = {}
+  local order = {
+    insert = table.insert,
+    sort = table.sort
+  }
 
   for k, _ in pairs(data) do
     if type(k) == 'string' and not string.find(k, "^__") then
-      table.insert(order, k)
+      order:insert(k)
     end
   end
 
-  table.sort(order)
+  order:sort()
 
   local first = true
+
   for _, k in ipairs(order) do
 
     v = data[k]
 
     if not first then
-      io.write(',\n')
+      buffer:push(',\n')
     end
 
     if string.find(k, '[^a-zA-Z_]') then
       k = "['" .. k .. "']"
     end
 
-    io.write(string.rep('  ', indent) .. k .. ' = ')
-    debug.print(v, indent)
+    buffer:push(string.rep('  ', buffer.indent) .. k .. ' = ')
+    buffer:print(v)
 
     first = false
   end

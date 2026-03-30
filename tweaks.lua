@@ -1,10 +1,19 @@
 require('utils')
+require('debuglib')
 
 tweaks = {
     inserter = {},
     nuclear = {},
     concrete = {},
 }
+
+function tweaks.data_update()
+    for _, domain in pairs(tweaks) do
+        if type(domain) == 'table' and type(domain.data_update) == 'function' then
+            domain.data_update()
+        end
+    end
+end
 
 function tweaks.inserter.data_update()
 
@@ -113,14 +122,14 @@ function tweaks.concrete.data_update()
 
     -- And remove that it unlocks the chemical plant, making concrete
     -- a mandatory technology! First we gotta find where it is in the list, though:
-
-    table.remove_matching(tech['oil-processing'].effects, function(effect) do
-        return effect.type == 'unlock-recipe' and effect.recipe == 'chemical-plant'
-    end)
+    
+    table.remove_matching(tech['oil-processing'].effects,
+        table.matches{ type = 'unlock-recipe', recipe = 'chemical-plant'}
+    )
 
     -- Finally we make a few recipes dependent on concrete instead of bricks
 
-    is_stone_brick = is_ingredient('stone-brick')
+    is_stone_brick = table.matches{ name = 'stone-brick', type = 'item' }
 
     table.find_matching(recipes['oil-refinery'].ingredients, is_stone_brick).name = 'concrete'
 
@@ -130,13 +139,17 @@ function tweaks.concrete.data_update()
     table.find_matching(recipes['electric-furnace'].ingredients, is_stone_brick).name = 'concrete'
     table.insert(tech['advanced-material-processing-2'].prerequisites, 'concrete')
 
-    -- And make the nuclear reactor dependent on refined concrete
+    -- And make the nuclear reactor dependent on refined concrete and a bit less on steel
 
-    conc = table.find_matching(recipes['nuclear-reactor'].ingredients, is_ingredient('concrete'))
+    conc = table.find_matching(recipes['nuclear-reactor'].ingredients,
+        table.matches{ name = 'concrete', type = 'item' }
+    )
     conc.name = 'refined-concrete'
     conc.amount = 1000
 
-    table.find_matching(recipes['nuclear-reactor'].ingredients, is_ingredient('steel-plate')).amount = 200
+    table.find_matching(recipes['nuclear-reactor'].ingredients,
+        table.matches{ name = 'steel-plate', type = 'item' }
+    ).amount = 200
 
 end
 
@@ -148,8 +161,8 @@ function tweaks.chests.data_update()
     local logistic = data.raw['logistic-container']
 
     
-    for _,chest in pairs (data.raw['logistic-container']) do
-        if string.find(name, 'chest') then
+    for name, chest in pairs (data.raw['logistic-container']) do
+        if string.match(name, 'chest') then
             chest.inventory_size = 30
             chest.inventory_type = "with_filters_and_bar"
         end

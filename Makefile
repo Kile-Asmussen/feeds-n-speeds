@@ -1,11 +1,35 @@
 
-prelude = ./build-scripts/prelude.sh
+all: test build
 
-build:
-	@$(prelude) ./build-scripts/build.sh
+PRELUDE := ./build-scripts/prelude.sh
+
+LUA_FILES := $(filter-out debug*.lua test*.lua, $(wildcard *.lua))
+LOCALE_FILES := $(wildcard locale/**/*.cfg)
+MIGRATION_FILES := $(wildcard scenarios/**/*.lua, scenarios/**/*.json)
+METADATA_FILES := $(wildcard thumbnail.png info.json changelog.txt)
+
+ALL_FILES := $(LUA_FILES) $(LOCALE_FILES) $(MIGRATION_FILES) $(METADATA_FILES)
+
+.PHONY: all build clean install uninstall test download debug
+
+debug:
+	@echo ALL_FILES := $(ALL_FILES)
+
+build: $(ALL_FILES)
+	@$(PRELUDE) ./build-scripts/build.sh
+
+clean:
+	rm ./output/*.zip ./data/raw.lua
 
 install: build
-	@$(prelude) ./build-scripts/install.sh
+	@$(PRELUDE) ./build-scripts/install.sh
 
-test:
-	@$(prelude) ./build-scripts/test.sh
+uninstall:
+	@$(PRELUDE) ./build-scripts/uninstall.sh
+
+test: download
+	@$(PRELUDE) ./build-scripts/test.sh
+
+
+download: $(wildcard ./data/raw.lua)
+	@$(PRELUDE) ./build-scripts/download.sh

@@ -1,15 +1,10 @@
-data = {}
-
-data.raw = require("data.raw")
+require("data.raw")
 
 function data.extend(self, proto) 
-    if self ~= data and otherdate == nil then
-        otherdata = self
+    if self ~= data and proto == nil then
+        proto = self
         self = data
     end
-    if type(otherdata) ~= 'table' then
-        error("Invalid array of prototypes")
-    elseif
-        
-    end
+
+    assert(type(proto) ~= 'table', "Invalid array of prototypes")
 end
