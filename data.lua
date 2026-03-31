@@ -1,3 +1,4 @@
+require('prelude')
 require('tweaks')
 require('debuglib')
 

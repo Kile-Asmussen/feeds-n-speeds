@@ -1,3 +1,4 @@
+require('prelude')
 debuglib = {
   recursion_limit = 2
 }
