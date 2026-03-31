@@ -28,7 +28,7 @@ function debuglib.__sprint_any(buffer, data)
     ['number'] = debuglib.__sprint_number, 
     ['table'] = debuglib.__sprint_table,
     ['userdata'] = debuglib.__sprint_userdata,
-    ['coroutine'] = function() return "coroutine()" end,
+    ['coroutine'] = debuglib.__sprint_coroutine,
     ['function'] = debuglib.__sprint_function,
   }
 
@@ -55,7 +55,15 @@ function debuglib.__sprint_userdata(buffer, data)
 end
 
 function debuglib.__sprint_string(buffer, data)
-  buffer:push("'" .. data .. "'")
+  local sq = data:match("'")
+  local dq = data:match('"')
+  if sq and dq then
+    buffer:push("[[" .. data .. "]]")
+  elseif sq then
+    buffer:push('"' .. data .. '"')
+  else
+    buffer:push("'" .. data .. "'")
+  end
 end
 
 function debuglib.__sprint_number(buffer, data)
@@ -63,11 +71,15 @@ function debuglib.__sprint_number(buffer, data)
 end
 
 function debuglib.__sprint_boolean(buffer, data)
-  if data then buffer:push("true") else buffer:push("false") end
+  buffer:push(tostring(data))
 end
 
 function debuglib.__sprint_nil(buffer, data)
   buffer:push("nil")
+end
+
+function debuglib.__sprint_coroutine(buffer, data)
+  buffer:push("coroutine() ... end")
 end
 
 function debuglib.__sprint_table(buffer, data)
@@ -100,7 +112,7 @@ function debuglib.__sprint_table(buffer, data)
     
     buffer:push(',\n')
     
-    debuglib.__sprint_keyval_pairs(buffer)
+    debuglib.__sprint_keyval_pairs(buffer, data)
 
   elseif is_array then
     
@@ -157,7 +169,7 @@ function debuglib.__sprint_keyval_pairs(buffer, data)
   }
 
   for k, _ in pairs(data) do
-    if type(k) == 'string' and not string.find(k, "^__") then
+    if type(k) == 'string' then
       order:insert(k)
     end
   end

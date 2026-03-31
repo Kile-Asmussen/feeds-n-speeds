@@ -1,7 +1,6 @@
 require 'prelude'
 
-tweaks = tweaks or {}
-tweaks.electric = tweaks.electric or {}
+namespace().tweaks.electric = {}
 
 tweaks.electric.toggle = 'feeds-n-speeds-tweaks-electric-enable'
 tweaks.electric.enabled_by_default = true

@@ -1,7 +1,7 @@
 require 'prelude'
 require 'debuglib'
 
-namespace('tweaks')
+namespace().tweaks = {}
 
 function tweaks.__execute(name, extra)
     for domain_name, domain in pairs(tweaks) do
@@ -9,34 +9,28 @@ function tweaks.__execute(name, extra)
             if type(extra) == 'function' then
                 extra(domain, domain_name)
             end
-            if type(domain[name]) == 'function' then
-                domain[name]()
+            if type(domain(name)) == 'function' then
+                domain(name)()
             end
         end
     end
 end
 
 function tweaks.__create_toggle(domain, domain_name)
-    if type(domain.toggle) == 'string' then
-        default_value = domain.enabled_by_default or false
-
-        local proto = {
+    if type(domain 'toggle') == 'string' then
+        default_value = (domain 'enabled_by_default') or false
+        
+        data:extend{{
             type = 'bool-setting',
             name = domain.toggle,
             setting_type = 'startup',
             default_value = default_value,
-        }
-
-        log(string.sprint(
-            'EXTEND', debuglib.sprint(proto)
-        ))
-
-        data:extend{proto}
+        }}
     end
 end
 
 function tweaks.__read_toggle(domain, domain_name)
-    if type(domain.toggle) == 'string' then
+    if type(domain 'toggle') == 'string' then
         domain.enabled = settings.startup[domain.toggle].value
     end
 end

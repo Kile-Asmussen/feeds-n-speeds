@@ -45,7 +45,7 @@ function table.descend(tbl, ...)
 end
 
 --- Remove the metatable from a table
-function table.unmeta(self)
+function table.raw(self)
     setmetatable(self, nil)
 end
 
@@ -117,4 +117,11 @@ function table.matches(reference, candidate)
     end
 
     return true
+end
+
+function table.is_populated(tbl)
+    for _ in pairs(tbl) do
+        return true
+    end
+    return false
 end

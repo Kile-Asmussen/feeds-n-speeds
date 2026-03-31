@@ -1,7 +1,6 @@
 require 'prelude'
 
-tweaks = tweaks or {}
-tweaks.inserter = tweaks.inserter or {}
+namespace().tweaks.inserter = {}
 
 tweaks.inserter.toggle = 'feeds-n-speeds-tweaks-inserter-enable'
 tweaks.inserter.enabled_by_default = true

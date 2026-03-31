@@ -8,8 +8,6 @@ function log(str) print(str) end
 
 settings = {}
 
-
-
 function data.extend(self, protos)
     for _, proto in ipairs(protos) do
 
@@ -17,7 +15,11 @@ function data.extend(self, protos)
 
         if table.matches({ type = 'bool-setting' }, proto) then
             settings[proto.setting_type] = settings[proto.setting_type] or {}
-            settings[proto.setting_type][proto.name] = proto.default_value
+            settings[proto.setting_type][proto.name] = { value = proto.default_value }
         end
     end
 end
+
+setmetatable(_G, {
+    __index = function(_, name) error('global ' .. name .. ' not found') end
+})

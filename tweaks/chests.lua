@@ -1,8 +1,7 @@
 require 'prelude'
 
-namespace 'tweaks'
-tweaks:namespace 'chests'
-
+local b = namespace().tweaks
+b.chests = {}
 
 tweaks.chests.toggle = 'feeds-n-speeds-tweaks-chests-enable'
 tweaks.chests.enabled_by_default = true

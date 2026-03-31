@@ -1,7 +1,6 @@
 require 'prelude'
 
-tweaks = tweaks or {}
-tweaks.ores = tweaks.ores or {}
+namespace().tweaks.ores = {}
 
 tweaks.ores.toggle = 'feeds-n-speeds-tweaks-ores-enable'
 tweaks.ores.enabled_by_default = true
@@ -22,23 +21,38 @@ function tweaks.ores.data_final_fixes()
         if resource.category == nil or resource.category == 'basic-solid' then
 
             -- Make the ores infinite
-            resource.infinite = true
+            -- resource.infinite = true
             
-            resource.normal = 100
-            resource.minimum = 1
+            -- resource.normal = 100
+            -- resource.minimum = 1
+             
+            -- resource.minable.mining_time = 1
             
-            resource.minable.mining_time = 1
+            -- resource.stage_counts = { 600, 400, 300, 150, 100, 50, 25, 17 }
             
-            resource.stage_counts = { 600, 400, 300, 150, 100, 50, 25, 17 }
+            local richness_multiplier_setting = "control-setting:" .. resource.name .. ":richness"
             
-            richness_multiplier_setting = "control-setting:" .. resource.name .. ":richness:multiplier"
-            log("RICHNESS" ..
-                debuglib.sprint(tweaks.ores.richness_expression(richness_mult))
+            resource.autoplace.richness_expression = "1000000"
+
+            -- "(var('control:iron-ore:size') > 0) * (1*var('control:iron-ore:richness')*(var('default-iron-ore-patches'))*max((1000+distance)/2600,1))"
+             -- * var('" .. richness_multiplier_setting .. "')
+
+            --[[
+            (var('control:iron-ore:size') > 0)
+            * (
+                var('control:iron-ore:richness')
+                * var('default-iron-ore-patches')
+                * max(
+                    (1000+distance)/2600,
+                    1
+                )
             )
+            ]]
         end
     end 
 end
 
+--[[
 function tweaks.ores.richness_expression(varname)
     return {
         type = 'function-application',
@@ -58,3 +72,4 @@ function tweaks.ores.richness_expression(varname)
         }
     }    
 end
+]]

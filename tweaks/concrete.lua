@@ -1,7 +1,6 @@
 require 'prelude'
 
-tweaks = tweaks or {}
-tweaks.concrete = tweaks.concrete or {}
+namespace().tweaks.concrete = {}
 
 tweaks.concrete.toggle = 'feeds-n-speeds-tweaks-concrete-enable'
 tweaks.concrete.enabled_by_default = true

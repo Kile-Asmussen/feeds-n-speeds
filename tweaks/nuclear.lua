@@ -1,7 +1,6 @@
 require 'prelude'
 
-tweaks = tweaks or {}
-tweaks.nuclear = tweaks.nuclear or {}
+namespace().tweaks.nuclear = {}
 
 tweaks.nuclear.toggle = 'feeds-n-speeds-tweaks-nuclear-enable'
 tweaks.nuclear.enabled_by_default = true
