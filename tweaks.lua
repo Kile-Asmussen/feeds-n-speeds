@@ -1,12 +1,12 @@
-require('table-upgrades')
+require('upgrades')
 
 tweaks = tweaks or {}
 
 function tweaks.__execute(name, extra)
-    for _, domain in pairs(tweaks) do
+    for domain_name, domain in pairs(tweaks) do
         if type(domain) == 'table' then
             if type(extra) == 'function' then
-                extra(domain)
+                extra(domain, domain_name)
             end
             if type(domain[name]) == 'function' then
                 domain[name]()
@@ -15,19 +15,25 @@ function tweaks.__execute(name, extra)
     end
 end
 
-function tweaks.__create_toggle(domain)
+function tweaks.__create_toggle(domain, domain_name)
     if type(domain.toggle) == 'string' then
+        default_value = domain.enabled_by_default
+        if default_value == nil then
+            default_value = true
+        end
+
         data:extend{{
             type = 'bool-setting',
             name = domain.toggle,
             setting_type = 'startup',
-            default_value = true
+            default_value = default_value,
         }}
     end
 end
 
-function tweaks.__read_toggle(domain)
+function tweaks.__read_toggle(domain, domain_name)
     if type(domain.toggle) == 'string' then
+        log('READ', domain_name, domain.toggle, settings.startup, settings.startup[domain.toggle])
         domain.enabled = settings.startup[domain.toggle]
     end
 end

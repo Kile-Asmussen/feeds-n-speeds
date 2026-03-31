@@ -7,7 +7,9 @@ fi
 
 STASH=$(git stash create)
 git archive --worktree-attributes --prefix=$NAME_VERSION/ $STASH -o $ZIPFILE
-git gc --prune=now
+git gc --prune=now &>/dev/null
+
+(cd output && rm -rf $NAME_VERSION && unzip $ZIPFILE_NAME &>/dev/null)
 
 if [[ -e $ZIPFILE ]]; then
     echo $ZIPFILE built

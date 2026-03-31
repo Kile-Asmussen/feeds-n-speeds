@@ -1,9 +1,10 @@
-require('table-upgrades')
+require('upgrades')
 
 tweaks = tweaks or {}
 tweaks.chests = tweaks.chests or {}
 
 tweaks.chests.toggle = 'feeds-n-speeds-tweaks-chests-enable'
+tweaks.chests.enabled_by_default = true
 
 function tweaks.chests.data_updates()
 

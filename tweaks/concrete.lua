@@ -1,9 +1,10 @@
-require('table-upgrades')
+require('upgrades')
 
 tweaks = tweaks or {}
 tweaks.concrete = tweaks.concrete or {}
 
 tweaks.concrete.toggle = 'feeds-n-speeds-tweaks-concrete-enable'
+tweaks.concrete.enabled_by_default = true
 
 function tweaks.concrete.data_updates()
 

@@ -1,9 +1,10 @@
-require('table-upgrades')
+require('upgrades')
 
 tweaks = tweaks or {}
 tweaks.inserter = tweaks.inserter or {}
 
 tweaks.inserter.toggle = 'feeds-n-speeds-tweaks-inserter-enable'
+tweaks.inserter.enabled_by_default = true
 
 function tweaks.inserter.data_updates()
 

@@ -1,9 +1,10 @@
-require('table-upgrades')
+require('upgrades')
 
 tweaks = tweaks or {}
 tweaks.nuclear = tweaks.nuclear or {}
 
 tweaks.nuclear.toggle = 'feeds-n-speeds-tweaks-nuclear-enable'
+tweaks.nuclear.enabled_by_default = true
 
 function tweaks.nuclear.data_updates()
 

@@ -1,9 +1,10 @@
-require('table-upgrades')
+require('upgrades')
 
 tweaks = tweaks or {}
 tweaks.electric = tweaks.electric or {}
 
 tweaks.electric.toggle = 'feeds-n-speeds-tweaks-electric-enable'
+tweaks.electric.enabled_by_default = true
 
 function tweaks.electric.data_updates()
 

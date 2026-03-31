@@ -1,13 +1,14 @@
-require('table-upgrades')
+require('upgrades')
 
 tweaks = tweaks or {}
 tweaks.ores = tweaks.ores or {}
 
 tweaks.ores.toggle = 'feeds-n-speeds-tweaks-ores-enable'
+tweaks.ores.enabled_by_default = false
 
 function tweaks.ores.data_final_fixes()
 
-    if not tweaks.nuclear.enabled then
+    if not tweaks.ores.enabled then
         log("Ore tweaks disabled")
         return
     end
