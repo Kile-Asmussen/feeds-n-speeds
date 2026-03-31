@@ -1,4 +1,4 @@
-require('prelude')
+require 'prelude'
 
 tweaks = tweaks or {}
 tweaks.nuclear = tweaks.nuclear or {}

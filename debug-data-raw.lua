@@ -1,8 +1,8 @@
-require('testlib')
+require 'testlib'
 
-require('debuglib')
-require('prelude')
+require 'debuglib'
+require 'prelude'
 
-require('tweaks')
+require 'tweaks'
 
 log(debuglib.sprint(table.descend(data.raw, ...)))

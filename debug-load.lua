@@ -1,7 +1,7 @@
-require('prelude')
-require('testlib')
-require('debuglib')
-require('tweaks')
+require 'prelude'
+require 'testlib'
+require 'debuglib'
+require 'tweaks'
 
 log("SETTINGS")
 tweaks.settings()

@@ -1,6 +1,6 @@
-require('data.raw')
-require('debuglib')
-require('prelude')
+require 'data.raw'
+require 'debuglib'
+require 'prelude'
 
 debuglib.recursion_limit = tonumber(os.getenv("DEPTH")) or 2
 

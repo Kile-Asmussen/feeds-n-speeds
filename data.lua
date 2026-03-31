@@ -1,6 +1,6 @@
-require('prelude')
-require('tweaks')
-require('debuglib')
+require 'prelude'
+require 'tweaks'
+require 'debuglib'
 
 log(string.sprint(
     'SETTINGS', debuglib.sprint(settings.startup)

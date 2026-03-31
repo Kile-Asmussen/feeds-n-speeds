@@ -1,7 +1,8 @@
-require('prelude')
+require 'prelude'
 
-tweaks = tweaks or {}
-tweaks.chests = tweaks.chests or {}
+namespace 'tweaks'
+tweaks:namespace 'chests'
+
 
 tweaks.chests.toggle = 'feeds-n-speeds-tweaks-chests-enable'
 tweaks.chests.enabled_by_default = true

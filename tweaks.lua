@@ -1,7 +1,7 @@
-require('prelude')
-require('debuglib')
+require 'prelude'
+require 'debuglib'
 
-tweaks = tweaks or {}
+namespace('tweaks')
 
 function tweaks.__execute(name, extra)
     for domain_name, domain in pairs(tweaks) do
@@ -69,11 +69,11 @@ function tweaks.control()
     tweaks.__execute('control', tweaks.__read_toggle)
 end
 
-require('tweaks.chests')
-require('tweaks.concrete')
-require('tweaks.electric')
-require('tweaks.inserter')
-require('tweaks.nuclear')
-require('tweaks.ores')
+require 'tweaks.chests'
+require 'tweaks.concrete'
+require 'tweaks.electric'
+require 'tweaks.inserter'
+require 'tweaks.nuclear'
+require 'tweaks.ores'
 
 

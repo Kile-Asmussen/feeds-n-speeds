@@ -1,4 +1,4 @@
-require('prelude')
-require('tweaks')
+require 'prelude'
+require 'tweaks'
 
 tweaks.settings_updates()
