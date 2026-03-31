@@ -15,8 +15,6 @@ else
 fi
 git gc --prune=now
 
-(cd output && rm -rf $NAME_VERSION && unzip $ZIPFILE &>/dev/null)
-
 if [[ -e $OUTPUT_DIR/$ZIPFILE ]]; then
     echo $ZIPFILE built
 else

@@ -2,8 +2,9 @@
 
 shopt -s nullglob extglob
 
-if [[ ! ( $MODS_DIR && $ZIPFILE && $MOD_LIST && $MOD_FILE && $OUTPUT_DIR ) ]]; then
-    echo '$MODS_DIR $ZIPFILE $MOD_LIST $MOD_FILE $OUTPUT_DIR not set' >&2 
+if [[ ! ( $MODS_DIR && $ZIPFILE && $MOD_LIST && $OUTPUT_DIR ) ]]; then
+    echo '$MODS_DIR $ZIPFILE $MOD_LIST $OUTPUT_DIR not set' >&2
+    exit 2
 fi
 
 if [[ -e $MODS_DIR/$ZIPFILE ]]; then

@@ -16,20 +16,26 @@ export MODS_DIR := $(HOME)/.factorio/mods
 export MOD_LIST := mod-list.json
 export OUTPUT_DIR := ./output
 
-.PHONY: all build clean install uninstall test download debug
+.PHONY: all build clean install uninstall clean-reinstall test download debug nuke
 
 build: $(OUTPUT_DIR)/$(ZIPFILE)
 $(OUTPUT_DIR)/$(ZIPFILE): $(FILES)
 	./build-scripts/build.sh
 
+unzip: build
+	rm -rf $(OUTPUT_DIR)/$(NAME_VERSION)
+	(cd $(OUTPUT_DIR) && unzip $(ZIPFILE))
+
 clean:
-	rm -rf ./output/* ./data/raw.lua
+	rm -rf ./output/*
 
 install: build
 	@./build-scripts/install.sh
 
 uninstall:
 	@./build-scripts/uninstall.sh
+
+clean-reinstall: clean nuke install
 
 nuke: uninstall
 	rm -f ~/.factorio/mods/mod-settings.dat

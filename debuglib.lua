@@ -1,5 +1,5 @@
 debuglib = {
-  recursion_limit = tonumber(os.getenv("DEPTH")) or 2
+  recursion_limit = 2
 }
 
 function debuglib.print(data)

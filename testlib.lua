@@ -2,6 +2,8 @@ require('data.raw')
 require('debuglib')
 require('upgrades')
 
+debuglib.recursion_limit = tonumber(os.getenv("DEPTH")) or 2
+
 function log(str) print(str) end
 
 settings = {}
