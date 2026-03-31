@@ -22,19 +22,27 @@ function tweaks.__create_toggle(domain, domain_name)
             default_value = true
         end
 
-        data:extend{{
+        local proto = {
             type = 'bool-setting',
             name = domain.toggle,
             setting_type = 'startup',
             default_value = default_value,
-        }}
+        }
+
+        log(string.sprint(
+            'EXTEND', proto.setting_type, proto.name:rpad(30), string.bool(proto.default_value):rpad(5), proto.type,
+        ))
+
+        data:extend{proto}
     end
 end
 
 function tweaks.__read_toggle(domain, domain_name)
     if type(domain.toggle) == 'string' then
         domain.enabled = settings.startup[domain.toggle]
-        log('READ' .. domain_name:rpad(10) .. domain.toggle:rpad(30) .. string.bool(domain.enabled):rpad(5))
+        log(string.sprint(
+            'READ', domain_name:rpad(10), domain.toggle:rpad(30), string.bool(domain.enabled):rpad(5)
+        ))
     end
 end
 

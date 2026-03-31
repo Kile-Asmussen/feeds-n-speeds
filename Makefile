@@ -32,6 +32,9 @@ install: build
 uninstall:
 	@$(PRELUDE) ./build-scripts/uninstall.sh
 
+nuke: uninstall
+	rm ~/.factorio/mods/mod-settings.dat
+
 test: download
 	@$(PRELUDE) ./build-scripts/test.sh
 

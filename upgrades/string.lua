@@ -42,3 +42,7 @@ function string.bool(bool)
         return "false"
     end
 end
+
+function string.sprint(...)
+    return table.concat(table.pack(...), '\t')
+end
