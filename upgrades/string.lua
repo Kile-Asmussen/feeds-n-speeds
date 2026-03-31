@@ -34,3 +34,11 @@ function string.rpad(self, length, char)
 
     return self .. char:rep(length - #self)
 end
+
+function string.bool(bool)
+    if bool then
+        return "true"
+    else
+        return "false"
+    end
+end

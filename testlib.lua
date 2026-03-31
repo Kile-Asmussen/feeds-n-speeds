@@ -2,7 +2,7 @@ require('data.raw')
 require('debuglib')
 require('upgrades')
 
-log = print
+function log(str) print(str) end
 
 settings = {}
 
@@ -14,7 +14,7 @@ function data.extend(self, protos)
             settings[proto.setting_type] = settings[proto.setting_type] or {}
             settings[proto.setting_type][proto.name] = proto.default_value
 
-            log('EXTEND', proto.setting_type, proto.name:rpad(40), proto.default_value, proto.type, settings.startup, settings.startup[proto.name])
+            log('EXTEND ' .. proto.setting_type .. proto.name:rpad(30) .. string.bool(proto.default_value):rpad(5) .. proto.type)
 
         end
     end

@@ -33,8 +33,8 @@ end
 
 function tweaks.__read_toggle(domain, domain_name)
     if type(domain.toggle) == 'string' then
-        log('READ', domain_name:rpad(16), domain.toggle, settings.startup, settings.startup[domain.toggle])
         domain.enabled = settings.startup[domain.toggle]
+        log('READ' .. domain_name:rpad(10) .. domain.toggle:rpad(30) .. string.bool(domain.enabled):rpad(5))
     end
 end
 
