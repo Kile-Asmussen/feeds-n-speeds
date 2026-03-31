@@ -3,10 +3,16 @@ require('table-upgrades')
 tweaks = tweaks or {}
 tweaks.inserter = tweaks.inserter or {}
 
+tweaks.inserter.toggle = 'feeds-n-speeds-tweaks-inserter-enable'
 
 function tweaks.inserter.data_updates()
 
-    if not tweaks.inserter.enabled then return end
+    if not tweaks.inserter.enabled then
+        log("Inserter tweaks disabled")
+        return
+    end
+
+    log("Inserter tweaks enabled")
 
     inserter = data.raw.inserter
 

@@ -3,9 +3,17 @@ require('table-upgrades')
 tweaks = tweaks or {}
 tweaks.nuclear = tweaks.nuclear or {}
 
+tweaks.nuclear.toggle = 'feeds-n-speeds-tweaks-nuclear-enable'
+
 function tweaks.nuclear.data_updates()
 
-    if not tweaks.nuclear.enabled then return end
+    if not tweaks.nuclear.enabled then
+        log("Nuclear tweaks disabled")
+        return
+    end
+
+    log("Nuclear tweaks enabled")
+
 
     -- A lot of the ratios are caused by the wonky temperature
     -- difference between ambient and max of 985 degrees

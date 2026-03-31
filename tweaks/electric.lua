@@ -7,7 +7,12 @@ tweaks.electric.toggle = 'feeds-n-speeds-tweaks-electric-enable'
 
 function tweaks.electric.data_updates()
 
-    if not tweaks.electric.enabled then return end
+    if not tweaks.electric.enabled then
+        log("Electric tweaks disabled")
+        return
+    end
+
+    log("Electric tweaks enabled")
 
     local electric_pole = data.raw['electric-pole']
 

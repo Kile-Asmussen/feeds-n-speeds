@@ -63,7 +63,7 @@ end
 require('tweaks.chests')
 require('tweaks.concrete')
 require('tweaks.electric')
-require('tweaks.inserters')
+require('tweaks.inserter')
 require('tweaks.nuclear')
 require('tweaks.ores')
 

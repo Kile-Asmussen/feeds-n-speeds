@@ -3,9 +3,16 @@ require('table-upgrades')
 tweaks = tweaks or {}
 tweaks.ores = tweaks.ores or {}
 
+tweaks.ores.toggle = 'feeds-n-speeds-tweaks-ores-enable'
+
 function tweaks.ores.data_final_fixes()
 
-    if not tweaks.nuclear.enabled then return end
+    if not tweaks.nuclear.enabled then
+        log("Ore tweaks disabled")
+        return
+    end
+
+    log("Ore tweaks enabled")
 
     for _, resource in pairs(data.raw.resource) do
 
@@ -24,7 +31,7 @@ function tweaks.ores.data_final_fixes()
             resource.stage_counts = { 600, 400, 300, 150, 100, 50, 25, 17 }
             
             richness_multiplier_setting = "control-setting:" .. resource.name .. ":richness:multiplier"
-            resource.autoplace.richness_expression = richness_expression(richness_mult)
+            resource.autoplace.richness_expression = tweaks.ores.richness_expression(richness_mult)
         end
     end 
 end

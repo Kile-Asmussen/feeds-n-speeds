@@ -7,7 +7,12 @@ tweaks.concrete.toggle = 'feeds-n-speeds-tweaks-concrete-enable'
 
 function tweaks.concrete.data_updates()
 
-    if not tweaks.concrete.enabled then return end
+    if not tweaks.concrete.enabled then
+        log("Concrete tweaks disabled")
+        return
+    end
+
+    log("Concrete tweaks enabled")
 
     local recipes = data.raw.recipe
     local tech = data.raw.technology
