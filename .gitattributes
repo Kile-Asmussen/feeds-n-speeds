@@ -9,8 +9,11 @@
 /build-scripts/** export-ignore
 Makefile export-ignore
 
-debug*.lua export-ignore
-test*.lua export-ignore
+debug-*.lua export-ignore
+testlib.lua export-ignore
+test-*.lua export-ignore
+test/**/* export-ignore
+debug/**/* export-ignore
 
 flake.* export-ignore
 

@@ -3,7 +3,7 @@ debuglib = {
 }
 
 function debuglib.print(data)
-  print(debuglib.sprint(data))
+  (log or print)(debuglib.sprint(data))
 end
 
 function debuglib.buffer()

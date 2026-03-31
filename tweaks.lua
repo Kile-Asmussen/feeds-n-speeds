@@ -1,4 +1,5 @@
 require('upgrades')
+require('debuglib')
 
 tweaks = tweaks or {}
 
@@ -30,8 +31,9 @@ function tweaks.__create_toggle(domain, domain_name)
         }
 
         log(string.sprint(
-            'EXTEND', proto.setting_type, proto.name:rpad(30), string.bool(proto.default_value):rpad(5), proto.type,
+            'EXTEND', proto.setting_type, proto.name:rpad(30), string.bool(proto.default_value):rpad(5), proto.type
         ))
+        debuglib.print(proto)
 
         data:extend{proto}
     end
