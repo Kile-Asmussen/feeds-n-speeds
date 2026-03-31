@@ -1,6 +1,7 @@
 #! /usr/bin/env bash
 
 STASH=$(git stash create)
+echo $STASH
 git archive --worktree-attributes --prefix=$NAME_VERSION/ $STASH -o $ZIPFILE
 git gc --prune=now
 
