@@ -35,6 +35,7 @@
               lua
               jq
               gnumake
+              ripgrep
             ];
           };
       }

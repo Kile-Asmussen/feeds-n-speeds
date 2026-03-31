@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+shopt -s nullglob extglob
+
 DATA_DIR='./data'
 DATA_RAW=$DATA_DIR/raw.lua
 DATA_RAW_URL='https://gist.githubusercontent.com/Bilka2/6b8a6a9e4a4ec779573ad703d03c1ae7/raw'

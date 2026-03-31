@@ -1,11 +1,18 @@
 #! /usr/bin/env bash
 
-if [[ ! -e $ZIPFILE ]]; then
-    echo $ZIPFILE not found >&2
+shopt -s nullglob extglob
+
+if [[ ! ( $ZIPFILE && $OUTPUT_DIR && $MOD_LIST && $MODS_DIR ) ]]; then
+    echo '$ZIPFILE $OUTPUT_DIR $MOD_LIST $MODS_DIR not set'
     exit 1
 fi
 
-if cp $ZIPFILE $MODS_DIR/$ZIPFILE_NAME; then
+if [[ ! -e $OUTPUT_DIR/$ZIPFILE ]]; then
+    echo $OUTPUT_DIR/$ZIPFILE not found >&2
+    exit 1
+fi
+
+if cp $OUTPUT_DIR/$ZIPFILE $MODS_DIR/$ZIPFILE; then
     echo $ZIPFILE installed in $MODS_DIR
 fi
 

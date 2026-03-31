@@ -1,5 +1,11 @@
 #! /usr/bin/env bash
 
+shopt -s nullglob extglob
+
+if [[ ! ( $OUTPUT_DIR ) ]]; then
+    echo '$OUTPUT_DIR not set' >&2 
+fi
+
 echo "TESTING"
 
 TESTS=0

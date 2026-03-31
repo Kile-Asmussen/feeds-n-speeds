@@ -1,11 +1,15 @@
 #! /usr/bin/env bash
 
-MOD_FILE=$MODS_DIR/$ZIPFILE_NAME
+shopt -s nullglob extglob
 
-if [[ -e $MOD_FILE ]]; then
-    rm $MOD_FILE && echo removed $MOD_FILE
+if [[ ! ( $MODS_DIR && $ZIPFILE && $MOD_LIST && $MOD_FILE && $OUTPUT_DIR ) ]]; then
+    echo '$MODS_DIR $ZIPFILE $MOD_LIST $MOD_FILE $OUTPUT_DIR not set' >&2 
+fi
+
+if [[ -e $MODS_DIR/$ZIPFILE ]]; then
+    rm $MODS_DIR/$ZIPFILE && echo removed $MODS_DIR/$ZIPFILE
 else
-    echo $ZIPFILE_NAME is not installed
+    echo $ZIPFILE is not installed
 fi
 
 JQEXPR="del(.mods[] | select(.name == \"$NAME\"))"
