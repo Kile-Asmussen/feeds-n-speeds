@@ -5,7 +5,9 @@ if [[ ! ( $ZIPFILE && $NAME_VERSION ) ]]; then
     exit 1
 fi
 
-git archive --worktree-attributes --prefix=$NAME_VERSION/ HEAD -o $ZIPFILE
+STASH=$(git stash create)
+git archive --worktree-attributes --prefix=$NAME_VERSION/ $STASH -o $ZIPFILE
+git gc --prune=now
 
 if [[ -e $ZIPFILE ]]; then
     echo $ZIPFILE built
