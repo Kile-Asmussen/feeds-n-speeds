@@ -1,4 +1,4 @@
-require('upgrades')
+require('prelude')
 
 tweaks = tweaks or {}
 tweaks.inserter = tweaks.inserter or {}

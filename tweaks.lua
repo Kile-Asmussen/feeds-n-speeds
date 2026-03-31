@@ -1,4 +1,4 @@
-require('upgrades')
+require('prelude')
 require('debuglib')
 
 tweaks = tweaks or {}
@@ -18,10 +18,7 @@ end
 
 function tweaks.__create_toggle(domain, domain_name)
     if type(domain.toggle) == 'string' then
-        default_value = domain.enabled_by_default
-        if default_value == nil then
-            default_value = true
-        end
+        default_value = domain.enabled_by_default or false
 
         local proto = {
             type = 'bool-setting',
@@ -31,9 +28,8 @@ function tweaks.__create_toggle(domain, domain_name)
         }
 
         log(string.sprint(
-            'EXTEND', proto.setting_type, proto.name:rpad(30), string.bool(proto.default_value):rpad(5), proto.type
+            'EXTEND', debuglib.sprint(proto)
         ))
-        debuglib.print(proto)
 
         data:extend{proto}
     end
@@ -41,10 +37,7 @@ end
 
 function tweaks.__read_toggle(domain, domain_name)
     if type(domain.toggle) == 'string' then
-        domain.enabled = settings.startup[domain.toggle]
-        log(string.sprint(
-            'READ', domain_name:rpad(10), domain.toggle:rpad(30), string.bool(domain.enabled):rpad(5)
-        ))
+        domain.enabled = settings.startup[domain.toggle].value
     end
 end
 

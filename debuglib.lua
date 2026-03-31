@@ -2,9 +2,6 @@ debuglib = {
   recursion_limit = 2
 }
 
-function debuglib.print(data)
-  (log or print)(debuglib.sprint(data))
-end
 
 function debuglib.buffer()
   return {

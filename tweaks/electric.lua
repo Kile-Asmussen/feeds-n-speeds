@@ -1,4 +1,4 @@
-require('upgrades')
+require('prelude')
 
 tweaks = tweaks or {}
 tweaks.electric = tweaks.electric or {}
