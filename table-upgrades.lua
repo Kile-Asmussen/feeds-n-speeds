@@ -24,7 +24,9 @@ table.__table_mt = {
 
 -- Extra methods for the metatable
 table.rawget = rawget
+table.get = rawget
 table.rawset = rawset
+table.set = rawset
 table.pairs = pairs
 table.ipairs = ipairs
 
