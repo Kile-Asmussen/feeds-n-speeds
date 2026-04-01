@@ -17,7 +17,7 @@ return {
     volume = 0.6
   },
   name = 'big-steel-chest',
-  order = 'a[items]-c[steel-chest]',
+  order = 'a[items]-c[steel-chest-2]',
   pick_sound = {
     aggregation = {
       max_count = 1,

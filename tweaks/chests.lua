@@ -14,7 +14,7 @@ function chests.data_updates()
     
     for name, chest in pairs (data.raw['logistic-container']) do
         if string.match(name, 'chest') then
-            chest.inventory_size = 15
+            chest.inventory_size = 19
             chest.inventory_type = "with_filters_and_bar"
         end
     end

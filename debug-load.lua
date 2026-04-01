@@ -18,3 +18,6 @@ require('data-updates')
 
 log("DATA-FINAL-FIXES")
 require('data-final-fixes')
+
+log('CONTROL')
+require('control')

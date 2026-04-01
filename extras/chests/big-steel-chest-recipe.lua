@@ -1,12 +1,19 @@
 return {
-  {
-    type = "recipe",
-    name = "big-steel-chest",
-	enabled = false,
-    ingredients =
-	{
-		{"steel-plate", 10},
-	},
-    result = "big-steel-chest"
+  enabled = false,
+  ingredients = {
+    {
+      amount = 32,
+      name = 'steel-plate',
+      type = 'item'
+    }
   },
+  name = 'big-steel-chest',
+  results = {
+    {
+      amount = 1,
+      name = 'big-steel-chest',
+      type = 'item'
+    }
+  },
+  type = 'recipe'
 }
