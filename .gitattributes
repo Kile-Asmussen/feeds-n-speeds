@@ -4,6 +4,7 @@
 
 *.md export-ignore
 *.xcf export-ignore
+/**/*.xcf export-ignore
 
 /.* export-ignore
 
