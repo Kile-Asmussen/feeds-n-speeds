@@ -1,18 +1,40 @@
 # Kashmira Qeel's Feeds 'n' Speeds
 
-My old mods, repackaged:
+My old mods, repackaged.
 
-- Make yellow inserter as fast as her red big sister
-  - Prevent all inserters from chasing items (does that still work?)
-- Nuclear ratios are tweaked and nuclear power is a bit easier to design.
-- Concrete is now chemical-plant recipe and is used way more.
-- Chests are now 10/20/40 for wood/iron/steel and all logistics chests are 30.
-  - They also auto-sort on inventory open.
+All features have accompanying startup settings.
 
-New mods
+## Inserter love ❤️
 
-# TODO
+- The yellow inserter as fast as her red big sister
+- Prevent all inserters from chasing items (does that still work?)
 
-1. Startup options to toggle each of them.
-2. Infinite ores in the sensible way.
-3. Make big power pole reach father, like... 50 spaces.
+## Nuclear ratios makes a triumphant return!
+
+- Nuclear ratios are tweaked and nuclear power is a bit easier to design
+- The reactors no longer burn fuel needlessly
+- Reactors, pumps, heat exchangers and turbines are in strict integer ratios
+- Reactor itself is slightly stronger
+- Adjacency bonus nerfed a little to compensate
+ 
+## Concrete matters earlygame, too
+
+- Concrete is now chemical-plant recipe and is used way more
+- Several technologies now depend on concrete
+
+## Small chests, big chests, I love 'em all
+
+- Chests are now very small, to make storage more of a challenge
+- There's a 2x2 steel chest though
+
+## She electric on my poles till... yeah I got nothing
+
+- Electric poles have slightly longer reach
+- Substations have slightly larger coverage
+- Also, concrete!
+
+## Sustainable mining
+
+- All solid ores are now infinite with a yield determined by the slider in world creation
+- That's literally it
+- Yes it works with other mods, too

@@ -13,15 +13,15 @@ function chests.data_updates()
     local logistic = data.raw['logistic-container']
     
     for name, chest in pairs (data.raw['logistic-container']) do
-        if string.match(name, 'chest') then
-            chest.inventory_size = 19
+        if name:match('chest') then
+            chest.inventory_size = 18
             chest.inventory_type = "with_filters_and_bar"
         end
     end
 
-    container['wooden-chest'].inventory_size = 10
-    container['iron-chest'].inventory_size = 10
-    container['steel-chest'].inventory_size = 20
+    container['wooden-chest'].inventory_size = 9
+    container['iron-chest'].inventory_size = 9
+    container['steel-chest'].inventory_size = 19
 end
 
 return chests:__seal()

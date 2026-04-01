@@ -19,7 +19,7 @@ function inserter.data_updates()
     inserter.inserter.rotation_speed = inserter['long-handed-inserter'].rotation_speed
 
     -- It's also annoying that inserters chase belts
-    for inserter_name, inserter_data in pairs(data.raw.inserter) do
+    for inserter_name, inserter_data in pairs(inserter) do
         inserter_data.chases_belt_items = false
     end
 end 

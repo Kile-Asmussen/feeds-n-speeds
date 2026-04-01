@@ -1,6 +1,5 @@
 require 'prelude'
 
-local debuglib = require 'debuglib'
 local loading = require 'loading'
 
 local extras = namespace('extras')

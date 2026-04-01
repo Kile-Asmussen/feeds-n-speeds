@@ -17,7 +17,7 @@ return {
     volume = 0.6
   },
   name = 'big-steel-chest',
-  order = 'a[items]-c[steel-chest-2]',
+  order = 'a[items]-d[big-steel-chest]',
   pick_sound = {
     aggregation = {
       max_count = 1,
@@ -27,7 +27,7 @@ return {
     volume = 0.6
   },
   place_result = 'big-steel-chest',
-  stack_size = 50,
+  stack_size = 20,
   subgroup = 'storage',
   type = 'item'
 }

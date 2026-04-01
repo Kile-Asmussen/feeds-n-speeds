@@ -2,7 +2,7 @@ return {
   enabled = false,
   ingredients = {
     {
-      amount = 32,
+      amount = 16,
       name = 'steel-plate',
       type = 'item'
     }
