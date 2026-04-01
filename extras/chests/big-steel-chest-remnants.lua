@@ -23,10 +23,10 @@ return {
   localised_name = {
     'remnant-name',
     {
-      'entity-name.steel-chest'
+      'entity-name.big-steel-chest'
     }
   },
-  name = 'steel-chest-remnants',
+  name = 'big-steel-chest-remnants',
   order = 'a-c-a',
   remove_on_tile_placement = false,
   selectable_in_game = false,

@@ -16,7 +16,7 @@ function chests.data()
     data:extend{
         require('extras.chests.big-steel-chest-building'),
         require('extras.chests.big-steel-chest-item'),
-        require('extras.chests.big-steel-chest-explosion'),
+        require('extras.chests.big-steel-chest-remnants'),
         require('extras.chests.big-steel-chest-explosion'),
     }
 end

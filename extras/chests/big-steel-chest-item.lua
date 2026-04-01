@@ -16,7 +16,7 @@ return {
     filename = '__base__/sound/item/metal-chest-inventory-move.ogg',
     volume = 0.6
   },
-  name = 'steel-chest',
+  name = 'big-steel-chest',
   order = 'a[items]-c[steel-chest]',
   pick_sound = {
     aggregation = {
@@ -26,7 +26,7 @@ return {
     filename = '__base__/sound/item/metal-chest-inventory-pickup.ogg',
     volume = 0.6
   },
-  place_result = 'steel-chest',
+  place_result = 'big-steel-chest',
   stack_size = 50,
   subgroup = 'storage',
   type = 'item'

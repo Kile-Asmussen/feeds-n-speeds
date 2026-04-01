@@ -52,10 +52,10 @@ return {
   localised_name = {
     'dying-explosion-name',
     {
-      'entity-name.steel-chest'
+      'entity-name.big-steel-chest'
     }
   },
-  name = 'steel-chest-explosion',
+  name = 'big-steel-chest-explosion',
   order = 'a-c-a',
   smoke = 'smoke-fast',
   smoke_count = 2,
