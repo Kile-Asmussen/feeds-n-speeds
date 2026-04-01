@@ -125,3 +125,11 @@ function table.is_populated(tbl)
     end
     return false
 end
+
+function table.map(tbl, func)
+    local res = {}
+    for _, val in ipairs(tbl) do
+        table.insert(res, func(val))
+    end
+    return res
+end

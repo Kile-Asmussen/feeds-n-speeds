@@ -1,9 +1,4 @@
 require 'prelude'
-require 'tweaks'
-require 'debuglib'
-
-log(string.sprint(
-    'SETTINGS', debuglib.sprint(settings.startup)
-))
+local tweaks = require 'tweaks'
 
 tweaks.data()

@@ -4,8 +4,6 @@ require 'test-config'
 local debuglib = require 'debuglib'
 local tweaks = require 'tweaks'
 
-function 
-
 local args = table.pack( ... )
 
 local last = table.remove(args, #args)

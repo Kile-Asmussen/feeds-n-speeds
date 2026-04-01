@@ -35,14 +35,6 @@ function string.rpad(self, length, char)
     return self .. char:rep(length - #self)
 end
 
-function string.bool(bool)
-    if bool then
-        return "true"
-    else
-        return "false"
-    end
-end
-
 function string.sprint(...)
-    return table.concat(table.pack(...), '\t')
+    return table.concat(table.map(table.pack(...), tostring), '\t')
 end

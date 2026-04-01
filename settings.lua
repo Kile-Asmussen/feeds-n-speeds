@@ -1,4 +1,4 @@
 require 'prelude'
-require 'tweaks'
+local tweaks = require 'tweaks'
 
 tweaks.settings()
