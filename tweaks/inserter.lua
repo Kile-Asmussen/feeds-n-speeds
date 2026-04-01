@@ -21,6 +21,10 @@ function inserter.data_updates()
     -- It's also annoying that inserters chase belts
     for inserter_name, inserter_data in pairs(inserter) do
         inserter_data.chases_belt_items = false
+
+        if inserter_data.energy_source.type = 'burner' then
+            inserter_data.allow_burner_leech = true
+        end
     end
 end 
 
