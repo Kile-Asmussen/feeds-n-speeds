@@ -1,13 +1,13 @@
 require 'prelude'
 
-namespace().tweaks.electric = {}
+local electric = namespace('tweaks.electric')
 
-tweaks.electric.toggle = 'feeds-n-speeds-tweaks-electric-enable'
-tweaks.electric.enabled_by_default = true
+electric.toggle = 'feeds-n-speeds-tweaks-electric-enable'
+electric.enabled = true
 
-function tweaks.electric.data_updates()
+function electric.data_updates()
 
-    if not tweaks.electric.enabled then
+    if not electric.enabled then
         log("Electric tweaks disabled")
         return
     end
@@ -26,3 +26,5 @@ function tweaks.electric.data_updates()
     big.maximum_wire_distance = 50
     substation.maximum_wire_distance = 25
 end
+
+return electric:__seal()

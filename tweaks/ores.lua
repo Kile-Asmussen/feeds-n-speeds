@@ -1,13 +1,13 @@
 require 'prelude'
 
-namespace().tweaks.ores = {}
+local ores = namespace('tweaks.ores')
 
-tweaks.ores.toggle = 'feeds-n-speeds-tweaks-ores-enable'
-tweaks.ores.enabled_by_default = true
+ores.toggle = 'feeds-n-speeds-tweaks-ores-enable'
+ores.enabled = true
 
-function tweaks.ores.data_final_fixes()
+function ores.data_final_fixes()
 
-    if not tweaks.ores.enabled then
+    if not ores.enabled then
         log("Ore tweaks disabled")
         return
     end
@@ -35,3 +35,5 @@ function tweaks.ores.data_final_fixes()
         end
     end 
 end
+
+return ores:__seal()

@@ -1,13 +1,13 @@
 require 'prelude'
 
-namespace().tweaks.concrete = {}
+local concrete = namespace('tweaks.concrete')
 
-tweaks.concrete.toggle = 'feeds-n-speeds-tweaks-concrete-enable'
-tweaks.concrete.enabled_by_default = true
+concrete.toggle = 'feeds-n-speeds-tweaks-concrete-enable'
+concrete.enabled = true
 
-function tweaks.concrete.data_updates()
+function concrete.data_updates()
 
-    if not tweaks.concrete.enabled then
+    if not concrete.enabled then
         log("Concrete tweaks disabled")
         return
     end
@@ -116,3 +116,5 @@ function tweaks.concrete.data_updates()
     ).amount = 200
 
 end
+
+return concrete:__seal()

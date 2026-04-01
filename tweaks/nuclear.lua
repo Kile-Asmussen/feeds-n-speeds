@@ -1,13 +1,13 @@
 require 'prelude'
 
-namespace().tweaks.nuclear = {}
+local nuclear = namespace('tweaks.nuclear')
 
-tweaks.nuclear.toggle = 'feeds-n-speeds-tweaks-nuclear-enable'
-tweaks.nuclear.enabled_by_default = true
+nuclear.toggle = 'feeds-n-speeds-tweaks-nuclear-enable'
+nuclear.enabled = true
 
-function tweaks.nuclear.data_updates()
+function nuclear.data_updates()
 
-    if not tweaks.nuclear.enabled then
+    if not nuclear.enabled then
         log("Nuclear tweaks disabled")
         return
     end
@@ -59,3 +59,5 @@ function tweaks.nuclear.data_updates()
     -- each each interface between two adjacent reactors
     nuclear_reactor.neighbour_bonus = 0.5
 end
+
+return nuclear:__seal()

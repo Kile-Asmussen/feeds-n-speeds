@@ -1,7 +1,8 @@
 require 'prelude'
-require 'testlib'
-require 'debuglib'
-require 'tweaks'
+require 'test-config'
+
+local debuglib = require 'debuglib'
+local tweaks = require 'tweaks'
 
 log("SETTINGS")
 tweaks.settings()

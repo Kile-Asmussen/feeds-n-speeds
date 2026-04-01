@@ -1,14 +1,17 @@
 require 'prelude'
 
-local b = namespace().tweaks
-b.chests = {}
+local chests = namespace 'tweaks.chests'
 
-tweaks.chests.toggle = 'feeds-n-speeds-tweaks-chests-enable'
-tweaks.chests.enabled_by_default = true
+chests.toggle = 'feeds-n-speeds-tweaks-chests-enable'
+chests.enabled = true
 
-function tweaks.chests.data_updates()
+function chests.data()
+    -- data:extend{ }
+end
 
-    if not tweaks.chests.enabled then
+function chests.data_updates()
+
+    if not chests.enabled then
         log("Chest tweaks disabled")
         return
     end
@@ -19,27 +22,14 @@ function tweaks.chests.data_updates()
     
     for name, chest in pairs (data.raw['logistic-container']) do
         if string.match(name, 'chest') then
-            chest.inventory_size = 30
+            chest.inventory_size = 15
             chest.inventory_type = "with_filters_and_bar"
         end
     end
 
     container['wooden-chest'].inventory_size = 10
-    container['iron-chest'].inventory_size = 20
-    container['steel-chest'].inventory_size = 40
+    container['iron-chest'].inventory_size = 10
+    container['steel-chest'].inventory_size = 20
 end
 
--- function tweaks.chests.control()
---     script.on_event(defines.events.on_gui_opened,
---         tweaks.chests.sort_chest_on_open)
--- end
-
-
--- function tweaks.chests.sort_chest_on_open(event)
---     if event.gui_type == defines.gui_type.entity then
---         local inventory = event.entity.get_inventory(defines.inventory.chest)
---         if inventory and inventory.valid then
---             inventory.sort_and_merge()
---         end
---     end
--- end
+return chests:__seal()

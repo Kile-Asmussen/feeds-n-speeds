@@ -1,8 +1,8 @@
 require 'prelude'
-debuglib = {
-  recursion_limit = 2
-}
 
+local debuglib = namespace('debuglib')
+
+debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 2
 
 function debuglib.buffer()
   return {
@@ -21,17 +21,6 @@ function debuglib.sprint(data)
 end
 
 function debuglib.__sprint_any(buffer, data)
-  debuglib.__type_sprinters = debuglib.__type_sprinters or {
-    ['string'] = debuglib.__sprint_string,
-    ['boolean'] = debuglib.__sprint_boolean,
-    ['nil'] = debuglib.__sprint_nil,
-    ['number'] = debuglib.__sprint_number, 
-    ['table'] = debuglib.__sprint_table,
-    ['userdata'] = debuglib.__sprint_userdata,
-    ['coroutine'] = debuglib.__sprint_coroutine,
-    ['function'] = debuglib.__sprint_function,
-  }
-
   local sprinter = debuglib.__type_sprinters[type(data)]
 
   if sprinter then
@@ -196,3 +185,16 @@ function debuglib.__sprint_keyval_pairs(buffer, data)
     first = false
   end
 end
+
+debuglib.__type_sprinters = {
+  ['string'] = debuglib.__sprint_string,
+  ['boolean'] = debuglib.__sprint_boolean,
+  ['nil'] = debuglib.__sprint_nil,
+  ['number'] = debuglib.__sprint_number, 
+  ['table'] = debuglib.__sprint_table,
+  ['userdata'] = debuglib.__sprint_userdata,
+  ['coroutine'] = debuglib.__sprint_coroutine,
+  ['function'] = debuglib.__sprint_function,
+}
+
+return debuglib

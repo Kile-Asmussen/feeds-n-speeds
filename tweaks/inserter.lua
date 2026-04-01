@@ -1,13 +1,13 @@
 require 'prelude'
 
-namespace().tweaks.inserter = {}
+local inserter = namespace('tweaks.inserter')
 
-tweaks.inserter.toggle = 'feeds-n-speeds-tweaks-inserter-enable'
-tweaks.inserter.enabled_by_default = true
+inserter.toggle = 'feeds-n-speeds-tweaks-inserter-enable'
+inserter.enabled = true
 
-function tweaks.inserter.data_updates()
+function inserter.data_updates()
 
-    if not tweaks.inserter.enabled then
+    if not inserter.enabled then
         log("Inserter tweaks disabled")
         return
     end
@@ -28,3 +28,5 @@ function tweaks.inserter.data_updates()
         inserter_data.chases_belt_items = false
     end
 end 
+
+return inserter:__seal()

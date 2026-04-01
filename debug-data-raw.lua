@@ -1,25 +1,29 @@
-require 'testlib'
-
-require 'debuglib'
 require 'prelude'
+require 'test-config'
 
-require 'tweaks'
+local debuglib = require 'debuglib'
+local tweaks = require 'tweaks'
 
-args = table.pack( ... )
+function 
 
-last = table.remove(args, #args)
-if not (last:match('%[') and last:match('%]')) then
-    last = last:gsub('%-', '%%-')
-end
+local args = table.pack( ... )
 
-tbl = table.descend(data.raw, table.unpack(args))
+local last = table.remove(args, #args)
 
-new = {}
+local tbl = table.descend(data.raw, table.unpack(args))
 
-for k, v in pairs(tbl) do
-    if type(k) == 'string' and k:match(last) then
-        new[k] = v
+if tbl[last] then
+    log(debuglib.sprint(tbl[last]))
+else
+    if not (last:match('%[') and last:match('%]')) then
+        last = last:gsub('%-', '%%-')
+    end
+
+    new = {}
+
+    for k, v in pairs(tbl) do
+        if type(k) == 'string' and k:match(last) then
+            new[k] = v
+        end
     end
 end
-
-log(debuglib.sprint(new))

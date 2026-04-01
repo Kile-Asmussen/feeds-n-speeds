@@ -1,7 +1,6 @@
 require 'prelude'
-require 'debuglib'
 
-namespace().tweaks = {}
+local tweaks = namespace 'tweaks'
 
 function tweaks.__execute(name, extra)
     for domain_name, domain in pairs(tweaks) do
@@ -18,13 +17,11 @@ end
 
 function tweaks.__create_toggle(domain, domain_name)
     if type(domain 'toggle') == 'string' then
-        default_value = (domain 'enabled_by_default') or false
-        
         data:extend{{
             type = 'bool-setting',
             name = domain.toggle,
             setting_type = 'startup',
-            default_value = default_value,
+            default_value = domain.enabled,
         }}
     end
 end
@@ -63,11 +60,11 @@ function tweaks.control()
     tweaks.__execute('control', tweaks.__read_toggle)
 end
 
-require 'tweaks.chests'
-require 'tweaks.concrete'
-require 'tweaks.electric'
-require 'tweaks.inserter'
-require 'tweaks.nuclear'
-require 'tweaks.ores'
+tweaks.chest = require 'tweaks.chests'
+tweaks.concrete = require 'tweaks.concrete'
+tweaks.electric = require 'tweaks.electric'
+tweaks.inserter = require 'tweaks.inserter'
+tweaks.nuclear = require 'tweaks.nuclear'
+tweaks.ores = require 'tweaks.ores'
 
-
+return tweaks:__seal()
