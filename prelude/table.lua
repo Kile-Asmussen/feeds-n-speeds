@@ -3,13 +3,30 @@
 --- Create or update a table with a metatable
 --- containing the `table' namespace as extra
 --- methods
-function table.new(res)
+function table.new(res, ...)
     if res == nil then
         res = {}
+    else
+        local rest = table.pack(...)
+        if rest.n > 0 then
+            table.insert(rest, 1, res)
+            res = rest
+            res.n = nil            
+        elseif type(res) ~= 'table' then
+            res = {res}
+        end
     end
     setmetatable(res, _G.table.__table_mt)
     return res
 end
+
+table.null = {}
+setmetatable(table.null, {
+    __tostring = function() return 'table.null' end,
+    __index = function() error('cannot index table.null') end,
+    __newindex = function() error('cannot index table.null') end,
+    __metatable = table.null,
+})
 
 -- Internally used metatable
 table.__table_mt = {
@@ -45,8 +62,9 @@ function table.descend(tbl, ...)
 end
 
 --- Remove the metatable from a table
-function table.raw(self)
+function table.nometatable(self)
     setmetatable(self, nil)
+    return self
 end
 
 --- Remove an element matching a predicate from a table
@@ -126,10 +144,39 @@ function table.is_populated(tbl)
     return false
 end
 
+function table.is_hash(tbl)
+    for k, _ in pairs(tbl) do
+        if type(k) == 'string' then
+            return true
+        end
+    end
+    return false
+end
+
+function table.is_array(tbl)
+    for k, _ in ipairs(tbl) do
+        return true
+    end
+    return false
+end
+
+
 function table.map(tbl, func)
     local res = {}
     for _, val in ipairs(tbl) do
         table.insert(res, func(val))
+    end
+    if getmetatable(tbl) == table.__table_mt then
+        return table.new(res)
+    else
+        return res
+    end
+end
+
+function table.dup(tbl)
+    local res = {}
+    for k,v in pairs(tbl) do
+        res[k] = v
     end
     return res
 end

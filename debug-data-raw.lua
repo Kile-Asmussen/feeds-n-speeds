@@ -4,24 +4,38 @@ require 'test-config'
 local debuglib = require 'debuglib'
 local tweaks = require 'tweaks'
 
-local args = table.pack( ... )
+local args = table.new( ... )
 
-local last = table.remove(args, #args)
+if #args == 0 then
+    log("No arguments given")
+    os.exit(1)
+end
 
-local tbl = table.descend(data.raw, table.unpack(args))
+local last = args:remove()
 
-if tbl[last] then
-    log(debuglib.sprint(tbl[last]))
-else
-    if not (last:match('%[') and last:match('%]')) then
-        last = last:gsub('%-', '%%-')
+local tbl = table.descend(data.raw, args:unpack())
+table.new(tbl)
+
+if type(tbl) == 'table' then
+    if tbl[last] then
+        log(debuglib.sprint(tbl[last]))
+        os.exit(0)
     end
 
-    new = {}
+    local new = table.new()
+    last = last:gsub('%-', '%%-')
 
-    for k, v in pairs(tbl) do
+    for k, v in tbl:pairs() do
         if type(k) == 'string' and k:match(last) then
             new[k] = v
         end
     end
+
+    if new:is_hash() then
+        log(debuglib.sprint(new))
+        os.exit(0)
+    end
 end
+
+log("Not found: " .. args:concat(' > ') .. ' > ' .. last)
+os.exit(1)

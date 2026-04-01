@@ -1,5 +1,5 @@
-require 'data.raw'
 require 'prelude'
+require 'data.raw'
 
 setmetatable(_G, {
     __index = function(_, name) error('global ' .. name .. ' not found') end

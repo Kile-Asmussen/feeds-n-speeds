@@ -38,3 +38,15 @@ end
 function string.sprint(...)
     return table.concat(table.map(table.pack(...), tostring), '\t')
 end
+
+function string.chomp(str)
+    if #str == 0 then
+        return str
+    end
+
+    if str[#str] == '\n' then
+        return str:sub(1, #str - 1)
+    end
+
+    return str
+end
