@@ -197,4 +197,4 @@ debuglib.__type_sprinters = {
   ['function'] = debuglib.__sprint_function,
 }
 
-return debuglib
+return debuglib:__seal()

@@ -1,7 +1,9 @@
 require 'prelude'
-require 'debuglib'
 local tweaks = require 'tweaks'
+local debuglib = require 'debuglib'
+local extras = require 'extras'
 
-log(debuglib.sprint(data.raw.container['steel-chest']))
+debuglib.recursion_limit = 10
 
+extras.data()
 tweaks.data()

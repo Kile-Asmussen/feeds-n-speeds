@@ -5,17 +5,9 @@ local chests = namespace 'tweaks.chests'
 chests.toggle = 'feeds-n-speeds-tweaks-chests-enable'
 chests.enabled = true
 
-function chests.data()
-    -- data:extend{ }
-end
-
 function chests.data_updates()
 
-    if not chests.enabled then
-        log("Chest tweaks disabled")
-        return
-    end
-    log("Chest tweaks enabled")
+    if not chests.enabled then return end
 
     local container = data.raw.container
     local logistic = data.raw['logistic-container']

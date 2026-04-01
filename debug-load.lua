@@ -1,23 +1,20 @@
 require 'prelude'
 require 'test-config'
 
-local debuglib = require 'debuglib'
-local tweaks = require 'tweaks'
-
 log("SETTINGS")
-tweaks.settings()
+require('settings')
 
 log("SETTINGS-UPDATES")
-tweaks.settings_updates()
+require('settings-updates')
 
 log("SETTINGS-FINAL-FIXES")
-tweaks.settings_final_fixes()
+require('settings-final-fixes')
 
 log("DATA")
-tweaks.data()
+require('data')
 
 log("DATA-UPDATES")
-tweaks.data_updates()
+require('data-updates')
 
 log("DATA-FINAL-FIXES")
-tweaks.data_final_fixes()
+require('data-final-fixes')

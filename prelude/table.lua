@@ -119,7 +119,7 @@ function table.matches(reference, candidate)
 
     for key, ref in pairs(reference) do
 
-        test = candidate[key]
+        local test = candidate[key]
 
         if test == nil then return false end
 
@@ -160,23 +160,32 @@ function table.is_array(tbl)
     return false
 end
 
+function table.imap(tbl, func)
+    for i, v in ipairs(tbl) do
+        tbl[i] = func(v)
+    end
+    return tbl
+end
 
 function table.map(tbl, func)
-    local res = {}
-    for _, val in ipairs(tbl) do
-        table.insert(res, func(val))
+    for k, v in pairs(tbl) do
+        tbl[k] = func(v)
     end
-    if getmetatable(tbl) == table.__table_mt then
-        return table.new(res)
-    else
-        return res
-    end
+    return tbl
 end
 
 function table.dup(tbl)
+    if type(tbl) ~= 'table' then return tbl end
     local res = {}
     for k,v in pairs(tbl) do
         res[k] = v
     end
     return res
+end
+
+function table.clone(tbl)
+    if type(tbl) ~= 'table' then return tbl end
+    tbl = table.dup(tbl)
+    table.map(tbl, table.clone)
+    return tbl
 end

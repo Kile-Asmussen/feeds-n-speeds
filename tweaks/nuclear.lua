@@ -7,13 +7,7 @@ nuclear.enabled = true
 
 function nuclear.data_updates()
 
-    if not nuclear.enabled then
-        log("Nuclear tweaks disabled")
-        return
-    end
-
-    log("Nuclear tweaks enabled")
-
+    if not nuclear.enabled then return end
 
     -- A lot of the ratios are caused by the wonky temperature
     -- difference between ambient and max of 985 degrees

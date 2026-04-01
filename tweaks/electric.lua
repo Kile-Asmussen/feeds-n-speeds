@@ -7,12 +7,7 @@ electric.enabled = true
 
 function electric.data_updates()
 
-    if not electric.enabled then
-        log("Electric tweaks disabled")
-        return
-    end
-
-    log("Electric tweaks enabled")
+    if not electric.enabled then return end
 
     local electric_pole = data.raw['electric-pole']
 

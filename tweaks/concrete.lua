@@ -7,12 +7,7 @@ concrete.enabled = true
 
 function concrete.data_updates()
 
-    if not concrete.enabled then
-        log("Concrete tweaks disabled")
-        return
-    end
-
-    log("Concrete tweaks enabled")
+    if not concrete.enabled then return end
 
     local recipes = data.raw.recipe
     local tech = data.raw.technology

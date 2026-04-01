@@ -7,12 +7,7 @@ inserter.enabled = true
 
 function inserter.data_updates()
 
-    if not inserter.enabled then
-        log("Inserter tweaks disabled")
-        return
-    end
-
-    log("Inserter tweaks enabled")
+    if not inserter.enabled then return end
 
     inserter = data.raw.inserter
 

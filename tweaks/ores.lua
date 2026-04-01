@@ -7,12 +7,7 @@ ores.enabled = true
 
 function ores.data_final_fixes()
 
-    if not ores.enabled then
-        log("Ore tweaks disabled")
-        return
-    end
-
-    log("Ore tweaks enabled")
+    if not ores.enabled then return end
 
     for _, resource in pairs(data.raw.resource) do
 
