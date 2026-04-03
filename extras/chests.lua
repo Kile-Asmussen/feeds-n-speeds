@@ -28,4 +28,4 @@ function chests.data_updates()
 
 end
 
-return chests
+return chests:__seal()

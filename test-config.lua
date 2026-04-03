@@ -1,7 +1,7 @@
 require 'prelude'
 
 data = namespace('data')
-data.raw = require 'data.raw'
+data.raw = require 'raw'
 
 setmetatable(_G, {
     __index = function(_, name) error('global ' .. name .. ' not found') end
@@ -11,9 +11,9 @@ local debuglib = require 'debuglib'
 
 function log(str) print(str) end
 
-_G.settings = {
-    startup = {}
-}
+settings = namespace('settings')
+settings.startup = {}
+
 
 function data.extend(self, protos)
     for _, proto in ipairs(protos) do
@@ -25,3 +25,6 @@ function data.extend(self, protos)
         end
     end
 end
+
+settings:__seal()
+data:__seal()

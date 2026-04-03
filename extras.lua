@@ -29,5 +29,6 @@ function extras.data_final_fixes()
 end
 
 extras.chests = require('extras.chests')
+extras.radars = require('extras.radars')
 
 return extras:__seal()

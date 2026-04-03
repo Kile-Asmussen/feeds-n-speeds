@@ -2,22 +2,40 @@ return {
   circuit_connector = {
     points = {
       shadow = {
-        green = { 0.671875 * 2, 0.546875 * 2 },
-        red = { 0.859375 * 2, 0.546875 * 2 }
+        green = {
+          0.671875 + 0.35,
+          0.546875 + 0.30
+        },
+        red = {
+          0.859375 + 0.35,
+          0.546875 + 0.30
+        }
       },
       wire = {
-        green = { 0.40625 * 2, 0.421875 * 2 },
-        red = { 0.34375 * 2, 0.203125 * 2 }
+        green = {
+          0.40625 + 0.35,
+          0.421875 + 0.30
+        },
+        red = {
+          0.3437 + 0.35,
+          0.203125 + 0.30
+        }
       }
     },
     sprites = {
-      blue_led_light_offset = { 0.09375 * 2, 0.453125 * 2 },
+      blue_led_light_offset = {
+        0.09375 + 0.35,
+        0.453125 + 0.30
+      },
       connector_main = {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04a-base-sequence.png',
         height = 50,
         priority = 'low',
-        scale = 1.0,
-        shift = { 0.09375, 0.203125 },
+        scale = 0.5,
+        shift = {
+          0.09375 + 0.35,
+          0.203125 + 0.30
+        },
         width = 52,
         x = 104,
         y = 150
@@ -27,8 +45,11 @@ return {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04b-base-shadow-sequence.png',
         height = 46,
         priority = 'low',
-        scale = 1.0,
-        shift = { 0.3125 * 2, 0.3125 * 2 },
+        scale = 0.5,
+        shift = {
+          0.3125 + 0.35,
+          0.3125 + 0.30
+        },
         width = 60,
         x = 120,
         y = 138
@@ -38,8 +59,11 @@ return {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04e-blue-LED-on-sequence.png',
         height = 60,
         priority = 'low',
-        scale = 1.0,
-        shift = { 0.09375 * 2, 0.171875 * 2 },
+        scale = 0.5,
+        shift = {
+          0.09375 + 0.35,
+          0.171875 + 0.30
+        },
         width = 60,
         x = 120,
         y = 180
@@ -48,8 +72,11 @@ return {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04f-blue-LED-off-sequence.png',
         height = 44,
         priority = 'low',
-        scale = 1.0,
-        shift = { 0.09375 * 2, 0.171875 * 2 },
+        scale = 0.5,
+        shift = {
+          0.09375 + 0.35,
+          0.171875 + 0.30
+        },
         width = 46,
         x = 92,
         y = 132
@@ -59,34 +86,45 @@ return {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04h-green-LED-sequence.png',
         height = 46,
         priority = 'low',
-        scale = 1.0,
-        shift = { 0.09375 * 2, 0.171875 * 2 },
+        scale = 0.5,
+        shift = {
+          0.09375 + 0.35,
+          0.171875 + 0.30
+        },
         width = 48,
         x = 96,
         y = 138
       },
       led_light = {
         intensity = 0,
-        size = 1.8
+        size = 0.9
       },
       led_red = {
         draw_as_glow = true,
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04i-red-LED-sequence.png',
         height = 46,
         priority = 'low',
-        scale = 1.0,
-        shift = { 0.09375 * 2, 0.171875 * 2 },
+        scale = 0.5,
+        shift = {
+          0.09375 + 0.35,
+          0.171875 + 0.30
+        },
         width = 48,
         x = 96,
         y = 138
       },
-      red_green_led_light_offset = { 0.09375 * 2, 0.359375 * 2 },
+      red_green_led_light_offset = {
+        0.09375,
+        0.359375
+      },
       wire_pins = {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04c-wire-sequence.png',
         height = 58,
         priority = 'low',
-        scale = 1.0,
-        shift = { 0.09375 * 2, 0.203125 * 2
+        scale = 0.5,
+        shift = {
+          0.09375 + 0.35,
+          0.203125 + 0.30
         },
         width = 62,
         x = 124,
@@ -97,33 +135,51 @@ return {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04d-wire-shadow-sequence.png',
         height = 54,
         priority = 'low',
-        scale = 1,
-        shift = { 0.390625 * 2, 0.34375 * 2 },
+        scale = 0.5,
+        shift = {
+          0.390625 + 0.35,
+          0.34375 + 0.30
+        },
         width = 68,
         x = 136,
         y = 162
       }
     }
   },
-  circuit_wire_max_distance = 14,
+  circuit_wire_max_distance = 9,
   close_sound = {
     filename = '__base__/sound/metallic-chest-close.ogg',
-    volume = 0.6
+    volume = 0.3
   },
   collision_box = {
-    { -0.70, -0.70 },
-    { 0.70, 0.70 }
+    {
+      -0.35 * 2,
+      -0.35 * 2
+    },
+    {
+      0.35 * 2,
+      0.35 * 2
+    }
   },
   corpse = 'big-steel-chest-remnants',
   damaged_trigger_effect = {
     damage_type_filters = 'fire',
     entity_name = 'spark-explosion',
     offset_deviation = {
-      { -1, -1, },
-      { 1, 1 }
+      {
+        -0.5 * 2,
+        -0.5 * 2
+      },
+      {
+        0.5 * 2,
+        0.5 * 2
+      }
     },
     offsets = {
-      { 0, 2 }
+      {
+        0,
+        1 * 2
+      }
     },
     type = 'create-entity'
   },
@@ -141,13 +197,13 @@ return {
   inventory_size = 39,
   max_health = 350 * 2,
   minable = {
-    mining_time = 0.5,
+    mining_time = 0.2,
     result = 'big-steel-chest'
   },
   name = 'big-steel-chest',
   open_sound = {
     filename = '__base__/sound/metallic-chest-open.ogg',
-    volume = 0.70 -- louder
+    volume = 0.43
   },
   picture = {
     layers = {
@@ -155,8 +211,11 @@ return {
         filename = '__base__/graphics/entity/steel-chest/steel-chest.png',
         height = 80,
         priority = 'extra-high',
-        scale = 1.0,
-        shift = { -0.0078125 * 2, -0.015625 * 2 },
+        scale = 0.5 * 2,
+        shift = {
+          -0.0078125 * 2,
+          -0.015625 * 2
+        },
         width = 64
       },
       {
@@ -164,8 +223,11 @@ return {
         filename = '__base__/graphics/entity/steel-chest/steel-chest-shadow.png',
         height = 46,
         priority = 'extra-high',
-        scale = 1.0, -- bigger
-        shift = { 0.3828125 * 2, 0.25 * 2 },
+        scale = 0.5 * 2,
+        shift = {
+          0.3828125 * 2,
+          0.25 * 2
+        },
         width = 110
       }
     }
@@ -181,8 +243,20 @@ return {
     }
   },
   selection_box = {
-    { -1, -1 },
-    { 1, 1 }
+    {
+      -0.5 * 2,
+      -0.5 * 2
+    },
+    {
+      0.5 * 2,
+      0.5 * 2
+    }
+  },
+  surface_conditions = {
+    {
+      min = 0.1,
+      property = 'gravity'
+    }
   },
   type = 'container'
 }

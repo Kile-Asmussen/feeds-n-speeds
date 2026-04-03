@@ -1,3 +1,5 @@
 /.direnv/
-/data/
+/raw.lua
+/data/factorio-current.log
+/data/target/
 /output/
