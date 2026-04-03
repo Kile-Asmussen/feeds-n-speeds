@@ -24,17 +24,17 @@ return {
     },
     sprites = {
       blue_led_light_offset = {
-        -1.515625,
-        -0.15625
+        -1.515625 * (2/3),
+        -0.15625 * (2/3)
       },
       connector_main = {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04a-base-sequence.png',
         height = 50,
         priority = 'low',
-        scale = 0.5,
+        scale = 0.5 * (2/3),
         shift = {
-          -1.328125,
-          -0.28125
+          -1.328125 * (2/3),
+          -0.28125 * (2/3)
         },
         width = 52,
         x = 0,
@@ -45,10 +45,10 @@ return {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04e-blue-LED-on-sequence.png',
         height = 60,
         priority = 'low',
-        scale = 0.5,
+        scale = 0.5 * (2/3),
         shift = {
-          -1.328125,
-          -0.3125
+          -1.328125 * (2/3),
+          -0.3125 * (2/3)
         },
         width = 60,
         x = 0,
@@ -58,10 +58,10 @@ return {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04f-blue-LED-off-sequence.png',
         height = 44,
         priority = 'low',
-        scale = 0.5,
+        scale = 0.5 * (2/3),
         shift = {
-          -1.328125,
-          -0.3125
+          -1.328125 * (2/3),
+          -0.3125 * (2/3)
         },
         width = 46,
         x = 0,
@@ -72,10 +72,10 @@ return {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04h-green-LED-sequence.png',
         height = 46,
         priority = 'low',
-        scale = 0.5,
+        scale = 0.5 * (2/3),
         shift = {
-          -1.328125,
-          -0.3125
+          -1.328125 * (2/3),
+          -0.3125 * (2/3)
         },
         width = 48,
         x = 0,
@@ -90,27 +90,27 @@ return {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04i-red-LED-sequence.png',
         height = 46,
         priority = 'low',
-        scale = 0.5,
+        scale = 0.5 * (2/3),
         shift = {
-          -1.328125,
-          -0.3125
+          -1.328125 * (2/3),
+          -0.3125 * (2/3)
         },
         width = 48,
         x = 0,
         y = 138
       },
       red_green_led_light_offset = {
-        -1.515625,
-        -0.28125
+        -1.515625 * (2/3),
+        -0.28125 * (2/3)
       },
       wire_pins = {
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04c-wire-sequence.png',
         height = 58,
         priority = 'low',
-        scale = 0.5,
+        scale = 0.5 * (2/3),
         shift = {
-          -1.328125,
-          -0.28125
+          -1.328125 * (2/3),
+          -0.28125 * (2/3)
         },
         width = 62,
         x = 0,
@@ -121,8 +121,8 @@ return {
   circuit_wire_max_distance = 7,
   collision_box = {
     {
-      -1.2 - 0.5,
-      -1.2 - 0.5
+      -1.2 + 0.5,
+      -1.2 + 0.5
     },
     {
       1.2 - 0.5,
@@ -170,8 +170,8 @@ return {
     height = 254,
     scale = 0.5 * (2/3),
     shift = {
-      0.03125,
-      -0.5
+      0.03125 * (2/3),
+      -0.5 * (2/3)
     },
     width = 196
   },
@@ -182,10 +182,10 @@ return {
     filename = '__base__/graphics/entity/radar/radar-integration.png',
     height = 216,
     priority = 'low',
-    scale = 0.5  * (2/3),
+    scale = 0.5 * (2/3),
     shift = {
-      0.046875,
-      0.125
+      0.046875 * (2/3),
+      0.125 * (2/3)
     },
     width = 238
   },
@@ -209,8 +209,8 @@ return {
         priority = 'low',
         scale = 0.5 * (2/3),
         shift = {
-          0.03125,
-          -0.5
+          0.03125 * (2/3),
+          -0.5 * (2/3)
         },
         width = 196
       },
@@ -224,8 +224,8 @@ return {
         priority = 'low',
         scale = 0.5 * (2/3),
         shift = {
-          1.21875,
-          0.1875
+          1.21875 * (2/3),
+          0.1875 * (2/3)
         },
         width = 336
       }
@@ -248,15 +248,15 @@ return {
       type = 'impact'
     }
   },
-  rotation_speed = 0.01,
+  rotation_speed = 0.005,
   selection_box = {
     {
-      -1.5 - 0.5,
-      -1.5 - 0.5
+      -1.0,
+      -1.0
     },
     {
-      1.5 - 0.5,
-      1.5 - 0.5
+      1.0,
+      1.0
     }
   },
   type = 'radar',
@@ -268,8 +268,8 @@ return {
       priority = 'extra-high',
       scale = 5 * (2/3),
       shift = {
-        0.15625,
-        1.09375
+        0.15625 * (2/3),
+        1.09375 * (2/3)
       },
       variation_count = 1,
       width = 28
