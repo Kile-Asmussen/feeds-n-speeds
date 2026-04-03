@@ -18,7 +18,7 @@ function electric.data_updates()
 
     small.maximum_wire_distance = 9.5
     medium.maximum_wire_distance = 15.5
-    big.maximum_wire_distance = 60
+    big.maximum_wire_distance = 50
     substation.maximum_wire_distance = 25
 end
 

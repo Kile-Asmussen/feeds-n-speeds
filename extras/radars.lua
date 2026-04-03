@@ -19,7 +19,7 @@ end
 
 function radars.data_updates()
 
-    if not chests.enabled then return end
+    if not radars.enabled then return end
 
     table.insert(data.raw.technology.radar.effects, {
         type = 'unlock-recipe',
