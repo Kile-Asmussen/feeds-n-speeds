@@ -2,26 +2,33 @@ require 'prelude'
 
 local loading = namespace 'loading'
 
-function loading.execute_stage(namespace, stage, extra)
-    log(tostring(namespace) .. '.' .. stage .. '()')
+function loading.execute(namespace, operation)
+    local domains = {}
 
-    extra = extra or function() end
+    for _, domain in pairs(namespace) do
+        if isnamespace(domain) then
+            table.insert(domains, domain)
+        end
+    end
 
-    for domain_name, domain in pairs(namespace) do
-        if type(domain) == 'table' then
-            if type(domain(stage)) == 'function' then
-                extra(domain, true)
-                log(tostring(namespace) .. '.' .. domain_name .. '.' .. stage .. '()')
-                domain(stage)()
-            else
-                extra(domain, false)
-            end
+    table.sort(domains,
+        function(d1, d2) return (d1('priority') or 0) > (d2('priority') or 0)
+    )
+
+    for _, domain in ipairs(namespace) do
+        if type(operation) == 'function' then
+            operation(domain)
+        elseif type(operation) == 'string' then
+            (domain(operation) or function() end)()
         end
     end
 end
 
-function loading.create_toggle(domain, exists)
-    if type(domain 'toggle') == 'string' then
+function loading.create_toggle(domain)
+    if isnamespace(domain) and
+        type(domain 'toggle') == 'string' and
+        type(domain 'enabled') == 'boolean'
+    then
         data:extend{{
             type = 'bool-setting',
             name = domain.toggle,
@@ -31,12 +38,13 @@ function loading.create_toggle(domain, exists)
     end
 end
 
-function loading.read_toggle(domain, exists)
-    if type(domain 'toggle') == 'string' then
+function loading.read_toggle(domain)
+    if isnamespace(domain) and
+        type(domain 'toggle') == 'string' and
+        type(domain 'enabled') == 'boolean'
+    then
         domain.enabled = settings.startup[domain.toggle].value
-        if exists then
-            log(tostring(domain) .. '.' .. 'enabled = ' .. tostring(domain.enabled))
-        end
+        log(tostring(domain) .. '.' .. 'enabled = ' .. tostring(domain.enabled))
     end
 end
 

@@ -4,28 +4,36 @@ local loading = require 'loading'
 
 local extras = namespace('extras')
 
+function extras.create_toggles()
+    loading.execute(extras, loading.create_toggle)
+end
+
+function extras.read_toggles()
+    loading.execute(extras, loading.read_toggle)
+end
+
 function extras.settings()
-    loading.execute_stage(extras, 'settings', loading.create_toggle)
+    loading.execute(extras, 'settings')
 end
 
 function extras.settings_updates()
-    loading.execute_stage(extras, 'settings_updates')
+    loading.execute(extras, 'settings_updates')
 end
 
 function extras.settings_final_fixes()
-    loading.execute_stage(extras, 'settings_final_fixes')
+    loading.execute(extras, 'settings_final_fixes')
 end
 
 function extras.data()
-    loading.execute_stage(extras, 'data', loading.read_toggle)
+    loading.execute(extras, 'data')
 end
 
 function extras.data_updates()
-    loading.execute_stage(extras, 'data_updates', loading.read_toggle)
+    loading.execute(extras, 'data_updates')
 end
 
 function extras.data_final_fixes()
-    loading.execute_stage(extras, 'data_final_fixes', loading.read_toggle)
+    loading.execute(extras, 'data_final_fixes')
 end
 
 extras.chests = require('extras.chests')

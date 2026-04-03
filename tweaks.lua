@@ -4,28 +4,36 @@ local loading = require 'loading'
 
 local tweaks = namespace 'tweaks'
 
+function tweaks.create_toggles()
+    loading.execute(tweaks, loading.create_toggle)
+end
+
+function tweaks.read_toggles()
+    loading.execute(tweaks, loading.read_toggle)
+end
+
 function tweaks.settings()
-    loading.execute_stage(tweaks, 'settings', loading.create_toggle)
+    loading.execute(tweaks, 'settings')
 end
 
 function tweaks.settings_updates()
-    loading.execute_stage(tweaks, 'settings_updates')
+    loading.execute(tweaks, 'settings_updates')
 end
 
 function tweaks.settings_final_fixes()
-    loading.execute_stage(tweaks, 'settings_final_fixes')
+    loading.execute(tweaks, 'settings_final_fixes')
 end
 
 function tweaks.data()
-    loading.execute_stage(tweaks, 'data', loading.read_toggle)
+    loading.execute(tweaks, 'data')
 end
 
 function tweaks.data_updates()
-    loading.execute_stage(tweaks, 'data_updates', loading.read_toggle)
+    loading.execute(tweaks, 'data_updates')
 end
 
 function tweaks.data_final_fixes()
-    loading.execute_stage(tweaks, 'data_final_fixes', loading.read_toggle)
+    loading.execute(tweaks, 'data_final_fixes')
 end
 
 tweaks.chest = require 'tweaks.chests'
@@ -34,5 +42,8 @@ tweaks.electric = require 'tweaks.electric'
 tweaks.inserter = require 'tweaks.inserter'
 tweaks.nuclear = require 'tweaks.nuclear'
 tweaks.ores = require 'tweaks.ores'
+tweaks.combos = require 'tweaks.combos'
+tweaks.miningspeed = require 'tweaks.miningspeed'
+tweaks.rebalance = require 'tweaks.rebalance'
 
 return tweaks:__seal()

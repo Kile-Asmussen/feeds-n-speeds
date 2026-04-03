@@ -152,8 +152,8 @@ return {
     type = 'create-entity'
   },
   dying_explosion = 'radar-explosion',
-  energy_per_nearby_scan = '0J',
-  energy_per_sector = '0J',
+  energy_per_nearby_scan = '1RJ',
+  energy_per_sector = '1RJ',
   energy_source = {
     type = 'electric',
     usage_priority = 'secondary-input'

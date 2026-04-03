@@ -1,5 +1,7 @@
 require 'prelude'
 
+local extras = require('extras')
+
 local chests = namespace 'tweaks.chests'
 
 chests.toggle = 'feeds-n-speeds-tweaks-chests-enable'
@@ -23,7 +25,7 @@ function chests.data_updates()
     container['iron-chest'].inventory_size = 9
     container['steel-chest'].inventory_size = 19
 
-    if container['big-steel-chest'] then
+    if extras.chests.enabled then
         container['big-steel-chest'].inventory_size = 39
     end
 end
