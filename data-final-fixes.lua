@@ -1,5 +1,5 @@
 require 'prelude'
-require 'debuglib'
+local debuglib = require 'debuglib'
 local tweaks = require 'tweaks'
 local extras =  require 'extras'
 
@@ -8,8 +8,8 @@ tweaks.data_final_fixes()
 
 debuglib.recursion_limit = 100
 
-log("DATA_RAW_BEGIN\n\n\n" ..
-    
-debuglib.sprint(data.raw)
+log("\n\n\nDATA_RAW_BEGIN\n\n\n" ..
 
-.. "\n\n\nDATA_RAW_END")
+'return ' .. debuglib.sprint(data.raw)
+
+.. "\n\n\nDATA_RAW_END\n\n\n")

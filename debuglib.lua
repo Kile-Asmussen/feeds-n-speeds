@@ -46,7 +46,8 @@ end
 function debuglib.__sprint_string(buffer, data)
   local sq = data:match("'")
   local dq = data:match('"')
-  if sq and dq then
+  local nl = data:match('\n')
+  if (sq and dq) or nl then
     buffer:push("[[" .. data .. "]]")
   elseif sq then
     buffer:push('"' .. data .. '"')

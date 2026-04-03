@@ -16,7 +16,9 @@ export MODS_DIR := $(HOME)/.factorio/mods
 export MOD_LIST := mod-list.json
 export OUTPUT_DIR := ./output
 
-.PHONY: all build clean install uninstall clean-reinstall test download debug nuke delete-raw redownload
+.PHONY: all build clean
+.PHONY: install uninstall clean-reinstall nuke
+.PHONY: test download download-data grab-data
 
 build: $(OUTPUT_DIR)/$(ZIPFILE)
 $(OUTPUT_DIR)/$(ZIPFILE): $(FILES)
@@ -43,11 +45,15 @@ nuke: uninstall
 test: download
 	@./build-scripts/test.sh
 
-delete-raw:
+delete-data:
 	rm -f ./data/raw.lua
+	rm -f ./data/factorio-current.log
 
-redownload: delete-raw download
+grab-data: ./data/factorio-current.log
+	@sed -n '/DATA_RAW_BEGIN/,/DATA_RAW_END/{//!p}' ./data/factorio-current.log > ./data/raw.lua
 
-download: ./data/raw.lua
-./data/raw.lua:
+download-data:
 	@./build-scripts/download.sh
+
+./data/factorio-current.log:
+	ln -s ~/.factorio/factorio-current.log ./data/factorio-current.log

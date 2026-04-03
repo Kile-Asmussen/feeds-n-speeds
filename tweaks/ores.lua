@@ -28,7 +28,7 @@ function ores.data_final_fixes()
 
             -- Random noise in the 95% to 105% range
             local random_noise =
-              'floor(random_penalty_between{from=95,to=105.999})'
+              'floor(random_penalty_between{from=95,to=105.999,seed=42069})'
             
             resource.autoplace.richness_expression = random_noise .." * " .. richness_multiplier_setting
         end
