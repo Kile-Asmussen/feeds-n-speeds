@@ -22,7 +22,7 @@ function radars.data_updates()
 
     table.insert(data.raw.technology.radar.effects, {
         type = 'unlock-recipe',
-        recipe = 'small-radar',
+        recipe = fns 'small-radar',
     })
 
 end

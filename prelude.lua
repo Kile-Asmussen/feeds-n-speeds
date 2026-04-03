@@ -15,12 +15,7 @@ function fns(name)
 end
 
 function fns_identifiers()
-    local res = {}
-    for k, _ in pairs(mod_identifiers) do
-        table.insert(res, k)
-    end
-    table.sort(res)
-    return res
+    return table.sorted_keys(mod_identifiers)
 end
 
 _G.import = function(path)
