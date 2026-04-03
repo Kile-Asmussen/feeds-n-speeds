@@ -7,7 +7,7 @@ return {
     filename = '__base__/sound/item/metal-large-inventory-move.ogg',
     volume = 0.7
   },
-  icon = '__base__/graphics/icons/radar.png',
+  icon = '__FeedsNSpeeds__/graphics/small-radar.png',
   inventory_move_sound = {
     aggregation = {
       max_count = 1,

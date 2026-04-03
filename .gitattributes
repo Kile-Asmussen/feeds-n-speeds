@@ -1,6 +1,7 @@
 * text=auto
 
 *.png binary
+/**/*.png binary
 
 *.md export-ignore
 *.xcf export-ignore
@@ -14,9 +15,9 @@ Makefile export-ignore
 debug-*.lua export-ignore
 testlib.lua export-ignore
 test-*.lua export-ignore
-test/**/* export-ignore
-debug/**/* export-ignore
+/test/**/* export-ignore
+/debug/**/* export-ignore
 
 flake.* export-ignore
 
-data/**/* export-ignore
+/graphics/base/* export-ignore
