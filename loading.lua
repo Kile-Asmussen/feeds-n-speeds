@@ -39,7 +39,7 @@ end
 function loading.read_toggle(domain)
     if isnamespace(domain) and type(domain 'enabled') == 'boolean'
     then
-        local setting = settings.startup[fns(tostring(domain) .. '-enable')]
+        local setting = setting.startup[fns(tostring(domain) .. '-enable')]
         if setting then
             domain.enabled = setting.value
         end
