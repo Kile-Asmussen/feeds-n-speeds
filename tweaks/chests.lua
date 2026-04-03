@@ -22,6 +22,10 @@ function chests.data_updates()
     container['wooden-chest'].inventory_size = 9
     container['iron-chest'].inventory_size = 9
     container['steel-chest'].inventory_size = 19
+
+    if container['big-steel-chest'] then
+        container['big-steel-chest'].inventory_size = 39
+    end
 end
 
 return chests:__seal()

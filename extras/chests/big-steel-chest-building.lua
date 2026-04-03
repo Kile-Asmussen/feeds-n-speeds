@@ -194,7 +194,7 @@ return {
     scale = 0.7
   },
   impact_category = 'metal',
-  inventory_size = 39,
+  inventory_size = 48 * 4,
   max_health = 350 * 2,
   minable = {
     mining_time = 0.2,

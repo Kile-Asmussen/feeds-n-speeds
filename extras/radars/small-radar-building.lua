@@ -152,8 +152,8 @@ return {
     type = 'create-entity'
   },
   dying_explosion = 'radar-explosion',
-  energy_per_nearby_scan = '50kJ',
-  energy_per_sector = '10MJ',
+  energy_per_nearby_scan = '0J',
+  energy_per_sector = '0J',
   energy_source = {
     type = 'electric',
     usage_priority = 'secondary-input'
@@ -190,7 +190,7 @@ return {
     width = 238
   },
   is_military_target = false,
-  max_distance_of_nearby_sector_revealed = 1,
+  max_distance_of_nearby_sector_revealed = 2,
   max_distance_of_sector_revealed = 0,
   max_health = 150,
   minable = {
