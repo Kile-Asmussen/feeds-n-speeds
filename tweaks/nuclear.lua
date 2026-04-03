@@ -14,6 +14,8 @@ function nuclear.data_updates()
     local ambient_temperature = 15
     local high_temperature = 500 + ambient_temperature
     local max_temperature = 1000 + ambient_temperature
+    -- Also did you know that even on other planets,
+    -- 15 degrees is the ambient
 
     -- Steam energy content is calculated as a function of
     -- its temperature above ambient temperature
@@ -28,6 +30,11 @@ function nuclear.data_updates()
     nuclear_reactor.heat_buffer.max_temperature = max_temperature
     heat_exchanger.energy_source.max_temperature = max_temperature
     data.raw['heat-pipe']['heat-pipe'].heat_buffer.max_temperature = max_temperature
+
+    -- Space age stuff:
+    if data.raw.generator['heating-tower'] then
+        data.raw.generator['heating-tower'].heat_buffer.max_temperature = max_temperature
+    end
 
     -- Energy production happens at 500 above ambient temperature
     -- for nice numbers

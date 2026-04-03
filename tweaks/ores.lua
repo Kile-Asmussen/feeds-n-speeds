@@ -24,9 +24,13 @@ function ores.data_final_fixes()
             
             resource.stage_counts = { 600, 400, 300, 150, 100, 50, 25, 17 }
 
-            local richness_multiplier_setting = "control:" .. resource.name .. ":richness"
+            local richness_multiplier_setting = "var('control:" .. resource.name .. ":richness')"
+
+            -- Random noise in the 95% to 105% range
+            local random_noise =
+              'floor(random_penalty_between{from=95,to=105.999})'
             
-            resource.autoplace.richness_expression = "100 * var('" .. richness_multiplier_setting .. "')"
+            resource.autoplace.richness_expression = random_noise .." * " .. richness_multiplier_setting
         end
     end 
 end

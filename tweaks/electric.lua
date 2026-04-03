@@ -16,9 +16,9 @@ function electric.data_updates()
     local big = electric_pole['big-electric-pole']
     local substation = electric_pole.substation
 
-    small.maximum_wire_distance = 8
-    medium.maximum_wire_distance = 10
-    big.maximum_wire_distance = 50
+    small.maximum_wire_distance = 9.5
+    medium.maximum_wire_distance = 15.5
+    big.maximum_wire_distance = 60
     substation.maximum_wire_distance = 25
 end
 
