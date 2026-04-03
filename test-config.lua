@@ -1,5 +1,7 @@
 require 'prelude'
-require 'data.raw'
+
+data = namespace('data')
+data.raw = require 'data.raw'
 
 setmetatable(_G, {
     __index = function(_, name) error('global ' .. name .. ' not found') end

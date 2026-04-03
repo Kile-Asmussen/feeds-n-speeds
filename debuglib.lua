@@ -2,97 +2,104 @@ require 'prelude'
 
 local debuglib = namespace('debuglib')
 
+function debuglib.sprint(data, path)
+  buffer = debuglib.__new_buffer()
+  buffer:__sprint_any(data, path)
+  return tostring(buffer)
+end
+
 debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 2
 
-function debuglib.buffer()
-  return {
+function debuglib.__new_buffer(path)
+  local res = {
     indent = 0,
     max_indent = debuglib.recursion_limit or 2,
-    push = table.insert,
-    tostring = table.concat,
-    print = debuglib.__sprint_any,
+    seen_tables = { [_G] = '_G' },
+    path_list = path and { path } or {},
   }
+  setmetatable(res, debuglib.__mt)
+  return res
 end
 
-function debuglib.sprint(data)  
-  buffer = debuglib.buffer()
-  buffer:print(data)
-  return buffer:tostring()
+debuglib.__mt = { __index = debuglib, __tostring = table.concat }
+
+debuglib.__push = table.insert
+
+function debuglib.__render_path(buffer)
+  local res = nil
+  for _, k in ipairs(buffer.path_list) do
+    if res == nil then
+      res = k
+    elseif type(k) == 'number' then
+      res = res .. '[' .. tostring(k) .. ']'
+    elseif k[1] == '[' then
+      res = res .. k
+    else
+      res = res .. '.' .. k
+    end
+  end
+  return res
 end
 
-function debuglib.__sprint_any(buffer, data)
-  local sprinter = debuglib.__type_sprinters[type(data)]
+function debuglib.__sprint_any(buffer, data, name)  
+  if name ~= nil then
+    table.insert(buffer.path_list, name)
+  end
 
-  if sprinter then
-    return sprinter(buffer, data)
-  else
-    return nil
+  debuglib['__sprint_' .. type(data)](buffer, data)
+
+  if name ~= nil then
+    table.remove(buffer.path_list)
   end
 end
 
 function debuglib.__sprint_function(buffer, data)
-  buffer:push("function() ... end")
+  buffer:__push("function() --[[ ... ]] end")
 end
 
 function debuglib.__sprint_userdata(buffer, data)
-  buffer:push("userdata")
-
-  local meta = getmetatable(data)
-  if meta then
-    return debuglib.__sprint_table(buffer, meta)
-  end
+  buffer:__push("--[[ userdata not supported ]] nil")
 end
 
 function debuglib.__sprint_string(buffer, data)
-  local sq = data:match("'")
-  local dq = data:match('"')
-  local nl = data:match('\n')
-  if (sq and dq) or nl then
-    buffer:push("[[" .. data .. "]]")
-  elseif sq then
-    buffer:push('"' .. data .. '"')
-  else
-    buffer:push("'" .. data .. "'")
-  end
+  buffer:__push(debuglib.__render_string(data))
 end
 
-function debuglib.__sprint_number(buffer, data)
-  buffer:push(tostring(data))
+function debuglib.__sprint_tostring(buffer, data)
+  buffer:__push(tostring(data))
 end
 
-function debuglib.__sprint_boolean(buffer, data)
-  buffer:push(tostring(data))
-end
-
-function debuglib.__sprint_nil(buffer, data)
-  buffer:push("nil")
-end
+debuglib.__sprint_number = debuglib.__sprint_tostring
+debuglib.__sprint_boolean = debuglib.__sprint_tostring
+debuglib.__sprint_nil = debuglib.__sprint_tostring
 
 function debuglib.__sprint_coroutine(buffer, data)
-  buffer:push("coroutine() ... end")
+  buffer:__push("--[[ coroutine ]] function() ... end")
 end
 
 function debuglib.__sprint_table(buffer, data)
 
-  if data == _G and buffer.indent > 0 then
-    buffer:push("_G")
+  if buffer.seen_tables[data] then
+    buffer:__push("{ --[[ " .. buffer.seen_tables[data] .. " ]] }")
     return
+  else
+    buffer.seen_tables[data] = buffer:__render_path()
   end
 
-  local is_array = debuglib.is_populated_table_array(data)
-  local is_hash = debuglib.is_populated_table_hash(data)
+  local is_array = table.is_array(data)
+  local is_hash = table.is_hash(data)
 
   if not (is_array or is_hash) then
-    buffer:push("{}")
+    buffer:__push("{}")
     return
   end
 
   if buffer.indent >= debuglib.recursion_limit then
-    buffer:push("{ ... }")
+    buffer:__push('{ --[[ ... ]] }')
     return
   end
 
-  buffer:push('{\n')
+  buffer:__push('{\n')
 
   buffer.indent = buffer.indent + 1
 
@@ -100,7 +107,7 @@ function debuglib.__sprint_table(buffer, data)
     
     debuglib.__sprint_elements(buffer, data)
     
-    buffer:push(',\n')
+    buffer:__push(',\n')
     
     debuglib.__sprint_keyval_pairs(buffer, data)
 
@@ -116,36 +123,21 @@ function debuglib.__sprint_table(buffer, data)
 
   buffer.indent = buffer.indent - 1
 
-  buffer:push('\n' .. string.rep('  ', buffer.indent) .. "}")
+  buffer:__push('\n' .. string.rep('  ', buffer.indent) .. "}")
 
-end
-
-function debuglib.is_populated_table_array(data)
-  for _ in ipairs(data) do
-      return true
-  end
-end
-
-function debuglib.is_populated_table_hash(data)
-  for k, _ in pairs(data) do
-    if type(k) == 'string' then
-      return true
-    end
-  end
-  return false
 end
 
 function debuglib.__sprint_elements(buffer, data)
   local first = true
-  for _, v in ipairs(data) do
+  for i, v in ipairs(data) do
 
     if not first then
-      buffer:push(',\n')
+      buffer:__push(',\n')
     end
 
-    buffer:push(string.rep('  ', buffer.indent))
+    buffer:__push(string.rep('  ', buffer.indent))
 
-    buffer:print(v)
+    buffer:__sprint_any(v, i)
 
     first = false
   end
@@ -168,34 +160,52 @@ function debuglib.__sprint_keyval_pairs(buffer, data)
 
   local first = true
 
-  for _, k in ipairs(order) do
+  for i, k in ipairs(order) do
 
     v = data[k]
 
     if not first then
-      buffer:push(',\n')
+      buffer:__push(',\n')
     end
 
-    if string.find(k, '[^a-zA-Z_]') then
-      k = "['" .. k .. "']"
-    end
-
-    buffer:push(string.rep('  ', buffer.indent) .. k .. ' = ')
-    buffer:print(v)
+    buffer:__push(string.rep('  ', buffer.indent) .. debuglib.__render_key(k) .. ' = ')
+    buffer:__sprint_any(v, k, i)
 
     first = false
   end
 end
 
-debuglib.__type_sprinters = {
-  ['string'] = debuglib.__sprint_string,
-  ['boolean'] = debuglib.__sprint_boolean,
-  ['nil'] = debuglib.__sprint_nil,
-  ['number'] = debuglib.__sprint_number, 
-  ['table'] = debuglib.__sprint_table,
-  ['userdata'] = debuglib.__sprint_userdata,
-  ['coroutine'] = debuglib.__sprint_coroutine,
-  ['function'] = debuglib.__sprint_function,
-}
+function debuglib.__render_key(data)
+  if type(data) == 'number' then
+    return "['" .. data .. "']"
+  end
+
+  if type(data) ~= 'string' then
+    error('not a valid table key for debuglib', data)
+  end
+
+  if data:match('^%s*[a-zA-Z_][a-zA-Z_0-9]*%s*$') then
+    return data
+  else
+    return '[' .. debuglib.__render_string(data) .. ']'
+  end
+end
+
+function debuglib.__render_string(data)
+  local sq = data:match("'")
+  local dq = data:match('"')
+  local nl = data:match('\n')
+  if (sq and dq) or nl then
+    if data:math('^%[') or data:match('%]$') or data:match('%]%]') or data:match('%[%[') then
+      return " [=[" .. data .. "]=] "
+    else
+      return " [[" .. data .. "]] "
+    end
+  elseif sq then
+    return '"' .. data .. '"'
+  else
+    return "'" .. data .. "'"
+  end
+end
 
 return debuglib:__seal()

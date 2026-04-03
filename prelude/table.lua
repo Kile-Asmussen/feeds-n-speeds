@@ -137,6 +137,13 @@ function table.matches(reference, candidate)
     return true
 end
 
+function table.contains(tbl, val)
+    for _, v in ipairs(tbl) do
+        if v == val then return true end
+    end
+    return val
+end
+
 function table.is_populated(tbl)
     for _ in pairs(tbl) do
         return true
