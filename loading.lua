@@ -2,7 +2,7 @@ require 'prelude'
 
 local loading = namespace 'loading'
 
-function loading.execute(namespace, operation)
+function loading.execute(namespace, operation, name)
     local domains = {}
 
     for _, domain in pairs(namespace) do
@@ -12,10 +12,10 @@ function loading.execute(namespace, operation)
     end
 
     table.sort(domains,
-        function(d1, d2) return (d1('priority') or 0) > (d2('priority') or 0)
+        function(d1, d2) return (d1('priority') or 0) > (d2('priority') or 0) end 
     )
 
-    for _, domain in ipairs(namespace) do
+    for _, domain in ipairs(domains) do
         if type(operation) == 'function' then
             operation(domain)
         elseif type(operation) == 'string' then
@@ -25,13 +25,11 @@ function loading.execute(namespace, operation)
 end
 
 function loading.create_toggle(domain)
-    if isnamespace(domain) and
-        type(domain 'toggle') == 'string' and
-        type(domain 'enabled') == 'boolean'
+    if isnamespace(domain) and type(domain 'enabled') == 'boolean'
     then
         data:extend{{
             type = 'bool-setting',
-            name = domain.toggle,
+            name = fns(tostring(domain) .. '-enable'),
             setting_type = 'startup',
             default_value = domain.enabled,
         }}
@@ -39,12 +37,12 @@ function loading.create_toggle(domain)
 end
 
 function loading.read_toggle(domain)
-    if isnamespace(domain) and
-        type(domain 'toggle') == 'string' and
-        type(domain 'enabled') == 'boolean'
+    if isnamespace(domain) and type(domain 'enabled') == 'boolean'
     then
-        domain.enabled = settings.startup[domain.toggle].value
-        log(tostring(domain) .. '.' .. 'enabled = ' .. tostring(domain.enabled))
+        local setting = settings.startup[fns(tostring(domain) .. '-enable')]
+        if setting then
+            domain.enabled = setting.value
+        end
     end
 end
 

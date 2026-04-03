@@ -22,13 +22,9 @@ return {
   },
   hidden_in_factoriopedia = true,
   icon = '__base__/graphics/icons/radar.png',
-  localised_name = {
-    'remnant-name',
-    {
-      'entity-name.radar'
-    }
-  },
-  name = 'radar-remnants',
+  localised_name = { 'remnant-name', { 'entity-name.' .. fns 'small-radar' } },
+  localised_description = { 'remnant-description', { 'entity-description.' .. fns 'small-radar' } },
+  name = fns 'small-radar-remnants',
   order = 'a-g-b',
   remove_on_tile_placement = false,
   selectable_in_game = false,

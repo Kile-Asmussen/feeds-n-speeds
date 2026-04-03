@@ -2,7 +2,6 @@ require 'prelude'
 
 local chests = namespace 'extras.chests'
 
-chests.toggle = 'feeds-n-speeds-extras-chests-enable'
 chests.enabled = true
 
 function chests.data()
@@ -23,7 +22,7 @@ function chests.data_updates()
 
     table.insert(data.raw.technology['steel-processing'].effects, {
         type = 'unlock-recipe',
-        recipe = 'big-steel-chest',
+        recipe = fns 'big-steel-chest',
     })
 
 end

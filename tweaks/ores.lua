@@ -2,7 +2,6 @@ require 'prelude'
 
 local ores = namespace('tweaks.ores')
 
-ores.toggle = 'feeds-n-speeds-tweaks-ores-enable'
 ores.enabled = true
 
 function ores.data_final_fixes()

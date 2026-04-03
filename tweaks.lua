@@ -5,11 +5,11 @@ local loading = require 'loading'
 local tweaks = namespace 'tweaks'
 
 function tweaks.create_toggles()
-    loading.execute(tweaks, loading.create_toggle)
+    loading.execute(tweaks, loading.create_toggle, 'create_toggle')
 end
 
 function tweaks.read_toggles()
-    loading.execute(tweaks, loading.read_toggle)
+    loading.execute(tweaks, loading.read_toggle, 'read_toggle')
 end
 
 function tweaks.settings()
@@ -36,14 +36,12 @@ function tweaks.data_final_fixes()
     loading.execute(tweaks, 'data_final_fixes')
 end
 
-tweaks.chest = require 'tweaks.chests'
+tweaks.chests = require 'tweaks.chests'
 tweaks.concrete = require 'tweaks.concrete'
 tweaks.electric = require 'tweaks.electric'
 tweaks.inserter = require 'tweaks.inserter'
 tweaks.nuclear = require 'tweaks.nuclear'
 tweaks.ores = require 'tweaks.ores'
-tweaks.combos = require 'tweaks.combos'
-tweaks.miningspeed = require 'tweaks.miningspeed'
-tweaks.rebalance = require 'tweaks.rebalance'
+tweaks.sensibility = require 'tweaks.sensibility'
 
 return tweaks:__seal()

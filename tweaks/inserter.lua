@@ -2,7 +2,6 @@ require 'prelude'
 
 local inserter = namespace('tweaks.inserter')
 
-inserter.toggle = 'feeds-n-speeds-tweaks-inserter-enable'
 inserter.enabled = true
 
 function inserter.data_updates()

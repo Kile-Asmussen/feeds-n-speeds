@@ -2,7 +2,6 @@ require 'prelude'
 
 local radars = namespace 'extras.radars'
 
-radars.toggle = 'feeds-n-speeds-extras-radars-enable'
 radars.enabled = true
 
 function radars.data()

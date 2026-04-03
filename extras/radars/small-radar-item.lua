@@ -16,7 +16,9 @@ return {
     filename = '__base__/sound/item/metal-large-inventory-move.ogg',
     volume = 0.7
   },
-  name = 'small-radar',
+  localised_name = {"", {"entity-name." .. fns 'small-radar'}},
+  localised_description = { "", {"entity-description." .. fns 'small-radar'} },
+  name = fns 'small-radar',
   order = 'd[radar]-b[radar]',
   pick_sound = {
     aggregation = {
@@ -26,7 +28,7 @@ return {
     filename = '__base__/sound/item/metal-large-inventory-pickup.ogg',
     volume = 0.8
   },
-  place_result = 'small-radar',
+  place_result = fns 'small-radar',
   random_tint_color = {
     1,
     0.95,

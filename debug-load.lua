@@ -1,5 +1,6 @@
 require 'prelude'
 require 'test-config'
+local debuglib = require 'debuglib'
 
 log("SETTINGS")
 require('settings')
@@ -18,3 +19,9 @@ require('data-updates')
 
 log("DATA-FINAL-FIXES")
 require('data-final-fixes')
+
+log(debuglib.sprint(fns_identifiers()))
+
+log('')
+
+log(generate_localization_stub())

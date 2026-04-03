@@ -2,7 +2,6 @@ require 'prelude'
 
 local concrete = namespace('tweaks.concrete')
 
-concrete.toggle = 'feeds-n-speeds-tweaks-concrete-enable'
 concrete.enabled = true
 
 function concrete.data_updates()
@@ -59,18 +58,6 @@ function concrete.data_updates()
     table.find_matching(recipes['oil-refinery'].ingredients,
         table.matches{ name = 'stone-brick', type = 'item' }
     ).name = 'concrete'
-
-    -- And make the nuclear reactor dependent on refined concrete and a bit less on steel
-
-    conc = table.find_matching(recipes['nuclear-reactor'].ingredients,
-        table.matches{ name = 'concrete', type = 'item' }
-    )
-    conc.name = 'refined-concrete'
-    conc.amount = 1000
-
-    table.find_matching(recipes['nuclear-reactor'].ingredients,
-        table.matches{ name = 'steel-plate', type = 'item' }
-    ).amount = 200
 
 end
 

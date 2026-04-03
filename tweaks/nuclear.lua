@@ -2,7 +2,6 @@ require 'prelude'
 
 local nuclear = namespace('tweaks.nuclear')
 
-nuclear.toggle = 'feeds-n-speeds-tweaks-nuclear-enable'
 nuclear.enabled = true
 
 function nuclear.data_updates()
@@ -59,6 +58,21 @@ function nuclear.data_updates()
     -- 'effective reactors' one need only count each reactor and
     -- each each interface between two adjacent reactors
     nuclear_reactor.neighbour_bonus = 0.5
+
+
+    local tweaks = import 'tweaks'
+
+    if tweaks.concrete.enabled then
+
+        conc = table.find_matching(data.raw.recipe['nuclear-reactor'].ingredients,
+            table.matches{ name = 'concrete', type = 'item' }
+        )
+        conc.name = 'refined-concrete'
+        
+        if tweaks.sensibility.enabled then
+
+        end
+    end
 end
 
 return nuclear:__seal()

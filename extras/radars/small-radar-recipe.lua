@@ -17,11 +17,13 @@ return {
       type = 'item'
     }
   },
-  name = 'small-radar',
+  localised_name = { "", {"entity-name." .. fns 'small-radar'} },
+  localised_description = {"", {"entity-description." .. fns 'small-radar'} },
+  name = fns 'small-radar',
   results = {
     {
       amount = 1,
-      name = 'small-radar',
+      name = fns 'small-radar',
       type = 'item'
     }
   },

@@ -7,11 +7,11 @@ return {
       type = 'item'
     }
   },
-  name = 'big-steel-chest',
+  name = fns 'big-steel-chest',
   results = {
     {
       amount = 1,
-      name = 'big-steel-chest',
+      name = fns 'big-steel-chest',
       type = 'item'
     }
   },

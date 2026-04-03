@@ -1,3 +1,5 @@
+require 'prelude'
+
 return {
   circuit_connector = {
     points = {
@@ -161,7 +163,7 @@ return {
       0.35 * 2
     }
   },
-  corpse = 'big-steel-chest-remnants',
+  corpse = fns 'big-steel-chest-remnants',
   damaged_trigger_effect = {
     damage_type_filters = 'fire',
     entity_name = 'spark-explosion',
@@ -183,7 +185,7 @@ return {
     },
     type = 'create-entity'
   },
-  dying_explosion = 'big-steel-chest-explosion',
+  dying_explosion = fns 'big-steel-chest-explosion',
   fast_replaceable_group = 'container',
   flags = {
     'placeable-neutral',
@@ -198,9 +200,9 @@ return {
   max_health = 350 * 2,
   minable = {
     mining_time = 0.2,
-    result = 'big-steel-chest'
+    result = fns 'big-steel-chest'
   },
-  name = 'big-steel-chest',
+  name = fns 'big-steel-chest',
   open_sound = {
     filename = '__base__/sound/metallic-chest-open.ogg',
     volume = 0.43

@@ -196,3 +196,20 @@ function table.clone(tbl)
     table.map(tbl, table.clone)
     return tbl
 end
+
+function table.sorted_keys(tbl)
+    local res = {}
+    for k, _ in pairs(tbl) do
+        table.insert(res, k)
+    end
+    table.sort(res)
+    return res
+end
+
+function table.set(tbl)
+    assert(type(tbl) == 'table', 'sets can only be created from tables')
+    local res = {}
+    for _, entry in ipairs(tbl) do
+        res[entry] = true
+    end
+end

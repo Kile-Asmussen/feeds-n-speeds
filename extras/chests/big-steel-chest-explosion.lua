@@ -49,13 +49,9 @@ return {
   height = 0,
   hidden = true,
   icon = '__base__/graphics/icons/steel-chest.png',
-  localised_name = {
-    'dying-explosion-name',
-    {
-      'entity-name.big-steel-chest'
-    }
-  },
-  name = 'big-steel-chest-explosion',
+  localised_name = { 'dying-explosion-name', { 'entity-name.' .. fns 'big-steel-chest' } },
+  localised_description = { 'dying-explosion-description', { 'entity-description.' .. fns 'big-steel-chest' } },
+  name = fns 'big-steel-chest-explosion',
   order = 'a-c-a',
   smoke = 'smoke-fast',
   smoke_count = 2,

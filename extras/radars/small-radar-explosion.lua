@@ -168,13 +168,9 @@ return {
   height = 0,
   hidden = true,
   icon = '__base__/graphics/icons/radar.png',
-  localised_name = {
-    'dying-explosion-name',
-    {
-      'entity-name.radar'
-    }
-  },
-  name = 'small-radar-explosion',
+  localised_name = { 'dying-explosion-name', { 'entity-name.' .. fns 'small-radar' } },
+  localised_description = { 'dying-explosion-description', { 'entity-description.' .. fns 'small-radar' } },
+  name = fns 'small-radar-explosion',
   order = 'b-g-a',
   smoke = 'smoke-fast',
   smoke_count = 2,

@@ -151,7 +151,7 @@ return {
     },
     type = 'create-entity'
   },
-  dying_explosion = 'radar-explosion',
+  dying_explosion = fns 'small-radar-explosion',
   energy_per_nearby_scan = '1RJ',
   energy_per_sector = '1RJ',
   energy_source = {
@@ -195,9 +195,9 @@ return {
   max_health = 150,
   minable = {
     mining_time = 0.1,
-    result = 'small-radar'
+    result = fns 'small-radar'
   },
-  name = 'small-radar',
+  name = fns 'small-radar',
   pictures = {
     layers = {
       {

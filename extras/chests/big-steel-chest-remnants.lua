@@ -20,13 +20,9 @@ return {
   },
   hidden_in_factoriopedia = true,
   icon = '__base__/graphics/icons/steel-chest.png',
-  localised_name = {
-    'remnant-name',
-    {
-      'entity-name.big-steel-chest'
-    }
-  },
-  name = 'big-steel-chest-remnants',
+  localised_name = { 'remnant-name', { 'entity-name.' .. fns 'big-steel-chest' } },
+  localised_description = { 'remnant-description', { 'entity-description.' .. fns 'big-steel-chest' } },
+  name = fns 'big-steel-chest-remnants',
   order = 'a-c-a',
   remove_on_tile_placement = false,
   selectable_in_game = false,
