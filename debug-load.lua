@@ -11,6 +11,8 @@ require('settings-updates')
 log("SETTINGS-FINAL-FIXES")
 require('settings-final-fixes')
 
+_G.settings = import('settings'):__seal()
+
 log("DATA")
 require('data')
 

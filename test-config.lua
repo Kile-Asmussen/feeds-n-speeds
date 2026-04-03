@@ -9,8 +9,7 @@ setmetatable(_G, {
 
 function log(str) print(str) end
 
-settings = namespace('settings')
-settings.startup = {}
+local settings = namespace('settings')
 
 local localizations_keys = {
     ['entity'] = {
@@ -78,7 +77,7 @@ function generate_localization_stub()
         for category, list in pairs(categories) do
             table.insert(res, '[' .. heading .. '-' .. category .. ']')
             for _, entry in ipairs(table.sorted_keys(list)) do
-                if not localization:match('^' .. entry:gsub('%-', '%%-')) then
+                if not localization:match(entry:gsub('%-', '%%-')) then
                     res:insert(entry .. '=')
                 end
             end
@@ -96,7 +95,7 @@ function data.extend(self, protos)
         table.insert(simple, '  { name = "' .. proto.name .. '", type = "' .. proto.type .. '" }')
 
         if proto.type:match('%-setting$') then
-
+            settings[proto.setting_type] = settings(proto.setting_type) or {}
             settings[proto.setting_type][proto.name] = { value = proto.default_value }
 
         else if data.raw[proto.type] then
@@ -112,5 +111,4 @@ end
     log('data:extend{\n' .. table.concat(simple, '\n') .. '\n}')
 end
 
-settings:__seal()
 data:__seal()
