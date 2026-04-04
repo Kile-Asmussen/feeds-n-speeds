@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.0
+Date: 2026-04-03
+  Modding:
+    - All mod identifiers are now unambiguously namespaced to this mod to prevent collisions with other mods
+  Major Features:
+    - New small radar entity that uses less power but doesn't explore
+  Balancing:
+    - Settings now interact to compounding effect
+---------------------------------------------------------------------------------------------------
 Version: 0.1.0
 Date: 2026-04-01
   Balancing:

@@ -1,9 +1,9 @@
 {
 	"name": "FeedsNSpeeds",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"title": "Feeds 'n' Speeds",
 	"author": "kashmira-qeel",
-	"description": "Value tweaks, balance changes, and a big chest.",
+	"description": "Value tweaks, balance changes, and a few simple but useful new items.",
 	"factorio_version": "2.0",
 	"quality_required": false,
 	"dependencies" : [
