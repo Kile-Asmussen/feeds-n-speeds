@@ -42,6 +42,6 @@ tweaks.electric = require 'tweaks.electric'
 tweaks.inserter = require 'tweaks.inserter'
 tweaks.nuclear = require 'tweaks.nuclear'
 tweaks.ores = require 'tweaks.ores'
-tweaks.sensibility = require 'tweaks.sensibility'
+-- tweaks.sensibility = require 'tweaks.sensibility'
 
 return tweaks:__seal()

@@ -8,7 +8,9 @@ chests.enabled = true
 
 function chests.data_updates()
 
-    if not chests.enabled then return end
+    if not chests.enabled then
+        log("skipping " .. tostring(chests))
+        return end
 
     local container = data.raw.container
     local logistic = data.raw['logistic-container']

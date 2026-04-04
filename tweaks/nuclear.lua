@@ -68,10 +68,6 @@ function nuclear.data_updates()
             table.matches{ name = 'concrete', type = 'item' }
         )
         conc.name = 'refined-concrete'
-        
-        if tweaks.sensibility.enabled then
-
-        end
     end
 end
 

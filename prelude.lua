@@ -5,70 +5,97 @@ local declared_namespaces = {}
 
 local mod_identifiers = {}
 
-function fns(name)
-    name = name:gsub('%.', '-')
-    name = name:gsub('_', '-')
-    name = name:lower()
+local function fns(name)
+    print(name)
+    assert(type(name) == 'string', "invalid name: " .. tostring(name))
+    name, _ = string.gsub(name, '[^a-zA-Z0-9]', '-')
     local res = 'feeds-n-speeds-' .. name
+    print(res)
     mod_identifiers[res] = true
     return res
 end
 
-function fns_identifiers()
+local function fns_identifiers()
     return table.sorted_keys(mod_identifiers)
 end
 
-_G.import = function(path)
+local function import(path)
     assert(declared_namespaces[path], 'no such namespace ' .. path)
     return declared_namespaces[path]
 end
 
-local function namespace(path)
+local function __sealed_newindex(self)
+    error(tostring(self) .. ' has been sealed')
+end
 
-    assert(not declared_namespaces[path], 'namespace '.. path .. ' already declared')
+local function __ns_index(self, name)
+    assert(tostring(self) .. '.' .. name .. ' not found')
+end
 
-    local res = {
-        __seal = function(self)
-            self.__seal = nil
-            getmetatable(self).__newindex = function(self, ...)
-                error(path .. ' has been sealed')
-            end
-            getmetatable(self).__metatable = 'namespace'
-            return self
-        end,
-        parent_namespace = table.null
-    }
-
-    declared_namespaces[path] = res
-
-    local mt = {
-        __tostring = function() return path end,
-        __index = function(table, name) error(path .. '.' .. name .. ' not found') end,
-        __newindex = function(table, name, value)
-            assert(type(name) == 'string', 'namespace keys can only be strings')
-            assert(value ~= nil, 'namespace values cannot be nil')
-            if isnamespace(value) then
-                value.parent_namespace = table
-            end
-            rawset(table, name, value)
-        end,
-        __call = function(table, name)
-            assert(type(name) == 'string', 'namespace keys can only be strings')
-            return rawget(table, name)
-        end,
-    }
-    mt.__metatable = mt
-
-    setmetatable(res, mt)
-    return res
+local function __ns_newindex(self, name, value)
+    assert(type(name) == 'string', 'namespace keys can only be strings')
+    if isnamespace(value) then
+        value.parent_namespace = self
+    end
+    rawset(self, name, value)
 end
 
 local function isnamespace(thing)
     if type(thing) ~= 'table' then return false end
-    if getmetatable(thing) ~= 'namespace' then return false end
-    return true
+    if getmetatable(thing) == 'namespace' then return true end
+    if type(getmetatable(thing) ~= 'table') then return false end
+    if getmetatable(thing).__metatable == getmetatable(thing) then return false end
+    return false
 end
 
+local function __seal(self)
+    self.__seal = nil
+    getmetatable(self).__newindex = __sealed_newindex
+    getmetatable(self).__metatable = 'namespace'
+    assert(isnamespace(self), "you bungled the isnamespac function you doofus")
+    return self
+end
+
+local function __ns_call(self, name)
+    assert(type(name) == 'string', 'namespace keys can only be strings')
+    return rawget(self, name)
+end
+
+local function __ns_mt(path) 
+    local res = {
+        __tostring = function() return path end,
+        __index = __ns_index,
+        __newindex = __ns_newindex,
+        __call = __ns_call
+    }
+
+    res.__metatable = res
+
+    return res
+end
+
+local function namespace(path, res)
+
+    assert(not declared_namespaces[path], 'namespace '.. path .. ' already declared')
+
+    res = res or {}
+    
+    res.parent_namespace = table.null
+    res.__seal = __seal
+    
+    setmetatable(res, __ns_mt(path))
+
+    declared_namespaces[path] = res
+
+    return res
+end
+
+
+namespace('table', table):__seal()
+namespace('string', string):__seal()
+
+_G.fns = fns
+_G.fns_identifiers = fns_identifiers
 _G.import = import
 _G.isnamespace = isnamespace
 _G.namespace = namespace

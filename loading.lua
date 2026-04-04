@@ -2,11 +2,16 @@ require 'prelude'
 
 local loading = namespace 'loading'
 
-function loading.execute(namespace, operation, name)
+function loading.execute(superdomain, operation, name)
     local domains = {}
 
-    for _, domain in pairs(namespace) do
-        if isnamespace(domain) then
+    if type(operation) == 'string' then name = operation end
+
+    for domain_name, domain in pairs(superdomain) do
+        if
+            not domain_name:match('^_')
+            and isnamespace(domain)
+        then
             table.insert(domains, domain)
         end
     end

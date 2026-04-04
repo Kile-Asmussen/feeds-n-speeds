@@ -98,16 +98,15 @@ function data.extend(self, protos)
             settings[proto.setting_type] = settings(proto.setting_type) or {}
             settings[proto.setting_type][proto.name] = { value = proto.default_value }
 
-        else if data.raw[proto.type] then
+        elseif data.raw[proto.type] then
 
             data.raw[proto.type][proto.name] = proto
             register_localization(proto)
-            
         else
             error("unknown prototype " .. proto.type)
         end
+
     end
-end
     log('data:extend{\n' .. table.concat(simple, '\n') .. '\n}')
 end
 

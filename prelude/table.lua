@@ -1,5 +1,16 @@
 --! Utility functions for tables
 
+-- Internally used metatable
+local __table_mt = {
+    __index = _G.table,
+    __newindex = function(table, k, v)
+        if _G.table[k] then
+            error("Don't overwrite method names")
+        end
+        table.rawset(table, k, v)
+    end,
+}
+
 --- Create or update a table with a metatable
 --- containing the `table' namespace as extra
 --- methods
@@ -16,28 +27,23 @@ function table.new(res, ...)
             res = {res}
         end
     end
-    setmetatable(res, _G.table.__table_mt)
+    setmetatable(res, __table_mt)
     return res
 end
 
 table.null = {}
+
+local function __nodindex(tbl, ix)
+    error('cannot index ' .. tostring(tbl) .. ' with ' .. tostring(ix))
+end
+
 setmetatable(table.null, {
     __tostring = function() return 'table.null' end,
-    __index = function() error('cannot index table.null') end,
-    __newindex = function() error('cannot index table.null') end,
+    __index = __nodindex,
+    __newindex = __nodindex,
     __metatable = table.null,
 })
 
--- Internally used metatable
-table.__table_mt = {
-    __index = _G.table,
-    __newindex = function(table, k, v)
-        if _G.table[k] then
-            error("Don't overwrite method names")
-        end
-        table.rawset(table, k, v)
-    end,
-}
 
 -- Extra methods for the metatable
 table.rawget = rawget
@@ -62,7 +68,7 @@ function table.descend(tbl, ...)
 end
 
 --- Remove the metatable from a table
-function table.nometatable(self)
+function table.delmetatable(self)
     setmetatable(self, nil)
     return self
 end
@@ -102,6 +108,7 @@ function table.find_matching(array, predicate)
     return nil
 end
 
+table.any = {}
 
 --- Check if a reference table contains the same keys and elements
 --- as a candidate table. If candidate is not given, returns a predicate function instead.
@@ -123,10 +130,14 @@ function table.matches(reference, candidate)
 
         if test == nil then return false end
 
+        if ref == table.null then return true end
+
+        if type(ref) == 'function' and ref(test) then return true end
+
         if type(ref) ~= type(test) then return false end
 
         if type(test) == "table" then
-            if not utils.matches(ref, test) then
+            if not table.matches(ref, test) then
                 return false
             end
         elseif ref ~= test then
@@ -153,7 +164,7 @@ end
 
 function table.is_hash(tbl)
     for k, _ in pairs(tbl) do
-        if type(k) == 'string' then
+        if type(k) ~= 'number' then
             return true
         end
     end
@@ -170,6 +181,13 @@ end
 function table.imap(tbl, func)
     for i, v in ipairs(tbl) do
         tbl[i] = func(v)
+    end
+    return tbl
+end
+
+function table.ieach(tbl, func)
+    for i, v in ipairs(tbl) do
+        func(v, i)
     end
     return tbl
 end
@@ -212,4 +230,24 @@ function table.set(tbl)
     for _, entry in ipairs(tbl) do
         res[entry] = true
     end
+end
+
+function table.append(tbl, tbl2)
+    for _, entry in ipairs(tbl2) do
+        table.insert(tbl, entry)
+    end
+end
+
+function table.iall(tbl, pred)
+    local res = true
+
+    if pred == nil then
+        function pred(v) return v and true or false end
+    end
+
+    for i, v in ipairs() do
+        res = res and pred(v)
+    end
+
+    return res
 end

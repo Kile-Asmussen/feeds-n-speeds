@@ -65,13 +65,13 @@ function debuglib.__sprint_string(buffer, data)
   buffer:__push(debuglib.__render_string(data))
 end
 
-function debuglib.__sprint_tostring(buffer, data)
+local function __sprint_tostring(buffer, data)
   buffer:__push(tostring(data))
 end
 
-debuglib.__sprint_number = debuglib.__sprint_tostring
-debuglib.__sprint_boolean = debuglib.__sprint_tostring
-debuglib.__sprint_nil = debuglib.__sprint_tostring
+debuglib.__sprint_number = __sprint_tostring
+debuglib.__sprint_boolean = __sprint_tostring
+debuglib.__sprint_nil = __sprint_tostring
 
 function debuglib.__sprint_coroutine(buffer, data)
   buffer:__push("--[[ coroutine ]] function() ... end")
