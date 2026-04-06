@@ -35,6 +35,12 @@ function string.rpad(self, length, char)
     return self .. char:rep(length - #self)
 end
 
+function string.predicate(needle, func)
+    func = func or string.match
+    assert(table.iscallable(func), "Predicate given isn't callable.")
+    return function(haystack) return func(haystack, needle) end
+end
+
 function string.sprint(...)
     return table.concat(table.imap(table.pack(...), tostring), '\t')
 end

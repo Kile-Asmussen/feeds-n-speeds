@@ -3,11 +3,9 @@
 -- Internally used metatable
 local __table_mt = {
     __index = _G.table,
-    __newindex = function(table, k, v)
-        if _G.table[k] then
-            error("Don't overwrite method names")
-        end
-        table.rawset(table, k, v)
+    __newindex = function(tbl, k, v)
+        assert(_G.table[k] == nil, error("Don't overwrite table function names"))
+        _G.table.rawset(tbl, k, v)
     end,
 }
 
@@ -33,25 +31,30 @@ end
 
 table.null = {}
 
-local function __nodindex(tbl, ix)
+local function __noindex(tbl, ix)
     error('cannot index ' .. tostring(tbl) .. ' with ' .. tostring(ix))
 end
 
 setmetatable(table.null, {
     __tostring = function() return 'table.null' end,
-    __index = __nodindex,
-    __newindex = __nodindex,
+    __index = __noindex,
+    __newindex = __noindex,
     __metatable = table.null,
 })
 
 
 -- Extra methods for the metatable
 table.rawget = rawget
-table.get = rawget
 table.rawset = rawset
-table.set = rawset
 table.pairs = pairs
 table.ipairs = ipairs
+table.getmetatable = getmetatable
+table.setmetatable = setmetatable
+
+function table.iscallable(fn)
+    return type(fn) == 'function' or
+        (type(fn) == 'table' and getmetatable(fn).__call ~= nil)
+end
 
 --- Recurse into a table containing other tables
 --- using a list of keys
@@ -62,21 +65,17 @@ function table.descend(tbl, ...)
         if type(tbl) ~= 'table' then
             return nil
         end
-        tbl = tbl[key]
+        if tbl[key] then
+            tbl = tbl[key]
+        elseif key
     end
     return tbl
-end
-
---- Remove the metatable from a table
-function table.delmetatable(self)
-    setmetatable(self, nil)
-    return self
 end
 
 --- Remove an element matching a predicate from a table
 --- (searches the numeric keys)
 function table.remove_matching(array, predicate)
-    assert(type(predicate) == 'function', "predicate must be a function")
+    assert(table.iscallable(predicate), "predicate must be a function")
 
     local index = 0
 
@@ -99,7 +98,8 @@ end
 --- Find an element matching a predicate among the numeric keys
 function table.find_matching(array, predicate)
     assert(type(array) == 'table', "argument #1 must be a table")
-    assert(type(predicate) == 'function', "argument #2 must be a function")
+    assert(table.iscallable(predicate), "argument #2 must be callable")
+
     for _, e in ipairs(array) do
         if predicate(e) then
             return e
@@ -149,6 +149,7 @@ function table.matches(reference, candidate)
 end
 
 function table.contains(tbl, val)
+    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(reference))
     for _, v in ipairs(tbl) do
         if v == val then return true end
     end
@@ -156,6 +157,7 @@ function table.contains(tbl, val)
 end
 
 function table.is_populated(tbl)
+    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(reference))
     for _ in pairs(tbl) do
         return true
     end
@@ -163,6 +165,7 @@ function table.is_populated(tbl)
 end
 
 function table.is_hash(tbl)
+    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(reference))
     for k, _ in pairs(tbl) do
         if type(k) ~= 'number' then
             return true
@@ -172,6 +175,7 @@ function table.is_hash(tbl)
 end
 
 function table.is_array(tbl)
+    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(reference))
     for k, _ in ipairs(tbl) do
         return true
     end
@@ -179,8 +183,9 @@ function table.is_array(tbl)
 end
 
 function table.imap(tbl, func)
+    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(reference))
     for i, v in ipairs(tbl) do
-        tbl[i] = func(v)
+        tbl[i] = func(v, i)
     end
     return tbl
 end
@@ -194,7 +199,7 @@ end
 
 function table.map(tbl, func)
     for k, v in pairs(tbl) do
-        tbl[k] = func(v)
+        tbl[k] = func(v, k)
     end
     return tbl
 end
@@ -239,6 +244,8 @@ function table.append(tbl, tbl2)
 end
 
 function table.iall(tbl, pred)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+    assert(table.iscallable(pred), "argument #2 must be callable")
     local res = true
 
     if pred == nil then
