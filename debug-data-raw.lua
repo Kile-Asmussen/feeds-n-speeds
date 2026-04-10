@@ -6,12 +6,12 @@ local tweaks = require 'tweaks'
 
 local args = table.new( ... )
 
-if #args == 0 then
-    log("No arguments given")
+local last = args:remove()
+
+if last == nil then
+    log(debuglib.sprint(data.raw))
     os.exit(1)
 end
-
-local last = args:remove()
 
 local tbl = table.descend(data.raw, args:unpack())
 table.new(tbl)
@@ -25,13 +25,20 @@ if type(tbl) == 'table' then
     local new = table.new()
     last = last:gsub('%-', '%%-')
 
+    local n = 0
+    local value = nil
     for k, v in tbl:pairs() do
         if type(k) == 'string' and k:match(last) then
+            n = n + 1
+            value = v
             new[k] = v
         end
     end
 
-    if new:is_hash() then
+    if n == 1 and value then
+        log(debuglib.sprint(value))
+        os.exit(0)
+    elseif new:is_hash() then
         log(debuglib.sprint(new))
         os.exit(0)
     end

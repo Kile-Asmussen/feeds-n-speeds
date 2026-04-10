@@ -4,7 +4,7 @@
 local __table_mt = {
     __index = _G.table,
     __newindex = function(tbl, k, v)
-        assert(_G.table[k] == nil, error("Don't overwrite table function names"))
+        assert(_G.table[k] == nil, "Don't overwrite table function names")
         _G.table.rawset(tbl, k, v)
     end,
 }
@@ -67,7 +67,7 @@ function table.descend(tbl, ...)
         end
         if tbl[key] then
             tbl = tbl[key]
-        elseif key
+        end
     end
     return tbl
 end
@@ -149,7 +149,7 @@ function table.matches(reference, candidate)
 end
 
 function table.contains(tbl, val)
-    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(reference))
+    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(tbl))
     for _, v in ipairs(tbl) do
         if v == val then return true end
     end
@@ -157,7 +157,7 @@ function table.contains(tbl, val)
 end
 
 function table.is_populated(tbl)
-    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(reference))
+    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(tbl))
     for _ in pairs(tbl) do
         return true
     end
@@ -165,7 +165,7 @@ function table.is_populated(tbl)
 end
 
 function table.is_hash(tbl)
-    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(reference))
+    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(tbl))
     for k, _ in pairs(tbl) do
         if type(k) ~= 'number' then
             return true
@@ -175,7 +175,7 @@ function table.is_hash(tbl)
 end
 
 function table.is_array(tbl)
-    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(reference))
+    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(tbl))
     for k, _ in ipairs(tbl) do
         return true
     end
@@ -183,7 +183,7 @@ function table.is_array(tbl)
 end
 
 function table.imap(tbl, func)
-    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(reference))
+    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(tbl))
     for i, v in ipairs(tbl) do
         tbl[i] = func(v, i)
     end
@@ -197,11 +197,19 @@ function table.ieach(tbl, func)
     return tbl
 end
 
-function table.map(tbl, func)
+function table.project(tbl, func)
     for k, v in pairs(tbl) do
         tbl[k] = func(v, k)
     end
     return tbl
+end
+
+function table.map(tbl, func)
+    local res = {}
+    for k, v in pairs(tbl) do
+        res[k] = func(v, k)
+    end
+    return res
 end
 
 function table.dup(tbl)
@@ -215,8 +223,7 @@ end
 
 function table.clone(tbl)
     if type(tbl) ~= 'table' then return tbl end
-    tbl = table.dup(tbl)
-    table.map(tbl, table.clone)
+    tbl = table.map(tbl, table.clone)
     return tbl
 end
 
@@ -243,6 +250,45 @@ function table.append(tbl, tbl2)
     end
 end
 
+function table.vecsum(tbl, tbl2)
+    assert(type(tbl) == 'table' and type(tbl2) == 'table', "cannot take vector sum of non-tables")
+    assert(#tbl == #tbl2, "cannot take vector sum of vectors of different dimensions")
+    local res = {}
+    for i = 1,#tbl do
+        table.insert(res, tbl[i] + tbl2[i])
+    end
+    return res
+end
+
+function table.vecadd(tbl, tbl2)
+    assert(type(tbl) == 'table' and type(tbl2) == 'table', "cannot take vector sum of non-tables")
+    assert(#tbl == #tbl2, "cannot take vector sum of vectors of different dimensions")
+    for i = 1,#tbl do
+        tbl[i] = tbl[i] + tbl2[i]
+    end
+    return res
+end
+
+function table.scale(tbl, k)
+    assert(type(tbl) == 'table', "cannot scale a non-vector")
+    assert(type(k) == 'number', "cannot scale by a non-number scalar")
+    local res = {}
+    for i = 1,#tbl do
+        table.insert(res, k * tbl[i])
+    end
+    return res
+end
+
+function table.vecmul(tbl, k)
+    assert(type(tbl) == 'table', "cannot scale a non-vector")
+    assert(type(k) == 'number', "cannot scale by a non-number scalar")
+    local res = {}
+    for i = 1,#tbl do
+        table.insert(res, k * tbl[i])
+    end
+    return res
+end
+
 function table.iall(tbl, pred)
     assert(type(tbl) == 'table', "argument #1 must be a table")
     assert(table.iscallable(pred), "argument #2 must be callable")
@@ -257,4 +303,20 @@ function table.iall(tbl, pred)
     end
 
     return res
+end
+
+function table.traverse(tbl, func)
+    for k, v in pairs(tbl) do
+        if type(v) == 'table' then
+            local stop = func(k, v)
+            if not stop then
+                table.traverse(v, func)
+            end
+        else
+            local replace, with = func(k, v)
+            if replace then
+                tbl[k] = with
+            end
+        end
+    end
 end

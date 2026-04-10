@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep"
+    ],
+    "defaultMode": "dontAsk",
+    "deny": [
+      "Edit",
+      "Write",
+      "Bash",
+      "WebFetch",
+      "WebSearch",
+      "Agent",
+      "NotebookEdit",
+      "TodoWrite",
+      "CronCreate",
+      "CronDelete"
+    ]
+  }
+}
