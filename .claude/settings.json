@@ -3,15 +3,15 @@
     "allow": [
       "Read",
       "Glob",
-      "Grep"
+      "Grep",
+      "Edit(slop/**/*)",
+      "Write(slop/**/*)",
+      "WebFetch(domain:lua-api.factorio.com)",
+      "WebSearch"
     ],
     "defaultMode": "dontAsk",
     "deny": [
-      "Edit",
-      "Write",
       "Bash",
-      "WebFetch",
-      "WebSearch",
       "Agent",
       "NotebookEdit",
       "TodoWrite",

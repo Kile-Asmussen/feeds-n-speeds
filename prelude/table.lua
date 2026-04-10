@@ -308,15 +308,19 @@ end
 function table.traverse(tbl, func)
     for k, v in pairs(tbl) do
         if type(v) == 'table' then
-            local stop = func(k, v)
+            local stop = func(v, k)
             if not stop then
                 table.traverse(v, func)
             end
         else
-            local replace, with = func(k, v)
+            local replace, with = func(v, k)
             if replace then
                 tbl[k] = with
             end
         end
     end
+end
+
+function table.isvec(tbl)
+    return type(tbl) == 'table' and #tbl == 2 and type(tbl[1]) == 'number' and type(tbl[2]) == 'number'
 end

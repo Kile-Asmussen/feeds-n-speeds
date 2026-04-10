@@ -1,16 +1,13 @@
 require 'prelude'
 
-local extras = require('extras')
+local extras = require 'extras'
 
 local chests = namespace 'tweaks.chests'
 
 chests.enabled = true
 
 function chests.data_updates()
-
-    if not chests.enabled then
-        log("skipping " .. tostring(chests))
-        return end
+    if not chests.enabled then return end
 
     local container = data.raw.container
     local logistic = data.raw['logistic-container']
@@ -29,7 +26,7 @@ function chests.data_updates()
     local extras = import 'extras'
 
     if extras.chests.enabled then 
-        data.raw.container[fns 'big-steel-chest'].inventory_size = 39
+        -- data.raw.container[fns 'big-steel-chest'].inventory_size = 39
     end
 end
 

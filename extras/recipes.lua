@@ -1,8 +1,8 @@
 
-local alt_recipes = namespace 'extras.alt_recipes'
+local recipes = namespace 'extras.recipes'
 
-alt_recipes.enabled = true
+recipes.enabled = true
 
-function alt_recipes.data()
+function recipes.data()
 
 end

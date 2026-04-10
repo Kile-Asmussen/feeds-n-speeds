@@ -6,11 +6,9 @@ local declared_namespaces = {}
 local mod_identifiers = {}
 
 local function fns(name)
-    print(name)
     assert(type(name) == 'string', "invalid name: " .. tostring(name))
     name, _ = string.gsub(name, '[^a-zA-Z0-9]', '-')
     local res = 'feeds-n-speeds-' .. name
-    print(res)
     mod_identifiers[res] = true
     return res
 end

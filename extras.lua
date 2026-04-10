@@ -2,7 +2,7 @@ require 'prelude'
 
 local loading = require 'loading'
 
-local extras = namespace('extras')
+local extras = namespace 'extras'
 
 function extras.create_toggles()
     loading.execute(extras, loading.create_toggle, 'create_toggle')
@@ -38,6 +38,6 @@ end
 
 extras.chests = require('extras.chests')
 extras.radars = require('extras.radars')
-extras.alt_recipes = require('extras.alt_recipes')
+extras.alt_recipes = require('extras.recipes')
 
 return extras:__seal()
