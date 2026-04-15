@@ -26,7 +26,7 @@ function chests.data_updates()
     local extras = import 'extras'
 
     if extras.chests.enabled then 
-        -- data.raw.container[fns 'big-steel-chest'].inventory_size = 39
+        data.raw.container[fns 'big-steel-chest'].inventory_size = 39
     end
 end
 
