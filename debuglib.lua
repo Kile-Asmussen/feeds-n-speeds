@@ -196,7 +196,7 @@ function debuglib.__render_string(data)
   local dq = data:match('"')
   local nl = data:match('\n')
   if (sq and dq) or nl then
-    if data:math('^%[') or data:match('%]$') or data:match('%]%]') or data:match('%[%[') then
+    if data:match('^%[') or data:match('%]$') or data:match('%]%]') or data:match('%[%[') then
       return " [=[" .. data .. "]=] "
     else
       return " [[" .. data .. "]] "
@@ -206,6 +206,11 @@ function debuglib.__render_string(data)
   else
     return "'" .. data .. "'"
   end
+end
+
+
+function debuglib.probe_data_raw()
+  loadstring('return ' + io.read())
 end
 
 return debuglib:__seal()

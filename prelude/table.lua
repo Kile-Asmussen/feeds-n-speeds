@@ -250,7 +250,7 @@ function table.append(tbl, tbl2)
     end
 end
 
-function table.vecsum(tbl, tbl2)
+function table.add(tbl, tbl2)
     assert(type(tbl) == 'table' and type(tbl2) == 'table', "cannot take vector sum of non-tables")
     assert(#tbl == #tbl2, "cannot take vector sum of vectors of different dimensions")
     local res = {}
@@ -289,6 +289,17 @@ function table.vecmul(tbl, k)
     return res
 end
 
+function table.sum(tbl, res)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+    res = res or 0
+
+    for _, n in ipairs(tbl) do
+        res = res + n
+    end
+
+    return res
+end
+
 function table.iall(tbl, pred)
     assert(type(tbl) == 'table', "argument #1 must be a table")
     assert(table.iscallable(pred), "argument #2 must be callable")
@@ -313,9 +324,9 @@ function table.traverse(tbl, func)
                 table.traverse(v, func)
             end
         else
-            local replace, with = func(v, k)
+            local replace = func(v, k)
             if replace then
-                tbl[k] = with
+                tbl[k] = replace
             end
         end
     end

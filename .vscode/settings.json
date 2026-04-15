@@ -1,2 +1,5 @@
 {
+    "Lua.completion.autoRequire": false,
+    "Lua.codeLens.enable": false,
+    "Lua.addonManager.enable": false,
 }

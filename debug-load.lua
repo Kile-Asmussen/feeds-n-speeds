@@ -22,7 +22,7 @@ require('data-updates')
 log("DATA-FINAL-FIXES")
 require('data-final-fixes')
 
-log(debuglib.sprint(fns_identifiers()))
+log(debuglib.sprint(fnsidentifiers()))
 
 log('')
 

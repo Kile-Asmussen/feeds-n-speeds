@@ -1,7 +1,15 @@
 {
     "words": [
         "fn",
-        "tbl"
+        "fns",
+        "fnsidentifiers",
+        "iall",
+        "isnamespace",
+        "isum",
+        "isvec",
+        "tbl",
+        "vecadd",
+        "vecmul"
     ],
     "flagWords": []
 }

@@ -13,7 +13,7 @@ local function fns(name)
     return res
 end
 
-local function fns_identifiers()
+local function fnsidentifiers()
     return table.sorted_keys(mod_identifiers)
 end
 
@@ -93,7 +93,7 @@ namespace('table', table):__seal()
 namespace('string', string):__seal()
 
 _G.fns = fns
-_G.fns_identifiers = fns_identifiers
+_G.fnsidentifiers = fnsidentifiers
 _G.import = import
 _G.isnamespace = isnamespace
 _G.namespace = namespace
