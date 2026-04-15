@@ -108,8 +108,6 @@ function table.find_matching(array, predicate)
     return nil
 end
 
-table.any = {}
-
 --- Check if a reference table contains the same keys and elements
 --- as a candidate table. If candidate is not given, returns a predicate function instead.
 function table.matches(reference, candidate)

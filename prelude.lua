@@ -88,10 +88,6 @@ local function namespace(path, res)
     return res
 end
 
-
-namespace('table', table):__seal()
-namespace('string', string):__seal()
-
 _G.fns = fns
 _G.fnsidentifiers = fnsidentifiers
 _G.import = import
