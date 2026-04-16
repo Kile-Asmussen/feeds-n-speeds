@@ -13,18 +13,30 @@ function chests.data()
         require('extras.chests.big-steel-chest-recipe'),
         require('extras.chests.big-steel-chest-remnants'),
         require('extras.chests.big-steel-chest-explosion'),
+        require('extras.chests.smart-big-steel-chest-building'),
+        require('extras.chests.smart-big-steel-chest-item'),
+        require('extras.chests.smart-big-steel-chest-recipe'),
+        require('extras.chests.big-steel-hopper-building'),
+        require('extras.chests.big-steel-hopper-item'),
+        require('extras.chests.big-steel-hopper-recipe'),
     }
-end
 
-function chests.data_updates()
+    local tech =  data.raw.technology
 
-    if not chests.enabled then return end
-
-    table.insert(data.raw.technology['steel-processing'].effects, {
+    table.insert(tech['steel-processing'].effects, {
         type = 'unlock-recipe',
         recipe = fns 'big-steel-chest',
     })
 
+    table.insert(tech['automation-2'].effects, {
+        type = 'unlock-recipe',
+        recipe = fns 'smart-big-steel-chest',
+    })
+    
+    table.insert(tech['automation-2'].effects, {
+        type = 'unlock-recipe',
+        recipe = fns 'big-steel-hopper',
+    })
 end
 
 return chests:__seal()

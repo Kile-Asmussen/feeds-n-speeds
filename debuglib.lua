@@ -8,6 +8,20 @@ function debuglib.sprint(data, path)
   return tostring(buffer)
 end
 
+function debuglib.descent(...)
+  local args = table.pack(...)
+  local buffer = debuglib.__new_buffer()  
+  for _, v in ipairs(args) do
+    local k = debuglib.__render_key(v)
+    if k:match("^%[") then
+      buffer:__push(k)
+    else
+      buffer:__push('.' .. k)
+    end
+  end
+  return tostring(buffer)
+end
+
 debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 2
 
 function debuglib.__new_buffer(path)

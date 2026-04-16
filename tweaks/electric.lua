@@ -25,18 +25,6 @@ function electric.data_updates()
     if tweaks.concrete.enabled then 
         table.insert(data.raw.technology['electric-energy-distribution-1'].prerequisites, 'concrete')
 
-        table.remove_matching(data.raw.technology['electric-energy-distribution-1'].effects, 
-            table.matches{ type = 'unlock-recipe', recipe = 'iron-stick'}
-        )
-
-        table.remove_matching(data.raw.recipe['medium-electric-pole'].ingredients,
-            table.matches{ type = "item", name = "iron-stick" }
-        )
-
-        table.remove_matching(data.raw.recipe['big-electric-pole'].ingredients,
-            table.matches{ type = "item", name = "iron-stick" }
-        )
-
         table.insert(data.raw.recipe['medium-electric-pole'].ingredients,
             { type = "item", name = "concrete", amount = 2 }
         )
@@ -46,7 +34,7 @@ function electric.data_updates()
         )
 
         table.insert(data.raw.recipe['substation'].ingredients,
-            { type = "item", name = "concrete", amount = 10 }
+            { type = "item", name = "concrete", amount = 20 }
         )
     end
 end

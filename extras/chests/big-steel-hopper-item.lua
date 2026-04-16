@@ -16,9 +16,9 @@ return {
     filename = '__base__/sound/item/metal-chest-inventory-move.ogg',
     volume = 0.6
   },
-  name = fns 'big-steel-chest',
-  localised_name = {"", {'entity-name.' .. fns 'big-steel-chest'}},
-  localised_description = {"", {'entity-description.' .. fns 'big-steel-chest'}},
+  name = fns 'big-steel-hopper',
+  localised_name = {"", {'entity-name.' .. fns 'big-steel-hopper'}},
+  localised_description = {"", {'entity-description.' .. fns 'big-steel-hopper'}},
   order = 'a[items]-d[big-steel-chest]',
   pick_sound = {
     aggregation = {
@@ -28,7 +28,7 @@ return {
     filename = '__base__/sound/item/metal-chest-inventory-pickup.ogg',
     volume = 0.6
   },
-  place_result = fns 'big-steel-chest',
+  place_result = fns 'big-steel-hopper',
   stack_size = 20,
   subgroup = 'storage',
   type = 'item'

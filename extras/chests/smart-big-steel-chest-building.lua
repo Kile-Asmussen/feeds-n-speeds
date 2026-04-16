@@ -1,7 +1,5 @@
 require 'prelude'
 
-
-
 return {
   circuit_connector = {
     points = {
@@ -193,18 +191,19 @@ return {
     'placeable-neutral',
     'player-creation'
   },
-  icon = '__base__/graphics/icons/steel-chest.png',
+  icon = '__FeedsNSpeeds__/graphics/smart-big-steel-chest.png',
   icon_draw_specification = {
     scale = 0.7
   },
   impact_category = 'metal',
   inventory_size = 48 * 2,
+  inventory_type = "with_filters_and_bar",
   max_health = 350 * 2,
   minable = {
     mining_time = 0.2,
     result = fns 'big-steel-chest'
   },
-  name = fns 'big-steel-chest',
+  name = fns 'smart-big-steel-chest',
   open_sound = {
     filename = '__base__/sound/metallic-chest-open.ogg',
     volume = 0.43
@@ -212,7 +211,7 @@ return {
   picture = {
     layers = {
       {
-        filename = '__base__/graphics/entity/steel-chest/steel-chest.png',
+        filename = '__FeedsNSpeeds__/graphics/entity/smart-big-steel-chest.png',
         height = 80,
         priority = 'extra-high',
         scale = 0.5 * 2,

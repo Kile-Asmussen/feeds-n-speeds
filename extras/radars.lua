@@ -14,17 +14,16 @@ function radars.data()
         require('extras.radars.small-radar-remnants'),
         require('extras.radars.small-radar-explosion'),
     }
-end
 
-function radars.data_updates()
-
-    if not radars.enabled then return end
 
     table.insert(data.raw.technology.radar.effects, {
         type = 'unlock-recipe',
         recipe = fns 'small-radar',
     })
 
+    table.find_matching(data.raw.recipe['artillery-shell'].ingredients,
+        table.matches{ type='item', name = 'radar'}
+    ).name = fns 'small-radar'
 end
 
 return radars:__seal()

@@ -42,7 +42,7 @@ function concrete.data_updates()
 
     -- Also concrete now requires fluid handling, because that's fun.
 
-    table.insert(tech.concrete.prerequisites, 'fluid-handling')
+    tech.concrete.prerequisites = { 'fluid-handling', 'advanced-material-processing' }
 
     -- We also make sure to make oil processing depend on concrete
     -- And remove that it unlocks the chemical plant, making concrete
@@ -55,10 +55,13 @@ function concrete.data_updates()
     
     table.insert(tech['oil-processing'].prerequisites, 'concrete')
 
-    table.find_matching(recipes['oil-refinery'].ingredients,
-        table.matches{ name = 'stone-brick', type = 'item' }
-    ).name = 'concrete'
+    table.insert(recipes['oil-refinery'].ingredients,
+        { name = 'concrete', type = 'item', amount = 10 }
+    )
 
+    table.insert(recipes['electric-furnace'].ingredients,
+        { name = 'concrete', type = 'item', amount = 10 }
+    )
 end
 
 return concrete:__seal()

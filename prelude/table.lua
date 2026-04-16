@@ -63,10 +63,12 @@ function table.descend(tbl, ...)
     
     for _, key in ipairs(keys) do
         if type(tbl) ~= 'table' then
-            return nil
+            return tbl
         end
         if tbl[key] then
             tbl = tbl[key]
+        else
+            return nil, tbl
         end
     end
     return tbl
