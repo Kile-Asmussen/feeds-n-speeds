@@ -1,22 +1,80 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
       "Read",
       "Glob",
       "Grep",
-      "Edit(slop/**/*)",
+      
       "Write(slop/**/*)",
-      "WebFetch(domain:lua-api.factorio.com)",
-      "WebSearch"
+      "Edit(slop/**/*)",
+      
+      "WebFetch",
+      "WebSearch",
+      
+      "AskUserQuestion",
+      
+      "CronCreate",
+      "CronDelete",
+      "CronList",
+      
+      "TaskCreate",
+      "TaskGet",
+      "TaskList",
+      "TaskStop",
+      "TaskOutput",
+      "TaskUpdate",
+      
+      "LSP"
     ],
     "defaultMode": "dontAsk",
     "deny": [
-      "Bash",
       "Agent",
-      "NotebookEdit",
-      "TodoWrite",
-      "CronCreate",
-      "CronDelete"
+      "Bash",
+      "PowerShell",
+      "Write(.claude/**/*)",
+      "Edit(.claude/**/*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rm -f \"$CLAUDE_PROJECT_DIR/.claude/log\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Read|Glob|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-read-grep-glob-paths.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-forbid-reads-by-glob.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
+          }
+        ]
+      },
+      {
+        "matcher": "WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-webfetch-urls.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
+          }
+        ]
+      }
     ]
   }
 }

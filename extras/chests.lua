@@ -39,4 +39,8 @@ function chests.data()
     })
 end
 
+function chests.control()
+    
+end
+
 return chests:__seal()
