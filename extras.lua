@@ -24,6 +24,10 @@ function extras.settings_final_fixes()
     loading.execute(extras, 'settings_final_fixes')
 end
 
+function extras.control()
+    loading.execute(extras, 'control')
+end
+
 function extras.data()
     loading.execute(extras, 'data')
 end

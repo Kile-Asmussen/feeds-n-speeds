@@ -3,16 +3,17 @@ require 'prelude'
 local alteredrecipes = namespace 'alteredrecipes'
 alteredrecipes.enabled = true
 
-function alteredrecipes.data_updates()
+function alteredrecipes.data()
     if not alteredrecipes.enabled then return end
 
     alteredrecipes.tweak_recipes()
+    alteredrecipes.tweak_technologies()
 end
 
 function alteredrecipes.tweak_technologies()
     data.raw.recipe['iron-chest'].enabled = false
 
-    local tech = data.raw.technolog
+    local tech = data.raw.technology
 
     table.insert(tech['automation-2'].prerequisites, 'fast-inserter')
 end
@@ -38,7 +39,7 @@ function alteredrecipes.tweak_recipes()
 
     recipe['assembly-machine-3'].ingredients = {
         { type='item', name='assembly-machine-2', amount=1 },
-        { type='item', name='fast-transport-belt', amount='4' }
+        { type='item', name='fast-transport-belt', amount='4' },
         { type='item', name='speed-module', amount=3 },
         { type='item', name='steel-plate', amount=4 },
     }
@@ -48,7 +49,7 @@ function alteredrecipes.tweak_recipes()
     if tweaks.earlygame.enabled then
 
         recipe['burner-mining-drill'].ingredients = {
-            { type='item', name='stone-brick', amount=4 },
+            { type='item', name='stone-brick', amount=5 },
             { type='item', name='iron-gear', amount=2 },
             { type='item', name='steel-plate', amount=1 },
         }
@@ -72,17 +73,40 @@ function alteredrecipes.tweak_recipes()
             { type='item', name='steel-plate', amount=2 },
         }
     end
-    
-end
 
-function alteredrecipes.data_final_fixes()
+    if tweaks.nuclear.enabled then
 
-    for name, tech in pairs(data.raw.technology) do
-        if name ~= 'steel-processing' then
-            table.remove_matching(tech.effects,
-                table.matches{name = 'iron-stick', type = 'unlock-recipe'}
-            )
-        end
+        data.raw.recipe['steam-turbine'].ingredients = {
+            { type='item', name='electric-engine-unit', amount=20 },
+            { type='item', name='steel-plate', amount=20 },
+            { type='item', name='pipe', amount=50 },
+        }
+
+        data.raw.recipe['heat-exchanger'].ingredients = {
+            { type='item', name='heat-pipe', amount=10 },
+            { type='item', name='engine-unit', amount=20 },
+            { type='item', name='electronic-circuit', amount=20 },
+            { type='item', name='pipe', amount=50 },
+        }
+
+        data.raw.recipe['nuclear-reactor'].ingredients = {
+            { type='item', name='concrete', amount=500 },
+            { type='item', name='uranium-238 ', amount=500 },
+            { type='item', name='advanced-circuit', amount=500 },
+            { type='item', name='steel-plate', amount=250 },
+            { type='item', name='electric-engine-unit', amount=100 },
+            { type='item', name='heat-pipe', amount=100 },
+        }
     end
 
+    local extras = import 'extras'
+
+    if extras.altrecipes.enabled then
+
+        recipe['stone-furnace'].ingredients = {
+            { type='item', name='stone', amount=20 }
+        }
+
+    end
+    
 end

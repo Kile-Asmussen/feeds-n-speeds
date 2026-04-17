@@ -24,6 +24,10 @@ function tweaks.settings_final_fixes()
     loading.execute(tweaks, 'settings_final_fixes')
 end
 
+function tweaks.control()
+    loading.execute(tweaks, 'control')
+end
+
 function tweaks.data()
     loading.execute(tweaks, 'data')
 end
@@ -39,9 +43,10 @@ end
 tweaks.chests = require 'tweaks.chests'
 tweaks.concrete = require 'tweaks.concrete'
 tweaks.electric = require 'tweaks.electric'
+tweaks.electric = require 'tweaks.earlygame'
 tweaks.inserter = require 'tweaks.inserter'
 tweaks.nuclear = require 'tweaks.nuclear'
 tweaks.ores = require 'tweaks.ores'
--- tweaks.sensibility = require 'tweaks.sensibility'
+tweaks.alteredrecipes = require 'tweaks.alteredrecipes'
 
 return tweaks:__seal()

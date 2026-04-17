@@ -4,7 +4,7 @@ local nuclear = namespace('tweaks.nuclear')
 
 nuclear.enabled = true
 
-function nuclear.data_updates()
+function nuclear.data()
 
     if not nuclear.enabled then return end
 
@@ -59,15 +59,34 @@ function nuclear.data_updates()
     -- each each interface between two adjacent reactors
     nuclear_reactor.neighbour_bonus = 0.5
 
+end
+
+function nuclear.data_updates()
+
+    if not nuclear.enabled then return end
 
     local tweaks = import 'tweaks'
 
     if tweaks.concrete.enabled then
 
-        conc = table.find_matching(data.raw.recipe['nuclear-reactor'].ingredients,
+        local recipe = data.raw.recipe
+
+        table.find_matching(recipe['nuclear-reactor'].ingredients,
             table.matches{ name = 'concrete', type = 'item' }
+        ).name = 'refined-concrete'
+
+        table.insert(recipe['heat-exchanger'],
+            { type='item', name='concrete', amount=20 }
         )
-        conc.name = 'refined-concrete'
+
+        table.insert(recipe['steam-turbine'],
+            { type='item', name='concrete', amount=20 }
+        )
+
+        table.insert(recipe['steam-turbine'],
+            { type='item', name='concrete', amount=30 }
+        )
+
     end
 end
 

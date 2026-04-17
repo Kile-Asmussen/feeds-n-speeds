@@ -28,7 +28,7 @@ function concrete.data_updates()
     recipes['refined-concrete'].category = 'chemistry'
     recipes['refined-concrete'].ingredients = {
         { type = 'item', name = 'concrete', amount = 20 },
-        { type = 'item', name = 'steel-plate', amount = 2 },
+        { type = 'item', name = 'steel-plate', amount = 1 },
         { type = 'fluid', name = 'water', amount = 100 },
     }
 
