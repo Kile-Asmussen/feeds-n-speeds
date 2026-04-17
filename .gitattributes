@@ -1,5 +1,7 @@
 * text=auto
 
+CLAUDE.md export-ignore
+
 *.png binary
 /**/*.png binary
 

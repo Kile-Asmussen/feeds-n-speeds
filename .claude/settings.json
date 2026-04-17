@@ -23,9 +23,7 @@
       "TaskList",
       "TaskStop",
       "TaskOutput",
-      "TaskUpdate",
-      
-      "LSP"
+      "TaskUpdate"
     ],
     "defaultMode": "dontAsk",
     "deny": [

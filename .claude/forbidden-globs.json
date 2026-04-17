@@ -1,3 +1,4 @@
 [
-    "**/raw.lua"
+    "**/raw.lua",
+    "**/too-big.txt"
 ]
