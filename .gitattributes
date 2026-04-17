@@ -9,6 +9,9 @@
 
 /.* export-ignore
 
+/slop/* export-ignore
+/.claude/* export-ignore
+
 /build-scripts/** export-ignore
 Makefile export-ignore
 

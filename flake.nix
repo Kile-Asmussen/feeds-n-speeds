@@ -31,6 +31,7 @@
             '';
 
             packages = with pkgs; [
+              (python314.withPackages (ps: [ ]))
               wget
               lua
               jq
