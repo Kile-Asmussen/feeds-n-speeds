@@ -115,7 +115,7 @@ function malltech.nuclear_machines()
         { type='item', name='heat-pipe', amount=100 },
     }
 
-    data.raw.recipe.centrifuge = {
+    data.raw.recipe.centrifuge.ingredients = {
         { type='item', name='electric-engine-unit', amount=20 },
         { type='item', name='speed-module', amount=5 },
         { type='item', name='steel-plate', amount=50 },
