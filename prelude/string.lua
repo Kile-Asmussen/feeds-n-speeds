@@ -50,7 +50,7 @@ function string.chomp(str)
         return str
     end
 
-    if str[#str] == '\n' then
+    if str:sub(-1) == '\n' then
         return str:sub(1, #str - 1)
     end
 

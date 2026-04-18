@@ -94,13 +94,13 @@ def is_safe_command(command: str) -> bool:
     enable command chaining or injection.
     """
     DANGEROUS = [
-        '&&',   # command chaining
-        '||',   # conditional chaining
         ';',    # command separator
-        '|',    # pipe
+        '|',    # pipe (also catches ||)
         '`',    # command substitution (backticks)
-        '$(',   # command substitution
-        '${',   # variable expansion
+        '$',    # variable substitution (also catches $( and ${ )
+        '{',    # function/command definition?
+        '*',    # globs
+        '?',    # globs
         '\n',   # newline (command separator)
         '>',    # output redirection
         '<',    # input redirection

@@ -1,82 +1,1188 @@
 
-/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
-2026-04-18T03:29:40.981278
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T11:10:07.292072
 {
- "session_id": "876f144a-8a41-4832-8abf-2e4d569b1872",
- "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/876f144a-8a41-4832-8abf-2e4d569b1872.jsonl",
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
  "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
  "permission_mode": "dontAsk",
  "hook_event_name": "PreToolUse",
- "tool_name": "Bash",
+ "tool_name": "Read",
  "tool_input": {
-  "command": "echo \"hello\" && echo \"world\"",
-  "description": "Test illegal command with shell chaining"
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua"
  },
- "tool_use_id": "toolu_0128FPaAjScukpDRpFE6BiHh"
+ "tool_use_id": "toolu_01WwK6brpmVyJarszQRePixt"
 }
-checking command: 'echo "hello" && echo "world"'
-blocking bash -- contains dangerous shell metacharacters:
-echo "hello" && echo "world"
-sys.exit(2)
+path /home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
 
-/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
-2026-04-18T03:29:44.551238
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T11:10:07.292080
 {
- "session_id": "876f144a-8a41-4832-8abf-2e4d569b1872",
- "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/876f144a-8a41-4832-8abf-2e4d569b1872.jsonl",
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
  "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
  "permission_mode": "dontAsk",
  "hook_event_name": "PreToolUse",
- "tool_name": "Bash",
+ "tool_name": "Read",
  "tool_input": {
-  "command": "ls -la",
-  "description": "Test command not in allowlist"
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua"
  },
- "tool_use_id": "toolu_019NE362drHBiZFdumi7F5Wg"
+ "tool_use_id": "toolu_01WwK6brpmVyJarszQRePixt"
 }
-checking command: 'ls -la'
-allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *']
-blocking bash -- command not in allowlist:
-ls -la
-sys.exit(2)
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua'), None, None)
+forbidden: **/too-big.txt **/raw.lua
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua
+sys.exit(0)
 
-/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
-2026-04-18T03:29:48.944303
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T11:10:07.704134
 {
- "session_id": "876f144a-8a41-4832-8abf-2e4d569b1872",
- "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/876f144a-8a41-4832-8abf-2e4d569b1872.jsonl",
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
  "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
  "permission_mode": "dontAsk",
  "hook_event_name": "PreToolUse",
- "tool_name": "Bash",
+ "tool_name": "Read",
  "tool_input": {
-  "command": "lua debug-load.lua",
-  "description": "Test allowed command"
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua"
  },
- "tool_use_id": "toolu_01CGSwYxBaAd4gcz9bGvRuoc"
+ "tool_use_id": "toolu_01U5A12KXQCZkqzbNkpWVfD7"
 }
-checking command: 'lua debug-load.lua'
-allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *']
-command matches pattern: 'lua debug-load.lua'
+path /home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T11:10:07.707372
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua"
+ },
+ "tool_use_id": "toolu_01U5A12KXQCZkqzbNkpWVfD7"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T11:10:08.242619
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude/string.lua"
+ },
+ "tool_use_id": "toolu_01K6wjGsx8MUyjVvPdYH8JT5"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/prelude/string.lua
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T11:10:08.247284
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude/string.lua"
+ },
+ "tool_use_id": "toolu_01K6wjGsx8MUyjVvPdYH8JT5"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/prelude/string.lua'), None, None)
+forbidden: **/too-big.txt **/raw.lua
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/prelude/string.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T11:10:08.322515
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Glob",
+ "tool_input": {
+  "pattern": "test-*.lua"
+ },
+ "tool_use_id": "toolu_01Da72PnAib6owj8NDEbpmz7"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T11:13:16.776477
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Glob",
+ "tool_input": {
+  "pattern": "build-scripts/*"
+ },
+ "tool_use_id": "toolu_011wujwTS3u41vvuLsDk5vfP"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T11:13:19.245974
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/build-scripts/unit-tests.sh"
+ },
+ "tool_use_id": "toolu_016GDqegp2Tff2aZRzq9QCMc"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/build-scripts/unit-tests.sh
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T11:13:19.250233
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/build-scripts/unit-tests.sh"
+ },
+ "tool_use_id": "toolu_016GDqegp2Tff2aZRzq9QCMc"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/build-scripts/unit-tests.sh'), None, None)
+forbidden: **/too-big.txt **/raw.lua
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/build-scripts/unit-tests.sh
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T11:47:01.469031
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Glob",
+ "tool_input": {
+  "pattern": "slop/test-*.lua"
+ },
+ "tool_use_id": "toolu_0169kujdtfRy6piQncxicent"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T11:49:57.042917
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Grep",
+ "tool_input": {
+  "pattern": "\\b(eq|ok|is_type)\\(",
+  "path": "/home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests",
+  "output_mode": "content"
+ },
+ "tool_use_id": "toolu_01FqXdZa5EKKWmjVBZyxrj7b"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T11:49:57.051412
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Grep",
+ "tool_input": {
+  "pattern": "\\b(eq|ok|is_type)\\(",
+  "path": "/home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests",
+  "output_mode": "content"
+ },
+ "tool_use_id": "toolu_01FqXdZa5EKKWmjVBZyxrj7b"
+}
+('Grep', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests'), None, 'content')
+forbidden: **/raw.lua **/too-big.txt
+inspecting 4 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests/harness.lua
+/home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests/string.lua
+/home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests/prelude.lua
+/home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests/table.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T11:53:42.867889
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests/harness.lua"
+ },
+ "tool_use_id": "toolu_01QbRPzUH2kkN6GWbPNnQfvk"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests/harness.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T11:53:42.873328
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests/harness.lua"
+ },
+ "tool_use_id": "toolu_01QbRPzUH2kkN6GWbPNnQfvk"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests/harness.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/slop/unit-tests/harness.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:00:08.246033
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/Makefile"
+ },
+ "tool_use_id": "toolu_014MjPZeJUaNBmFSMgqtZpMB"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/Makefile
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:00:08.252150
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/Makefile"
+ },
+ "tool_use_id": "toolu_014MjPZeJUaNBmFSMgqtZpMB"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/Makefile'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/Makefile
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:00:08.660966
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.gitignore"
+ },
+ "tool_use_id": "toolu_011fR8d4xvdpfanGK6WDotbV"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/.gitignore
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:00:08.665987
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.gitignore"
+ },
+ "tool_use_id": "toolu_011fR8d4xvdpfanGK6WDotbV"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/.gitignore'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/.gitignore
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:00:08.756806
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.gitattributes"
+ },
+ "tool_use_id": "toolu_012aD6xcfk3x6Uz663vo7G2a"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/.gitattributes
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:00:08.762833
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.gitattributes"
+ },
+ "tool_use_id": "toolu_012aD6xcfk3x6Uz663vo7G2a"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/.gitattributes'), None, None)
+forbidden: **/too-big.txt **/raw.lua
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/.gitattributes
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:13:32.679084
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua"
+ },
+ "tool_use_id": "toolu_01XxS1MiLJX3vSzLgVDpmMuG"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:13:32.682916
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua"
+ },
+ "tool_use_id": "toolu_01XxS1MiLJX3vSzLgVDpmMuG"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:30:41.754972
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua"
+ },
+ "tool_use_id": "toolu_01J2saphZf7RQtstrM3aF51N"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:30:41.759108
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua"
+ },
+ "tool_use_id": "toolu_01J2saphZf7RQtstrM3aF51N"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:45:03.608926
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Glob",
+ "tool_input": {
+  "pattern": ".claude/**/hook*bash*"
+ },
+ "tool_use_id": "toolu_01DmrEs6JdiMWTmam4U3x41U"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:45:06.664097
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py"
+ },
+ "tool_use_id": "toolu_01RBSHBUJEvwwH44HsmuN9MT"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:45:06.668435
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py"
+ },
+ "tool_use_id": "toolu_01RBSHBUJEvwwH44HsmuN9MT"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:48:32.979493
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py"
+ },
+ "tool_use_id": "toolu_01QispVRZWMxNjcnEbzLWRe1"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:48:32.984256
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py"
+ },
+ "tool_use_id": "toolu_01QispVRZWMxNjcnEbzLWRe1"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:49:48.415069
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.claude/allowed-bash-commands.json"
+ },
+ "tool_use_id": "toolu_01VmDnSGoqXrE17aLxvE4jnc"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/.claude/allowed-bash-commands.json
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:49:48.418956
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.claude/allowed-bash-commands.json"
+ },
+ "tool_use_id": "toolu_01VmDnSGoqXrE17aLxvE4jnc"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/.claude/allowed-bash-commands.json'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/allowed-bash-commands.json
 sys.exit(0)
 
 /home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
-2026-04-18T03:32:11.604416
+2026-04-18T14:49:51.861925
 {
- "session_id": "876f144a-8a41-4832-8abf-2e4d569b1872",
- "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/876f144a-8a41-4832-8abf-2e4d569b1872.jsonl",
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
  "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
  "permission_mode": "dontAsk",
  "hook_event_name": "PreToolUse",
  "tool_name": "Bash",
  "tool_input": {
-  "command": "rm slop/test-allowed.txt",
-  "description": "Clean up test file"
+  "command": "lua unit-tests.lua table string prelude",
+  "description": "Run unit tests for table, string, and prelude modules"
  },
- "tool_use_id": "toolu_01H6Mmp7vh44G2gRuvTieqgW"
+ "tool_use_id": "toolu_01D7SsA1bT8Ty8MnriR29AF4"
 }
-checking command: 'rm slop/test-allowed.txt'
-allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *']
+checking command: 'lua unit-tests.lua table string prelude'
+allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *', 'lua unit-tests.lua *']
+command matches pattern: 'lua unit-tests.lua *'
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+2026-04-18T14:52:47.082270
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Bash",
+ "tool_input": {
+  "command": "echo hello world",
+  "description": "Test disallowed command"
+ },
+ "tool_use_id": "toolu_01LUW6a4iYF1QiDmP1yRfao3"
+}
+checking command: 'echo hello world'
+allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *', 'lua unit-tests.lua *']
 blocking bash -- command not in allowlist:
-rm slop/test-allowed.txt
+echo hello world
 sys.exit(2)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:53:24.252349
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua"
+ },
+ "tool_use_id": "toolu_0132TuDYSz3VzAzjQ92sgRS5"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:53:24.256547
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua"
+ },
+ "tool_use_id": "toolu_0132TuDYSz3VzAzjQ92sgRS5"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua'), None, None)
+forbidden: **/too-big.txt **/raw.lua
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:53:24.689232
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua"
+ },
+ "tool_use_id": "toolu_01WuC8DLbqfSziS8n7Ev2RTV"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:53:24.692602
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua"
+ },
+ "tool_use_id": "toolu_01WuC8DLbqfSziS8n7Ev2RTV"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:53:25.114642
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/table.lua"
+ },
+ "tool_use_id": "toolu_013vj8G98S9DYxsm5MNK6A8u"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/table.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:53:25.119184
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/table.lua"
+ },
+ "tool_use_id": "toolu_013vj8G98S9DYxsm5MNK6A8u"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/table.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/table.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:53:25.543221
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/string.lua"
+ },
+ "tool_use_id": "toolu_016Wy3naYrAoUhW9vKkLELGt"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/string.lua
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:53:25.547305
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/string.lua"
+ },
+ "tool_use_id": "toolu_016Wy3naYrAoUhW9vKkLELGt"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/string.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/string.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T14:53:25.705321
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua"
+ },
+ "tool_use_id": "toolu_01PnmwsBG5Ke7LNBRFzxo7T4"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T14:53:25.709143
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua"
+ },
+ "tool_use_id": "toolu_01PnmwsBG5Ke7LNBRFzxo7T4"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+2026-04-18T14:53:46.106134
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Bash",
+ "tool_input": {
+  "command": "lua unit-tests.lua table string prelude",
+  "description": "Run unit tests"
+ },
+ "tool_use_id": "toolu_01GURJDeCwj7Di59f9L1WA5J"
+}
+checking command: 'lua unit-tests.lua table string prelude'
+allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *', 'lua unit-tests.lua *']
+command matches pattern: 'lua unit-tests.lua *'
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:02:19.589143
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests-trusted.lua"
+ },
+ "tool_use_id": "toolu_01Hezqx5P7mkXMYtFQ9MaUFo"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/unit-tests-trusted.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:02:19.592823
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests-trusted.lua"
+ },
+ "tool_use_id": "toolu_01Hezqx5P7mkXMYtFQ9MaUFo"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests-trusted.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests-trusted.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:02:19.930839
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua"
+ },
+ "tool_use_id": "toolu_01VdXLdK1r8QsNQG4ypLJyyc"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:02:19.934125
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua"
+ },
+ "tool_use_id": "toolu_01VdXLdK1r8QsNQG4ypLJyyc"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua'), None, None)
+forbidden: **/too-big.txt **/raw.lua
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:02:20.390018
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua"
+ },
+ "tool_use_id": "toolu_01P7jtF2MSEBCKe9pCJFywd8"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:02:20.391603
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua"
+ },
+ "tool_use_id": "toolu_01P7jtF2MSEBCKe9pCJFywd8"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:02:20.845231
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude/string.lua"
+ },
+ "tool_use_id": "toolu_019jcZ6bZCxPNW7BFFGHtQXJ"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/prelude/string.lua
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:02:20.849474
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude/string.lua"
+ },
+ "tool_use_id": "toolu_019jcZ6bZCxPNW7BFFGHtQXJ"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/prelude/string.lua'), None, None)
+forbidden: **/too-big.txt **/raw.lua
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/prelude/string.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:02:21.092843
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua"
+ },
+ "tool_use_id": "toolu_011qHf9Xccrw5bwz3NCHz8hc"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:02:21.095973
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua"
+ },
+ "tool_use_id": "toolu_011qHf9Xccrw5bwz3NCHz8hc"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+2026-04-18T15:02:45.478881
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Bash",
+ "tool_input": {
+  "command": "lua unit-tests.lua table string prelude",
+  "description": "Run unit tests to see current state"
+ },
+ "tool_use_id": "toolu_016mBHKSwYMfLH2h7EUKnGPp"
+}
+checking command: 'lua unit-tests.lua table string prelude'
+allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *', 'lua unit-tests.lua *']
+command matches pattern: 'lua unit-tests.lua *'
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:02:49.123376
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua"
+ },
+ "tool_use_id": "toolu_01PFVzP3mEnmgtWdGuybVLNP"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:02:49.127204
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua"
+ },
+ "tool_use_id": "toolu_01PFVzP3mEnmgtWdGuybVLNP"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua'), None, None)
+forbidden: **/too-big.txt **/raw.lua
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+2026-04-18T15:03:32.710167
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Bash",
+ "tool_input": {
+  "command": "lua unit-tests.lua table string prelude",
+  "description": "Run unit tests"
+ },
+ "tool_use_id": "toolu_01UdHYrJ2Zm8htcHXfsuHT2i"
+}
+checking command: 'lua unit-tests.lua table string prelude'
+allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *', 'lua unit-tests.lua *']
+command matches pattern: 'lua unit-tests.lua *'
+sys.exit(0)

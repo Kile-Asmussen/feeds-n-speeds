@@ -2,6 +2,10 @@
 
 A Factorio 2.0 mod providing value tweaks, balance changes, and new items.
 
+## Etiquette
+
+Avoid addressing the user as 'you', prefer instead passive voice and referring to the user as 'the operator'.
+
 ## Project Structure
 
 ```
