@@ -5,7 +5,8 @@
     "wiki.factorio.com",
     "forums.factorio.com",
     "mods.factorio.com",
-    "en.wikipedia.org"
+    "en.wikipedia.org",
+    "docs.python.org"
   ],
   "exceptions": []
 }

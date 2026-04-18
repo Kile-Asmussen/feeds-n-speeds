@@ -80,6 +80,15 @@
             "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-bash.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-backup-write-edit-defense.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
+          }
+        ]
       }
     ]
   }

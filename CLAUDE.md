@@ -223,9 +223,9 @@ This project uses a safety harness (`.claude/settings.json` and hooks) to limit 
 - **File reading**: Read, Glob, Grep (within allowed paths)
 - **File writing**: Write, Edit (only in `slop/**/*` and `unit-tests/*`)
 - **File editing**: Edit (in `extras/**/*` and `tweaks/**/*`)
-- **File deletion**: Through the `.claude/safe-rm.py` script.
-- **Shell execution**: Bash (restricted to allowlist via hook)
-- **Web access**: WebFetch (restricted domains), WebSearch
+- **Shell execution**: Bash (restricted to allowlist via hook, see `.claude/allowed-bash-commands.json`)
+- **File deletion**: Through the `.claude/safe-rm.py` script, permitted as a shell command.
+- **Web access**: WebFetch (restricted domains, see `.claude/webfetch-urls.json`), WebSearch
 - **Interaction**: AskUserQuestion
 - **Task management**: TaskCreate, TaskGet, TaskList, TaskStop, TaskOutput, TaskUpdate
 
@@ -242,6 +242,7 @@ This project uses a safety harness (`.claude/settings.json` and hooks) to limit 
 | `hook-forbid-reads-by-glob.py` | Blocks reading `**/raw.lua` and `**/too-big.txt` (large files) |
 | `hook-restrict-webfetch-urls.py` | WebFetch limited to `lua-api.factorio.com` |
 | `hook-restrict-bash.py` | Bash commands must match patterns in `allowed-bash-commands.json`; shell metacharacters blocked |
+| `hook-backup-write-edit-defense.py` | last line of defense against unauthorized writes and edits |
 
 ### Allowed Bash Commands
 
@@ -256,5 +257,6 @@ Defined in `.claude/allowed-bash-commands.json`:
 - Claude can write test files directly to `unit-tests/`
 - Claude can draft other code in `slop/` for operator review
 - Claude cannot modify hook configuration or settings
+- Claude can edit (not write) files in the `extras/` and `tweaks/` directories
 - File reads outside the project require explicit allowlist entries
-- Web documentation access limited to Factorio Lua API
+- Web documentation access limited to Factorio Lua API and other Factorio-related sites
