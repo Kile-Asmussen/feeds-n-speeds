@@ -18,6 +18,11 @@ Research Factorio prototypes by inspecting data.raw structures and cross-referen
 | `debug-data-modded.lua` | Vanilla + mod prototypes | Verify mod additions, check merged state |
 | `debug-load.lua` | Verbose loading output | Debug module loading issues |
 
+There is a filter in place which restricts bash commands. Check `.claude/allowed-bash-commands.json` for
+the exact forms these commands can take. DO NOT attempt to use `cd` to change to the project directory as
+this is always the default working directory, DO NOT attempt to pipe script output into `head` or `tail` to 
+extract only part of the output.
+
 ## Workflow
 
 ### Step 1: Choose Script

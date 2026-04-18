@@ -10,6 +10,7 @@
       "Edit(slop/**/*)",
       "Edit(extras/**/*)",
       "Edit(tweaks/**/*)",
+      "Edit(locale/**/*)",
       "Write(unit-tests/*)",
       "Edit(unit-tests/*)",
       "WebFetch",

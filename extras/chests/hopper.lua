@@ -21,6 +21,12 @@ local hopper = namespace 'extras.chests.hopper'
 hopper.HOPPER_NAME = fns 'big-steel-hopper'
 hopper.CHEST_NAME = fns 'big-steel-chest'
 
+-- Maximum Manhattan distance (in world coordinates) for hopper-to-chest linking
+-- A hopper can connect through 4 other hoppers to reach a chest (5 hops total)
+-- Each hop is 2 tiles for 2x2 entities, so max distance is 5 * 2 = 10
+-- Small buffer for floating point imprecision
+hopper.MAX_LINK_DISTANCE = 10.01
+
 -- Direction constants for 2x2 entities
 -- Each direction includes the offset to find a neighbor and its opposite
 hopper.DIRECTIONS = {
@@ -232,23 +238,37 @@ function hopper.flood_fill_cluster(start_entity, exclude_id)
     return hoppers, chests, min_id
 end
 
+--- Calculate Manhattan distance between two entities
+--- @param a LuaEntity
+--- @param b LuaEntity
+--- @return number
+function hopper.manhattan_distance(a, b)
+    local pa, pb = a.position, b.position
+    return math.abs(pa.x - pb.x) + math.abs(pa.y - pb.y)
+end
+
 --- Evaluate and update linking for an entire cluster
---- Links all hoppers to the chest if exactly one chest exists,
---- otherwise unlinks all hoppers in the cluster.
+--- For each hopper, links to a chest if exactly one chest is within
+--- MAX_LINK_DISTANCE, otherwise unlinks the hopper.
 --- @param start_entity LuaEntity Any hopper or chest in the cluster
 --- @param exclude_id uint64|nil Unit number to exclude from traversal
 function hopper.link_cluster(start_entity, exclude_id)
     local hoppers, chests = hopper.flood_fill_cluster(start_entity, exclude_id)
 
-    if #chests == 1 then
-        -- Exactly one chest - link all hoppers to it
-        local chest = chests[1]
-        for _, hopper_entity in ipairs(hoppers) do
-            hopper.link(hopper_entity, chest)
+    for _, hopper_entity in ipairs(hoppers) do
+        local nearby_chest = nil
+        local nearby_count = 0
+
+        for _, chest in ipairs(chests) do
+            if hopper.manhattan_distance(hopper_entity, chest) <= hopper.MAX_LINK_DISTANCE then
+                nearby_count = nearby_count + 1
+                nearby_chest = chest
+            end
         end
-    else
-        -- Zero or multiple chests - unlink all hoppers
-        for _, hopper_entity in ipairs(hoppers) do
+
+        if nearby_count == 1 then
+            hopper.link(hopper_entity, nearby_chest)
+        else
             hopper.unlink(hopper_entity)
         end
     end
@@ -259,20 +279,49 @@ end
 -- Link/unlink operations
 -----------------------------------------------------------------------
 
+--- Display floating text at an entity's position for all nearby players
+--- @param entity LuaEntity
+--- @param text string Rich text to display
+local function show_floating_text(entity, text)
+    local pos = entity.position
+    local text_pos = {pos.x - 0.25, pos.y - 0.25}
+    for _, player in pairs(game.players) do
+        if player.valid and player.surface == entity.surface then
+            player.create_local_flying_text{
+                text = text,
+                position = text_pos,
+                color = {1, 1, 1},
+            }
+        end
+    end
+end
+
 --- Link a hopper to a chest
 --- @param hopper_entity LuaEntity
 --- @param chest LuaEntity
 function hopper.link(hopper_entity, chest)
+    local was_unlinked = hopper_entity.proxy_target_entity == nil
+
     hopper_entity.proxy_target_entity = chest
     hopper_entity.proxy_target_inventory = defines.inventory.chest
     hopper.record_link(hopper_entity.unit_number, chest.unit_number)
+
+    if was_unlinked then
+        show_floating_text(hopper_entity, "[virtual-signal=shape-cross]")
+    end
 end
 
 --- Unlink a hopper (clear proxy target)
 --- @param hopper_entity LuaEntity
 function hopper.unlink(hopper_entity)
+    local was_linked = hopper_entity.proxy_target_entity ~= nil
+
     hopper_entity.proxy_target_entity = nil
     hopper.remove_link(hopper_entity.unit_number)
+
+    if was_linked then
+        show_floating_text(hopper_entity, "[virtual-signal=shape-diagonal-cross]")
+    end
 end
 
 -----------------------------------------------------------------------
