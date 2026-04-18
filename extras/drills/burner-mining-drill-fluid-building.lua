@@ -9,11 +9,12 @@ drill.name = fns 'burner-mining-drill-fluid'
 drill.minable.result = fns 'burner-mining-drill-fluid'
 
 -- Add fluid input on south side (opposite the output chute which is north)
+-- Note: defines.direction is runtime-only; use numeric direction (4 = south)
 drill.input_fluid_box = {
     volume = 200,
     pipe_connections = {
         {
-            direction = defines.direction.south,
+            direction = 4,  -- south
             position = {0, 0.5},
         },
     },
