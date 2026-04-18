@@ -75,15 +75,11 @@ function nuclear.data_updates()
             table.matches{ name = 'concrete', type = 'item' }
         ).name = 'refined-concrete'
 
-        table.insert(recipe['heat-exchanger'],
+        table.insert(recipe['heat-exchanger'].ingredients,
             { type='item', name='concrete', amount=20 }
         )
 
-        table.insert(recipe['steam-turbine'],
-            { type='item', name='concrete', amount=20 }
-        )
-
-        table.insert(recipe['steam-turbine'],
+        table.insert(recipe['steam-turbine'].ingredients,
             { type='item', name='concrete', amount=30 }
         )
 

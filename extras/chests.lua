@@ -1,7 +1,6 @@
 require 'prelude'
 
 local chests = namespace 'extras.chests'
-
 chests.enabled = true
 
 function chests.data()
@@ -13,9 +12,6 @@ function chests.data()
         require('extras.chests.big-steel-chest-recipe'),
         require('extras.chests.big-steel-chest-remnants'),
         require('extras.chests.big-steel-chest-explosion'),
-        require('extras.chests.smart-big-steel-chest-building'),
-        require('extras.chests.smart-big-steel-chest-item'),
-        require('extras.chests.smart-big-steel-chest-recipe'),
         require('extras.chests.big-steel-hopper-building'),
         require('extras.chests.big-steel-hopper-item'),
         require('extras.chests.big-steel-hopper-recipe'),
@@ -27,11 +23,6 @@ function chests.data()
         type = 'unlock-recipe',
         recipe = fns 'big-steel-chest',
     })
-
-    table.insert(tech['automation-2'].effects, {
-        type = 'unlock-recipe',
-        recipe = fns 'smart-big-steel-chest',
-    })
     
     table.insert(tech['automation-2'].effects, {
         type = 'unlock-recipe',
@@ -40,7 +31,32 @@ function chests.data()
 end
 
 function chests.control()
-    
+    if not chests.enabled then return end
+
+    -- Initialize storage on new game
+    script.on_init(chests.hopper.init_storage)
+
+    -- Ensure storage exists on load (migrations may add new fields)
+    script.on_load(function()
+        -- Cannot modify storage in on_load, but can set up metatables if needed
+    end)
+
+    -- Handle configuration changes (mod updates)
+    script.on_configuration_changed(chests.hopper.init_storage)
+
+    -- Entity built events
+    script.on_event(defines.events.on_built_entity, chests.hopper.on_entity_built, chests.hopper.ENTITY_FILTER)
+    script.on_event(defines.events.on_robot_built_entity, chests.hopper.on_entity_built, chests.hopper.ENTITY_FILTER)
+    script.on_event(defines.events.script_raised_built, chests.hopper.on_entity_built)
+
+    -- Entity destroyed events
+    script.on_event(defines.events.on_entity_died, chests.hopper.on_entity_destroyed, chests.hopper.ENTITY_FILTER)
+    script.on_event(defines.events.on_player_mined_entity, chests.hopper.on_entity_destroyed, chests.hopper.ENTITY_FILTER)
+    script.on_event(defines.events.on_robot_mined_entity, chests.hopper.on_entity_destroyed, chests.hopper.ENTITY_FILTER)
+    script.on_event(defines.events.script_raised_destroy, chests.hopper.on_entity_destroyed)
+
 end
+
+chests.hopper = require 'extras.chests.hopper'
 
 return chests:__seal()

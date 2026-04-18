@@ -42,4 +42,4 @@ nuke: uninstall
 	rm -f ~/.factorio/mods/mod-settings.dat
 
 test: download
-	@./build-scripts/test.sh
+	@./build-scripts/unit-tests.sh

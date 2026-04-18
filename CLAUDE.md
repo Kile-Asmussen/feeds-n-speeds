@@ -161,3 +161,36 @@ The `references/` sibling directory contains example Factorio mods for reference
 ## API Documentation
 
 Factorio Lua API docs: https://lua-api.factorio.com (version 2.0.x)
+
+## Claude Code Restrictions
+
+This project uses a safety harness (`.claude/settings.json` and hooks) to limit Claude's capabilities.
+
+### Allowed Tools
+
+- **File reading**: Read, Glob, Grep (within allowed paths)
+- **File writing**: Write, Edit (only in `slop/**/*`)
+- **Web access**: WebFetch (restricted domains), WebSearch
+- **Interaction**: AskUserQuestion
+- **Task management**: TaskCreate, TaskGet, TaskList, TaskStop, TaskOutput, TaskUpdate
+
+### Denied Tools
+
+- **Shell execution**: Bash, PowerShell, Agent
+- **Protected paths**: Write/Edit to `.claude/**/*`
+
+### Hook Restrictions
+
+| Hook | Effect |
+|------|--------|
+| `hook-restrict-read-grep-glob-paths.py` | File operations limited to project directory and `../references/` |
+| `hook-forbid-reads-by-glob.py` | Blocks reading `**/raw.lua` and `**/too-big.txt` (large files) |
+| `hook-restrict-webfetch-urls.py` | WebFetch limited to `lua-api.factorio.com` |
+
+### Implications
+
+- Claude cannot run builds, tests, or install the mod directly
+- Claude cannot modify hook configuration or settings
+- Claude can draft code in `slop/` for manual review and integration
+- File reads outside the project require explicit allowlist entries
+- Web documentation access limited to Factorio Lua API

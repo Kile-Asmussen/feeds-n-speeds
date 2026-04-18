@@ -199,6 +199,7 @@ return {
   },
   impact_category = 'metal',
   inventory_size = 48 * 2,
+  inventory_type = "with_filters_and_bar",
   max_health = 350 * 2,
   minable = {
     mining_time = 0.2,

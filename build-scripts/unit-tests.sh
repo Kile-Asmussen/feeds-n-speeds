@@ -14,7 +14,7 @@ FAILURES=0
 
 DUMP=$OUTPUT_DIR/test.$$.dump
 
-for TEST_FILE in test-*.lua; do
+for TEST_FILE in unit-tests/*.lua; do
     TESTS=$(( $TESTS + 1 ))
     echo '$>' lua $TEST_FILE
     if lua $TEST_FILE &>$DUMP; then

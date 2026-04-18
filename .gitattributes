@@ -18,9 +18,9 @@ CLAUDE.md export-ignore
 Makefile export-ignore
 
 debug-*.lua export-ignore
-testlib.lua export-ignore
-test-*.lua export-ignore
+test.lua export-ignore
 /test/**/* export-ignore
+/unit-tests/**/* export-ignore
 /debug/**/* export-ignore
 
 flake.* export-ignore

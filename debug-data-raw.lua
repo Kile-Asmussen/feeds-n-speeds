@@ -1,5 +1,5 @@
 require 'prelude'
-require 'test-config'
+require 'test'
 
 local debuglib = require 'debuglib'
 

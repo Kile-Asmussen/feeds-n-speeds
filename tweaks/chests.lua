@@ -20,7 +20,6 @@ function chests.data_updates()
 
     if extras.chests.enabled then
         inventory_sizes[fns 'big-steel-chest'] = 69
-        inventory_sizes[fns 'smart-big-steel-chest'] = 67
     end
 
     

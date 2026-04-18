@@ -1,6 +1,10 @@
 {
   "domains": [
-    "lua-api.factorio.com"
+    "lua-api.factorio.com",
+    "code.claude.com",
+    "wiki.factorio.com",
+    "forums.factorio.com",
+    "en.wikipedia.org"
   ],
   "exceptions": []
 }

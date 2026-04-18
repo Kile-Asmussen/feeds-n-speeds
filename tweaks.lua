@@ -43,7 +43,7 @@ end
 tweaks.chests = require 'tweaks.chests'
 tweaks.concrete = require 'tweaks.concrete'
 tweaks.electric = require 'tweaks.electric'
-tweaks.electric = require 'tweaks.earlygame'
+tweaks.earlygame = require 'tweaks.earlygame'
 tweaks.inserter = require 'tweaks.inserter'
 tweaks.nuclear = require 'tweaks.nuclear'
 tweaks.ores = require 'tweaks.ores'

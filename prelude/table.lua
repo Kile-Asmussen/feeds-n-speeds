@@ -242,6 +242,7 @@ function table.set(tbl)
     for _, entry in ipairs(tbl) do
         res[entry] = true
     end
+    return res
 end
 
 function table.append(tbl, tbl2)
@@ -266,7 +267,7 @@ function table.vecadd(tbl, tbl2)
     for i = 1,#tbl do
         tbl[i] = tbl[i] + tbl2[i]
     end
-    return res
+    return tbl
 end
 
 function table.scale(tbl, k)
@@ -282,11 +283,10 @@ end
 function table.vecmul(tbl, k)
     assert(type(tbl) == 'table', "cannot scale a non-vector")
     assert(type(k) == 'number', "cannot scale by a non-number scalar")
-    local res = {}
     for i = 1,#tbl do
-        table.insert(res, k * tbl[i])
+        tbl[i] = tbl[i] * k
     end
-    return res
+    return tbl
 end
 
 function table.sum(tbl, res)
@@ -309,7 +309,7 @@ function table.iall(tbl, pred)
         function pred(v) return v and true or false end
     end
 
-    for i, v in ipairs() do
+    for i, v in ipairs(tbl) do
         res = res and pred(v)
     end
 

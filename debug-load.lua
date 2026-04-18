@@ -1,5 +1,6 @@
 require 'prelude'
-require 'test-config'
+require 'test'
+local localization = require 'test.localization'
 local debuglib = require 'debuglib'
 
 log("SETTINGS")
@@ -22,8 +23,13 @@ require('data-updates')
 log("DATA-FINAL-FIXES")
 require('data-final-fixes')
 
+_G.storage = {}
+
+log("CONTROL")
+require('control')
+
 log(debuglib.sprint(fnsidentifiers()))
 
 log('')
 
-log(generate_localization_stub())
+log(localization.generate_stubs())
