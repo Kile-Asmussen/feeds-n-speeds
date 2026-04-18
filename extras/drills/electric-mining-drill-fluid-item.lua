@@ -2,11 +2,11 @@ require 'prelude'
 
 return {
     type = 'item',
-    name = fns 'burner-mining-drill-fluid',
-    icon = '__base__/graphics/icons/burner-mining-drill.png',
+    name = fns 'electric-mining-drill-fluid',
+    icon = '__base__/graphics/icons/electric-mining-drill.png',
     subgroup = 'extraction-machine',
-    order = 'a[items]-a[burner-mining-drill]-b[fluid]',
-    place_result = fns 'burner-mining-drill-fluid',
+    order = 'a[items]-b[electric-mining-drill]-b[fluid]',
+    place_result = fns 'electric-mining-drill-fluid',
     stack_size = 50,
     drop_sound = {
         aggregation = { max_count = 1, remove = true },

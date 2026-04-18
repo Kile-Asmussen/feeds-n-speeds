@@ -1,11 +1,13 @@
 [
     "lua debug-load.lua",
     "lua debug-data-raw.lua *",
+    "DEPTH=1 lua debug-data-raw.lua",
     "DEPTH=1 lua debug-data-raw.lua *",
     "DEPTH=2 lua debug-data-raw.lua *",
     "DEPTH=3 lua debug-data-raw.lua *",
     "DEPTH=4 lua debug-data-raw.lua *",
     "DEPTH=5 lua debug-data-raw.lua *",
+    "DEPTH=1 lua debug-data-modded.lua",
     "DEPTH=1 lua debug-data-modded.lua *",
     "DEPTH=2 lua debug-data-modded.lua *",
     "DEPTH=3 lua debug-data-modded.lua *",

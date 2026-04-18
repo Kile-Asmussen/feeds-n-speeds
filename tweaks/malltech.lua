@@ -33,6 +33,8 @@ function malltech.tweak_recipes()
 end
 
 function malltech.mining_drills()
+    local recipe = data.raw.recipe
+
     recipe['burner-mining-drill'].ingredients = {
         { type='item', name='stone-brick', amount=6 },
         { type='item', name='iron-gear-wheel', amount=2 },
@@ -68,6 +70,8 @@ function malltech.mining_drills()
 end
 
 function malltech.assembling_machines()
+    local recipe = data.raw.recipe
+
     recipe['assembling-machine-1'].ingredients = {
         { type='item', name='inserter', amount=3 },
         { type='item', name='electronic-circuit', amount=3 },

@@ -2,6 +2,7 @@ require 'prelude'
 
 return {
     enabled = false,
+    order = 'a[rail]-b[rail-1]',
     ingredients = {
         { amount = 1, name = 'stone-brick', type = 'item' },
         { amount = 1, name = 'iron-stick', type = 'item' },

@@ -3,6 +3,7 @@ require 'prelude'
 
 return {
     enabled = false,
+    order = 'a[rail]-d[rail-3]',
     ingredients = {
         { amount = 1, name = 'refined-concrete', type = 'item' },
         { amount = 1, name = 'steel-plate', type = 'item' }

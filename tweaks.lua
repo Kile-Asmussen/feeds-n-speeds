@@ -48,5 +48,6 @@ tweaks.inserter = require 'tweaks.inserter'
 tweaks.nuclear = require 'tweaks.nuclear'
 tweaks.ores = require 'tweaks.ores'
 tweaks.malltech = require 'tweaks.malltech'
+tweaks.timewaster = require 'tweaks.timewaster'
 
 return tweaks:__seal()
