@@ -1,6 +1,6 @@
 require 'prelude'
 
-local alteredrecipes = namespace 'alteredrecipes'
+local alteredrecipes = namespace 'tweaks.alteredrecipes'
 alteredrecipes.enabled = true
 
 function alteredrecipes.data()
@@ -11,8 +11,6 @@ function alteredrecipes.data()
 end
 
 function alteredrecipes.tweak_technologies()
-    data.raw.recipe['iron-chest'].enabled = false
-
     local tech = data.raw.technology
 
     table.insert(tech['automation-2'].prerequisites, 'fast-inserter')
@@ -21,27 +19,24 @@ end
 function alteredrecipes.tweak_recipes()
     local recipe = data.raw.recipe
 
-    recipe['burner-inserter'] = nil
-
     recipe['assembly-machine'].ingredients = {
-        { type='item', name='inserter', amount=2 },
-        { type='item', name='transport-belt', amount=2 },
-        { type='item', name='electronic-circuit', amount=1 },
+        { type='item', name='inserter', amount=3 },
+        { type='item', name='electronic-circuit', amount=3 },
         { type='item', name='iron-plate', amount=4 },
     }
 
     recipe['assembly-machine-2'].ingredients = {
-        { type='item', name='assembly-machine', amount=1 },
         { type='item', name='fast-inserter', amount=3 },
-        { type='item', name='electronic-circuit', amount=6 },
-        { type='item', name='steel-plate', amount=2 },
+        { type='item', name='electronic-circuit', amount=3 },
+        { type='item', name='pipe', amount=2 },
+        { type='item', name='steel-plate', amount=4 },
     }
 
     recipe['assembly-machine-3'].ingredients = {
-        { type='item', name='assembly-machine-2', amount=1 },
-        { type='item', name='fast-transport-belt', amount='4' },
+        { type='item', name='fast-inserter', amount=3 },
         { type='item', name='speed-module', amount=3 },
-        { type='item', name='steel-plate', amount=4 },
+        { type='item', name='pump', amount=1 },
+        { type='item', name='refined-concrete', amount=4 },
     }
 
     local tweaks = import 'tweaks'

@@ -44,10 +44,6 @@ function earlygame.tweak_technologies()
         )
 
         table.insert(tech.automation.effects,
-            { type = 'unlock-recipe', name = fns 'smart-big-steel-chest' }
-        )
-
-        table.insert(tech.automation.effects,
             { type = 'unlock-recipe', name = fns 'big-steel-hopper' }
         )
     end
@@ -69,24 +65,6 @@ function earlygame.tweak_recipes()
     local recipe = data.raw.recipe
 
     recipe['burner-inserter'] = nil
-
-    recipe['assembly-machine'].ingredients = {
-        { type='item', name='inserter', amount=3 },
-        { type='item', name='electronic-circuit', amount=3 },
-        { type='item', name='iron-plate', amount=4 },
-    }
-
-    recipe['assembly-machine-2'].ingredients = {
-        { type='item', name='fast-inserter', amount=3 },
-        { type='item', name='electronic-circuit', amount=3 },
-        { type='item', name='steel-plate', amount=4 },
-    }
-
-    recipe['assembly-machine-3'].ingredients = {
-        { type='item', name='fast-inserter', amount=3 },
-        { type='item', name='electronic-circuit', amount=3 },
-        { type='item', name='steel-plate', amount=4 },
-    }
     
 end
 

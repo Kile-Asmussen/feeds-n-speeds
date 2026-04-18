@@ -4,6 +4,7 @@ require 'test.data'
 require 'test.defines'
 require 'test.utils'
 require 'test.script'
+require 'test.localization'
 
 local debuglib = require 'debuglib'
 debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 2

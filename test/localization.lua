@@ -40,9 +40,11 @@ function localization.register(proto)
     localization.register_description(proto)
 end
 
+
+local open_file = io.open
 function localization.generate_stubs()
 
-    local file = io.open('./locale/en/localization.cfg')
+    local file = open_file('./locale/en/localization.cfg')
     local locale_file = file:read("*a")
     file:close()
     file = nil

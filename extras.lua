@@ -42,6 +42,6 @@ end
 
 extras.chests = require('extras.chests')
 extras.radars = require('extras.radars')
-extras.alt_recipes = require('extras.recipes')
+extras.altrecipes = require('extras.altrecipes')
 
 return extras:__seal()
