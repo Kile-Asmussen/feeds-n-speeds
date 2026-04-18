@@ -3,3 +3,7 @@
 /data/factorio-current.log
 /data/target/
 /output/
+
+log
+*.log
+log.old

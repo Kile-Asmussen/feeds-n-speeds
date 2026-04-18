@@ -51,9 +51,7 @@ function debuglib.__render_path(buffer)
     
     if res == nil then
       res = k
-    end
-
-    if k[1] == '[' then
+    elseif k:sub(1, 1) == '[' then
       res = res .. k
     else
       res = res .. '.' .. k 

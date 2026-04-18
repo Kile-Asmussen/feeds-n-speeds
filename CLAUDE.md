@@ -6,6 +6,9 @@ A Factorio 2.0 mod providing value tweaks, balance changes, and new items.
 
 Prefer to use passive voice and referring to the user as 'operator'.
 
+When noting line of a code file, refer to it of the form ./file_name:line_number
+so it becomes a clickable link in terminal.
+
 ## Project Structure
 
 ```

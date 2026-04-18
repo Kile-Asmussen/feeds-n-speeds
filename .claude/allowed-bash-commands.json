@@ -6,5 +6,6 @@
     "DEPTH=3 lua debug-data-raw.lua *",
     "DEPTH=4 lua debug-data-raw.lua *",
     "DEPTH=5 lua debug-data-raw.lua *",
-    "lua unit-tests.lua *"
+    "lua unit-tests.lua *",
+    "python .claude/safe-rm.py *"
 ]

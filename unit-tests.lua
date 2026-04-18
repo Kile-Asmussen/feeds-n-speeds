@@ -13,15 +13,9 @@
 --!   end)
 
 require 'prelude'
+require 'debuglib'
 
 -- SAFETY HARNESS:
-
-local allowed_modules = table.set {
-    'unit-tests-trusted',
-    'unit-tests.table',
-    'unit-tests.string',
-    'unit-tests.prelude',
-}
 
 local allowed_namespaces = table.set {
     'prelude.table',
@@ -75,6 +69,7 @@ function assert_is(val, expected_type, msg)
     end
 end
 
+require 'unit-tests-trusted'
 
 for _, arg in ipairs(args) do
     if arg:match('[^%w_-]') then
@@ -83,21 +78,13 @@ for _, arg in ipairs(args) do
     end
 
     local fn = './unit-tests/' .. arg .. '.lua'
-    if os.rename(fn, fn) then
-        allowed_modules['unit-tests.' .. arg] = true
-    else
+    if not os.rename(fn, fn) then
         print('invalid module name: ' .. arg)
         os.exit(2)
     end
 end
 
-local __require = require
-function require(modname)
-    if not allowed_modules[modname] then
-        error('require blocked: ' .. tostring(modname))
-    end
-    return __require(modname)
-end
+
 
 local __import = import
 function import(path)
@@ -114,13 +101,13 @@ function namespace(path, res)
     return ns
 end
 
-require 'unit-tests-trusted'
-
 local __print = print
 local __exit = os.exit
+local __require = require
 
 -- sandboxing
 -- Critical: filesystem, OS, module loading, sandbox escape                               
+require = nil
 io = nil
 os = nil
 package = nil
