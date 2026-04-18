@@ -1,6 +1,6 @@
 # Skill: /factorio-research
 
-Research Factorio prototypes by inspecting live data.raw structures and cross-referencing API documentation.
+Research Factorio prototypes by inspecting data.raw structures and cross-referencing API documentation.
 
 ## When to Use
 
@@ -8,16 +8,37 @@ Research Factorio prototypes by inspecting live data.raw structures and cross-re
 - When unsure about field names, types, or valid values
 - To understand relationships between prototype types
 - To find examples of how vanilla Factorio implements features
+- To verify mod prototypes are defined correctly
+
+## Available Scripts
+
+| Script | Contents | Use Case |
+|--------|----------|----------|
+| `debug-data-raw.lua` | Vanilla prototypes only | Reference vanilla implementations |
+| `debug-data-modded.lua` | Vanilla + mod prototypes | Verify mod additions, check merged state |
+| `debug-load.lua` | Verbose loading output | Debug module loading issues |
 
 ## Workflow
 
-### Step 1: Identify Prototype Category
+### Step 1: Choose Script
 
-List all prototype categories:
+- **Inspecting vanilla prototypes:** Use `debug-data-raw.lua`
+- **Inspecting mod prototypes:** Use `debug-data-modded.lua`
+
+### Step 2: List Instances in Category
+
+Inspect a category at depth 1 to see all instances:
 ```bash
-DEPTH=1 lua debug-data-raw.lua
+DEPTH=1 lua debug-data-raw.lua <category>
+DEPTH=1 lua debug-data-modded.lua <category>
 ```
-s
+
+Example:
+```bash
+DEPTH=1 lua debug-data-raw.lua inserter
+DEPTH=1 lua debug-data-modded.lua container
+```
+
 Common categories:
 - Entities: `container`, `inserter`, `assembling-machine`, `reactor`, `boiler`, `electric-pole`
 - Items: `item`, `item-with-entity-data`, `tool`, `ammo`, `module`, `capsule`
@@ -26,43 +47,31 @@ Common categories:
 - Fluids: `fluid`
 - Resources: `resource`
 
-### Step 2: List Instances in Category
-
-Inspect a category at depth 1 to see all instances:
-```bash
-DEPTH=1 lua debug-data-raw.lua <category>
-```
-
-Example:
-```bash
-DEPTH=1 lua debug-data-raw.lua inserter
-```
-
 ### Step 3: Inspect Specific Prototype
 
 Drill into a specific prototype with increasing depth:
 ```bash
-DEPTH=2 lua debug-data-raw.lua <category> <name>
-DEPTH=3 lua debug-data-raw.lua <category> <name>
+DEPTH=2 lua debug-data-modded.lua <category> <name>
+DEPTH=3 lua debug-data-modded.lua <category> <name>
 ```
 
 Example:
 ```bash
 DEPTH=3 lua debug-data-raw.lua inserter inserter
-DEPTH=4 lua debug-data-raw.lua container steel-chest
+DEPTH=3 lua debug-data-modded.lua container feeds-n-speeds-big-steel-chest
 ```
 
 ### Step 4: Inspect Nested Fields
 
 Descend into specific nested structures:
 ```bash
-DEPTH=3 lua debug-data-raw.lua <category> <name> <field> <subfield>
+DEPTH=3 lua debug-data-modded.lua <category> <name> <field> <subfield>
 ```
 
 Example:
 ```bash
 DEPTH=2 lua debug-data-raw.lua reactor nuclear-reactor heat_buffer
-DEPTH=3 lua debug-data-raw.lua inserter inserter energy_source
+DEPTH=3 lua debug-data-modded.lua container feeds-n-speeds-big-steel-chest picture
 ```
 
 ### Step 5: Cross-Reference API Documentation

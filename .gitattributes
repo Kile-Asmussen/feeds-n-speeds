@@ -9,8 +9,6 @@ CLAUDE.md export-ignore
 *.xcf export-ignore
 /**/*.xcf export-ignore
 
-/.* export-ignore
-
 /slop/* export-ignore
 /.claude/* export-ignore
 
@@ -20,9 +18,12 @@ Makefile export-ignore
 debug-*.lua export-ignore
 test.lua export-ignore
 /test/**/* export-ignore
+unit-tests.lua
+unit-tests-trusted.lua
 /unit-tests/**/* export-ignore
-/debug/**/* export-ignore
 
+/.* export-ignore
+/.direnv/* export-ignore
 flake.* export-ignore
 
 /graphics/base/* export-ignore
