@@ -8,6 +8,8 @@
       "Grep",
       "Write(slop/**/*)",
       "Edit(slop/**/*)",
+      "Edit(extras/**/*)",
+      "Edit(tweaks/**/*)",
       "Write(unit-tests/*)",
       "Edit(unit-tests/*)",
       "WebFetch",

@@ -5,6 +5,9 @@ require 'test.defines'
 require 'test.utils'
 require 'test.script'
 
+local debuglib = require 'debuglib'
+debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 2
+
 setmetatable(_G, {
     __index = function(_, name) error('global ' .. name .. ' not found') end
 })

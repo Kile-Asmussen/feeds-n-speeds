@@ -25,7 +25,7 @@ function debuglib.descent(...)
   return tostring(buffer)
 end
 
-debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 2
+debuglib.recursion_limit = 2
 
 function debuglib.__new_buffer(path)
   local res = {

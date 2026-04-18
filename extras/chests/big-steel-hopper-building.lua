@@ -45,7 +45,8 @@ return {
   fast_replaceable_group = 'container',
   flags = {
     'placeable-neutral',
-    'player-creation'
+    'player-creation',
+    'get-by-unit-number'
   },
   icon = '__base__/graphics/icons/steel-chest.png',
   icon_draw_specification = {
