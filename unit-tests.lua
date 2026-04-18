@@ -107,32 +107,30 @@ local __require = require
 
 -- sandboxing
 -- Critical: filesystem, OS, module loading, sandbox escape                               
-require = nil
-io = nil
-os = nil
-package = nil
-debug = nil
-loadfile = nil
-dofile = nil
-load = nil
-loadstring = nil
-getfenv = nil
-setfenv = nil
-newproxy = nil
-print = nil
-rawget = nil
-table.rawget = nil
-rawset = nil
-table.rawset = nil
-getmetatable = nil
-table.getmetatable = nil
-setmetatable = nil
-table.setmetatable = nil
-coroutine = nil
-string.dump = nil
-
--- Optional: DoS/resource denial                                                 
-collectgarbage = nil
+_G.require = nil
+_G.io = nil
+_G.os = nil
+_G.package = nil
+_G.debug = nil
+_G.loadfile = nil
+_G.dofile = nil
+_G.load = nil
+_G.loadstring = nil
+_G.getfenv = nil
+_G.setfenv = nil
+_G.newproxy = nil
+_G.print = nil
+_G.rawget = nil
+_G.table.rawget = nil
+_G.rawset = nil
+_G.table.rawset = nil
+_G.getmetatable = nil
+_G.table.getmetatable = nil
+_G.setmetatable = nil
+_G.table.setmetatable = nil
+_G.coroutine = nil
+_G.string.dump = nil
+_G.collectgarbage = nil
 
 --- Load test modules
 for _, arg in ipairs(args) do
