@@ -1,6 +1,6 @@
 require 'prelude'
 
-local earlygame = namespace 'earlygame'
+local earlygame = namespace 'tweaks.earlygame'
 earlygame.enabled = true
 
 function earlygame.data_updates()
@@ -13,7 +13,7 @@ end
 function earlygame.tweak_technologies()
     data.raw.recipe['iron-chest'].enabled = false
 
-    local tech = data.raw.technolog
+    local tech = data.raw.technology
 
     tech['steel-processing'].research_trigger = {
         count = 20,
@@ -25,26 +25,28 @@ function earlygame.tweak_technologies()
     tech['steel-processing'].prerequisites = nil
 
     tech['steel-processing'].effects = {
-        { type = 'unlock-recipe', name = 'steel-plate' },
-        { type = 'unlock-recipe', name = 'iron-stick' },
-        { type = 'unlock-recipe', name = 'iron-chest' },
-        { type = 'unlock-recipe', name = 'steel-chest' }
+        { type = 'unlock-recipe', recipe = 'steel-plate' },
+        { type = 'unlock-recipe', recipe = 'iron-stick' },
+        { type = 'unlock-recipe', recipe = 'iron-chest' },
+        { type = 'unlock-recipe', recipe = 'steel-chest' }
     }
 
     local extras = import 'extras'
 
     if extras.chests.enabled then
 
-        tech['automation-2'].effects = {
-            { type = 'unlock-recipe', name = 'assembling-machine-2' }
-        }
+        table.remove_matching(tech['automation-2'].effects,
+            table.matches{
+                { type = 'unlock-recipe', recipe = 'assembling-machine-2' }
+            }
+        )
 
         table.insert(tech['steel-processing'].effects,
-            { type = 'unlock-recipe', name = fns 'big-steel-chest' }
+            { type = 'unlock-recipe', recipe = fns 'big-steel-chest' }
         )
 
         table.insert(tech.automation.effects,
-            { type = 'unlock-recipe', name = fns 'big-steel-hopper' }
+            { type = 'unlock-recipe', recipe = fns 'big-steel-hopper' }
         )
     end
 
@@ -72,10 +74,14 @@ function earlygame.data_final_fixes()
 
     for name, tech in pairs(data.raw.technology) do
         if name ~= 'steel-processing' then
-            table.remove_matching(tech.effects,
-                table.matches{name = 'iron-stick', type = 'unlock-recipe'}
-            )
+            if tech.effects then
+                table.remove_matching(tech.effects,
+                    table.matches{ recipe = 'iron-stick', type = 'unlock-recipe'}
+                )
+            end
         end
     end
 
 end
+
+return earlygame:__seal()

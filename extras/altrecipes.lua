@@ -13,12 +13,18 @@ function altrecipes.data()
         { amount = 1, name = 'steel-plate', type = 'item' }
     }
 
-    data:extend(
+    data:extend{
         require 'extras.altrecipes.rail-recipes'
-    )
+    }
+
+    data:extend{
+        require 'extras.altrecipes.concrete-rail-technology'
+    }
 
     data:extend(
         require 'extras.altrecipes.stone-furnace-recipes'
     )
 
 end
+
+return altrecipes:__seal()
