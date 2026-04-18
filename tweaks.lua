@@ -47,6 +47,6 @@ tweaks.earlygame = require 'tweaks.earlygame'
 tweaks.inserter = require 'tweaks.inserter'
 tweaks.nuclear = require 'tweaks.nuclear'
 tweaks.ores = require 'tweaks.ores'
-tweaks.alteredrecipes = require 'tweaks.alteredrecipes'
+tweaks.malltech = require 'tweaks.malltech'
 
 return tweaks:__seal()

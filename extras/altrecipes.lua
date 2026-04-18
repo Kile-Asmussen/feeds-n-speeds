@@ -7,9 +7,9 @@ altrecipes.enabled = true
 function altrecipes.data()
     if not altrecipes.enabled then return end
 
-    altrecipes.rail()
+    altrecipes.rails()
     altrecipes.stone_furnace()
-    
+
 end
 
 function altrecipes.rails()
@@ -21,8 +21,8 @@ function altrecipes.rails()
 
     data:extend{
         require 'extras.altrecipes.rail-1-recipe',
-        require 'extras.altrecipes.rail-1-recipe',
-        require 'extras.altrecipes.rail-1-recipe',
+        require 'extras.altrecipes.rail-2-recipe',
+        require 'extras.altrecipes.rail-3-recipe',
     }
 
     data:extend{
@@ -37,7 +37,7 @@ function altrecipes.stone_furnace()
     }
 
     data.raw.recipe['stone-furnace'].ingredients = {
-        { amount = 20, name = 'stone', type = 'item' }
+        { amount = 5, name = 'stone-brick', type = 'item' }
     }
 
 end

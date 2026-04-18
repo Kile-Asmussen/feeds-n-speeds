@@ -3,7 +3,7 @@ require 'prelude'
 return {
     enabled = true,
     ingredients = {
-        { amount = 5, name = 'stone-brick', type = 'item' },
+        { amount = 20, name = 'stone', type = 'item' },
     },
     name = fns 'stone-furnace',
     results = {
