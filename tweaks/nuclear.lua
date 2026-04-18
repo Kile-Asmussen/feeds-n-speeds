@@ -30,11 +30,6 @@ function nuclear.data()
     heat_exchanger.energy_source.max_temperature = max_temperature
     data.raw['heat-pipe']['heat-pipe'].heat_buffer.max_temperature = max_temperature
 
-    -- Space age stuff:
-    if data.raw.generator['heating-tower'] then
-        data.raw.generator['heating-tower'].heat_buffer.max_temperature = max_temperature
-    end
-
     -- Energy production happens at 500 above ambient temperature
     -- for nice numbers
     heat_exchanger.target_temperature = high_temperature
@@ -59,6 +54,14 @@ function nuclear.data()
     -- each each interface between two adjacent reactors
     nuclear_reactor.neighbour_bonus = 0.5
 
+
+    local heating_tower = data.raw.reactor['heating-tower']
+    if heating_tower then
+        -- Match nuclear reactor heat output for consistent 1:5 HX ratio
+        heating_tower.consumption = '60MW'
+        -- Sync temperature limits with tweaked nuclear system
+        heating_tower.heat_buffer.max_temperature = max_temperature
+    end
 end
 
 function nuclear.data_updates()
