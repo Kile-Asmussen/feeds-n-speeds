@@ -13,6 +13,7 @@ return {
             icon_size = 256,
         },
     },
+    prerequisites = { 'steam-power' },
     effects = {
         {
             type = 'mining-with-fluid',
@@ -24,8 +25,7 @@ return {
         },
     },
     research_trigger = {
-        type = 'craft-fluid',
-        fluid = 'water',
-        count = 100,
+        type = 'build-entity',
+        entity = 'offshore-pump',
     },
 }

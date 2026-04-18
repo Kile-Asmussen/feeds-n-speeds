@@ -22,6 +22,9 @@ function drills.data()
         type = 'unlock-recipe',
         recipe = fns 'electric-mining-drill-fluid',
     })
+
+    -- Electric mining drill depends on wet drilling
+    table.insert(data.raw.technology['electric-mining-drill'].prerequisites, fns 'wet-drilling')
 end
 
 function drills.data_updates()
@@ -29,6 +32,23 @@ function drills.data_updates()
 
     -- Remove fluid input from vanilla electric mining drill
     data.raw['mining-drill']['electric-mining-drill'].input_fluid_box = nil
+
+    -- Remove uranium-mining technology (mining-with-fluid now from wet-drilling)
+    data.raw.technology['uranium-mining'].hidden = true
+
+    -- Convert uranium-processing from trigger-based to science-based
+    local uranium = data.raw.technology['uranium-processing']
+    uranium.research_trigger = nil
+    uranium.prerequisites = { 'chemical-science-pack', 'concrete' }
+    uranium.unit = {
+        count = 100,
+        time = 30,
+        ingredients = {
+            { 'automation-science-pack', 1 },
+            { 'logistic-science-pack', 1 },
+            { 'chemical-science-pack', 1 },
+        },
+    }
 end
 
 return drills:__seal()

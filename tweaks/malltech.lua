@@ -14,6 +14,13 @@ function malltech.tweak_technologies()
     local tech = data.raw.technology
 
     table.insert(tech['automation-2'].prerequisites, 'fast-inserter')
+
+    -- Centrifuge requires electric-engine-unit and speed-module
+    table.insert(tech['uranium-processing'].prerequisites, 'speed-module')
+    table.insert(tech['uranium-processing'].prerequisites, 'electric-engine')
+
+    -- Nuclear machines require electric-engine-unit
+    table.insert(tech['nuclear-power'].prerequisites, 'electric-engine')
 end
 
 function malltech.tweak_recipes()
@@ -25,6 +32,12 @@ function malltech.tweak_recipes()
 
     if tweaks.earlygame.enabled then
         malltech.mining_drills()
+
+        recipe['lab'].ingredients = {
+            { type='item', name='transport-belt', amount=4 },
+            { type='item', name='inserter', amount=2 },
+            { type='item', name='electronic-circuit', amount=8 },
+        }
     end
 
     if tweaks.nuclear.enabled then
