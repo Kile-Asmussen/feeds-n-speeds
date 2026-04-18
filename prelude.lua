@@ -2,8 +2,10 @@ require 'prelude.table'
 require 'prelude.string'
 
 local declared_namespaces = {}
-
 local mod_identifiers = {}
+
+local getmetatable = _G.getmetatable
+local setmetatable = _G.setmetatable
 
 local function fns(name)
     assert(type(name) == 'string', "invalid name: " .. tostring(name))
@@ -39,12 +41,10 @@ local function __ns_newindex(self, name, value)
     __rawset(self, name, value)
 end
 
-local __getmetatable = getmetatable
-
 local function __seal(self)
     self.__seal = nil
-    __getmetatable(self).__newindex = __sealed_newindex
-    __getmetatable(self).__metatable = 'namespace'
+    getmetatable(self).__newindex = __sealed_newindex
+    getmetatable(self).__metatable = 'namespace'
     assert(isnamespace(self), "you bungled the isnamespace function you doofus")
     return self
 end
@@ -52,13 +52,13 @@ end
 local function isnamespace(thing)
     if type(thing) ~= 'table' then return false end
     
-    if __getmetatable(thing) == 'namespace' then return true end
+    if getmetatable(thing) == 'namespace' then return true end
     
-    local mt = __getmetatable(thing)
+    local mt = getmetatable(thing)
 
     if
         type(mt) == 'table'
-        and __getmetatable(mt) == nil
+        and getmetatable(mt) == nil
         and mt.__metatable == mt
         and mt.__newindex == __ns_newindex
         and mt.__index == __ns_index
@@ -89,8 +89,6 @@ local function __ns_mt(path)
     return res
 end
 
-local __setmetatable = setmetatable
-
 local function namespace(path, res)
 
     assert(not declared_namespaces[path], 'namespace '.. path .. ' already declared')
@@ -100,7 +98,7 @@ local function namespace(path, res)
     res.parent_namespace = table.null
     res.__seal = __seal
     
-    __setmetatable(res, __ns_mt(path))
+    setmetatable(res, __ns_mt(path))
 
     declared_namespaces[path] = res
 

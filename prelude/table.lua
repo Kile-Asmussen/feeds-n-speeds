@@ -8,7 +8,8 @@ local __table_mt = {
         _G.table.rawset(tbl, k, v)
     end,
 }
-local __setmetatable = setmetatable
+local setmetatable = _G.setmetatable
+local getmetatable = _G.getmetatable
 
 --- Create or update a table with a metatable
 --- containing the `table' namespace as extra
@@ -26,9 +27,17 @@ function table.new(res, ...)
             res = {res}
         end
     end
-    __setmetatable(res, __table_mt)
+    setmetatable(res, __table_mt)
     return res
 end
+
+-- Extra methods for the metatable
+table.rawget = rawget
+table.rawset = rawset
+table.pairs = pairs
+table.ipairs = ipairs
+table.getmetatable = getmetatable
+table.setmetatable = setmetatable
 
 table.null = {}
 
@@ -43,19 +52,9 @@ setmetatable(table.null, {
     __metatable = table.null,
 })
 
-
--- Extra methods for the metatable
-table.rawget = rawget
-table.rawset = rawset
-table.pairs = pairs
-table.ipairs = ipairs
-table.getmetatable = getmetatable
-table.setmetatable = setmetatable
-
-local __getmetatable = getmetatable
 function table.iscallable(fn)
     return type(fn) == 'function' or
-        (type(fn) == 'table' and type(__getmetatable(fn)) == 'table' and __getmetatable(fn).__call ~= nil)
+        (type(fn) == 'table' and type(getmetatable(fn)) == 'table' and getmetatable(fn).__call ~= nil)
 end
 
 --- Recurse into a table containing other tables

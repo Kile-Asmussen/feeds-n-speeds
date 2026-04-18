@@ -26,6 +26,7 @@ local allowed_modules = table.set {
 local allowed_namespaces = table.set {
     'prelude.table',
     'prelude.string',
+    'debuglib'
 }
 
 -- implementation:
@@ -133,9 +134,13 @@ setfenv = nil
 newproxy = nil
 print = nil
 rawget = nil
+table.rawget = nil
 rawset = nil
+table.rawset = nil
 getmetatable = nil
+table.getmetatable = nil
 setmetatable = nil
+table.setmetatable = nil
 coroutine = nil
 string.dump = nil
 

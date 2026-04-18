@@ -1,5 +1,8 @@
 require 'prelude'
 
+local setmetatable = _G.setmetatable
+local getmetatable = _G.getmetatable
+
 local debuglib = namespace('debuglib')
 
 function debuglib.sprint(data, path)
@@ -42,14 +45,18 @@ debuglib.__push = table.insert
 function debuglib.__render_path(buffer)
   local res = nil
   for _, k in ipairs(buffer.path_list) do
+    if type(k) == 'number' or type(k) == 'boolean' or type(k) == 'nil' then
+      k = '[' .. tostring(k) .. ']'
+    end
+    
     if res == nil then
       res = k
-    elseif type(k) == 'number' then
-      res = res .. '[' .. tostring(k) .. ']'
-    elseif k[1] == '[' then
+    end
+
+    if k[1] == '[' then
       res = res .. k
     else
-      res = res .. '.' .. k
+      res = res .. '.' .. k 
     end
   end
   return res
