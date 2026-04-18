@@ -92,15 +92,15 @@ fact('isnamespace() returns false for non-table', function()
     assert_eq(isnamespace(nil), false)
 end)
 
-fact('isnamespace() returns false for unsealed namespace', function()
+fact('isnamespace() returns true for unsealed namespace', function()
     local ns = namespace('test.ns.unsealed')
-    assert_eq(isnamespace(ns), false)
+    assert_ok(isnamespace(ns))
 end)
 
 fact('isnamespace() returns true for sealed namespace', function()
     local ns = namespace('test.ns.sealcheck')
     ns:__seal()
-    assert_eq(isnamespace(ns), true)
+    assert_ok(isnamespace(ns))
 end)
 
 -- __seal() tests

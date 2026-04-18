@@ -31,7 +31,6 @@ local function __ns_index(self, name)
 end
 
 local __rawset = rawset
-
 local function __ns_newindex(self, name, value)
     assert(type(name) == 'string', 'namespace keys can only be strings')
     if isnamespace(value) then
@@ -42,20 +41,33 @@ end
 
 local __getmetatable = getmetatable
 
-local function isnamespace(thing)
-    if type(thing) ~= 'table' then return false end
-    if __getmetatable(thing) == 'namespace' then return true end
-    if type(__getmetatable(thing) ~= 'table') then return false end
-    if __getmetatable(thing).__metatable == __getmetatable(thing) then return false end
-    return false
-end
-
 local function __seal(self)
     self.__seal = nil
     __getmetatable(self).__newindex = __sealed_newindex
     __getmetatable(self).__metatable = 'namespace'
-    assert(isnamespace(self), "you bungled the isnamespac function you doofus")
+    assert(isnamespace(self), "you bungled the isnamespace function you doofus")
     return self
+end
+
+local function isnamespace(thing)
+    if type(thing) ~= 'table' then return false end
+    
+    if __getmetatable(thing) == 'namespace' then return true end
+    
+    local mt = __getmetatable(thing)
+
+    if
+        type(mt) == 'table'
+        and __getmetatable(mt) == nil
+        and mt.__metatable == mt
+        and mt.__newindex == __ns_newindex
+        and mt.__index == __ns_index
+        and thing.__seal == __seal
+    then
+        return true
+    end
+
+    return false
 end
 
 local __rawget = rawget

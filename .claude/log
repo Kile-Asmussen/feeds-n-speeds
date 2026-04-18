@@ -1186,3 +1186,623 @@ checking command: 'lua unit-tests.lua table string prelude'
 allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *', 'lua unit-tests.lua *']
 command matches pattern: 'lua unit-tests.lua *'
 sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:09:14.453560
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua"
+ },
+ "tool_use_id": "toolu_01AV5Sz9qzKYyDSfrC9Czir3"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:09:14.454089
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua"
+ },
+ "tool_use_id": "toolu_01AV5Sz9qzKYyDSfrC9Czir3"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua'), None, None)
+forbidden: **/too-big.txt **/raw.lua
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:09:14.727323
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua"
+ },
+ "tool_use_id": "toolu_01KKrE6ZgT4k8THWsWt578S6"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:09:14.731833
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua"
+ },
+ "tool_use_id": "toolu_01KKrE6ZgT4k8THWsWt578S6"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+2026-04-18T15:09:23.014692
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Bash",
+ "tool_input": {
+  "command": "lua unit-tests.lua table string prelude",
+  "description": "Run unit tests"
+ },
+ "tool_use_id": "toolu_01LyokKD98UYmo9BDUSuJXqd"
+}
+checking command: 'lua unit-tests.lua table string prelude'
+allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *', 'lua unit-tests.lua *']
+command matches pattern: 'lua unit-tests.lua *'
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+2026-04-18T15:17:09.248235
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Bash",
+ "tool_input": {
+  "command": "lua unit-tests.lua table string prelude",
+  "description": "Run unit tests"
+ },
+ "tool_use_id": "toolu_01X3DGVoA9y3egxTeEh2cxPQ"
+}
+checking command: 'lua unit-tests.lua table string prelude'
+allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *', 'lua unit-tests.lua *']
+command matches pattern: 'lua unit-tests.lua *'
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:17:13.163198
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua",
+  "offset": 55,
+  "limit": 25
+ },
+ "tool_use_id": "toolu_011udfg5iHZeLtH1jcFa8B2r"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:17:13.169057
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua",
+  "offset": 55,
+  "limit": 25
+ },
+ "tool_use_id": "toolu_011udfg5iHZeLtH1jcFa8B2r"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua'), None, None)
+forbidden: **/too-big.txt **/raw.lua
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/prelude.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+2026-04-18T15:19:09.375362
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Bash",
+ "tool_input": {
+  "command": "lua unit-tests.lua table string prelude",
+  "description": "Run unit tests"
+ },
+ "tool_use_id": "toolu_01EMszmpJU1LTKyz92BJ23PK"
+}
+checking command: 'lua unit-tests.lua table string prelude'
+allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *', 'lua unit-tests.lua *']
+command matches pattern: 'lua unit-tests.lua *'
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+2026-04-18T15:19:24.027529
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Bash",
+ "tool_input": {
+  "command": "lua unit-tests.lua table string prelude",
+  "description": "Run unit tests"
+ },
+ "tool_use_id": "toolu_0156p9r12F3YtRUgG7m63oLM"
+}
+checking command: 'lua unit-tests.lua table string prelude'
+allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *', 'lua unit-tests.lua *']
+command matches pattern: 'lua unit-tests.lua *'
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:25:16.610743
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua",
+  "offset": 61,
+  "limit": 20
+ },
+ "tool_use_id": "toolu_0165k7Q3rqbqi4S5VaonwiBV"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:25:16.615592
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua",
+  "offset": 61,
+  "limit": 20
+ },
+ "tool_use_id": "toolu_0165k7Q3rqbqi4S5VaonwiBV"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/prelude/table.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:25:17.461960
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/table.lua",
+  "offset": 76,
+  "limit": 25
+ },
+ "tool_use_id": "toolu_017M6BWH2ZbcMU1bNGhCNYVA"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/table.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:25:17.466995
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/table.lua",
+  "offset": 76,
+  "limit": 25
+ },
+ "tool_use_id": "toolu_017M6BWH2ZbcMU1bNGhCNYVA"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/table.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/table.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:25:18.129350
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua",
+  "offset": 93,
+  "limit": 10
+ },
+ "tool_use_id": "toolu_015VWawGkUTGntqH44za6SwZ"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:25:18.133678
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua",
+  "offset": 93,
+  "limit": 10
+ },
+ "tool_use_id": "toolu_015VWawGkUTGntqH44za6SwZ"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/unit-tests/prelude.lua
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+2026-04-18T15:25:28.551681
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Bash",
+ "tool_input": {
+  "command": "lua unit-tests.lua table string prelude",
+  "description": "Run unit tests"
+ },
+ "tool_use_id": "toolu_01X8TtGVtEXSg9QBtQtU3MCf"
+}
+checking command: 'lua unit-tests.lua table string prelude'
+allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *', 'lua unit-tests.lua *']
+command matches pattern: 'lua unit-tests.lua *'
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-bash.py
+2026-04-18T15:27:54.429264
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Bash",
+ "tool_input": {
+  "command": "lua unit-tests.lua table string prelude",
+  "description": "Run unit tests"
+ },
+ "tool_use_id": "toolu_01C1AtkaLZbwuHcpEt3uGhL2"
+}
+checking command: 'lua unit-tests.lua table string prelude'
+allowed patterns: ['lua debug-load.lua', 'lua debug-data-raw.lua *', 'DEPTH=1 lua debug-data-raw.lua *', 'DEPTH=2 lua debug-data-raw.lua *', 'DEPTH=3 lua debug-data-raw.lua *', 'DEPTH=4 lua debug-data-raw.lua *', 'DEPTH=5 lua debug-data-raw.lua *', 'lua unit-tests.lua *']
+command matches pattern: 'lua unit-tests.lua *'
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:28:56.504689
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.claude/settings.json"
+ },
+ "tool_use_id": "toolu_01MwkgV11zB5oZPCTCXN6Qbi"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/.claude/settings.json
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:28:56.510939
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.claude/settings.json"
+ },
+ "tool_use_id": "toolu_01MwkgV11zB5oZPCTCXN6Qbi"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/.claude/settings.json'), None, None)
+forbidden: **/too-big.txt **/raw.lua
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/settings.json
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:28:56.632929
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/CLAUDE.md"
+ },
+ "tool_use_id": "toolu_01DwyBTustd8MDqMP5ECThww"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/CLAUDE.md
+allowing 2 paths
+/home/qeela/facts and oreos/references
+/home/qeela/facts and oreos/FeedsNSpeeds
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:28:56.636700
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/CLAUDE.md"
+ },
+ "tool_use_id": "toolu_01DwyBTustd8MDqMP5ECThww"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/CLAUDE.md'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/CLAUDE.md
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:32:51.381180
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Glob",
+ "tool_input": {
+  "pattern": ".claude/**/*factorio*"
+ },
+ "tool_use_id": "toolu_01GDXK2jQVRasugyNbipkqJa"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-webfetch-urls.py
+2026-04-18T15:34:33.467083
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "WebFetch",
+ "tool_input": {
+  "url": "https://code.claude.com/docs/en/claude_code_docs_map.md",
+  "prompt": "How are skills configured in settings.json? What is the correct schema and format for defining custom skills?"
+ },
+ "tool_use_id": "toolu_01LHpoWQSyNp8F1xU91jggFp"
+}
+url: https://code.claude.com/docs/en/claude_code_docs_map.md
+hostname: code.claude.com
+hostname+path: code.claude.com/docs/en/claude_code_docs_map.md
+allowed domains:
+lua-api.factorio.com
+code.claude.com
+wiki.factorio.com
+forums.factorio.com
+en.wikipedia.org
+explicit exceptions:
+allowing fetch -- hostname permitted by `code.claude.com'
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-webfetch-urls.py
+2026-04-18T15:34:35.598557
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "WebFetch",
+ "tool_input": {
+  "url": "https://code.claude.com/docs/en/skills.md",
+  "prompt": "What is the correct schema and format for configuring skills in settings.json?"
+ },
+ "tool_use_id": "toolu_01TLNUqR1TbghuRZMpXxzE6m"
+}
+url: https://code.claude.com/docs/en/skills.md
+hostname: code.claude.com
+hostname+path: code.claude.com/docs/en/skills.md
+allowed domains:
+lua-api.factorio.com
+code.claude.com
+wiki.factorio.com
+forums.factorio.com
+en.wikipedia.org
+explicit exceptions:
+allowing fetch -- hostname permitted by `code.claude.com'
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-webfetch-urls.py
+2026-04-18T15:34:38.254989
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "WebFetch",
+ "tool_input": {
+  "url": "https://code.claude.com/docs/en/settings.md",
+  "prompt": "What is the schema for configuring skills in settings.json? Are skills auto-discovered or must they be listed?"
+ },
+ "tool_use_id": "toolu_01EDL3RozquA6LTXPcbbyZbC"
+}
+url: https://code.claude.com/docs/en/settings.md
+hostname: code.claude.com
+hostname+path: code.claude.com/docs/en/settings.md
+allowed domains:
+lua-api.factorio.com
+code.claude.com
+wiki.factorio.com
+forums.factorio.com
+en.wikipedia.org
+explicit exceptions:
+allowing fetch -- hostname permitted by `code.claude.com'
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:35:52.567646
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Glob",
+ "tool_input": {
+  "pattern": ".claude/skills/**/*"
+ },
+ "tool_use_id": "toolu_01X2vb2KboTqNu99KgrQVxpf"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-restrict-read-grep-glob-paths.py
+2026-04-18T15:35:56.324574
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.claude/skills/factorio-research/SKILL.md"
+ },
+ "tool_use_id": "toolu_01BR3pARYRS4YxDi6RFR143h"
+}
+path /home/qeela/facts and oreos/FeedsNSpeeds/.claude/skills/factorio-research/SKILL.md
+allowing 2 paths
+/home/qeela/facts and oreos/FeedsNSpeeds
+/home/qeela/facts and oreos/references
+sys.exit(0)
+
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/hook-forbid-reads-by-glob.py
+2026-04-18T15:35:56.329356
+{
+ "session_id": "a0d7db7a-e3dd-4167-b3fb-67103bc98383",
+ "transcript_path": "/home/qeela/.claude/projects/-home-qeela-facts-and-oreos-FeedsNSpeeds/a0d7db7a-e3dd-4167-b3fb-67103bc98383.jsonl",
+ "cwd": "/home/qeela/facts and oreos/FeedsNSpeeds",
+ "permission_mode": "dontAsk",
+ "hook_event_name": "PreToolUse",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/qeela/facts and oreos/FeedsNSpeeds/.claude/skills/factorio-research/SKILL.md"
+ },
+ "tool_use_id": "toolu_01BR3pARYRS4YxDi6RFR143h"
+}
+('Read', PosixPath('/home/qeela/facts and oreos/FeedsNSpeeds/.claude/skills/factorio-research/SKILL.md'), None, None)
+forbidden: **/raw.lua **/too-big.txt
+inspecting 1 paths
+/home/qeela/facts and oreos/FeedsNSpeeds/.claude/skills/factorio-research/SKILL.md
+sys.exit(0)

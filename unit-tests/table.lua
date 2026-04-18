@@ -72,23 +72,30 @@ end)
 -- table.descend tests
 fact('table.descend single level', function()
     local tbl = {a = 1}
-    assert_eq(table.descend(tbl, 'a'), 1)
+    local val, hit = table.descend(tbl, 'a')
+    assert_eq(val, 1)
+    assert_ok(hit)
 end)
 
 fact('table.descend multiple levels', function()
     local tbl = {a = {b = {c = 42}}}
-    assert_eq(table.descend(tbl, 'a', 'b', 'c'), 42)
+    local val, hit = table.descend(tbl, 'a', 'b', 'c')
+    assert_eq(val, 42)
+    assert_ok(hit)
 end)
 
-fact('table.descend returns nil for missing key', function()
+fact('table.descend returns value, false for missing key', function()
     local tbl = {a = 1}
-    local val = table.descend(tbl, 'a', 'b')
-    assert_eq(val, nil)
+    local val, hit = table.descend(tbl, 'a', 'b')
+    assert_eq(val, 1)
+    assert_ok(not hit)
 end)
 
 fact('table.descend stops at non-table', function()
     local tbl = {a = 42}
-    assert_eq(table.descend(tbl, 'a', 'b'), 42)
+    local val, hit = table.descend(tbl, 'a', 'b')
+    assert_eq(val, 42)
+    assert_ok(not hit)
 end)
 
 -- table.remove_matching tests

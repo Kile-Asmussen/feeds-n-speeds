@@ -8,6 +8,8 @@
       "Grep",
       "Write(slop/**/*)",
       "Edit(slop/**/*)",
+      "Write(unit-tests/*)",
+      "Edit(unit-tests/*)",
       "WebFetch",
       "WebSearch",
       "AskUserQuestion",
@@ -28,12 +30,6 @@
       "Edit(.claude/**/*)"
     ]
   },
-  "skills": [
-    {
-      "name": "factorio-research",
-      "path": ".claude/skills/factorio-research.md"
-    }
-  ],
   "hooks": {
     "SessionStart": [
       {

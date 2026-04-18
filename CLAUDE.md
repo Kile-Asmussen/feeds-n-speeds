@@ -4,7 +4,7 @@ A Factorio 2.0 mod providing value tweaks, balance changes, and new items.
 
 ## Etiquette
 
-Avoid addressing the user as 'you', prefer instead passive voice and referring to the user as 'the operator'.
+Prefer to use passive voice and referring to the user as 'operator'.
 
 ## Project Structure
 
@@ -31,10 +31,17 @@ FeedsNSpeeds/
 ├── extras/               # New modded entities
 │   ├── chests/           # Big steel chest variants
 │   └── radars/           # Small radar entity
+├── unit-tests.lua        # Test harness entry point (sandboxed)
+├── unit-tests-trusted.lua # Trusted tests (pre-sandbox)
+├── unit-tests/           # Test modules
+│   ├── table.lua         # Tests for prelude/table.lua
+│   ├── string.lua        # Tests for prelude/string.lua
+│   └── prelude.lua       # Tests for namespace system
 ├── graphics/             # Sprite assets
 ├── locale/en/            # Localization strings
 ├── build-scripts/        # Build tooling (export-ignored)
 ├── output/               # Build artifacts
+├── slop/                 # Draft code for review
 └── .claude/              # Claude Code safety hooks
 ```
 
@@ -44,12 +51,12 @@ FeedsNSpeeds/
 
 The mod uses a custom namespace system defined in `prelude.lua`:
 
-- `namespace(path)` - Creates a new sealed namespace
+- `namespace(path, tbl?)` - Creates a new namespace (optionally from existing table)
 - `import(path)` - Retrieves a declared namespace
 - `fns(name)` - Generates mod-prefixed identifiers (`feeds-n-speeds-{name}`)
-- `isnamespace(thing)` - Type check for namespaces
+- `isnamespace(thing)` - Type check for namespaces (sealed or unsealed)
 
-Namespaces are sealed after initialization via `__seal()` to prevent accidental modification.
+Namespaces can be sealed after initialization via `__seal()` to prevent accidental modification.
 
 ### Module Pattern
 
@@ -112,7 +119,7 @@ Domains with `enabled` boolean get automatic startup settings via `loading.creat
 
 ```bash
 make build      # Create distributable zip via git archive
-make test       # Run test-*.lua files
+make test       # Run unit tests via unit-tests.lua
 make install    # Copy to ~/.factorio/mods
 make uninstall  # Remove from ~/.factorio/mods
 make nuke       # Uninstall + remove mod-settings.dat
@@ -130,11 +137,11 @@ make nuke       # Uninstall + remove mod-settings.dat
 
 ### prelude/table.lua
 
-Key functions: `table.new()`, `table.null`, `table.matches()`, `table.find_matching()`, `table.descend()`, `table.clone()`, `table.traverse()`, vector operations (`table.add()`, `table.scale()`)
+Key functions: `table.new()`, `table.null`, `table.matches()`, `table.find_matching()`, `table.descend()`, `table.clone()`, `table.traverse()`, `table.set()`, vector operations (`table.add()`, `table.scale()`, `table.vecadd()`, `table.vecmul()`)
 
 ### prelude/string.lua
 
-Key functions: `string.lpad()`, `string.rpad()`, `string.predicate()`, `string.sprint()`
+Key functions: `string.lpad()`, `string.rpad()`, `string.predicate()`, `string.sprint()`, `string.chomp()`
 
 ### debuglib.lua
 
@@ -149,11 +156,30 @@ Pretty-printer for Lua data structures with recursion limiting and cycle detecti
 
 ## Testing
 
-Local Lua tests run via `make test` or `./build-scripts/test.sh`. Test files match `test-*.lua` pattern.
+### Test Harness
 
-Currently tests are not well covered.
+Unit tests are run via `unit-tests.lua`, a sandboxed test harness:
 
-Manual sanity-checking is done with `debug-load.lua` prior to loading mod into Factorio itself.
+```bash
+lua unit-tests.lua table string prelude    # Run specific test modules
+```
+
+Test files in `unit-tests/` use global functions defined by the harness:
+- `fact(description, fn)` - Register test expected to pass
+- `fiction(description, fn)` - Register test expected to error
+- `assert_eq(a, b)` - Assert equality
+- `assert_ok(val)` - Assert truthy
+- `assert_is(val, type)` - Assert type
+
+### Sandboxing
+
+The test harness sandboxes test code by nil'ing dangerous globals (`io`, `os`, `debug`, `load`, etc.) after loading trusted modules. This allows Claude to write tests autonomously with reduced risk.
+
+`unit-tests-trusted.lua` contains tests requiring privileged functions (e.g., `setmetatable`) and runs before the sandbox is applied.
+
+### Coverage
+
+112 tests covering `prelude/table.lua`, `prelude/string.lua`, and namespace system.
 
 ## Reference Materials
 
@@ -166,6 +192,25 @@ The `references/` sibling directory contains example Factorio mods for reference
 
 Factorio Lua API docs: https://lua-api.factorio.com (version 2.0.x)
 
+## Skills
+
+### /factorio-research
+
+Skill for researching Factorio prototypes by inspecting live `data.raw` structures.
+
+**When to use:**
+- Before modifying or creating prototypes
+- When unsure about field names, types, or valid values
+- To find examples of vanilla implementations
+
+**Workflow:**
+1. List prototype categories: `DEPTH=1 lua debug-data-raw.lua`
+2. Inspect category: `DEPTH=1 lua debug-data-raw.lua <category>`
+3. Drill into prototype: `DEPTH=3 lua debug-data-raw.lua <category> <name>`
+4. Cross-reference API docs via WebFetch
+
+See `.claude/skills/factorio-research/SKILL.md` for full documentation.
+
 ## Claude Code Restrictions
 
 This project uses a safety harness (`.claude/settings.json` and hooks) to limit Claude's capabilities.
@@ -173,14 +218,15 @@ This project uses a safety harness (`.claude/settings.json` and hooks) to limit 
 ### Allowed Tools
 
 - **File reading**: Read, Glob, Grep (within allowed paths)
-- **File writing**: Write, Edit (only in `slop/**/*`)
+- **File writing**: Write, Edit (in `slop/**/*` and `unit-tests/*`)
+- **Shell execution**: Bash (restricted to allowlist via hook)
 - **Web access**: WebFetch (restricted domains), WebSearch
 - **Interaction**: AskUserQuestion
 - **Task management**: TaskCreate, TaskGet, TaskList, TaskStop, TaskOutput, TaskUpdate
 
 ### Denied Tools
 
-- **Shell execution**: Bash, PowerShell, Agent
+- **Agent**: Subagent spawning disabled
 - **Protected paths**: Write/Edit to `.claude/**/*`
 
 ### Hook Restrictions
@@ -190,11 +236,20 @@ This project uses a safety harness (`.claude/settings.json` and hooks) to limit 
 | `hook-restrict-read-grep-glob-paths.py` | File operations limited to project directory and `../references/` |
 | `hook-forbid-reads-by-glob.py` | Blocks reading `**/raw.lua` and `**/too-big.txt` (large files) |
 | `hook-restrict-webfetch-urls.py` | WebFetch limited to `lua-api.factorio.com` |
+| `hook-restrict-bash.py` | Bash commands must match patterns in `allowed-bash-commands.json`; shell metacharacters blocked |
+
+### Allowed Bash Commands
+
+Defined in `.claude/allowed-bash-commands.json`:
+- `lua unit-tests.lua *` - Run unit tests with explicit module names
+- `lua debug-load.lua` - Debug module loading
+- `lua debug-data-raw.lua *` - Inspect data.raw
 
 ### Implications
 
-- Claude cannot run builds, tests, or install the mod directly
+- Claude can run unit tests but not arbitrary shell commands
+- Claude can write test files directly to `unit-tests/`
+- Claude can draft other code in `slop/` for operator review
 - Claude cannot modify hook configuration or settings
-- Claude can draft code in `slop/` for manual review and integration
 - File reads outside the project require explicit allowlist entries
 - Web documentation access limited to Factorio Lua API

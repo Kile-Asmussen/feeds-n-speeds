@@ -40,6 +40,3 @@ full-reinstall: clean nuke install
 
 nuke: uninstall
 	rm -f ~/.factorio/mods/mod-settings.dat
-
-test:
-	@./build-scripts/unit-tests.sh

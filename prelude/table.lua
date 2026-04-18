@@ -65,15 +65,17 @@ function table.descend(tbl, ...)
     
     for _, key in ipairs(keys) do
         if type(tbl) ~= 'table' then
-            return tbl
+            return tbl, false
         end
+
         if tbl[key] then
             tbl = tbl[key]
         else
-            return nil, tbl
+            return tbl, false
         end
     end
-    return tbl
+    
+    return tbl, true
 end
 
 --- Remove an element matching a predicate from a table
