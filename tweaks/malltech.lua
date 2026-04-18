@@ -3,7 +3,7 @@ require 'prelude'
 local malltech = namespace 'tweaks.malltech'
 malltech.enabled = true
 
-function malltech.data()
+function malltech.data_updates()
     if not malltech.enabled then return end
 
     malltech.tweak_recipes()

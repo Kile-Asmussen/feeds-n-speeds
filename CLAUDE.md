@@ -223,6 +223,7 @@ This project uses a safety harness (`.claude/settings.json` and hooks) to limit 
 - **File reading**: Read, Glob, Grep (within allowed paths)
 - **File writing**: Write, Edit (only in `slop/**/*` and `unit-tests/*`)
 - **File editing**: Edit (in `extras/**/*` and `tweaks/**/*`)
+- **File deletion**: Through the `.claude/safe-rm.py` script.
 - **Shell execution**: Bash (restricted to allowlist via hook)
 - **Web access**: WebFetch (restricted domains), WebSearch
 - **Interaction**: AskUserQuestion

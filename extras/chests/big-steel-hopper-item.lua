@@ -7,7 +7,16 @@ return {
     filename = '__base__/sound/item/metal-chest-inventory-move.ogg',
     volume = 0.6
   },
-  icon = '__FeedsNSpeeds__/graphics/item/big-steel-hopper.png',
+  icons = {
+    { icon = '__FeedsNSpeeds__/graphics/item/big-steel-hopper.png', icon_size = 64 },
+    {
+      icon = '__base__/graphics/icons/arrows/up-arrow.png',
+      icon_size = 64,
+      scale = 0.25,
+      shift = { -8, 8 },
+      tint = { r = 0.2, g = 1, b = 0.2 },
+    },
+  },
   inventory_move_sound = {
     aggregation = {
       max_count = 1,

@@ -7,7 +7,16 @@ return {
     filename = '__base__/sound/item/metal-large-inventory-move.ogg',
     volume = 0.7
   },
-  icon = '__FeedsNSpeeds__/graphics/item/small-radar.png',
+  icons = {
+    { icon = '__base__/graphics/icons/radar.png', icon_size = 64 },
+    {
+      icon = '__base__/graphics/icons/arrows/down-arrow.png',
+      icon_size = 64,
+      scale = 0.25,
+      shift = { -8, 8 },
+      tint = { r = 0.2, g = 1, b = 0.2 },
+    },
+  },
   inventory_move_sound = {
     aggregation = {
       max_count = 1,

@@ -3,8 +3,17 @@ require 'prelude'
 return {
     type = 'technology',
     name = fns 'concrete-rail',
-    icon = '__base__/graphics/technology/railway.png',
-    icon_size = 256,
+    icons = {
+        {
+            icon = '__base__/graphics/technology/railway.png',
+            icon_size = 256,
+        },
+        {
+            icon = '__base__/graphics/technology/concrete.png',
+            icon_size = 256,
+            scale = 0.5,
+        },
+    },
     prerequisites = {
         'concrete',
         'railway',

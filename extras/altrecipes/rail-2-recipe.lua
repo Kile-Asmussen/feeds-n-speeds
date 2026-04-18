@@ -4,6 +4,15 @@ require 'prelude'
 
 return {
     enabled = false,
+    icons = {
+        { icon = '__base__/graphics/icons/rail.png', icon_size = 64 },
+        {
+            icon = '__base__/graphics/icons/concrete.png',
+            icon_size = 64,
+            scale = 0.25,
+            shift = { -8, 8 },
+        },
+    },
     order = 'a[rail]-c[rail-2]',
     ingredients = {
         { amount = 2, name = 'concrete', type = 'item' },

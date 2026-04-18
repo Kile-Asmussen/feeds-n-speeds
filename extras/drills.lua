@@ -14,6 +14,7 @@ function drills.data()
         require 'extras.drills.electric-mining-drill-fluid-building',
         require 'extras.drills.electric-mining-drill-fluid-item',
         require 'extras.drills.electric-mining-drill-fluid-recipe',
+        require 'extras.drills.wet-drilling-technology',
     }
 
     -- Unlock electric drill with fluid alongside regular electric drill
