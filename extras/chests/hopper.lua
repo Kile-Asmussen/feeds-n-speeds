@@ -77,11 +77,11 @@ function hopper.is_chest(entity)
     return entity.name == hopper.CHEST_NAME
 end
 
---- Get the opposite direction name
---- @param dir string Direction name (north, south, east, west)
---- @return string Opposite direction name
-function hopper.get_opposite_direction(dir)
-    return hopper.DIRECTIONS[dir].opposite
+--- Check if an entity is a hopper
+--- @param entity LuaEntity
+--- @return boolean
+function hopper.is_hopper(entity)
+    return entity.name == hopper.HOPPER_NAME
 end
 
 --- Search for a tracked entity at the given direction offset from entity
@@ -149,23 +149,9 @@ function hopper.clear_own_neighbors(unit_number)
     storage.neighbors[unit_number] = nil
 end
 
---- Get the neighbor entry for a unit number
---- @param unit_number uint64
---- @return table|nil {north=unit_number|nil, ...}
-function hopper.get_neighbors(unit_number)
-    return storage.neighbors[unit_number]
-end
-
 -----------------------------------------------------------------------
 -- Link tracking (separate from neighbor graph)
 -----------------------------------------------------------------------
-
---- Check if a hopper is currently linked to a chest
---- @param hopper_id uint64
---- @return boolean
-function hopper.is_linked(hopper_id)
-    return storage.hopper_links[hopper_id] ~= nil
-end
 
 --- Record that a hopper is linked to a chest
 --- @param hopper_id uint64
@@ -178,55 +164,6 @@ end
 --- @param hopper_id uint64
 function hopper.remove_link(hopper_id)
     storage.hopper_links[hopper_id] = nil
-end
-
------------------------------------------------------------------------
--- Neighbor-based entity lookup helpers
------------------------------------------------------------------------
-
---- Count how many adjacent chests a hopper has (using neighbor graph)
---- @param hopper_id uint64
---- @param exclude_id uint64|nil Unit number to exclude from count
---- @return number, uint64|nil Count and single chest ID if count is 1
-function hopper.count_adjacent_chests(hopper_id, exclude_id)
-    local neighbors = storage.neighbors[hopper_id]
-    if not neighbors then
-        return 0, nil
-    end
-
-    local count = 0
-    local single_chest_id = nil
-
-    for _, neighbor_id in pairs(neighbors) do
-        if neighbor_id ~= exclude_id then
-            local ent = game.get_entity_by_unit_number(neighbor_id)
-            if ent and ent.valid and hopper.is_chest(ent) then
-                count = count + 1
-                single_chest_id = neighbor_id
-            end
-        end
-    end
-
-    if count == 1 then
-        return 1, single_chest_id
-    else
-        return count, nil
-    end
-end
-
---- Find exactly one adjacent chest for a hopper, or nil if zero or multiple
---- @param hopper_id uint64
---- @param exclude_id uint64|nil Unit number to exclude
---- @return LuaEntity|nil
-function hopper.find_unique_adjacent_chest(hopper_id, exclude_id)
-    local count, chest_id = hopper.count_adjacent_chests(hopper_id, exclude_id)
-    if count == 1 and chest_id then
-        local ent = game.get_entity_by_unit_number(chest_id)
-        if ent and ent.valid then
-            return ent
-        end
-    end
-    return nil
 end
 
 --- Get all neighbor unit numbers as a list (for iteration)
@@ -243,6 +180,78 @@ function hopper.get_neighbor_ids(unit_number)
         table.insert(result, neighbor_id)
     end
     return result
+end
+
+-----------------------------------------------------------------------
+-- Cluster discovery (flood fill)
+-----------------------------------------------------------------------
+
+--- Flood fill from a starting entity to discover connected cluster
+--- Traverses through all connected hoppers and chests.
+--- @param start_entity LuaEntity The hopper or chest to start from
+--- @param exclude_id uint64|nil Unit number to exclude from traversal
+--- @return LuaEntity[], LuaEntity[], uint64 Lists of hoppers, chests, and lowest unit_number
+function hopper.flood_fill_cluster(start_entity, exclude_id)
+    local visited = {}  -- visited[unit_number] = true (set)
+    local hoppers = {}  -- list of hopper entities in cluster
+    local chests = {}   -- list of chest entities in cluster
+    local queue = {}    -- BFS queue of entities to process
+    local min_id = start_entity.unit_number
+
+    -- Initialize with start entity
+    table.insert(queue, start_entity)
+    visited[start_entity.unit_number] = true
+
+    while #queue > 0 do
+        local current = table.remove(queue, 1)
+
+        -- Categorize current entity
+        if hopper.is_hopper(current) then
+            table.insert(hoppers, current)
+        elseif hopper.is_chest(current) then
+            table.insert(chests, current)
+        end
+
+        -- Traverse to all neighbors
+        local neighbors = storage.neighbors[current.unit_number]
+        if neighbors then
+            for _, neighbor_id in pairs(neighbors) do
+                if not visited[neighbor_id] and neighbor_id ~= exclude_id then
+                    visited[neighbor_id] = true
+                    min_id = math.min(min_id, neighbor_id)
+
+                    local neighbor = game.get_entity_by_unit_number(neighbor_id)
+                    if neighbor and neighbor.valid then
+                        table.insert(queue, neighbor)
+                    end
+                end
+            end
+        end
+    end
+
+    return hoppers, chests, min_id
+end
+
+--- Evaluate and update linking for an entire cluster
+--- Links all hoppers to the chest if exactly one chest exists,
+--- otherwise unlinks all hoppers in the cluster.
+--- @param start_entity LuaEntity Any hopper or chest in the cluster
+--- @param exclude_id uint64|nil Unit number to exclude from traversal
+function hopper.link_cluster(start_entity, exclude_id)
+    local hoppers, chests = hopper.flood_fill_cluster(start_entity, exclude_id)
+
+    if #chests == 1 then
+        -- Exactly one chest - link all hoppers to it
+        local chest = chests[1]
+        for _, hopper_entity in ipairs(hoppers) do
+            hopper.link(hopper_entity, chest)
+        end
+    else
+        -- Zero or multiple chests - unlink all hoppers
+        for _, hopper_entity in ipairs(hoppers) do
+            hopper.unlink(hopper_entity)
+        end
+    end
 end
 
 
@@ -266,38 +275,12 @@ function hopper.unlink(hopper_entity)
     hopper.remove_link(hopper_entity.unit_number)
 end
 
---- Try to link a hopper to its unique adjacent chest (if any)
---- @param hopper_entity LuaEntity
---- @param exclude_id uint64|nil Chest ID to exclude from consideration
-function hopper.try_link_hopper(hopper_entity, exclude_id)
-    local chest = hopper.find_unique_adjacent_chest(hopper_entity.unit_number, exclude_id)
-    if chest then
-        hopper.link(hopper_entity, chest)
-    end
-end
-
---- Re-evaluate linking for a hopper after neighbor changes
---- @param hopper_entity LuaEntity
---- @param exclude_id uint64|nil ID to exclude (dying entity)
-function hopper.reevaluate_hopper_link(hopper_entity, exclude_id)
-    local currently_linked = hopper.is_linked(hopper_entity.unit_number)
-    local chest = hopper.find_unique_adjacent_chest(hopper_entity.unit_number, exclude_id)
-
-    if chest then
-        -- Exactly one adjacent chest - link to it
-        hopper.link(hopper_entity, chest)
-    elseif currently_linked then
-        -- Multiple or zero chests - unlink
-        hopper.unlink(hopper_entity)
-    end
-end
-
 -----------------------------------------------------------------------
 -- Event handlers
 -----------------------------------------------------------------------
 
 --- Handle any tracked entity being placed
---- Updates neighbor graph and triggers linking logic
+--- Updates neighbor graph and re-evaluates cluster linking
 --- @param event EventData.on_built_entity
 function hopper.on_entity_built(event)
     local entity = event.entity
@@ -308,28 +291,20 @@ function hopper.on_entity_built(event)
     hopper.update_own_neighbors(entity)
 
     -- Step 2: Update each neighbor's entry (they will now find us)
-    -- Also re-evaluate hopper links for any affected hoppers
     local neighbor_ids = hopper.get_neighbor_ids(entity.unit_number)
     for _, neighbor_id in ipairs(neighbor_ids) do
         local neighbor = game.get_entity_by_unit_number(neighbor_id)
         if neighbor and neighbor.valid then
             hopper.update_own_neighbors(neighbor)
-
-            -- If the neighbor is a hopper, re-evaluate its linking
-            if neighbor.name == hopper.HOPPER_NAME then
-                hopper.reevaluate_hopper_link(neighbor)
-            end
         end
     end
 
-    -- Step 3: If the placed entity is a hopper, try to link it
-    if entity.name == hopper.HOPPER_NAME then
-        hopper.try_link_hopper(entity)
-    end
+    -- Step 3: Re-evaluate linking for the entire cluster
+    hopper.link_cluster(entity)
 end
 
 --- Handle any tracked entity being destroyed
---- Updates neighbor graph (excluding dying entity) and re-evaluates links
+--- Updates neighbor graph (excluding dying entity) and re-evaluates cluster linking
 --- @param event EventData.on_entity_died|EventData.on_player_mined_entity|EventData.on_robot_mined_entity
 function hopper.on_entity_destroyed(event)
     local entity = event.entity
@@ -345,21 +320,28 @@ function hopper.on_entity_destroyed(event)
     hopper.clear_own_neighbors(dying_id)
 
     -- Step 3: If we're a hopper, clear our link record
-    if entity.name == hopper.HOPPER_NAME then
+    if hopper.is_hopper(entity) then
         hopper.remove_link(dying_id)
     end
 
     -- Step 4: Update each neighbor's entry (excluding dying entity)
-    -- and re-evaluate hopper links
     for _, neighbor_id in ipairs(neighbor_ids) do
         local neighbor = game.get_entity_by_unit_number(neighbor_id)
         if neighbor and neighbor.valid then
-            -- Update neighbor's entry, excluding the dying entity
             hopper.update_own_neighbors(neighbor, dying_id)
+        end
+    end
 
-            -- If the neighbor is a hopper, re-evaluate its linking
-            if neighbor.name == hopper.HOPPER_NAME then
-                hopper.reevaluate_hopper_link(neighbor, dying_id)
+    -- Step 5: Re-evaluate linking for each neighbor's cluster
+    -- Each neighbor may now be in a separate cluster
+    local evaluated = {}  -- track which clusters we've already evaluated (by min_id)
+    for _, neighbor_id in ipairs(neighbor_ids) do
+        local neighbor = game.get_entity_by_unit_number(neighbor_id)
+        if neighbor and neighbor.valid then
+            local _, _, min_id = hopper.flood_fill_cluster(neighbor, dying_id)
+            if not evaluated[min_id] then
+                evaluated[min_id] = true
+                hopper.link_cluster(neighbor, dying_id)
             end
         end
     end
@@ -381,31 +363,26 @@ end
 -- - Each entity only updates its OWN storage entry (no recursion risk)
 -- - Neighbor updates are triggered explicitly, not implicitly
 --
--- LINKING RULES:
+-- CLUSTER-BASED LINKING:
 --
--- 1. Multiple adjacent chests: Hopper remains unlinked (ambiguous target).
---    Only links when exactly one adjacent chest exists.
+-- Hoppers can connect through other hoppers to reach chests further away.
+-- A "cluster" is all hoppers and chests reachable via flood fill through
+-- the neighbor graph.
 --
--- 2. Neighbor changes: When the neighbor graph changes for a hopper,
---    we re-evaluate whether it should be linked. If it was linked
---    but now has 0 or 2+ adjacent chests, it gets unlinked.
+-- 1. If a cluster contains exactly one chest, all hoppers link to it.
+-- 2. If a cluster contains zero or multiple chests, all hoppers unlink.
+-- 3. When an entity is removed, the cluster may split into multiple
+--    clusters, each evaluated independently.
 --
--- 3. Chest destroyed: Neighbors update their graphs, hoppers re-evaluate
---    linking (excluding the dying chest from consideration).
+-- The flood_fill_cluster function returns the minimum unit_number found,
+-- which serves as a canonical cluster identifier for deduplication.
 --
--- 4. Visual feedback: Not implemented. Could add flying text on link.
+-- ENTITY FLAGS:
 --
--- 5. Hopper prototype has 'get-by-unit-number' flag, enabling efficient
---    lookup via game.get_entity_by_unit_number().
+-- Both hoppers and chests have 'get-by-unit-number' flag, enabling
+-- efficient lookup via game.get_entity_by_unit_number().
 --
--- 6. Event filters include all relevant entity names for performance.
---    script_raised_* events don't support filters.
---
--- NO RECURSION GUARANTEE:
---
--- update_own_neighbors() only modifies the calling entity's storage entry.
--- It does NOT call neighbors to update themselves. Only on_entity_built
--- and on_entity_destroyed iterate over neighbors in a flat loop, and
--- those neighbors only update their own entries.
+-- Event filters include all relevant entity names for performance.
+-- script_raised_* events don't support filters.
 
 return hopper:__seal()
