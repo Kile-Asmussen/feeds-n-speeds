@@ -49,5 +49,6 @@ tweaks.nuclear = require 'tweaks.nuclear'
 tweaks.ores = require 'tweaks.ores'
 tweaks.malltech = require 'tweaks.malltech'
 tweaks.timewaster = require 'tweaks.timewaster'
+tweaks.sulfur_processing = require 'tweaks.sulfur-processing'
 
 return tweaks:__seal()

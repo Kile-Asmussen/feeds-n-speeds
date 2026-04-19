@@ -12,7 +12,7 @@ function ores.data_final_fixes()
 
         resource.infinite_depletion_amount = 0
 
-        if resource.category == nil or resource.category == 'basic-solid' then
+        if resource.category == nil or resource.category == 'basic-solid' or resource.category == 'hard-solid' then
 
             resource.infinite = true
             
