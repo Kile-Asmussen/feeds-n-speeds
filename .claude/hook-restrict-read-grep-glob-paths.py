@@ -67,7 +67,11 @@ def main() -> None:
     
     if not is_allowed:
         print(
-            f"blocked access to '{path}' -- directory is not allowed",
+            f"blocked access to disallowed path:\n"
+            f"  {path}\n"
+            "Allowed directories:",
+            *allowed_paths,
+            sep="\n - ",
             file=[sys.stderr, LOG_FILE]
         )
         sys.exit(2)

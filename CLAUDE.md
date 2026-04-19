@@ -237,55 +237,72 @@ Skill for researching Factorio prototypes by inspecting live `data.raw` structur
 
 See `.claude/skills/factorio-research/SKILL.md` for full documentation.
 
-## Claude Code Restrictions
+## Safety Considerations
 
 This project uses a safety harness (`.claude/settings.json` and hooks) to limit Claude's capabilities.
 
+The operator wants to provide Claude with a high degree of autonomy, without having to be repeatedly
+prompted to accept sensible actions. At the same time the operator is highly conscious of safety
+considerations and wants Claude to only have autonomy to perform a certain class of useful, safe actions.
+
+This has led to the development of the hooks suite currently installed in the `.claude/` directory.
+Claude should familiarize itself with these restrictions to fully employ the allowed degree of
+autonomy for maximum productivity. For this reason, hook denial messages include the allowed
+patterns/commands to enable immediate course-correction without requiring Claude to search configuration files.  
+
+The `"defaultMode": "dontAsk"` will auto-deny any tool usages not explicitly permitted, and the hooks are there to provide an extra layer of security in case the mode is erroneously changed during a session, e.g. by accepting the execution of a plan.
+
 ### Allowed Tools
 
-- **File reading**: Read, Glob, Grep (within allowed paths)
+- **File reading**: Read, Glob, Grep (within project directory and allowed paths, see `.claude/read-grep-glob-paths.json`)
 - **File writing**: Write, Edit (only in `slop/**/*` and `unit-tests/*`)
 - **File editing**: Edit (in `extras/**/*`, `tweaks/**/*`, `locale/**/*`, and `CLAUDE.md`)
 - **Shell execution**: Bash (restricted to allowlist via hook, see `.claude/allowed-bash-commands.json`)
-- **File deletion**: Through the `.claude/safe-rm.py` script, permitted as a shell command
+- **File deletion**: Through the `.claude/safe-rm.py` script, permitted as a shell command, which can clean up the slop/ directory
 - **Web access**: WebFetch (restricted domains), WebSearch
 - **Interaction**: AskUserQuestion
 - **Task management**: TaskCreate, TaskGet, TaskList, TaskStop, TaskOutput, TaskUpdate
+- **Scheduling**: CronCreate, CronDelete, CronList
 
 ### Denied Tools
 
-- **Agent**: Subagent spawning disabled
-- **Protected paths**: Write/Edit to `.claude/**/*` (except via approved scripts)
+- **Agent**: Subagent spawning disabled, due to concerns about subagents not having the same enforced
+  restrictions as the parent Claude session.
+- **Protected paths**: Write/Edit to `.claude/**/*` is explicitly denied as defense-in-depth measure,
+  but limited editing is enabled through scripts.
 
 ### Hook Restrictions
 
 | Hook | Effect |
 |------|--------|
-| `hook-restrict-read-grep-glob-paths.py` | File operations limited to project directory and `../references/` |
-| `hook-forbid-reads-by-glob.py` | Blocks reading `**/raw.lua` and `**/too-big.txt` (large files) |
+| `hook-restrict-read-grep-glob-paths.py` | File operations limited to project directory and Factorio's game files |
+| `hook-forbid-reads-by-glob.py` | Blocks reading `**/raw.lua` (a very large, >20MB) |
 | `hook-restrict-webfetch-urls.py` | WebFetch limited to Factorio-related domains (see `.claude/webfetch-urls.json`) |
-| `hook-restrict-bash.py` | Bash commands must match patterns in `allowed-bash-commands.json`; shell metacharacters blocked |
+| `hook-restrict-bash.py` | Bash commands must match patterns in `allowed-bash-commands.json`; shell metacharacters blocked. |
 | `hook-backup-write-edit-defense.py` | last line of defense against unauthorized writes and edits |
 
 ### Allowed Bash Commands
 
 Defined in `.claude/allowed-bash-commands.json`:
-- `lua unit-tests.lua *` - Run unit tests with explicit module names
+- `lua unit-tests.lua *` - Run unit tests with explicit module names from the `unit-tests/` directory
 - `lua debug-load.lua` - Debug module loading
 - `DEPTH=N lua debug-data-raw.lua *` - Inspect vanilla data.raw (N=1-5)
 - `DEPTH=N lua debug-data-modded.lua *` - Inspect modded data.raw (N=1-5)
-- `python .claude/safe-rm.py *` - Safe file deletion
+- `python .claude/safe-rm.py *` - Safe file deletion for cleaning up the `slop/` directory
 - `.claude/fetch-factorio-research.sh` - Copy factorio-research skill to slop/ for editing
 - `.claude/install-factorio-research.sh` - Install edited skill back to .claude/skills/
 
+The `debug-data-raw` and `debug-data-modded` scripts are part of the factorio-research skill.
+
 ### Implications
 
-- Claude can run unit tests but not arbitrary shell commands
+- Claude can run unit tests and research scripts, but not arbitrary shell commands
 - Claude can write test files directly to `unit-tests/`
 - Claude can draft other code in `slop/` for operator review
 - Claude can edit CLAUDE.md directly to maintain documentation
 - Claude can edit the factorio-research skill via fetch/install scripts
 - Claude cannot directly modify hook configuration or settings
-- Claude can edit (not write) files in the `extras/`, `tweaks/`, and `locale/` directories
+- Claude can edit (not write) files in the `extras/`, `tweaks/`, and `locale/` directories,
+  ask operator to create new template files as needed
 - File reads outside the project require explicit allowlist entries
 - Web documentation access limited to Factorio-related domains

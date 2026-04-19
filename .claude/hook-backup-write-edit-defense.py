@@ -93,15 +93,18 @@ def main() -> None:
     # Get relative path from project directory for glob matching
     rel_path = path.relative_to(project_dir)
 
-    print(f"relative path: {rel_path}", file=LOG_FILE)
+    print(f"relative path: {str(rel_path)}", file=LOG_FILE)
 
     for glob_pattern in allowed_globs:
         if rel_path.full_match(glob_pattern):
-            print(f"allowed by pattern: {glob_pattern}", file=LOG_FILE)
+            print(f"allowed by pattern: {tool_name}({glob_pattern})", file=LOG_FILE)
             sys.exit(0)
 
     print(
-        f"blocked {tool_name} -- path '{rel_path}' does not match any allowed pattern",
+        "blocked tool usage as it would fall outside the expressly permitted:\n"
+        f"  {tool_name}({str(path)})",
+        *(f"{tool_name}({glob})" for glob in allowed_globs),
+        sep='\n - ',
         file=[sys.stderr, LOG_FILE]
     )
     sys.exit(2)

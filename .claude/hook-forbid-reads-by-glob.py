@@ -76,10 +76,15 @@ def main() -> None:
 
         for forbidden in forbidden_globs:
             if path.full_match(forbidden):
-                print(f"blocking tool use -- it would read data from a secret file:\n{str(path)}",
+                print(
+                    "blocking tool use -- it would read data from a forbidden file:\n"
+                    f"  {str(path)}\n"
+                    "Disallowed patterns:",
+                    *forbidden_globs,
+                    sep='\n - ',
                     file=[sys.stderr, LOG_FILE])
                 sys.exit(2)
-
+            
     sys.exit(0)
 
 def load_forbidden_globs() -> set[str]:
@@ -100,7 +105,7 @@ def load_forbidden_globs() -> set[str]:
     except (json.JSONDecodeError, OSError, ValueError):
         pass
 
-    prant(f"{FORBIDDEN_GLOBS_FILE} not loaded, blocking as a precaution", file=[sys.stderr, LOG_FILE])
+    print(f"{FORBIDDEN_GLOBS_FILE} not loaded, blocking as a precaution", file=[sys.stderr, LOG_FILE])
     sys.exit(2)
 
 def get_project_dir() -> Path:
@@ -172,7 +177,7 @@ if __name__ == '__main__':
     except SystemExit as e:
         print(f"sys.exit({e.code})", file=LOG_FILE)
         raise
-    except Exception:
+    except Exception as e:
         traceback.print_exc(file=LOG_FILE)
         print("sys.exit(2)", file=LOG_FILE)
         print(repr(e), "caught, blocking as precaution")

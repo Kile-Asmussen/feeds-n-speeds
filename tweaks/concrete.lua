@@ -4,6 +4,14 @@ local concrete = namespace('tweaks.concrete')
 
 concrete.enabled = true
 
+function concrete.data()
+    if not concrete.enabled then return end
+
+    data:extend{
+        require 'tweaks.concrete.simple-concrete',
+    }
+end
+
 function concrete.data_updates()
 
     if not concrete.enabled then return end
@@ -38,6 +46,12 @@ function concrete.data_updates()
     table.insert(tech.concrete.effects, {
         type = 'unlock-recipe',
         recipe = 'chemical-plant'
+    })
+
+    -- Simple concrete: assembly machine alternative with lower output
+    table.insert(tech.concrete.effects, {
+        type = 'unlock-recipe',
+        recipe = fns 'simple-concrete'
     })
 
     -- Also concrete now requires fluid handling, because that's fun.

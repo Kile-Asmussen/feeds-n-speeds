@@ -65,47 +65,61 @@ def main() -> None:
 
     # Check for shell metacharacters that could enable command injection
     if not is_safe_command(command):
-        print(f"blocking bash -- contains dangerous shell metacharacters:\n{command}",
-              file=[sys.stderr, LOG_FILE])
+        print(
+            "blocked bash -- contains shell metacharacters",
+            "  " + command,
+            f"Forbidden characters: {' '.join(DANGEROUS)}",
+            "Use single commands only, no chaining or redirection.",
+            sep = '\n',
+            file=[sys.stderr, LOG_FILE]
+        )
         sys.exit(2)
 
     allowed_patterns = load_allowed_commands()
     print(f"allowed patterns: {allowed_patterns}", file=LOG_FILE)
 
     if len(allowed_patterns) == 0:
-        print("no allowed commands configured, blocking all Bash",
+        print("no allowed commands configured, blocking all Bash tool usages",
               file=[sys.stderr, LOG_FILE])
         sys.exit(2)
 
     for pattern in allowed_patterns:
         if matches_pattern(command, pattern):
-            print(f"command matches pattern: {pattern!r}", file=LOG_FILE)
+            print(f"allowing-- command matches pattern:{pattern}",
+            file=LOG_FILE)
             sys.exit(0)
 
     # No pattern matched - deny
-    print(f"blocking bash -- command not in allowlist:\n{command}",
-          file=[sys.stderr, LOG_FILE])
+    print(
+        "blocked bash -- command not in allowlist:"
+        f"  {command}\n"
+        "Allowed patterns:",
+        *allowed_patterns,
+        sep='\n - ',
+        file=[sys.stderr, LOG_FILE]
+    )
     sys.exit(2)
 
+DANGEROUS = [
+    ';',    # command separator
+    '|',    # pipe (also catches ||)
+    '`',    # command substitution (backticks)
+    '$',    # variable substitution (also catches $( and ${ )
+    '{',    # function/command definition?
+    '*',    # globs
+    '?',    # globs
+    '\n',   # newline (command separator)
+    '>',    # output redirection
+    '<',    # input redirection
+    '&',    # background execution (also catches &&)
+]
 
 def is_safe_command(command: str) -> bool:
     """
     Check that command contains no shell metacharacters that could
     enable command chaining or injection.
     """
-    DANGEROUS = [
-        ';',    # command separator
-        '|',    # pipe (also catches ||)
-        '`',    # command substitution (backticks)
-        '$',    # variable substitution (also catches $( and ${ )
-        '{',    # function/command definition?
-        '*',    # globs
-        '?',    # globs
-        '\n',   # newline (command separator)
-        '>',    # output redirection
-        '<',    # input redirection
-        '&',    # background execution (also catches &&)
-    ]
+
     return not any(dangerous in command for dangerous in DANGEROUS)
 
 

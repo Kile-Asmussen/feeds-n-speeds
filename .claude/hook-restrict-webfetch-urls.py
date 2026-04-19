@@ -74,15 +74,23 @@ def main() -> None:
     allowed_by = next((domain for domain in domains if fnmatchcase(hostname, domain)), None)
     
     if not allowed_by:
-        print(f"blocking fetch -- hostname `{hostname}' not in list of allowed domain patterns",
-            file=[sys.stderr, LOG_FILE])
+        print(
+            f"blocked fetch -- hostname '{hostname}' not allowed\n"
+            f"Allowed domains:",
+            *domains,
+            sep = '\n - ',
+            file=[sys.stderr, LOG_FILE]
+        )
         sys.exit(2)
     
     disallowed_by = next((exception for exception in exceptions if fnmatchcase(hostname_and_path, exception)), None)
                 
     if disallowed_by:
         print(
-            f"blocked fetch -- url matches exception pattern `{disallowed_by}'",
+            f"blocked fetch -- url matches exception pattern `{disallowed_by}'\n"
+            "disallowed patterns:\n",
+            *exceptions,
+            sep="\n - ",
             file=[sys.stderr, LOG_FILE]
         )
         sys.exit(2)
