@@ -51,5 +51,6 @@ tweaks.malltech = require 'tweaks.malltech'
 tweaks.timewaster = require 'tweaks.timewaster'
 tweaks.sulfur_processing = require 'tweaks.sulfur-processing'
 tweaks.technologies = require 'tweaks.technologies'
+tweaks.machines = require 'tweaks.machines'
 
 return tweaks:__seal()

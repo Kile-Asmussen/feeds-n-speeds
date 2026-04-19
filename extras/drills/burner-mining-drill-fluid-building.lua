@@ -19,7 +19,8 @@ drill.input_fluid_box = {
     pipe_connections = {
         {
             direction = 0,  -- north
-            position = {-0.5, -1},
+            flow_direction = 'input',
+            position = {0.5, -0.5},
         },
     },
     pipe_covers = pipecoverspictures(),
