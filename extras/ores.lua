@@ -123,10 +123,11 @@ function ores.data_updates()
     }
 
     -- Register sulfur ore with Nauvis map generation
-    log('[FNS] registering sulfur ore with Nauvis autoplace_controls')
+    log('[FNS] registering sulfur ore with Nauvis map gen')
     data.raw.planet.nauvis.map_gen_settings.autoplace_controls[fns 'sulfur-ore'] = {}
-    log('[FNS] Nauvis autoplace_controls:')
-    log(debuglib.sprint(data.raw.planet.nauvis.map_gen_settings.autoplace_controls, 2))
+    data.raw.planet.nauvis.map_gen_settings.autoplace_settings.entity.settings[fns 'sulfur-ore'] = {}
+    log('[FNS] Nauvis autoplace_settings.entity.settings:')
+    log(debuglib.sprint(data.raw.planet.nauvis.map_gen_settings.autoplace_settings.entity.settings, 2))
 
     -- If drills module is disabled, provide alternate path to fluid mining
     local extras = import 'extras'
