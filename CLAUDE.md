@@ -2,7 +2,7 @@
 
 A Factorio 2.0 mod providing value tweaks, balance changes, and new items.
 
-## Etiquette and user profile
+## Etiquette and User Profile
 
 - Name: Kashmira Qeel
 - Gender: woman
