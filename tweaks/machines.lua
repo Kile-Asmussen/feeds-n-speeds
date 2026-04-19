@@ -13,7 +13,7 @@ function machines.tweak_assemblers()
     local am3 = data.raw['assembling-machine']['assembling-machine-3']
 
     -- Replace the input fluid box with east-west through-flow connections
-    am3.fluid_boxes[1].production_type = 'input-output'
+    am3.fluid_boxes[1].production_type = 'input'
     am3.fluid_boxes[1].pipe_connections = {
         {
             direction = 4,  -- east

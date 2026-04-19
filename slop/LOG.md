@@ -146,3 +146,68 @@
 - Added design consideration: sulfur ore module dependency on drills
 - Added ideas: rail automation as triggered tech, item/recipe ordering cleanup
 - Added note: concrete-rail tech icon shift may need adjustment
+
+---
+
+# Session Summary - 2026-04-20
+
+## Completed This Session
+
+### Sulfur Ore Map Generation Fix
+- Fixed sulfur ore not spawning on map
+- Root cause: needed registration in both `autoplace_controls` (GUI) AND `autoplace_settings.entity.settings` (actual spawning)
+
+### Tungsten Ore Infinite
+- Added `'hard-solid'` category check to `tweaks/ores.lua`
+- Tungsten now converts to infinite like other ores
+
+### Sulfur Processing Module (tweaks/sulfur-processing/)
+- Purifying oil processing recipe: slower basic oil processing, produces sulfur byproduct
+- Purifying advanced oil processing recipe: same concept
+- Purifying heavy oil cracking recipe: same concept
+- Modified sulfuric acid: steel plate catalyst with 80% return chance
+- Modified sulfur recipe: coal washing process (petroleum-gas + coal + steam → coal + sulfur)
+- Coal liquefaction: 20% chance to produce sulfur
+
+### Technologies Module (tweaks/technologies/)
+- Gun turret depends on military tech
+- Laser turret, flamethrower, artillery, rocket turret depend on gun turret
+- Science pack recipe tweaks:
+  - Automation science: +1 stone
+  - Logistic science: +1 pipe
+  - Chemical science: 10 sulfuric-acid instead of sulfur, crafting-with-fluid category
+  - Production science: substation instead of electric-furnace, +140 steam, crafting-with-fluid
+  - Utility science: +1000 water, crafting-with-fluid
+- Production science prerequisites: +electric-energy-distribution-2, -advanced-material-processing-2
+
+### Early Game Military Changes (tweaks/earlygame/)
+- Submachine-gun recipe adjusted
+- Vanilla pistol recipe enabled (normally hidden)
+- When extras.ores + extras.drills + tweaks.sulfur_processing all enabled:
+  - Firearm magazine, piercing rounds, shotgun shell, piercing shotgun shell, grenade require sulfur/coal
+
+### Machines Module (tweaks/machines/)
+- Created new module for assembler modifications
+- AM3 input fluid box now has east-west through-flow connections
+- `production_type = 'input'` with `flow_direction = 'input-output'` on pipe connections
+- Allows chaining AM3s without pipes between them for fluid recipes
+
+### Fluid Box Research
+- `production_type` defines recipe role (input/output consumption)
+- `flow_direction` on pipe connections controls physical flow behavior
+- Input fluid boxes can have through-flow with `flow_direction = 'input-output'`
+- AM3 pipe graphics exist for all 4 directions (small overlay fragments)
+
+### Water Pump Test Recipe
+- Added `extras/altrecipes/water-pump-recipe.lua` for testing fluid input+output rendering
+- Confirmed both pipe graphics show when recipe has fluid input and output
+
+### Burner Mining Drill Fluid Fix
+- Fixed pipe connection position from {0, -0.5} to {0.5, -0.5}
+- Position must be within collision box bounds (-0.699 to 0.699)
+- Added explicit `flow_direction = 'input'` to pipe connection
+
+### Electroboiler Icon Fix
+- Fixed lightning overlay causing icon shrinkage
+- Changed from scale 0.35/shift {10, -10} to scale 0.25/shift {8, -8}
+- Now matches rail recipe overlay positioning style

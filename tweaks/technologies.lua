@@ -59,12 +59,8 @@ function technologies.tweak_science_packs()
 
     recipes['utility-science-pack'].category = 'crafting-with-fluid'
     table.insert(recipes['utility-science-pack'].ingredients,
-        { type = 'fluid', name = 'water', amount = 2800 }
+        { type = 'fluid', name = 'water', amount = 1000 }
     )
-
-    local assemblers = data.raw['assembling-machine']
-    assemblers['assembling-machine-2'].fluid_boxes[1].volume = 3000
-    assemblers['assembling-machine-3'].fluid_boxes[1].volume = 3000
 end
 
 return technologies:__seal()

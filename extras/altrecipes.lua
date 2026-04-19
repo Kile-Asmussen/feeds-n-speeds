@@ -10,13 +10,6 @@ function altrecipes.data()
     altrecipes.rails()
     altrecipes.stone_furnace()
     altrecipes.concrete_wall()
-    altrecipes.water_pump()
-end
-
-function altrecipes.water_pump()
-    data:extend{
-        require 'extras.altrecipes.water-pump-recipe',
-    }
 end
 
 function altrecipes.rails()
