@@ -3,6 +3,7 @@ require 'prelude'
 return {
     type = 'technology',
     name = fns 'wet-drilling',
+    order = 'a-b-b',  -- after steam-power (a-b-a)
     icons = {
         {
             icon = '__base__/graphics/technology/steam-power.png',

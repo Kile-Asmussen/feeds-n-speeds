@@ -9,13 +9,13 @@ return {
         {
             icon = '__base__/graphics/icons/boiler.png',
             icon_size = 64,
-            tint = { r = 1.0, g = 0.9, b = 0.3 },  -- yellow tint
         },
         {
             icon = '__base__/graphics/icons/signal/signal-lightning.png',
             icon_size = 64,
             scale = 0.35,
             shift = { 10, -10 },  -- upper right corner
+            tint = { r = 1.0, g = 0.9, b = 0.3 },  -- yellow tint
         },
     },
     subgroup = 'energy',

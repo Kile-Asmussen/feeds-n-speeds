@@ -14,4 +14,14 @@ function ores.data()
     }
 end
 
+function ores.data_updates()
+    if not ores.enabled then return end
+
+    -- Register sulfur ore with Nauvis map generation
+    local nauvis = data.raw.planet.nauvis
+    if nauvis and nauvis.map_gen_settings then
+        nauvis.map_gen_settings.autoplace_controls[fns 'sulfur-ore'] = {}
+    end
+end
+
 return ores:__seal()

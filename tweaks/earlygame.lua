@@ -31,6 +31,8 @@ function earlygame.tweak_technologies()
         { type = 'unlock-recipe', recipe = 'steel-chest' }
     }
 
+    tech['steel-processing'].localised_description = 'Unlocks steel plates and iron sticks, as well as iron and steel chests.'
+
     local extras = import 'extras'
 
     if extras.chests.enabled then
@@ -59,15 +61,21 @@ function earlygame.tweak_technologies()
     }
 
     steam_power.prerequisites = {
-        'steel-processing'
+        'steel-processing',
+        'electronics',
     }
+
+    -- Move transport belts to logistics (sadistic early game)
+    table.insert(tech.logistics.effects, 1,
+        { type = 'unlock-recipe', recipe = 'transport-belt' }
+    )
 end
 
 function earlygame.tweak_recipes()
     local recipe = data.raw.recipe
 
     recipe['burner-inserter'] = nil
-    
+    recipe['transport-belt'].enabled = false
 end
 
 function earlygame.data_final_fixes()

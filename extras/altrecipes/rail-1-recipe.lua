@@ -11,7 +11,7 @@ return {
             shift = { -8, 8 },
         },
     },
-    order = 'a[rail]-b[rail-1]',
+    order = 'a[rail]-a[rail]-b[stone-brick]',
     ingredients = {
         { amount = 1, name = 'stone-brick', type = 'item' },
         { amount = 1, name = 'iron-stick', type = 'item' },

@@ -3,7 +3,18 @@ require 'prelude'
 return {
     type = 'item',
     name = fns 'burner-mining-drill-fluid',
-    icon = '__base__/graphics/icons/burner-mining-drill.png',
+    icons = {
+        {
+            icon = '__base__/graphics/icons/burner-mining-drill.png',
+            icon_size = 64,
+        },
+        {
+            icon = '__base__/graphics/icons/pipe.png',
+            icon_size = 64,
+            scale = 0.25,
+            shift = {-8, 8},
+        },
+    },
     subgroup = 'extraction-machine',
     order = 'a[items]-a[burner-mining-drill]-b[fluid]',
     place_result = fns 'burner-mining-drill-fluid',

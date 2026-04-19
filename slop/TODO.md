@@ -67,6 +67,9 @@
 
 ## Ideas / Maybe
 
+- [ ] Rail automation as triggered tech: Consider converting rail-automation from a researched technology to a triggered tech based on crafting 1000 rails. Trains are nearly useless without automation signals. Unclear which module this would belong to.
+- [ ] Concrete-rail tech icon: The shift value ({50, 50}) may need adjustment after changing overlay scale to 0.33. Requires in-game testing.
+- [ ] Item/recipe ordering cleanup: With all features researched, the in-game crafting menu is cluttered. Review and improve ordering strings across all items and recipes for better organization.
 - [ ] Default-off toggles: Consider shipping with most features disabled by default, letting users discover and enable combinations; reduces initial complexity while preserving modularity
 - [ ] Feature profiles: Predefined toggle combinations (e.g., "minimal", "balanced", "kitchen sink") as a single setting
 - [ ] Electrical boiler: identical to baseline boiler but with electrical energy source; provides steam for altered recipes or coal liquefaction; serves as accumulator alternative for solar setups

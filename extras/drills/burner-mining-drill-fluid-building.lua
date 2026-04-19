@@ -8,16 +8,18 @@ local drill = table.clone(base)
 drill.name = fns 'burner-mining-drill-fluid'
 drill.minable.result = fns 'burner-mining-drill-fluid'
 
--- Add fluid input on south side (opposite the output chute which is north)
--- Note: defines.direction is runtime-only; use numeric direction (4 = south)
+-- Add fluid input on north side (same side as output chute, intentionally awkward)
+-- Note: defines.direction is runtime-only; use numeric direction (0 = north)
 -- Filter to steam only: usable for sulfur ore, not uranium (sulfuric acid)
+-- production_type = 'input' prevents through-flow icon (single connection)
 drill.input_fluid_box = {
     volume = 50,
     filter = 'steam',
+    production_type = 'input',
     pipe_connections = {
         {
-            direction = 4,  -- south
-            position = {0, 0.5},
+            direction = 0,  -- north
+            position = {0, -0.5},
         },
     },
     pipe_covers = pipecoverspictures(),
