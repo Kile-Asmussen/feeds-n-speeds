@@ -34,7 +34,7 @@ function malltech.tweak_recipes()
         malltech.mining_drills()
 
         recipe['gun-turret'].ingredients = {
-            { type='item', name='electric-circuit', amount=8 },
+            { type='item', name='electronic-circuit', amount=8 },
             { type='item', name='iron-plate', amount=4 },
             { type='item', name='submachine-gun', amount=2 },
             { type='item', name='iron-gear-wheel', amount=8 },
@@ -47,7 +47,7 @@ function malltech.tweak_recipes()
         }
     else
         recipe['gun-turret'].ingredients = {
-            { type='item', name='electric-circuit', amount=8 },
+            { type='item', name='electronic-circuit', amount=8 },
             { type='item', name='iron-plate', amount=12 },
             { type='item', name='iron-gear-wheel', amount=10 },
         }
