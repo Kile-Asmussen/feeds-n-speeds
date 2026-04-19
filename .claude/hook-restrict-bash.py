@@ -88,6 +88,7 @@ def main() -> None:
         if matches_pattern(command, pattern):
             print(f"allowing-- command matches pattern:{pattern}",
             file=LOG_FILE)
+            sys.exit(0)
 
     # No pattern matched - deny
     print(

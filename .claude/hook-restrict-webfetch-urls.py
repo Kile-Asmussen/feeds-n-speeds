@@ -66,9 +66,9 @@ def main() -> None:
     print(f"hostname: {hostname}", file=LOG_FILE)
     print(f"hostname+path: {hostname_and_path}", file=LOG_FILE)
 
-    domains, exceptions = load_config()
+    domains, exceptions, restrict = load_config()
 
-    print("allowed domains:", *domains, sep='\n', file=LOG_FILE)
+    print("allowed domains:", *(domain + res for domain in domains for res in restrict.get(domain, [''])), sep="\n", file=LOG_FILE)
     print("explicit exceptions:", *exceptions, sep='\n', file=LOG_FILE)
     
     allowed_by = next((domain for domain in domains if fnmatchcase(hostname, domain)), None)
@@ -83,6 +83,19 @@ def main() -> None:
         )
         sys.exit(2)
     
+    allowed_by_path = ''
+    if allowed_by in restrict:
+        allowed_by_path = next((res for res in restrict[allowed_by] if fnmatchcase(path, res)), None)
+        if allowed_by_path is None:
+            print(
+                f"blocked fetch -- path '{hostname}{path}' not allowed\n"
+                f"Allowed paths:",
+                *(allowed_by + res for res in restrict[allowed_by]),
+                sep = '\n - ',
+                file=[sys.stderr, LOG_FILE]
+            )
+            sys.exit(2)
+
     disallowed_by = next((exception for exception in exceptions if fnmatchcase(hostname_and_path, exception)), None)
                 
     if disallowed_by:
@@ -96,20 +109,13 @@ def main() -> None:
         sys.exit(2)
 
     print(
-        f"allowing fetch -- hostname permitted by `{allowed_by}'",
+        f"allowing fetch -- hostname permitted by `{allowed_by}{allowed_by_path}'",
         file=LOG_FILE
     )
     sys.exit(0)
 
-def fnmatchcase_bang(hostname_and_path: str, exception: str) -> bool:
-    invert = False
-    if exception.startswith('!'):
-        exception = exception[1:]
-    
-    return invert ^ fnmatchcase(hostname_and_path, exception)
 
-
-def load_config() -> tuple[list[str], list[str]]:
+def load_config() -> tuple[list[str], list[str], dict[str, list[str]]]:
 
     project_dir = get_project_dir()
 
@@ -127,6 +133,7 @@ def load_config() -> tuple[list[str], list[str]]:
             raise ValueError("config must be a JSON object")
             
         domains = config.get("domains", [])
+        restrict = config.get("restrict", {})
         exceptions = config.get("exceptions", [])
         
         if not (isinstance(domains, list) and all(isinstance(d, str) for d in domains)):
@@ -135,7 +142,7 @@ def load_config() -> tuple[list[str], list[str]]:
         if not (isinstance(exceptions, list) and all(isinstance(e, str) for e in exceptions)):
             raise ValueError("'exceptions' must be a list of strings")
         
-        return domains, exceptions
+        return domains, exceptions, restrict
         
     except (json.JSONDecodeError, OSError, ValueError) as e:
         print(f"{WEBFETCH_URLS_FILE} not loaded ({e}), blocking as a precaution",

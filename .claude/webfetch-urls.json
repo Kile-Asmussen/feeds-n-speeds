@@ -6,9 +6,18 @@
     "forums.factorio.com",
     "mods.factorio.com",
     "github.com",
-    "docs.python.org"
+    "docs.python.org",
+    "raw.githubusercontent.com"
   ],
-  "exceptions": [
-    "!github.com/wube/factorio-data/*"
-  ]
+  "restrict": {
+    "github.com": [
+      "/wube/factorio-data/*",
+      "/modded-factorio/bobsmods/*"
+    ],
+    "raw.githubusercontent.com": [
+      "/wube/factorio-data/*",
+      "/modded-factorio/bobsmods/*"
+    ]
+  },
+  "exceptions": []
 }

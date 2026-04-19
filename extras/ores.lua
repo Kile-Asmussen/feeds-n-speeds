@@ -7,12 +7,11 @@ ores.enabled = true
 function ores.data()
     if not ores.enabled then return end
 
-    local noise_expr = require 'extras.ores.sulfur-ore-noise-expression'
-
+    -- Note: resource_autoplace.resource_autoplace_settings{} in sulfur-ore.lua
+    -- automatically creates noise expression 'default-feeds-n-speeds-sulfur-ore-patches'
     data:extend{
         require 'extras.ores.sulfur-ore',
         require 'extras.ores.sulfur-ore-autoplace-control',
-        noise_expr.prototype,
     }
 end
 
@@ -20,7 +19,8 @@ function ores.data_updates()
     if not ores.enabled then return end
 
     local tweaks = import 'tweaks'
-    local noise_expr = require 'extras.ores.sulfur-ore-noise-expression'
+    local name = fns 'sulfur-ore'
+    local noise_expr_name = 'default-' .. name .. '-patches'
 
     -- Dynamically assign patch set indices for sulfur ore
     -- Claim the next available regular patch set index
@@ -38,8 +38,25 @@ function ores.data_updates()
     end
 
     -- Rebuild noise expression with correct indices
-    data.raw['noise-expression'][fns 'default-sulfur-ore-patches'].expression =
-        noise_expr.build_expression(regular_index, starting_index, has_starting_area)
+    data.raw['noise-expression'][noise_expr_name].expression =
+        "resource_autoplace_all_patches{" ..
+        "base_density = 8," ..
+        "base_spots_per_km2 = 1.5," ..
+        "candidate_spot_count = 22," ..
+        "frequency_multiplier = var('control:" .. name .. ":frequency')," ..
+        "has_starting_area_placement = " .. has_starting_area .. "," ..
+        "random_spot_size_minimum = 0.25," ..
+        "random_spot_size_maximum = 2," ..
+        "regular_blob_amplitude_multiplier = 0.125," ..
+        "regular_patch_set_count = default_regular_resource_patch_set_count," ..
+        "regular_patch_set_index = " .. regular_index .. "," ..
+        "regular_rq_factor = 0.11," ..
+        "seed1 = 400," ..
+        "size_multiplier = var('control:" .. name .. ":size')," ..
+        "starting_blob_amplitude_multiplier = 0.125," ..
+        "starting_patch_set_count = default_starting_resource_patch_set_count," ..
+        "starting_patch_set_index = " .. starting_index .. "," ..
+        "starting_rq_factor = 0.21428571428571}"
 
     -- Add belt picture variations to vanilla sulfur item
     data.raw.item.sulfur.pictures = {

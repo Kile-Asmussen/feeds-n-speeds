@@ -13,6 +13,20 @@ setmetatable(_G, {
     __index = function(_, name) error('global ' .. name .. ' not found') end
 })
 
+local stub_libs = {
+    ['resource-autoplace'] = 'test.resource-autoplace'
+}
+local real_require = require
+
+function require(name)
+    log("requiring " .. name)
+    if stub_libs[name] then
+        return real_require(stub_libs[name])
+    else
+        return real_require(name)
+    end
+end
+
 local print = _G.print
 function log(str) print(str) end
 
