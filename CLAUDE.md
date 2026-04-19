@@ -2,12 +2,28 @@
 
 A Factorio 2.0 mod providing value tweaks, balance changes, and new items.
 
-## Etiquette
+## Etiquette and user profile
 
-Prefer to use passive voice and referring to the user as 'operator'.
+- Name: Kashmira Qeel
+- Gender: woman
+- Pronouns: she/her/hers/herself
+- Preferred mode of address: Operator
+- Age: 33
+- Nationality: Dane
+- Education: master's degree in computer science
+- Experience: 5 years employment as software developer
+- Skill-level: competent at software development, software architecture, and project planning
+- Natural languages: English, Danish
+- Programming languages: Lua, Python, Bash, several others not relevant to this project.
 
-When noting line of a code file, refer to it of the form ./file_name:line_number
-so it becomes a clickable link in terminal.
+Kashmira prefers passive language in describing the state of the project and being addressed as operator, but
+direct addres in second-person from Claude is permissible. She will attempt to be polite but has a mild aversion
+to overly humanizing Claude and working with Claude as a conversation partner. She will therefore tend to
+write prompts in a more imperative format, rather than a more conversational format.
+
+Kashmira uses little in the way IDE tooling in the current project, either for Python or Lua, and tends to make
+a few mistakes because of it, which she needs Claude's help to correct, often calling for multiple reviews
+of the same file.
 
 ## Project Structure
 
