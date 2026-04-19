@@ -10,7 +10,7 @@ return {
             icon = '__base__/graphics/icons/concrete.png',
             icon_size = 64,
             scale = 0.25,
-            shift = { -8, 8 },
+            shift = { -8, -8 },
         },
     },
     order = 'a[rail]-a[rail]-c[concrete]',

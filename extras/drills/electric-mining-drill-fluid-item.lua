@@ -12,7 +12,7 @@ return {
             icon = '__base__/graphics/icons/pipe.png',
             icon_size = 64,
             scale = 0.25,
-            shift = {-8, 8},
+            shift = {-8, -8},
         },
     },
     subgroup = 'extraction-machine',

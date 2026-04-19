@@ -11,7 +11,8 @@ return {
     enabled = false,
     energy_required = 10,
     ingredients = {
-        { type = 'item', name = 'stone-brick', amount = 6 },
+        { type = 'item', name = 'stone', amount = 2 },
+        { type = 'item', name = 'stone-brick', amount = 5 },
         { type = 'item', name = 'iron-stick', amount = 1 },
         { type = 'fluid', name = 'water', amount = 100 },
     },

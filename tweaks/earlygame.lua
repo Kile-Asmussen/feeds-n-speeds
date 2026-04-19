@@ -27,11 +27,12 @@ function earlygame.tweak_technologies()
     tech['steel-processing'].effects = {
         { type = 'unlock-recipe', recipe = 'steel-plate' },
         { type = 'unlock-recipe', recipe = 'iron-stick' },
+        { type = 'unlock-recipe', recipe = 'iron-gear-wheel' },
         { type = 'unlock-recipe', recipe = 'iron-chest' },
         { type = 'unlock-recipe', recipe = 'steel-chest' }
     }
 
-    tech['steel-processing'].localised_description = 'Unlocks steel plates and iron sticks, as well as iron and steel chests.'
+    tech['steel-processing'].localised_description = {'technology-description.feeds-n-speeds-tweaked-steel-processing'}
 
     local extras = import 'extras'
 
@@ -40,6 +41,12 @@ function earlygame.tweak_technologies()
         table.remove_matching(tech['automation-2'].effects,
             table.matches{
                 { type = 'unlock-recipe', recipe = 'assembling-machine-2' }
+            }
+        )
+
+        table.remove_matching(tech['automation-2'].effects,
+            table.matches{
+                { type = 'unlock-recipe', recipe = fns 'big-steel-hopper' }
             }
         )
 
@@ -76,6 +83,7 @@ function earlygame.tweak_recipes()
 
     recipe['burner-inserter'] = nil
     recipe['transport-belt'].enabled = false
+    recipe['iron-gear-wheel'].enabled = false
 end
 
 function earlygame.data_final_fixes()

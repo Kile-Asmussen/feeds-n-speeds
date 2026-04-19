@@ -22,6 +22,23 @@ function ores.data_updates()
     if nauvis and nauvis.map_gen_settings then
         nauvis.map_gen_settings.autoplace_controls[fns 'sulfur-ore'] = {}
     end
+
+    -- If drills module is disabled, provide alternate path to fluid mining
+    local extras = import 'extras'
+    if not extras.drills.enabled then
+        -- Hide vanilla uranium-mining (mining-with-fluid now from sulfur-drilling)
+        data.raw.technology['uranium-mining'].hidden = true
+
+        -- Add sulfur drilling technology
+        data:extend{
+            require 'extras.ores.sulfur-drilling-technology',
+        }
+
+        -- Make uranium-processing depend on sulfur-drilling
+        table.insert(data.raw.technology['uranium-processing'].prerequisites,
+            fns 'sulfur-drilling'
+        )
+    end
 end
 
 return ores:__seal()
