@@ -11,6 +11,7 @@
       "Edit(extras/**/*)",
       "Edit(tweaks/**/*)",
       "Edit(locale/**/*)",
+      "Edit(CLAUDE.md)",
       "Write(unit-tests/*)",
       "Edit(unit-tests/*)",
       "WebFetch",

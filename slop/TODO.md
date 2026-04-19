@@ -2,19 +2,23 @@
 
 ## Short-term Goals
 
-- [ ] Test hopper entity in-game (placement linking, chest destruction, re-linking)
-- [ ] Add missing localization for big-steel-hopper
 - [ ] Add settings-updates.lua and settings-final-fixes.lua lifecycle implementations
 - [ ] Write more test coverage for prelude modules
+- [ ] Wire up `extras/ores.lua` coordinator to load sulfur ore files
+- [ ] Test wet-drilling technology in-game
+- [ ] Test sulfur ore spawning and steam mining requirement
+- [ ] Custom graphics for sulfur ore (currently using uranium-ore placeholder)
+
+## In Progress
+
+- [ ] Space Age DLC integration (heating tower already partially handled)
 
 ## Long-term Goals
 
 - [ ] Add thumbnail/icon graphics for big-steel-chest and big-steel-hopper (currently using base steel-chest)
 - [ ] Expand alt-recipes module (`extras/altrecipes/`)
 - [ ] Add per-planet surface condition variants for entities
-- [ ] Consider Space Age DLC integration (heating tower already partially handled)
 - [ ] Add migration scripts for settings changes
-- [ ] Localization for additional languages
 
 ## Completed
 
@@ -35,6 +39,18 @@
   - Dual-indexed storage for O(1) lookups
 - [x] Test harness: script stub with event registration (`test/script.lua`)
 - [x] Test harness: defines.events for control stage testing
+- [x] Wet drilling technology (`extras/drills/wet-drilling-technology.lua`)
+  - Triggers on building offshore pump, provides mining-with-fluid effect
+  - Unlocks burner mining drill fluid recipe
+- [x] Uranium tech restructure
+  - Hidden `uranium-mining` technology (redundant with wet-drilling)
+  - Converted `uranium-processing` to science-based research
+  - Added prerequisites: speed-module, electric-engine, concrete
+- [x] Malltech updates (lab recipe, uranium-processing prerequisites)
+- [x] Concrete rail technology icon overlay fix
+- [x] Sulfur ore resource (`extras/ores/`)
+  - Resource requiring steam to mine, yields vanilla sulfur
+  - Map generation noise expression and autoplace control
 
 ## Ideas / Maybe
 
