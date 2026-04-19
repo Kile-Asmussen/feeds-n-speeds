@@ -67,6 +67,7 @@
 
 ## Ideas / Maybe
 
+- [ ] Earlygame tech tree refinement: Make stone-brick recipe and burner mining drill recipe also be unlocked by basic materials processing technology. Make steam-power dependent on basic materials processing (boilers require stone when malltech + earlygame enabled). This tightens the early tech tree progression: basic materials processing → steam power → wet drilling.
 - [ ] Rail automation as triggered tech: Consider converting rail-automation from a researched technology to a triggered tech based on crafting 1000 rails. Trains are nearly useless without automation signals. Unclear which module this would belong to.
 - [ ] Concrete-rail tech icon: The shift value ({50, 50}) may need adjustment after changing overlay scale to 0.33. Requires in-game testing.
 - [ ] Item/recipe ordering cleanup: With all features researched, the in-game crafting menu is cluttered. Review and improve ordering strings across all items and recipes for better organization.

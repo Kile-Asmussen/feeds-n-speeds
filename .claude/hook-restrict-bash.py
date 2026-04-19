@@ -70,6 +70,7 @@ def main() -> None:
             "  " + command,
             f"Forbidden characters: {' '.join(DANGEROUS)}",
             "Use single commands only, no chaining or redirection.",
+            "Remember: you are running in the project directory at all times, there is no need to change the current directory"
             sep = '\n',
             file=[sys.stderr, LOG_FILE]
         )
@@ -98,6 +99,8 @@ def main() -> None:
         sep='\n - ',
         file=[sys.stderr, LOG_FILE]
     )
+    print("Remember, you are running in the project root,",
+        "there is no need for absolute paths.", file=[sys.stderr, LOG_FILE])
     sys.exit(2)
 
 DANGEROUS = [

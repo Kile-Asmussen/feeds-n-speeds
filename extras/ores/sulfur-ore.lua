@@ -15,18 +15,20 @@ return {
         required_fluid = 'steam',
         fluid_amount = 10,
         result = 'sulfur',
+        mining_particle = 'stone-particle',
     },
     collision_box = { { -0.1, -0.1 }, { 0.1, 0.1 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
     stage_counts = { 10000, 6330, 3670, 1930, 870, 270, 100, 50 },
     stages = {
         sheet = {
-            filename = '__base__/graphics/entity/uranium-ore/uranium-ore.png',  -- placeholder
-            width = 128,
-            height = 128,
+            filename = '__space-age__/graphics/entity/calcite/calcite.png',
+            size = 128,
             frame_count = 8,
             variation_count = 8,
             scale = 0.5,
+            priority = 'extra-high',
+            tint = { r = 1.0, g = 0.95, b = 0.2 },  -- bright yellow
         },
     },
     map_color = { r = 0.9, g = 0.8, b = 0.1 },

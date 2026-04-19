@@ -7,6 +7,9 @@
 	"factorio_version": "2.0",
 	"quality_required": false,
 	"dependencies" : [
-		"base"
+		"base",
+		"space-age",
+		"elevated-rail",
+		"quality"
 	]
 }
