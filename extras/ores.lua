@@ -66,9 +66,9 @@ function ores.data_updates()
 
     log('[FNS] rebuilt noise expression')
     log('[FNS] sulfur-ore resource autoplace:')
-    log(debuglib.pp(data.raw.resource[name].autoplace, 3))
+    log(debuglib.sprint(data.raw.resource[name].autoplace, 3))
     log('[FNS] noise expression:')
-    log(debuglib.pp(data.raw['noise-expression'][noise_expr_name], 2))
+    log(debuglib.sprint(data.raw['noise-expression'][noise_expr_name], 2))
 
     -- Add belt picture variations to vanilla sulfur item
     data.raw.item.sulfur.pictures = {
@@ -126,7 +126,7 @@ function ores.data_updates()
     log('[FNS] registering sulfur ore with Nauvis autoplace_controls')
     data.raw.planet.nauvis.map_gen_settings.autoplace_controls[fns 'sulfur-ore'] = {}
     log('[FNS] Nauvis autoplace_controls:')
-    log(debuglib.pp(data.raw.planet.nauvis.map_gen_settings.autoplace_controls, 2))
+    log(debuglib.sprint(data.raw.planet.nauvis.map_gen_settings.autoplace_controls, 2))
 
     -- If drills module is disabled, provide alternate path to fluid mining
     local extras = import 'extras'
