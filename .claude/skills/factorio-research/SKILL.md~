@@ -176,13 +176,6 @@ When reporting findings, include:
 
 ## Limitations
 
-- `debug-data-modded.lua` includes this mod's prototypes; other third-party mods are not loaded
+- Cannot inspect prototypes defined by other mods (only base game + this mod)
 - Deep inspection (DEPTH=4+) produces verbose output
 - Some fields are computed/inherited and not visible in raw data
-
-## Skill Maintenance
-
-This skill can be edited via the fetch/install workflow:
-1. `.claude/fetch-factorio-research.sh` - copies skill to `slop/factorio-research.md`
-2. Edit `slop/factorio-research.md`
-3. `.claude/install-factorio-research.sh` - installs edited skill (backs up original)

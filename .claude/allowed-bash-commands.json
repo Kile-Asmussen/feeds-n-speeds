@@ -14,5 +14,7 @@
     "DEPTH=4 lua debug-data-modded.lua *",
     "DEPTH=5 lua debug-data-modded.lua *",
     "lua unit-tests.lua *",
-    "python .claude/safe-rm.py *"
+    "python .claude/safe-rm.py *",
+    ".claude/fetch-factorio-research.sh",
+    ".claude/install-factorio-research.sh"
 ]

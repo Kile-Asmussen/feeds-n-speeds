@@ -17,6 +17,10 @@ FeedsNSpeeds/
 ├── data-updates.lua      # Entry point for data-updates stage
 ├── data-final-fixes.lua  # Entry point for data-final-fixes stage
 ├── settings.lua          # Entry point for settings stage
+├── settings-updates.lua  # Entry point for settings-updates stage
+├── settings-final-fixes.lua # Entry point for settings-final-fixes stage
+├── control.lua           # Entry point for runtime stage
+├── loading.lua           # Lifecycle loader for modules
 ├── prelude.lua           # Core module loader (namespace system)
 ├── prelude/              # Baseline utilities
 │   ├── table.lua         # Table manipulation functions
@@ -29,23 +33,35 @@ FeedsNSpeeds/
 │   ├── nuclear.lua       # Nuclear power ratio fixes
 │   ├── ores.lua          # Infinite ore modifications
 │   ├── concrete.lua      # Concrete recipe importance
-│   └── ...
+│   ├── earlygame.lua     # Early game recipe changes
+│   ├── malltech.lua      # Mall technology restructure
+│   └── timewaster.lua    # Recipe time adjustments
 ├── extras.lua            # Extras module coordinator
 ├── extras/               # New modded entities
-│   ├── chests/           # Big steel chest variants
-│   └── radars/           # Small radar entity
+│   ├── chests/           # Big steel chest variants + hopper
+│   ├── radars/           # Small radar entity
+│   ├── drills/           # Mining drill variants + wet-drilling tech
+│   ├── ores/             # New ore resources (sulfur)
+│   └── altrecipes/       # Alternative recipes + technologies
+├── test/                 # Test stubs for control stage
+│   ├── script.lua        # Event registration stub
+│   ├── defines.lua       # defines.events mock
+│   └── ...
 ├── unit-tests.lua        # Test harness entry point (sandboxed)
 ├── unit-tests-trusted.lua # Trusted tests (pre-sandbox)
 ├── unit-tests/           # Test modules
-│   ├── table.lua         # Tests for prelude/table.lua
-│   ├── string.lua        # Tests for prelude/string.lua
-│   └── prelude.lua       # Tests for namespace system
+├── debug-data-raw.lua    # Vanilla data.raw inspector
+├── debug-data-modded.lua # Modded data.raw inspector
+├── debug-load.lua        # Module loading debugger
+├── debuglib.lua          # Pretty-printer for Lua structures
 ├── graphics/             # Sprite assets
 ├── locale/en/            # Localization strings
 ├── build-scripts/        # Build tooling (export-ignored)
 ├── output/               # Build artifacts
-├── slop/                 # Draft code for review
-└── .claude/              # Claude Code safety hooks
+├── slop/                 # Draft code and session logs
+│   ├── LOG.md            # Session progress tracking
+│   └── TODO.md           # Development task list
+└── .claude/              # Claude Code safety hooks and skills
 ```
 
 ## Architecture
@@ -102,15 +118,22 @@ Domains with `enabled` boolean get automatic startup settings via `loading.creat
 | `nuclear` | Smart reactor scaling, adjusted ratios (1 reactor : 5 HX), 50% neighbor bonus |
 | `ores` | Infinite ores with richness based on map settings |
 | `concrete` | Makes concrete prerequisite for advanced infrastructure |
+| `earlygame` | Early game recipe modifications (lab, etc.) |
+| `malltech` | Technology restructure (uranium-processing prerequisites) |
+| `timewaster` | Recipe time adjustments |
 
-### Extras (New Entities)
+### Extras (New Entities & Features)
 
-| Entity | Description |
-|--------|-------------|
-| `big-steel-chest` | 2x2 chest with 96 slots, unlocked via steel-processing |
-| `smart-big-steel-chest` | variant of the above with filterable slots like a cargo wagon |
-| `big-steel-hopper` | Linked chest variant (functionality pending) |
-| `small-radar` | Lower power radar without exploration, replaces radar in artillery shells |
+| Feature | Description |
+|---------|-------------|
+| `chests/big-steel-chest` | 2x2 chest with 96 slots, filterable slots like cargo wagon |
+| `chests/big-steel-hopper` | Linked proxy container for big-steel-chest |
+| `radars/small-radar` | Lower power radar without exploration, replaces radar in artillery shells |
+| `drills/wet-drilling` | Technology triggered by offshore pump; enables fluid mining |
+| `drills/burner-mining-drill-fluid` | Burner drill variant with fluid input for steam mining |
+| `drills/electric-mining-drill-fluid` | Electric drill variant with fluid input |
+| `ores/sulfur-ore` | Minable sulfur resource requiring steam (Frasch process) |
+| `altrecipes/concrete-rail` | Concrete rail technology with tiered recipes |
 
 ## Build System
 
@@ -222,17 +245,17 @@ This project uses a safety harness (`.claude/settings.json` and hooks) to limit 
 
 - **File reading**: Read, Glob, Grep (within allowed paths)
 - **File writing**: Write, Edit (only in `slop/**/*` and `unit-tests/*`)
-- **File editing**: Edit (in `extras/**/*` and `tweaks/**/*`)
+- **File editing**: Edit (in `extras/**/*`, `tweaks/**/*`, `locale/**/*`, and `CLAUDE.md`)
 - **Shell execution**: Bash (restricted to allowlist via hook, see `.claude/allowed-bash-commands.json`)
-- **File deletion**: Through the `.claude/safe-rm.py` script, permitted as a shell command.
-- **Web access**: WebFetch (restricted domains, see `.claude/webfetch-urls.json`), WebSearch
+- **File deletion**: Through the `.claude/safe-rm.py` script, permitted as a shell command
+- **Web access**: WebFetch (restricted domains), WebSearch
 - **Interaction**: AskUserQuestion
 - **Task management**: TaskCreate, TaskGet, TaskList, TaskStop, TaskOutput, TaskUpdate
 
 ### Denied Tools
 
 - **Agent**: Subagent spawning disabled
-- **Protected paths**: Write/Edit to `.claude/**/*`
+- **Protected paths**: Write/Edit to `.claude/**/*` (except via approved scripts)
 
 ### Hook Restrictions
 
@@ -240,7 +263,7 @@ This project uses a safety harness (`.claude/settings.json` and hooks) to limit 
 |------|--------|
 | `hook-restrict-read-grep-glob-paths.py` | File operations limited to project directory and `../references/` |
 | `hook-forbid-reads-by-glob.py` | Blocks reading `**/raw.lua` and `**/too-big.txt` (large files) |
-| `hook-restrict-webfetch-urls.py` | WebFetch limited to `lua-api.factorio.com` |
+| `hook-restrict-webfetch-urls.py` | WebFetch limited to Factorio-related domains (see `.claude/webfetch-urls.json`) |
 | `hook-restrict-bash.py` | Bash commands must match patterns in `allowed-bash-commands.json`; shell metacharacters blocked |
 | `hook-backup-write-edit-defense.py` | last line of defense against unauthorized writes and edits |
 
@@ -249,14 +272,20 @@ This project uses a safety harness (`.claude/settings.json` and hooks) to limit 
 Defined in `.claude/allowed-bash-commands.json`:
 - `lua unit-tests.lua *` - Run unit tests with explicit module names
 - `lua debug-load.lua` - Debug module loading
-- `lua debug-data-raw.lua *` - Inspect data.raw
+- `DEPTH=N lua debug-data-raw.lua *` - Inspect vanilla data.raw (N=1-5)
+- `DEPTH=N lua debug-data-modded.lua *` - Inspect modded data.raw (N=1-5)
+- `python .claude/safe-rm.py *` - Safe file deletion
+- `.claude/fetch-factorio-research.sh` - Copy factorio-research skill to slop/ for editing
+- `.claude/install-factorio-research.sh` - Install edited skill back to .claude/skills/
 
 ### Implications
 
 - Claude can run unit tests but not arbitrary shell commands
 - Claude can write test files directly to `unit-tests/`
 - Claude can draft other code in `slop/` for operator review
-- Claude cannot modify hook configuration or settings
-- Claude can edit (not write) files in the `extras/` and `tweaks/` directories
+- Claude can edit CLAUDE.md directly to maintain documentation
+- Claude can edit the factorio-research skill via fetch/install scripts
+- Claude cannot directly modify hook configuration or settings
+- Claude can edit (not write) files in the `extras/`, `tweaks/`, and `locale/` directories
 - File reads outside the project require explicit allowlist entries
-- Web documentation access limited to Factorio Lua API and other Factorio-related sites
+- Web documentation access limited to Factorio-related domains
