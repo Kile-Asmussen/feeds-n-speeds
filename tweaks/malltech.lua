@@ -33,10 +33,23 @@ function malltech.tweak_recipes()
     if tweaks.earlygame.enabled then
         malltech.mining_drills()
 
+        recipe['gun-turret'].ingredients = {
+            { type='item', name='electric-circuit', amount=8 },
+            { type='item', name='iron-plate', amount=4 },
+            { type='item', name='submachine-gun', amount=2 },
+            { type='item', name='iron-gear-wheel', amount=8 },
+        }
+
         recipe['lab'].ingredients = {
             { type='item', name='transport-belt', amount=4 },
             { type='item', name='inserter', amount=2 },
             { type='item', name='electronic-circuit', amount=8 },
+        }
+    else
+        recipe['gun-turret'].ingredients = {
+            { type='item', name='electric-circuit', amount=8 },
+            { type='item', name='iron-plate', amount=12 },
+            { type='item', name='iron-gear-wheel', amount=10 },
         }
     end
 
@@ -50,8 +63,8 @@ function malltech.mining_drills()
 
     recipe['burner-mining-drill'].ingredients = {
         { type='item', name='stone-brick', amount=6 },
-        { type='item', name='iron-gear-wheel', amount=2 },
-        { type='item', name='steel-plate', amount=1 },
+        { type='item', name='iron-gear-wheel', amount=4 },
+        { type='item', name='iron-plate', amount=2 },
     }
 
     recipe['electric-mining-drill'].ingredients = {

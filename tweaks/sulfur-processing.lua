@@ -28,6 +28,7 @@ function sulfur_processing.data_updates()
         amount = 1,
         probability = 0.8,  -- 80% chance to return, 20% consumed
     })
+    sulfuric_acid.main_product = 'sulfuric-acid'
 
     -- Modify sulfur recipe: coal washing process
     local sulfur = data.raw.recipe['sulfur']

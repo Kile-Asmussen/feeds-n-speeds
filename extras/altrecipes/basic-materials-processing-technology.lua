@@ -10,7 +10,7 @@ return {
     },
     research_trigger = {
         type = 'craft-item',
-        item = 'stone-furnace',
-        count = 5,
+        item = 'stone-brick',
+        count = 10,
     },
 }

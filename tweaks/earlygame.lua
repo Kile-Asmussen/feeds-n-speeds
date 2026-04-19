@@ -8,6 +8,80 @@ function earlygame.data_updates()
 
     earlygame.tweak_technologies()
     earlygame.tweak_recipes()
+    earlygame.tweak_military()
+end
+
+function earlygame.tweak_military()
+    local extras = import 'extras'
+    local tweaks = import 'tweaks'
+
+    local tech = data.raw.technology
+    local recipes = data.raw.recipe
+
+    recipes['submachine-gun'].ingredients = {
+        { type = 'steel-plate', amount = 1 },
+        { type = 'iron-plate', amount = 2 },
+        { type = 'copper-plate', amount = 2 },
+    }
+
+    -- Enable vanilla pistol recipe (normally hidden since player starts with one)
+    recipes['pistol'].hidden = false
+    recipes['pistol'].enabled = true
+    recipes['pistol'].ingredients = {
+        { type = 'item', name = 'copper-plate', amount = 1 },
+        { type = 'item', name = 'iron-plate', amount = 3 },
+    }
+
+    if
+        extras.ores.enabled
+        and extras.drills.enabled
+        and tweaks.sulfur_processing.enabled
+    then
+        recipes['firearm-magazine'].energy_required = 2
+        recipes['firearm-magazine'].ingredients = {
+            { type = 'item', name = 'iron-plate', amount = 2 },
+            { type = 'item', name = 'copper-plate', amount = 2 },
+            { type = 'item', name = 'sulfur', amount = 1 },
+            { type = 'item', name = 'coal', amount = 1 },
+        }
+        recipes['firearm-magazine'].results = {
+            { type = 'item', name = 'firearm-magazine', amount = 2 },
+        }
+
+        recipes['piercing-rounds-magazine'].ingredients = {
+            { type = 'item', name = 'steel-plate', amount = 1 },
+            { type = 'item', name = 'firearm-magazine', amount = 2 },
+            { type = 'item', name = 'sulfur', amount = 1 },
+            { type = 'item', name = 'coal', amount = 1 },
+        }
+
+        recipes['shotgun-shell'].energy_required = 6
+        recipes['shotgun-shell'].ingredients = {
+            { type = 'item', name = 'copper-plate', amount = 2 },
+            { type = 'item', name = 'iron-plate', amount = 2 },
+            { type = 'item', name = 'sulfur', amount = 1 },
+            { type = 'item', name = 'coal', amount = 1 },
+        }
+        recipes['shotgun-shell'].results = {
+            { type = 'item', name = 'shotgun-shell', amount = 2 },
+        }
+
+        recipes['piercing-shotgun-shell'].ingredients = {
+            { type = 'item', name = 'shotgun-shell', amount = 2 },
+            { type = 'item', name = 'steel-plate', amount = 1 },
+            { type = 'item', name = 'sulfur', amount = 1 },
+            { type = 'item', name = 'coal', amount = 1 },
+        }
+
+        recipes['grenade'].ingredients = {
+            { type = 'item', name = 'steel-plate', amount = 1 },
+            { type = 'item', name = 'sulfur', amount = 5 },
+            { type = 'item', name = 'coal', amount = 5 },
+        }
+
+    end
+
+
 end
 
 function earlygame.tweak_technologies()
@@ -57,6 +131,10 @@ function earlygame.tweak_technologies()
         table.insert(tech.automation.effects,
             { type = 'unlock-recipe', recipe = fns 'big-steel-hopper' }
         )
+
+        table.remove_matching(tech['automation-2'].effects,
+            table.matches{ type = 'unlock-recipe', recipe = fns 'big-steel-hopper' }
+        )
     end
 
     local steam_power = data.raw.technology['steam-power']
@@ -76,12 +154,33 @@ function earlygame.tweak_technologies()
     table.insert(tech.logistics.effects, 1,
         { type = 'unlock-recipe', recipe = 'transport-belt' }
     )
+
+    table.insert(tech['logistic-science-pack'].prerequisites, 'logistics')
+
+    if extras.altrecipes.enabled then
+        tech[fns 'basic-materials-processing'].research_trigger = {
+            type = 'craft-item',
+            item = 'stone-furnace',
+            count = 3,
+        }
+
+        table.append(tech[fns 'basic-materials-processing'].effects, {
+            { type = 'unlock-recipe', recipe = 'stone-brick' },
+            { type = 'unlock-recipe', recipe = 'burner-mining-drill' },
+        })
+
+        table.insert(tech['steam-power'].prerequisites,
+            fns 'basic-materials-processing'
+        )
+    end
 end
 
 function earlygame.tweak_recipes()
     local recipe = data.raw.recipe
 
-    recipe['burner-inserter'] = nil
+    recipe['stone-brick'].enabled = false
+    recipe['burner-inserter'].enabled = false
+    recipe['burner-inserter'].hidden = true
     recipe['transport-belt'].enabled = false
     recipe['iron-gear-wheel'].enabled = false
 end
