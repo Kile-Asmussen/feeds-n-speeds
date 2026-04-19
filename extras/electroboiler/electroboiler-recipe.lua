@@ -7,8 +7,7 @@ return {
     name = name,
     enabled = false,
     ingredients = {
-        { type = 'item', name = 'stone-furnace', amount = 1 },
-        { type = 'item', name = 'pipe', amount = 4 },
+        { type = 'item', name = 'boiler', amount = 1 },
         { type = 'item', name = 'electronic-circuit', amount = 2 },
     },
     results = {
