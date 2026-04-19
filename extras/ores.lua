@@ -18,15 +18,21 @@ end
 function ores.data_updates()
     if not ores.enabled then return end
 
+    local debuglib = require 'debuglib'
     local tweaks = import 'tweaks'
     local name = fns 'sulfur-ore'
     local noise_expr_name = 'default-' .. name .. '-patches'
 
+    log('[FNS] sulfur ore data_updates starting')
+    log('[FNS] noise_expr_name: ' .. noise_expr_name)
+
     -- Dynamically assign patch set indices for sulfur ore
     -- Claim the next available regular patch set index
     local regular_counts = data.raw['noise-expression'].default_regular_resource_patch_set_count
+    log('[FNS] regular_counts.expression (before): ' .. tostring(regular_counts.expression))
     local regular_index = regular_counts.expression
     regular_counts.expression = regular_index + 1
+    log('[FNS] regular_index assigned: ' .. tostring(regular_index))
 
     -- If earlygame enabled, sulfur spawns in starting area; claim a starting index too
     local has_starting_area = tweaks.earlygame.enabled and 1 or 0
@@ -57,6 +63,12 @@ function ores.data_updates()
         "starting_patch_set_count = default_starting_resource_patch_set_count," ..
         "starting_patch_set_index = " .. starting_index .. "," ..
         "starting_rq_factor = 0.21428571428571}"
+
+    log('[FNS] rebuilt noise expression')
+    log('[FNS] sulfur-ore resource autoplace:')
+    log(debuglib.pp(data.raw.resource[name].autoplace, 3))
+    log('[FNS] noise expression:')
+    log(debuglib.pp(data.raw['noise-expression'][noise_expr_name], 2))
 
     -- Add belt picture variations to vanilla sulfur item
     data.raw.item.sulfur.pictures = {
@@ -111,7 +123,10 @@ function ores.data_updates()
     }
 
     -- Register sulfur ore with Nauvis map generation
+    log('[FNS] registering sulfur ore with Nauvis autoplace_controls')
     data.raw.planet.nauvis.map_gen_settings.autoplace_controls[fns 'sulfur-ore'] = {}
+    log('[FNS] Nauvis autoplace_controls:')
+    log(debuglib.pp(data.raw.planet.nauvis.map_gen_settings.autoplace_controls, 2))
 
     -- If drills module is disabled, provide alternate path to fluid mining
     local extras = import 'extras'
