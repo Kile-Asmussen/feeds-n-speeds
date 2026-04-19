@@ -44,5 +44,6 @@ extras.chests = require('extras.chests')
 extras.radars = require('extras.radars')
 extras.altrecipes = require('extras.altrecipes')
 extras.drills = require('extras.drills')
+extras.ores = require('extras.ores')
 
 return extras:__seal()

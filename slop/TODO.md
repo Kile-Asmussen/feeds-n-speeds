@@ -4,7 +4,6 @@
 
 - [ ] Add settings-updates.lua and settings-final-fixes.lua lifecycle implementations
 - [ ] Write more test coverage for prelude modules
-- [ ] Wire up `extras/ores.lua` coordinator to load sulfur ore files
 - [ ] Test wet-drilling technology in-game
 - [ ] Test sulfur ore spawning and steam mining requirement
 - [ ] Custom graphics for sulfur ore (currently using uranium-ore placeholder)
@@ -52,9 +51,18 @@
   - Resource requiring steam to mine, yields vanilla sulfur
   - Map generation noise expression and autoplace control
 
+## Design Considerations
+
+**Overhaul creep warning:** The combination of `sulfur-ore` + `earlygame` + `drills` + `malltech` creates an interconnected experience that approaches overhaul territory. These features share dependencies (wet-drilling enables sulfur mining, malltech restructures tech tree, earlygame changes recipes). Consider:
+- Should these be bundled under a single "extended early game" toggle?
+- Should enabling one auto-enable dependencies with a warning?
+- Should documentation clearly mark which features are standalone vs. interconnected?
+- Keep sulfur-ore as purely additive (new resource) vs. integrated (changes to existing sulfur recipes)?
+
 ## Ideas / Maybe
 
-- [ ] Ditch toggles entirely: transition from optional tweaks to a full overhaul mod with cohesive vision; removes settings complexity and allows bolder, interconnected changes
+- [ ] Default-off toggles: Consider shipping with most features disabled by default, letting users discover and enable combinations; reduces initial complexity while preserving modularity
+- [ ] Feature profiles: Predefined toggle combinations (e.g., "minimal", "balanced", "kitchen sink") as a single setting
 - [ ] Electrical boiler: identical to baseline boiler but with electrical energy source; provides steam for altered recipes or coal liquefaction; serves as accumulator alternative for solar setups
 - [ ] Debug mode setting for verbose logging
 - [ ] In-game changelog display
