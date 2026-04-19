@@ -10,8 +10,10 @@ drill.minable.result = fns 'burner-mining-drill-fluid'
 
 -- Add fluid input on south side (opposite the output chute which is north)
 -- Note: defines.direction is runtime-only; use numeric direction (4 = south)
+-- Filter to steam only: usable for sulfur ore, not uranium (sulfuric acid)
 drill.input_fluid_box = {
-    volume = 200,
+    volume = 50,
+    filter = 'steam',
     pipe_connections = {
         {
             direction = 4,  -- south

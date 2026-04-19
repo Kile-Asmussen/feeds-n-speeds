@@ -59,6 +59,12 @@
 - Should documentation clearly mark which features are standalone vs. interconnected?
 - Keep sulfur-ore as purely additive (new resource) vs. integrated (changes to existing sulfur recipes)?
 
+**Sulfur ore module dependency on drills:** If `extras.ores` is enabled but `extras.drills` is disabled, sulfur ore spawns but may be unminable until mid-game `uranium-mining` tech (requires chemical science). In vanilla, `mining-with-fluid` comes from uranium-mining, which is later than when sulfur becomes available via chemical processing (crude oil → petroleum → sulfur). By that point, players already have sulfur production lines, making mined sulfur less desirable. Options:
+- Create a standalone technology in `extras/ores/` (e.g., `sulfur-mining` or `frasch-process`) that provides `mining-with-fluid` specifically for sulfur, independent of the drills module
+- Auto-enable `extras.drills` when `extras.ores` is enabled (couples the modules)
+- Document the dependency and leave as-is (sulfur ore becomes a late-game alternative source)
+- Add a guard that disables sulfur ore spawning if drills module is disabled
+
 ## Ideas / Maybe
 
 - [ ] Default-off toggles: Consider shipping with most features disabled by default, letting users discover and enable combinations; reduces initial complexity while preserving modularity

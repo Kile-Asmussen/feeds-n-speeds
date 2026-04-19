@@ -2,4 +2,8 @@
     "Lua.completion.autoRequire": false,
     "Lua.codeLens.enable": false,
     "Lua.addonManager.enable": false,
+    "[lua]": {
+        "files.autoSave": "afterDelay",
+        "files.autoSaveDelay": 1000
+    }
 }

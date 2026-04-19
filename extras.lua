@@ -45,5 +45,6 @@ extras.radars = require('extras.radars')
 extras.altrecipes = require('extras.altrecipes')
 extras.drills = require('extras.drills')
 extras.ores = require('extras.ores')
+extras.electroboiler = require('extras.electroboiler')
 
 return extras:__seal()

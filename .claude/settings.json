@@ -10,6 +10,8 @@
       "Edit(slop/**/*)",
       "Edit(extras/**/*)",
       "Edit(tweaks/**/*)",
+      "Write(extras/*/*)",
+      "Write(tweaks/*/*)",
       "Edit(locale/**/*)",
       "Edit(CLAUDE.md)",
       "Write(unit-tests/*)",
