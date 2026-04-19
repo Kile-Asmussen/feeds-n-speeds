@@ -5,8 +5,10 @@
     "wiki.factorio.com",
     "forums.factorio.com",
     "mods.factorio.com",
-    "en.wikipedia.org",
+    "github.com",
     "docs.python.org"
   ],
-  "exceptions": []
+  "exceptions": [
+    "!github.com/wube/factorio-data/*"
+  ]
 }

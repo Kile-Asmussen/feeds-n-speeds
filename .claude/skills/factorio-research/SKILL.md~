@@ -32,7 +32,7 @@ Direct read access is available to the Factorio installation's data directories 
 | `~/.steam/.../Factorio/data/base` | Base game prototypes, graphics, locale |
 | `~/.steam/.../Factorio/data/quality` | Quality mod |
 | `~/.steam/.../Factorio/data/space-age` | Space Age expansion |
-| `~/.steam/.../Factorio/data/elevated-rail` | Elevated rails |
+| `~/.steam/.../Factorio/data/elevated-rails` | Elevated rails |
 
 Full path: `/home/qeela/.steam/steam/steamapps/common/Factorio/data/`
 

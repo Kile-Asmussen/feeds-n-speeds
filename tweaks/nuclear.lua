@@ -56,15 +56,14 @@ function nuclear.data()
     nuclear_reactor.neighbour_bonus = 0.5
 
 
+    -- Heating tower (Space Age) - same tweaks as nuclear reactor
     local heating_tower = data.raw.reactor['heating-tower']
-    if heating_tower then
-        -- Match nuclear reactor heat output for consistent 1:5 HX ratio
-        heating_tower.consumption = '60MW'
-        -- Sync temperature limits with tweaked nuclear system
-        heating_tower.heat_buffer.max_temperature = max_temperature
-        heating_tower.scale_energy_usage = true
-        heating_tower.localised_description = {'entity-description.feeds-n-speeds-tweaked-heating-tower'}
-    end
+    -- Match nuclear reactor heat output for consistent 1:5 HX ratio
+    heating_tower.consumption = '60MW'
+    -- Sync temperature limits with tweaked nuclear system
+    heating_tower.heat_buffer.max_temperature = max_temperature
+    heating_tower.scale_energy_usage = true
+    heating_tower.localised_description = {'entity-description.feeds-n-speeds-tweaked-heating-tower'}
 end
 
 function nuclear.data_updates()

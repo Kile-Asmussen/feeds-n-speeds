@@ -101,6 +101,13 @@ def main() -> None:
     )
     sys.exit(0)
 
+def fnmatchcase_bang(hostname_and_path: str, exception: str) -> bool:
+    invert = False
+    if exception.startswith('!'):
+        exception = exception[1:]
+    
+    return invert ^ fnmatchcase(hostname_and_path, exception)
+
 
 def load_config() -> tuple[list[str], list[str]]:
 

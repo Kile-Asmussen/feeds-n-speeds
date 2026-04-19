@@ -9,7 +9,7 @@
 	"dependencies" : [
 		"base",
 		"space-age",
-		"elevated-rail",
+		"elevated-rails",
 		"quality"
 	]
 }

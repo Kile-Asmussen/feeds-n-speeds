@@ -23,7 +23,7 @@ ALLOWED_MODS = {
     "base": FACTORIO_DATA / "base",
     "quality": FACTORIO_DATA / "quality",
     "space-age": FACTORIO_DATA / "space-age",
-    "elevated-rail": FACTORIO_DATA / "elevated-rail",
+    "elevated-rails": FACTORIO_DATA / "elevated-rails",
 }
 
 # Output directory (relative to script's assumed working directory)

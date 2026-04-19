@@ -7,15 +7,39 @@ ores.enabled = true
 function ores.data()
     if not ores.enabled then return end
 
+    local noise_expr = require 'extras.ores.sulfur-ore-noise-expression'
+
     data:extend{
         require 'extras.ores.sulfur-ore',
         require 'extras.ores.sulfur-ore-autoplace-control',
-        require 'extras.ores.sulfur-ore-noise-expression',
+        noise_expr.prototype,
     }
 end
 
 function ores.data_updates()
     if not ores.enabled then return end
+
+    local tweaks = import 'tweaks'
+    local noise_expr = require 'extras.ores.sulfur-ore-noise-expression'
+
+    -- Dynamically assign patch set indices for sulfur ore
+    -- Claim the next available regular patch set index
+    local regular_counts = data.raw['noise-expression'].default_regular_resource_patch_set_count
+    local regular_index = regular_counts.expression
+    regular_counts.expression = regular_index + 1
+
+    -- If earlygame enabled, sulfur spawns in starting area; claim a starting index too
+    local has_starting_area = tweaks.earlygame.enabled and 1 or 0
+    local starting_index = 0
+    if tweaks.earlygame.enabled then
+        local starting_counts = data.raw['noise-expression'].default_starting_resource_patch_set_count
+        starting_index = starting_counts.expression
+        starting_counts.expression = starting_index + 1
+    end
+
+    -- Rebuild noise expression with correct indices
+    data.raw['noise-expression'][fns 'default-sulfur-ore-patches'].expression =
+        noise_expr.build_expression(regular_index, starting_index, has_starting_area)
 
     -- Add belt picture variations to vanilla sulfur item
     data.raw.item.sulfur.pictures = {
@@ -70,10 +94,7 @@ function ores.data_updates()
     }
 
     -- Register sulfur ore with Nauvis map generation
-    local nauvis = data.raw.planet.nauvis
-    if nauvis and nauvis.map_gen_settings then
-        nauvis.map_gen_settings.autoplace_controls[fns 'sulfur-ore'] = {}
-    end
+    data.raw.planet.nauvis.map_gen_settings.autoplace_controls[fns 'sulfur-ore'] = {}
 
     -- If drills module is disabled, provide alternate path to fluid mining
     local extras = import 'extras'

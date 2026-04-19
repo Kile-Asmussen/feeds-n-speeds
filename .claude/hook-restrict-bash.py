@@ -70,7 +70,7 @@ def main() -> None:
             "  " + command,
             f"Forbidden characters: {' '.join(DANGEROUS)}",
             "Use single commands only, no chaining or redirection.",
-            "Remember: you are running in the project directory at all times, there is no need to change the current directory"
+            "Remember: you are running in the project directory at all times, there is no need to change the current directory",
             sep = '\n',
             file=[sys.stderr, LOG_FILE]
         )
@@ -88,7 +88,6 @@ def main() -> None:
         if matches_pattern(command, pattern):
             print(f"allowing-- command matches pattern:{pattern}",
             file=LOG_FILE)
-            sys.exit(0)
 
     # No pattern matched - deny
     print(
