@@ -1,10 +1,13 @@
+// cSpell:ignore vec env Vec
 use mlua::prelude::*;
 use serde::de::Error;
 use serde_json::{Map, Value};
+use std::env::home_dir;
+use std::path::PathBuf;
 use std::{process, sync::Arc};
 
-const DATA_RAW_DUMP: &str = "~/.factorio/script-output/data-raw-dump.json";
-const MOD_LIST: &str = "~/.factorio/mods/mod-list.json";
+const DATA_RAW_DUMP: &str = ".factorio/script-output/data-raw-dump.json";
+const MOD_LIST: &str = ".factorio/mods/mod-list.json";
 const CORE_MODS: &[&str] = &["core", "base", "space-age", "quality", "elevated-rails"];
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, Eq, Debug, Hash)]
@@ -13,19 +16,19 @@ struct Mod {
     enabled: bool,
 }
 
-#[mlua::lua_module]
-fn data_raw(lua: &Lua) -> LuaResult<LuaTable> {
-    let data = lua.create_table()?;
+fn from_home(s: &str) -> PathBuf {
+    let mut res = home_dir().unwrap();
+    res.push(s);
+    return res;
+}
 
-    if !std::fs::exists(DATA_RAW_DUMP).map_err(lua_error)? {
+#[mlua::lua_module(name = "rawdata")]
+fn rawdata(lua: &Lua) -> LuaResult<LuaTable> {
+    if !std::fs::exists(from_home(DATA_RAW_DUMP)).map_err(lua_error)? {
         generate_data_raw()?
     }
 
-    let raw = read_data_raw(lua)?;
-
-    data.set("raw", raw)?;
-
-    Ok(data)
+    Ok(read_data_raw(lua)?)
 }
 
 fn lua_error<E: std::error::Error + 'static>(err: E) -> LuaError {
@@ -33,7 +36,10 @@ fn lua_error<E: std::error::Error + 'static>(err: E) -> LuaError {
 }
 
 fn read_mod_list() -> LuaResult<Vec<Mod>> {
-    Ok(serde_json::from_slice(&std::fs::read(MOD_LIST).map_err(lua_error)?).map_err(lua_error)?)
+    Ok(
+        serde_json::from_slice(&std::fs::read(from_home(MOD_LIST)).map_err(lua_error)?)
+            .map_err(lua_error)?,
+    )
 }
 
 fn disable_mods(mods: &mut [Mod]) {
@@ -44,7 +50,7 @@ fn disable_mods(mods: &mut [Mod]) {
 
 fn write_mod_list(mods: &[Mod]) -> LuaResult<()> {
     std::fs::write(
-        MOD_LIST,
+        from_home(MOD_LIST),
         serde_json::to_vec_pretty(mods).map_err(lua_error)?,
     )
     .map_err(lua_error)?;
@@ -63,7 +69,7 @@ fn factorio_dump_data_raw() -> LuaResult<()> {
 }
 
 fn generate_data_raw() -> LuaResult<()> {
-    let orig_modlist = if !std::fs::exists(MOD_LIST).map_err(lua_error)? {
+    let orig_modlist = if !std::fs::exists(from_home(MOD_LIST)).map_err(lua_error)? {
         vec![
             Mod {
                 name: "base".to_string(),
@@ -95,7 +101,7 @@ fn generate_data_raw() -> LuaResult<()> {
 
 fn read_data_raw(lua: &Lua) -> LuaResult<LuaTable> {
     let json = serde_json::from_slice::<Map<String, Value>>(
-        &std::fs::read(DATA_RAW_DUMP).map_err(lua_error)?,
+        &std::fs::read(from_home(DATA_RAW_DUMP)).map_err(lua_error)?,
     )
     .map_err(lua_error)?;
 
@@ -139,7 +145,7 @@ fn from_array(lua: &Lua, values: Vec<serde_json::Value>) -> LuaResult<LuaTable> 
 fn from_map(lua: &Lua, map: serde_json::Map<String, serde_json::Value>) -> LuaResult<LuaTable> {
     let res = lua.create_table()?;
     for (k, v) in map {
-        res.set(k, json_to_lua(lua, v)?);
+        res.set(k, json_to_lua(lua, v)?)?;
     }
 
     Ok(res)

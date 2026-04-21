@@ -28,9 +28,7 @@ function malltech.tweak_recipes()
 
     malltech.assembling_machines()
     
-    local tweaks = import 'tweaks'
-
-    if tweaks.earlygame.enabled then
+    if when('tweaks.earlygame') then
         malltech.mining_drills()
 
         recipe['gun-turret'].ingredients = {
@@ -53,7 +51,7 @@ function malltech.tweak_recipes()
         }
     end
 
-    if tweaks.nuclear.enabled then
+    if when'tweaks.nuclear' then
         malltech.nuclear_machines()
     end
 end

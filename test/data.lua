@@ -3,7 +3,7 @@ require 'prelude'
 local localization = require 'test.localization'
 
 local data = namespace 'data'
-data.raw = require 'raw'
+data.raw = require 'rawdata'
 
 local settings = namespace('settings')
 

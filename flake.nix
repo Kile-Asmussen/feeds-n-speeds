@@ -1,15 +1,22 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    rust-overlay.url = "github:oxalica/rust-overlay";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs =
-    { nixpkgs, flake-utils, ... }:
+    {
+      nixpkgs,
+      flake-utils,
+      rust-overlay,
+      ...
+    }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        overlays = [ ];
+        overlays = [ rust-overlay.overlays.default ];
         pkgs = import nixpkgs { inherit system overlays; };
       in
       {
@@ -18,6 +25,13 @@
           mkShell {
             nativeBuildInputs = [
               bashInteractive
+              (rust-bin.nightly."2026-02-27".default.override {
+                extensions = [ "rust-src" ];
+                targets = [
+                  "x86_64-unknown-linux-gnu"
+                  "x86_64-unknown-linux-musl"
+                ];
+              })
             ];
 
             shellHook = ''

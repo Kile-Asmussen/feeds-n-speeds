@@ -7,6 +7,7 @@
         "isnamespace",
         "isum",
         "isvec",
+        "mlua",
         "tbl",
         "vecadd",
         "vecmul"

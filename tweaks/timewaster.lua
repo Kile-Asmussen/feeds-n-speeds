@@ -101,7 +101,7 @@ timewaster.CRAFTING_TIMES = {
     ['centrifuge'] = 10.0,
 
     -- Furnaces
-    ['stone-furnace'] = import('extras.altrecipes').enabled and 4.0 or 2.0,
+    ['stone-furnace'] = function() return when('extras.altrecipes') and 4.0 or 2.0 end,
     [fns 'stone-furnace'] = 2.0,
     ['steel-furnace'] = 3.0,
     ['electric-furnace'] = 5.0,
@@ -137,7 +137,11 @@ function timewaster.data_updates()
             for entity_name, mining_time in pairs(entities) do
                 local entity = category[entity_name]
                 if entity and entity.minable then
-                    entity.minable.mining_time = mining_time
+                    if type(mining_time) == 'function' then
+                        entity.minable.mining_time = mining_time()
+                    elseif type(mining_time) == 'number' then
+                        entity.minable.mining_time = mining_time
+                    end
                 end
             end
         end
@@ -147,7 +151,11 @@ function timewaster.data_updates()
     for recipe_name, energy_required in pairs(timewaster.CRAFTING_TIMES) do
         local recipe = data.raw.recipe[recipe_name]
         if recipe then
-            recipe.energy_required = energy_required
+            if type(energy_required) == 'function' then
+                recipe.energy_required = energy_required()
+            elseif type(energy_required) == 'number' then
+                recipe.energy_required = energy_required
+            end
         end
     end
 end

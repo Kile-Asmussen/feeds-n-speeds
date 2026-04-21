@@ -22,7 +22,7 @@ function electric.data_updates()
 
     local tweaks = import 'tweaks'
 
-    if tweaks.concrete.enabled then 
+    if when'tweaks.concrete' then 
         table.insert(data.raw.technology['electric-energy-distribution-1'].prerequisites, 'concrete')
 
         table.insert(data.raw.recipe['medium-electric-pole'].ingredients,

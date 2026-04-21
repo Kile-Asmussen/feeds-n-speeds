@@ -30,7 +30,7 @@ function ores.data_updates()
     regular_counts.expression = regular_index + 1
 
     -- If earlygame enabled, sulfur spawns in starting area; claim a starting index too
-    local has_starting_area = tweaks.earlygame.enabled and 1 or 0
+    local has_starting_area = when('extras.ores', 'extras.drills')
     local starting_index = 0
     if tweaks.earlygame.enabled then
         local starting_counts = data.raw['noise-expression'].default_starting_resource_patch_set_count
@@ -40,7 +40,11 @@ function ores.data_updates()
 
     -- Rebuild noise expression with correct indices
     data.raw['noise-expression'][noise_expr_name].expression =
-        noise.
+        noise.resource_autoplace_all_patches{
+            name = name,
+            has_starting_area = tweaks.earlygame.enabled and 1 or 0,
+
+        }
 
     -- Add belt picture variations to vanilla sulfur item
     data.raw.item.sulfur.pictures = {
@@ -99,8 +103,7 @@ function ores.data_updates()
     data.raw.planet.nauvis.map_gen_settings.autoplace_settings.entity.settings[fns 'sulfur-ore'] = {}
 
     -- If drills module is disabled, provide alternate path to fluid mining
-    local extras = import 'extras'
-    if not extras.drills.enabled then
+    if when('extras.drills') then
         -- Hide vanilla uranium-mining (mining-with-fluid now from sulfur-drilling)
         data.raw.technology['uranium-mining'].hidden = true
 

@@ -19,29 +19,36 @@ function sulfur_processing.data_updates()
 
     -- Modify sulfuric acid recipe: steel plate catalyst (80% return chance)
     local sulfuric_acid = data.raw.recipe['sulfuric-acid']
+
     table.find_matching(sulfuric_acid.ingredients,
         table.matches{ name = 'iron-plate' }
     ).name = 'steel-plate'
+
     table.insert(sulfuric_acid.results, {
         type = 'item',
         name = 'steel-plate',
         amount = 1,
         probability = 0.8,  -- 80% chance to return, 20% consumed
     })
+
     sulfuric_acid.main_product = 'sulfuric-acid'
 
     -- Modify sulfur recipe: coal washing process
     local sulfur = data.raw.recipe['sulfur']
+
     sulfur.ingredients = {
         { type = 'fluid', name = 'petroleum-gas', amount = 30 },
         { type = 'item', name = 'coal', amount = 5 },
         { type = 'fluid', name = 'steam', amount = 50 },
     }
+
     sulfur.results = {
         { type = 'item', name = 'coal', amount = 4 },
         { type = 'item', name = 'sulfur', amount = 1 },
     }
+
     sulfur.emissions_multiplier = 1.5  -- 50% extra pollution
+    
     sulfur.main_product = 'sulfur'
 
     -- Coal liquefaction has 20% chance to produce sulfur

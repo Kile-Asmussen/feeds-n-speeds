@@ -33,9 +33,7 @@ function earlygame.tweak_military()
     }
 
     if
-        extras.ores.enabled
-        and extras.drills.enabled
-        and tweaks.sulfur_processing.enabled
+        when('extras.ores', 'extras.drills')
     then
         recipes['firearm-magazine'].energy_required = 2
         recipes['firearm-magazine'].ingredients = {

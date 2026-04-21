@@ -16,11 +16,11 @@ export MODS_DIR := $(HOME)/.factorio/mods
 export MOD_LIST := mod-list.json
 export OUTPUT_DIR := ./target
 
-.PHONY: all build clean
-.PHONY: install uninstall clean-reinstall nuke
+.PHONY: all build clean rawdata
+.PHONY: install uninstall clean-reinstall nuke 
 
 build: $(OUTPUT_DIR)/$(ZIPFILE)
-$(OUTPUT_DIR)/$(ZIPFILE): $(FILES)
+$(OUTPUT_DIR)/$(ZIPFILE): $(FILES) ./build-scripts/build.sh
 	./build-scripts/build.sh
 
 unzip: build
@@ -28,18 +28,22 @@ unzip: build
 	(cd $(OUTPUT_DIR) && unzip $(ZIPFILE))
 
 clean:
-	rm -rf ./output/*
+	rm -rf ./target/*
+	rm -f ./*.so
 
-install: build
+install: build ./build-scripts/install.sh
 	@./build-scripts/install.sh
 
-uninstall:
+uninstall: ./build-scripts/uninstall.sh
 	@./build-scripts/uninstall.sh
 
-full-reinstall: clean nuke install
+clean-reinstall: clean nuke install
 
 nuke: uninstall
 	rm -f ~/.factorio/mods/mod-settings.dat
 
-data-raw: ./src/lib.rs ./Cargo.toml
-	@./build-scripts/data-raw.sh
+rawdata: 
+	@./build-scripts/rawdata.sh 
+
+
+

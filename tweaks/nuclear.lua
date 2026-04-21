@@ -72,7 +72,7 @@ function nuclear.data_updates()
 
     local tweaks = import 'tweaks'
 
-    if tweaks.concrete.enabled then
+    if when'tweaks.concrete' then
 
         local recipe = data.raw.recipe
 

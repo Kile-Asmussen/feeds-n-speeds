@@ -7,6 +7,18 @@ local mod_identifiers = {}
 local getmetatable = _G.getmetatable
 local setmetatable = _G.setmetatable
 
+function when(...)
+
+    local res = true
+
+    for _, v in ipairs(table.pack(...)) do
+        res = res and import(v)('enabled')
+    end
+
+    return res
+
+end
+
 local function fns(name)
     assert(type(name) == 'string', "invalid name: " .. tostring(name))
     name, _ = string.gsub(name, '[^a-zA-Z0-9]', '-')
@@ -20,6 +32,7 @@ local function fnsidentifiers()
 end
 
 local function import(path)
+    assert(type(path) == 'string', "namespace names are strings")
     assert(declared_namespaces[path], 'no such namespace ' .. path)
     return declared_namespaces[path]
 end
