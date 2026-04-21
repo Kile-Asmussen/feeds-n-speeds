@@ -12,6 +12,11 @@ CLAUDE.md export-ignore
 /slop/* export-ignore
 /.claude/* export-ignore
 
+/src/*.rs export-ignore
+Cargo.toml export-ignore
+Cargo.lock export-ignore
+/target export-ignore
+
 /build-scripts/** export-ignore
 Makefile export-ignore
 

@@ -1,0 +1,76 @@
+{
+  "mods": [
+    {
+      "name": "base",
+      "enabled": true
+    },
+    {
+      "name": "elevated-rails",
+      "enabled": true
+    },
+    {
+      "name": "quality",
+      "enabled": true
+    },
+    {
+      "name": "space-age",
+      "enabled": true
+    },
+    {
+      "name": "arrowplates",
+      "enabled": false
+    },
+    {
+      "name": "autobuild",
+      "enabled": false
+    },
+    {
+      "name": "EditorExtensions",
+      "enabled": true
+    },
+    {
+      "name": "even-more-text-plates-2_0",
+      "enabled": false
+    },
+    {
+      "name": "ExtraZoom",
+      "enabled": false
+    },
+    {
+      "name": "FeedsNSpeeds",
+      "enabled": true
+    },
+    {
+      "name": "flib",
+      "enabled": true
+    },
+    {
+      "name": "power-grid-comb",
+      "enabled": false
+    },
+    {
+      "name": "RateCalculator",
+      "enabled": false
+    },
+    {
+      "name": "RealisticOres",
+      "enabled": false
+    },
+    {
+      "name": "RealisticReactorGlow",
+      "enabled": false
+    },
+    {
+      "name": "Side Inserters",
+      "enabled": false
+    },
+    {
+      "name": "Tapeline",
+      "enabled": false
+    },
+    {
+      "name": "textplates",
+      "enabled": false
+    }
+  ]
+}

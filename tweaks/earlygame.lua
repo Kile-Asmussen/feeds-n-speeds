@@ -150,8 +150,7 @@ function earlygame.tweak_technologies()
         'electronics',
     }
 
-    -- Move transport belts to logistics (sadistic early game)
-    table.insert(tech.logistics.effects, 1,
+    table.insert(tech['steam-power'].effects,
         { type = 'unlock-recipe', recipe = 'transport-belt' }
     )
 

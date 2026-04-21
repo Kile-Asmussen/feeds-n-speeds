@@ -90,7 +90,7 @@ timewaster.CRAFTING_TIMES = {
     ['heat-exchanger'] = 8.0,
     ['nuclear-reactor'] = 30.0,
     ['solar-panel'] = 5.0,
-    ['accumulator'] = 5.0,
+    ['accumulator'] = 4.0,
 
     -- Production
     ['assembling-machine-1'] = 2.0,
@@ -101,6 +101,8 @@ timewaster.CRAFTING_TIMES = {
     ['centrifuge'] = 10.0,
 
     -- Furnaces
+    ['stone-furnace'] = import('extras.altrecipes').enabled and 4.0 or 2.0,
+    [fns 'stone-furnace'] = 2.0,
     ['steel-furnace'] = 3.0,
     ['electric-furnace'] = 5.0,
 

@@ -50,6 +50,7 @@ function altrecipes.stone_furnace()
         data.raw.recipe['stone-furnace'].ingredients = {
             { amount = 15, name = 'stone', type = 'item' }
         }
+        data.raw.recipe['burner-mining-drill'].enabled = false
 
         recipe.enabled = false
 

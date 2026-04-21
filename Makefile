@@ -14,7 +14,7 @@ export NAME_VERSION := $(NAME)_$(VERSION)
 export ZIPFILE := $(NAME_VERSION).zip
 export MODS_DIR := $(HOME)/.factorio/mods
 export MOD_LIST := mod-list.json
-export OUTPUT_DIR := ./output
+export OUTPUT_DIR := ./target
 
 .PHONY: all build clean
 .PHONY: install uninstall clean-reinstall nuke
@@ -40,3 +40,6 @@ full-reinstall: clean nuke install
 
 nuke: uninstall
 	rm -f ~/.factorio/mods/mod-settings.dat
+
+data-raw: ./src/lib.rs ./Cargo.toml
+	@./build-scripts/data-raw.sh
