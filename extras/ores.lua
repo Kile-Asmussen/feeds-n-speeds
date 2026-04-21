@@ -1,109 +1,70 @@
 require 'prelude'
 
 local ores = namespace 'extras.ores'
-local noise = require 'extras.ores.noise'
 
 ores.enabled = true
 
 function ores.data()
     if not ores.enabled then return end
 
-    -- Note: resource_autoplace.resource_autoplace_settings{} in sulfur-ore.lua
-    -- automatically creates noise expression 'default-feeds-n-speeds-sulfur-ore-patches'
     data:extend{
         require 'extras.ores.sulfur-ore',
-        require 'extras.ores.sulfur-ore-autoplace-control',
+        table.unpack(
+            require 'extras.ores.sulfur-ore-noise-expressions'
+        )
     }
 end
 
 function ores.data_updates()
     if not ores.enabled then return end
 
-    local tweaks = import 'tweaks'
     local name = fns 'sulfur-ore'
-    local noise_expr_name = 'default-' .. name .. '-patches'
+
+    local noise_expressions = data.raw['noise-expression']
 
     -- Dynamically assign patch set indices for sulfur ore
     -- Claim the next available regular patch set index
-    local regular_counts = data.raw['noise-expression'].default_regular_resource_patch_set_count
-    local regular_index = regular_counts.expression
-    regular_counts.expression = regular_index + 1
+    local regular_counts = noise_expressions.default_regular_resource_patch_set_count
+
+    noise_expressions[fns 'sulfur-ore-regular-index'].expression = regular_counts.expression
+    regular_counts.expression = regular_counts.expression + 1
+
+    regular_counts = nil
 
     -- If earlygame enabled, sulfur spawns in starting area; claim a starting index too
-    local has_starting_area = when('extras.ores', 'extras.drills')
-    local starting_index = 0
-    if tweaks.earlygame.enabled then
-        local starting_counts = data.raw['noise-expression'].default_starting_resource_patch_set_count
-        starting_index = starting_counts.expression
-        starting_counts.expression = starting_index + 1
+    if when('extras.drills', 'tweaks.earlygame') then
+        local starting_counts = noise_expressions.default_starting_resource_patch_set_count
+        noise_expressions[fns 'sulfur-ore-starting-index'].expression = starting_counts.expression
+        starting_counts.expression = starting_counts.expression + 1
     end
 
-    -- Rebuild noise expression with correct indices
-    data.raw['noise-expression'][noise_expr_name].expression =
-        noise.resource_autoplace_all_patches{
-            name = name,
-            has_starting_area = tweaks.earlygame.enabled and 1 or 0,
-
-        }
-
     -- Add belt picture variations to vanilla sulfur item
-    data.raw.item.sulfur.pictures = {
+    data.raw.item.sulfur.pictures = table.map(
         {
-            filename = '__base__/graphics/icons/sulfur.png',
+            '__base__/graphics/icons/sulfur.png',
+            '__FeedsNSpeeds__/graphics/item/sulfur-1.png',
+            '__FeedsNSpeeds__/graphics/item/sulfur-2.png',
+            '__FeedsNSpeeds__/graphics/item/sulfur-3.png',
+            '__FeedsNSpeeds__/graphics/item/sulfur-4.png',
+            '__FeedsNSpeeds__/graphics/item/sulfur-5.png',
+            '__FeedsNSpeeds__/graphics/item/sulfur-6.png',
+            '__FeedsNSpeeds__/graphics/item/sulfur-7.png',
+        },
+        function(filename) return {
+            filename = filename,
             mipmap_count = 4,
             scale = 0.5,
             size = 64,
-        },
-        {
-            filename = '__FeedsNSpeeds__/graphics/item/sulfur-1.png',
-            mipmap_count = 4,
-            scale = 0.5,
-            size = 64,
-        },
-        {
-            filename = '__FeedsNSpeeds__/graphics/item/sulfur-2.png',
-            mipmap_count = 4,
-            scale = 0.5,
-            size = 64,
-        },
-        {
-            filename = '__FeedsNSpeeds__/graphics/item/sulfur-3.png',
-            mipmap_count = 4,
-            scale = 0.5,
-            size = 64,
-        },
-        {
-            filename = '__FeedsNSpeeds__/graphics/item/sulfur-4.png',
-            mipmap_count = 4,
-            scale = 0.5,
-            size = 64,
-        },
-        {
-            filename = '__FeedsNSpeeds__/graphics/item/sulfur-5.png',
-            mipmap_count = 4,
-            scale = 0.5,
-            size = 64,
-        },
-        {
-            filename = '__FeedsNSpeeds__/graphics/item/sulfur-6.png',
-            mipmap_count = 4,
-            scale = 0.5,
-            size = 64,
-        },
-        {
-            filename = '__FeedsNSpeeds__/graphics/item/sulfur-7.png',
-            mipmap_count = 4,
-            scale = 0.5,
-            size = 64,
-        },
-    }
+        } end
+    )
 
     -- Register sulfur ore with Nauvis map generation
     data.raw.planet.nauvis.map_gen_settings.autoplace_controls[fns 'sulfur-ore'] = {}
     data.raw.planet.nauvis.map_gen_settings.autoplace_settings.entity.settings[fns 'sulfur-ore'] = {}
 
     -- If drills module is disabled, provide alternate path to fluid mining
-    if when('extras.drills') then
+    if not when('extras.drills') then
+        
         -- Hide vanilla uranium-mining (mining-with-fluid now from sulfur-drilling)
         data.raw.technology['uranium-mining'].hidden = true
 

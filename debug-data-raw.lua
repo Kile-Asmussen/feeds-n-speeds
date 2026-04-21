@@ -3,6 +3,8 @@ require 'test'
 
 local debuglib = require 'debuglib'
 
+data.raw = require('rawdata')
+
 local args = table.pack( ... )
 
 local ix = 'data' .. debuglib.descent('raw', table.unpack(args))

@@ -21,6 +21,9 @@ function radars.data()
         recipe = fns 'small-radar',
     })
 
+end
+
+function radars.data_updates()
     table.find_matching(data.raw.recipe['artillery-shell'].ingredients,
         table.matches{ type='item', name = 'radar'}
     ).name = fns 'small-radar'

@@ -25,8 +25,8 @@ return {
     filename = '__base__/sound/item/metal-large-inventory-move.ogg',
     volume = 0.7
   },
-  localised_name = {"", {"entity-name." .. fns 'small-radar'}},
-  localised_description = { "", {"entity-description." .. fns 'small-radar'} },
+  localised_name = {"", { fns("entity-name", 'small-radar')}},
+  localised_description = { "", { fns("entity-description", 'small-radar')} },
   name = fns 'small-radar',
   order = 'd[radar]-b[radar]',
   pick_sound = {

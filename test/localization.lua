@@ -1,80 +1,86 @@
 require 'prelude'
 
-local localization = namespace 'localization'
+local localization = namespace 'test.localization'
 
 localization.keys = {
-    ['entity'] = {
-        name = {},
-        description = {}
-    },
-    ['item'] = {
-        name = {},
-        description = {}
-    },
-    ['technology'] = {
-        name = {},
-        description = {}
-    },
+
 }
 
-function localization.register_name(proto)
-    if proto.localised_name then return end
-    if localization.keys[proto.type] then
-        localization.keys[proto.type].name[proto.name] = true
+local function lockey(proto, class)
+    if
+        proto.type == 'item'
+        or proto.type == 'recipe'
+        or proto.type == 'technology'
+        or proto.type == 'autoplace-control'
+    then
+        return proto.type .. '-' .. class
+    elseif proto.type:match("%-setting$") then
+        return 'mod-setting-' .. class
     else
-        localization.keys.entity.name[proto.name] = true
-    end
-end
-
-function localization.register_description(proto)
-    if proto.localised_description then return end
-    if localization.keys[proto.type] then
-        localization.keys[proto.type].description[proto.name] = true
-    else
-        localization.keys.entity.description[proto.name] = true
+        return 'entity-' .. class
     end
 end
 
 function localization.register(proto)
-    localization.register_name(proto)
-    localization.register_description(proto)
-end
+    if proto.localised_name then return end
+    
+    local loc_name = lockey(proto, 'name')
+    local description = lockey(proto, 'description')
+    
+    localization.keys[loc_name] = localization.keys[loc_name] or {}
+    localization.keys[description] = localization.keys[description] or {}
 
+    if not localization.keys[loc_name][proto.name] then
+        localization.keys[loc_name][proto.name] = true
+        log('LOCALE [' .. loc_name .. '] ' .. proto.name )
+    end
+
+    if not localization.keys[description][proto.name] then
+        localization.keys[description][proto.name] = true
+        log('LOCALE [' .. description .. '] ' .. proto.name )
+    end
+end
 
 local open_file = io.open
 function localization.generate_stubs()
 
+    local locale_map = {}
+    local heading = table.null
+    
     local file = open_file('./locale/en/localization.cfg')
-    local locale_file = file:read("*a")
+    for l in file:lines() do
+        if l:match('%[.*%]') then
+            cat = l:gsub('%[', ''):gsub('%]', '')
+            heading = {}
+            locale_map[cat] = heading
+        else
+            local key = l:gsub("=.*", "")
+            heading[key] = true
+        end
+    end
     file:close()
     file = nil
 
     local res = table.new()
 
-    for _, heading in ipairs({
-        '[mod-setting-name]',
-        '[mod-setting-description]'
-    }) do
-        res:insert(heading)
-        for _, setting_category in pairs(settings) do
-            for key, _ in pairs(setting_category)  do
-                if not locale_file:match(key:gsub('%-', '%%-')) then
-                    res:insert(key .. '=')
-                end
-            end
-        end
-        res:insert('')
-    end
+    local categories = table.sorted_keys(localization.keys)
 
-    for heading, categories in pairs(localization.keys) do
-        for category, list in pairs(categories) do
-            table.insert(res, '[' .. heading .. '-' .. category .. ']')
-            for _, entry in ipairs(table.sorted_keys(list)) do
-                if not locale_file:match(entry:gsub('%-', '%%-')) then
-                    res:insert(entry .. '=')
+    for _, cat in ipairs(categories) do
+        local any = false
+        
+        local manual = fns_names_by_category(cat)
+        table.append(manual, localization.keys[cat])
+        table.sort(manual)
+
+        for _, key in ipairs(manual) do
+            if not locale_map[cat] or not locale_map[cat][key] then
+                if not any then
+                    any = true
+                    res:insert('[' .. cat .. ']')
                 end
+                res:insert(key .. '=')
             end
-            table.insert(res, '')
+
         end
     end
 

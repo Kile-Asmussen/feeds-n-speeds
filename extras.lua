@@ -46,5 +46,6 @@ extras.altrecipes = require('extras.altrecipes')
 extras.drills = require('extras.drills')
 extras.ores = require('extras.ores')
 extras.electroboiler = require('extras.electroboiler')
+extras.utilities = require('extras.utilities')
 
 return extras:__seal()

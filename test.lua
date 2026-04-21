@@ -19,7 +19,6 @@ local stub_libs = {
 local real_require = require
 
 function require(name)
-    log("requiring " .. name)
     if stub_libs[name] then
         return real_require(stub_libs[name])
     else

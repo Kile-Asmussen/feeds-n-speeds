@@ -1,35 +1,35 @@
 require 'prelude'
 require 'test'
+
 local localization = require 'test.localization'
 local debuglib = require 'debuglib'
 
-log("SETTINGS")
+log("\nSETTINGS")
 require('settings')
 
-log("SETTINGS-UPDATES")
+log("\nSETTINGS-UPDATES")
 require('settings-updates')
 
-log("SETTINGS-FINAL-FIXES")
+log("\nSETTINGS-FINAL-FIXES")
 require('settings-final-fixes')
 
-_G.settings = import('settings'):__seal()
+_G.settings = import('test.settings'):__seal()
+data.raw = require('rawdata')
 
-log("DATA")
+log("\nDATA")
 require('data')
 
-log("DATA-UPDATES")
+log("\nDATA-UPDATES")
 require('data-updates')
 
-log("DATA-FINAL-FIXES")
+log("\nDATA-FINAL-FIXES")
 require('data-final-fixes')
 
 _G.storage = {}
 
-log("CONTROL")
+log("\nCONTROL")
 require('control')
 
-log(debuglib.sprint(fnsidentifiers()))
 
-log('')
-
+log('\nMISSING LOCALIZATION')
 log(localization.generate_stubs())

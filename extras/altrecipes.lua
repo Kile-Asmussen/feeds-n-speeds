@@ -12,6 +12,12 @@ function altrecipes.data()
     altrecipes.concrete_wall()
 end
 
+function altrecipes.data_updates()
+    if not altrecipes.enabled then return end
+
+    altrecipes.stone_furnace_update()
+end
+
 function altrecipes.rails()
     local tweaks = import 'tweaks'
 
@@ -41,33 +47,34 @@ function altrecipes.rails()
 end
 
 function altrecipes.stone_furnace()
-    local tweaks = import 'tweaks'
 
     local recipe = require 'extras.altrecipes.stone-furnace-recipe'
 
-    if tweaks.earlygame.enabled then
-        -- With earlygame: expensive vanilla, brick recipe locked behind tech
-        data.raw.recipe['stone-furnace'].ingredients = {
-            { amount = 15, name = 'stone', type = 'item' }
-        }
+    recipe.enabled = not when('tweaks.earlygame')
+
+    data:extend{ recipe }
+
+    if not recipe.enabled then
+       data:extend{ require 'extras.altrecipes.basic-materials-processing-technology',}
+    end
+end
+
+function altrecipes.stone_furnace_update()
+
+    if when('tweaks.earlygame') then
+        
         data.raw.recipe['burner-mining-drill'].enabled = false
-
-        recipe.enabled = false
-
-        data:extend{
-            recipe,
-            require 'extras.altrecipes.basic-materials-processing-technology',
-        }
+        data.raw.recipe['stone-furnace'].ingredients = {
+            { amount = 20, name = 'stone', type = 'item' }
+        } 
     else
-        -- Without earlygame: modest vanilla cost, brick recipe available from start
+
         data.raw.recipe['stone-furnace'].ingredients = {
             { amount = 10, name = 'stone', type = 'item' }
         }
 
-        recipe.enabled = true
-
-        data:extend{ recipe }
     end
+
 end
 
 function altrecipes.concrete_wall()

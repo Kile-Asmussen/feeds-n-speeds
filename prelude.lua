@@ -3,6 +3,7 @@ require 'prelude.string'
 
 local declared_namespaces = {}
 local mod_identifiers = {}
+local mod_identifier_categories = {}
 
 local getmetatable = _G.getmetatable
 local setmetatable = _G.setmetatable
@@ -19,16 +20,33 @@ function when(...)
 
 end
 
-local function fns(name)
+local function fns(category, name)
+    if name == nil then
+        name = category
+        category = ''
+    else
+        assert(type(category) == 'string', "invalid category: " .. tostring(category))
+    end
+    
     assert(type(name) == 'string', "invalid name: " .. tostring(name))
     name, _ = string.gsub(name, '[^a-zA-Z0-9]', '-')
-    local res = 'feeds-n-speeds-' .. name
-    mod_identifiers[res] = true
-    return res
+
+    name = 'feeds-n-speeds-' .. name
+
+    mod_identifiers[name] = true
+
+    if #category > 0 then
+        mod_identifier_categories[category] = mod_identifier_categories[category] or {}
+        mod_identifier_categories[category][name] = true
+        category, _ = string.gsub(category, '[^a-zA-Z0-9]', '-')
+        name = category .. '.' .. name
+    end
+
+    return name
 end
 
-local function fnsidentifiers()
-    return table.sorted_keys(mod_identifiers)
+local function fns_names_by_category(cat)
+    return table.sorted_keys(mod_identifier_categories[cat] or {})
 end
 
 local function import(path)
@@ -119,7 +137,7 @@ local function namespace(path, res)
 end
 
 _G.fns = fns
-_G.fnsidentifiers = fnsidentifiers
 _G.import = import
 _G.isnamespace = isnamespace
+_G.fns_names_by_category = fns_names_by_category
 _G.namespace = namespace

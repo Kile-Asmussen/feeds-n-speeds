@@ -106,9 +106,8 @@ function earlygame.tweak_technologies()
 
     tech['steel-processing'].localised_description = {'technology-description.feeds-n-speeds-tweaked-steel-processing'}
 
-    local extras = import 'extras'
 
-    if extras.chests.enabled then
+    if when('extras.chests') then
 
         table.remove_matching(tech['automation-2'].effects,
             table.matches{
@@ -154,7 +153,7 @@ function earlygame.tweak_technologies()
 
     table.insert(tech['logistic-science-pack'].prerequisites, 'logistics')
 
-    if extras.altrecipes.enabled then
+    if when('extras.altrecipes') then
         tech[fns 'basic-materials-processing'].research_trigger = {
             type = 'craft-item',
             item = 'stone-furnace',

@@ -16,26 +16,18 @@ fact('fns() preserves alphanumeric', function()
     assert_eq(id, 'feeds-n-speeds-ABC123')
 end)
 
+fact('fns() takes two arguments', function()
+    local id = fns('entity-description', 'thingy')
+    assert_eq(id, 'entity-description.feeds-n-speeds-thingy')
+    assert_ok(fns_names_by_category('entity-description')['feeds-n-speeds-thingy'])
+end)
+
 fiction('fns() errors on number', function()
     fns(123)
 end)
 
 fiction('fns() errors on nil', function()
     fns(nil)
-end)
-
--- fnsidentifiers() tests
-fact('fnsidentifiers() returns sorted list', function()
-    fns('zzz-last-test')
-    fns('aaa-first-test')
-    local ids = fnsidentifiers()
-    assert_is(ids, 'table')
-    local found_first, found_last = false, false
-    for _, id in ipairs(ids) do
-        if id == 'feeds-n-speeds-aaa-first-test' then found_first = true end
-        if id == 'feeds-n-speeds-zzz-last-test' then found_last = true end
-    end
-    assert_ok(found_first and found_last, 'should find both identifiers')
 end)
 
 -- namespace() tests

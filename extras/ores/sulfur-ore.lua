@@ -1,12 +1,8 @@
 require 'prelude'
 
-local resource_autoplace = require 'resource-autoplace'
-
-local name = fns 'sulfur-ore'
-
 return {
     type = 'resource',
-    name = name,
+    name = fns 'sulfur-ore',
     icon = '__base__/graphics/icons/sulfur.png',
     icon_size = 64,
     flags = { 'placeable-neutral' },
@@ -36,14 +32,17 @@ return {
     mining_visualisation_tint = { r = 0.9, g = 0.8, b = 0.1, a = 1 },
     tree_removal_probability = 0.7,
     tree_removal_max_distance = 1024,
-    autoplace = resource_autoplace.resource_autoplace_settings{
-        name = name,
+    autoplace =  {
         order = 'c',
-        base_density = 8,
-        base_spots_per_km2 = 1.5,
-        has_starting_area_placement = false,  -- updated dynamically in data_updates
-        random_spot_size_minimum = 0.25,
-        random_spot_size_maximum = 2,
-        regular_rq_factor_multiplier = 1,
-    },
+        probability_expression = table.concat{
+            "(var('control:", fns 'sulfur-ore', ":size')>0)*",
+            "(clamp(var('", fns 'sulfur-ore-patches', "'), 0, 1))",
+        },
+        richness_expression = table.concat{
+            "(var('control:", fns 'sulfur-ore', ":size')>0)*",
+            "(1*var('control:", fns 'sulfur-ore' ,":richness')*",
+            "(var('", fns 'sulfur-ore-patches',"'))*",
+            "max((1000+distance)/2600,1))"
+        }
+    }
 }
