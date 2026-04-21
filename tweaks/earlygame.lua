@@ -33,7 +33,7 @@ function earlygame.tweak_military()
     }
 
     if
-        when('extras.ores', 'extras.drills')
+        enabled('extras.ores', 'extras.drills')
     then
         recipes['firearm-magazine'].energy_required = 2
         recipes['firearm-magazine'].ingredients = {
@@ -107,13 +107,7 @@ function earlygame.tweak_technologies()
     tech['steel-processing'].localised_description = {'technology-description.feeds-n-speeds-tweaked-steel-processing'}
 
 
-    if when('extras.chests') then
-
-        table.remove_matching(tech['automation-2'].effects,
-            table.matches{
-                { type = 'unlock-recipe', recipe = 'assembling-machine-2' }
-            }
-        )
+    if enabled('extras.chests') then
 
         table.remove_matching(tech['automation-2'].effects,
             table.matches{
@@ -121,16 +115,12 @@ function earlygame.tweak_technologies()
             }
         )
 
-        table.insert(tech['steel-processing'].effects,
+        table.insert(tech.automation.effects,
             { type = 'unlock-recipe', recipe = fns 'big-steel-chest' }
         )
 
         table.insert(tech.automation.effects,
             { type = 'unlock-recipe', recipe = fns 'big-steel-hopper' }
-        )
-
-        table.remove_matching(tech['automation-2'].effects,
-            table.matches{ type = 'unlock-recipe', recipe = fns 'big-steel-hopper' }
         )
     end
 
@@ -147,13 +137,16 @@ function earlygame.tweak_technologies()
         'electronics',
     }
 
-    table.insert(tech['steam-power'].effects,
-        { type = 'unlock-recipe', recipe = 'transport-belt' }
-    )
+    if not enabled('tweaks.technologies') then
+        table.insert(tech['steam-power'].effects,
+            { type = 'unlock-recipe', recipe = 'transport-belt' }
+        )
+    end
+
 
     table.insert(tech['logistic-science-pack'].prerequisites, 'logistics')
 
-    if when('extras.altrecipes') then
+    if enabled('extras.altrecipes') then
         tech[fns 'basic-materials-processing'].research_trigger = {
             type = 'craft-item',
             item = 'stone-furnace',

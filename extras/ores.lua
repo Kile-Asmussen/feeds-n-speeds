@@ -32,7 +32,7 @@ function ores.data_updates()
     regular_counts = nil
 
     -- If earlygame enabled, sulfur spawns in starting area; claim a starting index too
-    if when('extras.drills', 'tweaks.earlygame') then
+    if enabled('extras.drills', 'tweaks.earlygame') then
         local starting_counts = noise_expressions.default_starting_resource_patch_set_count
         noise_expressions[fns 'sulfur-ore-starting-index'].expression = starting_counts.expression
         starting_counts.expression = starting_counts.expression + 1
@@ -63,7 +63,7 @@ function ores.data_updates()
     data.raw.planet.nauvis.map_gen_settings.autoplace_settings.entity.settings[fns 'sulfur-ore'] = {}
 
     -- If drills module is disabled, provide alternate path to fluid mining
-    if not when('extras.drills') then
+    if not enabled('extras.drills') then
         
         -- Hide vanilla uranium-mining (mining-with-fluid now from sulfur-drilling)
         data.raw.technology['uranium-mining'].hidden = true

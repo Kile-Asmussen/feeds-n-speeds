@@ -8,7 +8,7 @@ local mod_identifier_categories = {}
 local getmetatable = _G.getmetatable
 local setmetatable = _G.setmetatable
 
-function when(...)
+function enabled(...)
 
     local res = true
 

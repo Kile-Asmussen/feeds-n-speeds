@@ -27,21 +27,26 @@ function malltech.tweak_recipes()
     local recipe = data.raw.recipe
 
     malltech.assembling_machines()
-    
-    if when('tweaks.earlygame') then
-        malltech.mining_drills()
 
+    malltech.mining_drills()
+    
+    malltech.earlygame()
+
+    malltech.misc()
+
+    if when'tweaks.nuclear' then
+        malltech.nuclear_machines()
+    end
+end
+
+function malltech.earlygame()
+
+    if enabled('tweaks.earlygame') then
         recipe['gun-turret'].ingredients = {
             { type='item', name='electronic-circuit', amount=8 },
             { type='item', name='iron-plate', amount=4 },
             { type='item', name='submachine-gun', amount=2 },
             { type='item', name='iron-gear-wheel', amount=8 },
-        }
-
-        recipe['lab'].ingredients = {
-            { type='item', name='transport-belt', amount=4 },
-            { type='item', name='inserter', amount=2 },
-            { type='item', name='electronic-circuit', amount=8 },
         }
     else
         recipe['gun-turret'].ingredients = {
@@ -51,9 +56,17 @@ function malltech.tweak_recipes()
         }
     end
 
-    if when'tweaks.nuclear' then
-        malltech.nuclear_machines()
+    if enabled('tweaks.technologies') then
+        recipe['lab'].ingredients = {
+            { type='item', name='transport-belt', amount=4 },
+            { type='item', name='inserter', amount=3 },
+            { type='item', name='electronic-circuit', amount=8 },
+        }
     end
+end
+
+function malltech.misc()
+
 end
 
 function malltech.mining_drills()
@@ -71,6 +84,10 @@ function malltech.mining_drills()
         { type='item', name='iron-plate', amount=5 },
         { type='item', name='steel-plate', amount=2 },
     }
+    table.insert(
+        data.raw.technology['electric-mining-drill'].prerequisites,
+        'steel-processing'
+    )
 
     recipe['boiler'].ingredients = {
         { type='item', name='stone-brick', amount=8 },
@@ -82,15 +99,24 @@ function malltech.mining_drills()
         { type='item', name='copper-cable', amount=6 },
         { type='item', name='iron-gear-wheel', amount=4 },
         { type='item', name='pipe', amount=10 },
-        { type='item', name='steel-plate', amount=2 },
     }
 
     recipe['offshore-pump'].ingredients = {
         { type='item', name='iron-gear-wheel', amount=4 },
-        { type='item', name='steel-plate', amount=2 },
         { type='item', name='pipe', amount=3 },
         { type='item', name='electronic-circuit', amount=2 },
     }
+
+    if enabled('tweaks.earlygame') then
+        table.insert(
+            recipe['steam-engine'].ingredients,
+            { type='item', name='steel-plate', amount=1 }
+        )
+        table.insert(
+            recipe['offshore-pump'].ingredients,
+            { type='item', name='steel-plate', amount=1 }
+        )
+    end
 end
 
 function malltech.assembling_machines()

@@ -101,7 +101,7 @@ timewaster.CRAFTING_TIMES = {
     ['centrifuge'] = 10.0,
 
     -- Furnaces
-    ['stone-furnace'] = function() return when('extras.altrecipes') and 4.0 or 2.0 end,
+    ['stone-furnace'] = function() return enabled('extras.altrecipes') and 4.0 or 2.0 end,
     [fns 'stone-furnace'] = 2.0,
     ['steel-furnace'] = 3.0,
     ['electric-furnace'] = 5.0,

@@ -11,9 +11,9 @@ return {
         expression = 
         utilities.resource_autoplace_all_patches{
             name = fns 'sulfur-ore',
-            has_starting_area = when('extras.drills', 'tweaks.earlygame') and 1 or 0,
-            regular_patch_set_index = fns 'sulfur-ore-regular-index',
-            starting_patch_set_index = fns 'sulfur-ore-starting-index'
+            has_starting_area = enabled('extras.drills', 'tweaks.earlygame') and 1 or 0,
+            regular_patch_set_index = "var('" .. fns 'sulfur-ore-regular-index' .. "')",
+            starting_patch_set_index = "var('" .. fns 'sulfur-ore-starting-index' .. "')",
         }
     },
     {

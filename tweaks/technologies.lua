@@ -4,6 +4,14 @@ local technologies = namespace 'tweaks.technologies'
 
 technologies.enabled = true
 
+function technologies.data()
+    if enabled('tweaks.earlygame') then
+        data:extend{
+            require 'technologies.lab-technology'
+        }
+    end
+end
+
 function technologies.data_updates()
     if not technologies.enabled then return end
 

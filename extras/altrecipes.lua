@@ -50,7 +50,7 @@ function altrecipes.stone_furnace()
 
     local recipe = require 'extras.altrecipes.stone-furnace-recipe'
 
-    recipe.enabled = not when('tweaks.earlygame')
+    recipe.enabled = not enabled('tweaks.earlygame')
 
     data:extend{ recipe }
 
@@ -61,7 +61,7 @@ end
 
 function altrecipes.stone_furnace_update()
 
-    if when('tweaks.earlygame') then
+    if enabled('tweaks.earlygame') then
         
         data.raw.recipe['burner-mining-drill'].enabled = false
         data.raw.recipe['stone-furnace'].ingredients = {
