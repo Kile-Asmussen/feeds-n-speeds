@@ -16,6 +16,9 @@ function chests.data()
         require('extras.chests.big-steel-hopper-item'),
         require('extras.chests.big-steel-hopper-recipe'),
     }
+end
+
+function chests.data_updates()
 
     local tech =  data.raw.technology
 
@@ -24,10 +27,12 @@ function chests.data()
         recipe = fns 'big-steel-chest',
     })
     
-    table.insert(tech['automation-2'].effects, {
-        type = 'unlock-recipe',
-        recipe = fns 'big-steel-hopper',
-    })
+    if not enabled('tweaks.earlygame') then
+        table.insert(tech['automation-2'].effects, {
+            type = 'unlock-recipe',
+            recipe = fns 'big-steel-hopper',
+        })
+    end
 end
 
 function chests.control()

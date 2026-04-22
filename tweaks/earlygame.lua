@@ -109,12 +109,6 @@ function earlygame.tweak_technologies()
 
     if enabled('extras.chests') then
 
-        table.remove_matching(tech['automation-2'].effects,
-            table.matches{
-                { type = 'unlock-recipe', recipe = fns 'big-steel-hopper' }
-            }
-        )
-
         table.insert(tech.automation.effects,
             { type = 'unlock-recipe', recipe = fns 'big-steel-chest' }
         )
@@ -146,7 +140,6 @@ function earlygame.tweak_technologies()
     table.insert(tech['steam-power'].effects,
         { type = 'unlock-recipe', recipe = 'burner-mining-drill' }
     )
-
 
     table.insert(tech['logistic-science-pack'].prerequisites, 'logistics')
 

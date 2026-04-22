@@ -117,6 +117,13 @@ timewaster.CRAFTING_TIMES = {
     ['big-electric-pole'] = 2.0,
     ['substation'] = 3.0,
 
+    -- Chests
+    ['wooden-chest'] = 1,
+    ['iron-chest'] = 1.5,
+    ['steel-chest'] = 1.5,
+    [fns 'big-steel-chest'] = 2.5,
+    [fns 'big-steel-hopper'] = 2.0,
+
     -- Science
     ['lab'] = 5.0,
 

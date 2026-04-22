@@ -100,7 +100,20 @@ function malltech.earlygame()
 end
 
 function malltech.misc()
+    local recipe = data.raw.recipe
 
+    recipe['beacon'].ingredients = {
+        { type='item', name='efficiency-module', amount=1 },
+        { type='item', name='advanced-circuit', amount=15 },
+        { type='item', name='electronic-circuit', amount=15 },
+        { type='item', name='steel-plate', amount=5 },
+        { type='item', name='copper-cable', amount=5 },
+        { type='item', name='hazard-concrete', amount=10 },
+    }
+
+    table.insert(recipe['substation'].ingredients,
+        { type='item', name='iron-stick', amount=5 }
+    )
 end
 
 function malltech.mining_drills()
@@ -180,20 +193,22 @@ end
 function malltech.nuclear_machines()
     if not enabled('tweaks.nuclear') then return end
 
-    data.raw.recipe['steam-turbine'].ingredients = {
+    local recipe = data.raw.recipe
+
+    recipe['steam-turbine'].ingredients = {
         { type='item', name='electric-engine-unit', amount=10 },
         { type='item', name='steel-plate', amount=20 },
         { type='item', name='pipe', amount=50 },
     }
 
-    data.raw.recipe['heat-exchanger'].ingredients = {
+    recipe['heat-exchanger'].ingredients = {
         { type='item', name='heat-pipe', amount=10 },
         { type='item', name='engine-unit', amount=20 },
         { type='item', name='pipe', amount=50 },
     }
 
-    data.raw.recipe['nuclear-reactor'].ingredients = {
-        { type='item', name='hazard-concrete', amount=500 },
+    recipe['nuclear-reactor'].ingredients = {
+        { type='item', name='concrete', amount=500 },
         { type='item', name='uranium-238', amount=100 },
         { type='item', name='advanced-circuit', amount=500 },
         { type='item', name='steel-plate', amount=250 },
@@ -201,13 +216,23 @@ function malltech.nuclear_machines()
         { type='item', name='heat-pipe', amount=100 },
     }
 
-    data.raw.recipe.centrifuge.ingredients = {
+    recipe.centrifuge.ingredients = {
         { type='item', name='electric-engine-unit', amount=20 },
         { type='item', name='speed-module', amount=5 },
         { type='item', name='steel-plate', amount=50 },
         { type='item', name='iron-gear-wheel', amount=100 },
-        { type='item', name='hazard-concrete', amount=100 },
+        { type='item', name='concrete', amount=100 },
     }
+
+    if enabled('tweaks.concrete') then
+        table.find_matching(recipe['nuclear-reactor'].ingredients,
+            table.matches{ name = 'concrete', type = 'item' }
+        ).name = 'refined-hazard-concrete'
+
+        table.find_matching(recipe['centrifuge'].ingredients,
+            table.matches{ name = 'concrete', type = 'item' }
+        ).name = 'hazard-concrete'
+    end
 end
 
 return malltech:__seal()

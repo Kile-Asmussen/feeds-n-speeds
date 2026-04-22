@@ -46,17 +46,21 @@ end
 function technologies.tweak_science_packs()
     local recipes = data.raw.recipe
 
-    table.insert(recipes['automation-science-pack'].ingredients = {
+    recipes['automation-science-pack'].ingredients = {
         { type = 'item', name = 'iron-stick', amount = 2 },
         { type = 'item', name = 'electronic-circuit', amount = 1 },
         { type = 'item', name = 'stone-brick', amount = 1 }
-    )
+    }
 
-    table.insert(recipes['logistic-science-pack'].ingredients = {
+    recipes['logistic-science-pack'].ingredients = {
         { type = 'item', name = 'inserter', amount = 1 },
         { type = 'item', name = 'transport-belt', amount = 2 },
-        { type = 'item', name = 'lamp', amount = 1 },
-    )
+        { type = 'item', name = 'small-lamp', amount = 1 },
+    }
+
+    
+
+    table.insert(data.raw.technology['logistic-science-pack'].prerequisites, 'lamp')
 
     recipes['chemical-science-pack'].category = 'crafting-with-fluid'
     recipes['chemical-science-pack'].ingredients = {
