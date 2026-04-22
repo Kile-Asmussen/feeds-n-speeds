@@ -9,11 +9,17 @@ end
 
 function textplates.data_updates()
 
-    textplates.fix_recipe('textplates-stone')
-    textplates.fix_recipe('textplates-iron')
-    textplates.fix_recipe('textplates-wood')
-    textplates.fix_recipe('textplates-glass')
-    textplates.fix_recipe('textplates-copper')
+    textplates.fix_recipe('textplate-small-stone')
+    textplates.fix_recipe('textplate-small-iron')
+    textplates.fix_recipe('textplate-small-wood')
+    textplates.fix_recipe('textplate-small-glass')
+    textplates.fix_recipe('textplate-small-copper')
+
+    textplates.fix_recipe('textplate-large-stone')
+    textplates.fix_recipe('textplate-large-iron')
+    textplates.fix_recipe('textplate-large-wood')
+    textplates.fix_recipe('textplate-large-glass')
+    textplates.fix_recipe('textplate-large-copper')
 
     textplates.fix_tech('textplates-plastic', 'plastic-bar')
     textplates.fix_tech('textplates-plasticcoloured', 'plastic-bar')

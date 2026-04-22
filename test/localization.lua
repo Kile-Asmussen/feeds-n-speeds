@@ -41,6 +41,7 @@ function localization.register(proto)
     end
 end
 
+local debuglib = require 'debuglib'
 local open_file = io.open
 function localization.generate_stubs()
 
@@ -60,6 +61,10 @@ function localization.generate_stubs()
     end
     file:close()
     file = nil
+
+    log('LOCALE MAP '.. debuglib.sprint(locale_map))
+    log('EXPLICIT CATEGORIES '.. debuglib.sprint(fns_names_by_category()))
+    log('IMPLICIT CATEGORIES '.. debuglib.sprint(localization.keys))
 
     local res = table.new()
 

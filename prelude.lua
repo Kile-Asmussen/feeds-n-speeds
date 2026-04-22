@@ -46,6 +46,9 @@ local function fns(category, name)
 end
 
 local function fns_names_by_category(cat)
+    if cat == nil then 
+        return table.clone(mod_identifier_categories)
+    end
     return table.sorted_keys(mod_identifier_categories[cat] or {})
 end
 
