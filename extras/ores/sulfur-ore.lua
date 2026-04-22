@@ -28,7 +28,7 @@ return {
             tint = { r = 1.0, g = 0.95, b = 0.2 },  -- bright yellow
         },
     },
-    map_color = { r = 0.9, g = 0.8, b = 0.1 },
+    map_color = { r = 0.9, g = 0.6, b = 0.1 },
     mining_visualisation_tint = { r = 0.9, g = 0.8, b = 0.1, a = 1 },
     tree_removal_probability = 0.7,
     tree_removal_max_distance = 1024,

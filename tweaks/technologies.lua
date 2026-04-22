@@ -46,30 +46,34 @@ end
 function technologies.tweak_science_packs()
     local recipes = data.raw.recipe
 
-    table.insert(recipes['automation-science-pack'].ingredients,
-        { type = 'item', name = 'stone', amount = 1 }
+    table.insert(recipes['automation-science-pack'].ingredients = {
+        { type = 'item', name = 'iron-stick', amount = 2 },
+        { type = 'item', name = 'electronic-circuit', amount = 1 },
+        { type = 'item', name = 'stone-brick', amount = 1 }
     )
 
-    table.insert(recipes['logistic-science-pack'].ingredients,
-        { type = 'item', name = 'pipe', amount = 1 }
+    table.insert(recipes['logistic-science-pack'].ingredients = {
+        { type = 'item', name = 'inserter', amount = 1 },
+        { type = 'item', name = 'transport-belt', amount = 2 },
+        { type = 'item', name = 'lamp', amount = 1 },
     )
 
     recipes['chemical-science-pack'].category = 'crafting-with-fluid'
-    table.remove_matching(recipes['chemical-science-pack'].ingredients,
-        table.matches{ name = 'sulfur' }
-    )
-    table.insert(recipes['chemical-science-pack'].ingredients,
-        { type = 'fluid', name = 'sulfuric-acid', amount = 10 }
-    )
-
-    table.find_matching(recipes['production-science-pack'].ingredients,
-        table.matches{ name = 'electric-furnace' }
-    ).name = 'substation'
+    recipes['chemical-science-pack'].ingredients = {
+        { type = 'item', name = 'engine-unit', amount = 2 },
+        { type = 'item', name = 'advanced-circuit', amount = 3 },
+        { type = 'item', name = 'concrete', amount = 5 },
+        { type = 'fluid', name = 'sulfuric-acid', amount = 10 },
+    }
 
     recipes['production-science-pack'].category = 'crafting-with-fluid'
-    table.insert(recipes['production-science-pack'].ingredients,
-        { type = 'fluid', name = 'steam', amount = 140 }
-    )
+    recipes['production-science-pack'].ingredients = {
+        { type = 'item', name = 'rail', amount = 40 },
+        { type = 'item', name = 'substation', amount = 1 },
+        { type = 'item', name = 'productivity-module', amount = 1 },
+        { type = 'fluid', name = 'steam', amount = 140 },
+    }
+
 
     local tech = data.raw.technology
     table.insert(tech['production-science-pack'].prerequisites,

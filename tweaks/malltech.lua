@@ -40,14 +40,47 @@ function malltech.earlygame()
 
     local recipe = data.raw.recipe
 
-
     if enabled('tweaks.earlygame') then
+
         recipe['gun-turret'].ingredients = {
             { type='item', name='electronic-circuit', amount=8 },
             { type='item', name='iron-plate', amount=4 },
             { type='item', name='submachine-gun', amount=2 },
             { type='item', name='iron-gear-wheel', amount=8 },
         }
+
+        recipe['inserter'].ingredients = {
+            { type='item', name='iron-stick', amount=2 },
+            { type='item', name='iron-gear-wheel', amount=1 },
+            { type='item', name='electronic-circuit', amount=1 },
+        }
+
+        recipe['long-handed-inserter'].ingredients = {
+            { type='item', name='iron-stick', amount=2 },
+            { type='item', name='iron-gear-wheel', amount=1 },
+            { type='item', name='inserter', amount=1 },
+        }
+
+        recipe['fast-inserter'].ingredients = {
+            { type='item', name='iron-gear-wheel', amount=1 },
+            { type='item', name='electronic-circuit', amount=2 },
+            { type='item', name='inserter', amount=1 },
+        }
+
+        if enabled('tweaks.plastics') then
+            recipe['bulk-inserter'].ingredients = {
+                { type='item', name='plastic-bar', amount=10 },
+                { type='item', name='electronic-circuit', amount=10 },
+                { type='item', name='hazard-concrete', amount=1 },
+                { type='item', name='fast-inserter', amount=1 },
+            }
+        end
+
+        if enabled('tweaks.concrete') then
+            table.insert(recipe['bulk-inserter'].ingredients,
+            { type='item', name='hazard-concrete', amount=1})
+        end
+
     else
         recipe['gun-turret'].ingredients = {
             { type='item', name='electronic-circuit', amount=8 },
@@ -58,9 +91,10 @@ function malltech.earlygame()
 
     if enabled('tweaks.technologies') then
         recipe['lab'].ingredients = {
-            { type='item', name='transport-belt', amount=4 },
+            { type='item', name='transport-belt', amount=3 },
             { type='item', name='inserter', amount=3 },
-            { type='item', name='electronic-circuit', amount=8 },
+            { type='item', name='stone-brick', amount=3 },
+            { type='item', name='electronic-circuit', amount=10 },
         }
     end
 end
@@ -82,7 +116,7 @@ function malltech.mining_drills()
         { type='item', name='electronic-circuit', amount=3 },
         { type='item', name='iron-gear-wheel', amount=5 },
         { type='item', name='iron-plate', amount=5 },
-        { type='item', name='steel-plate', amount=2 },
+        { type='item', name='steel-plate', amount=1 },
     }
     table.insert(
         data.raw.technology['electric-mining-drill'].prerequisites,
@@ -159,7 +193,7 @@ function malltech.nuclear_machines()
     }
 
     data.raw.recipe['nuclear-reactor'].ingredients = {
-        { type='item', name='concrete', amount=500 },
+        { type='item', name='hazard-concrete', amount=500 },
         { type='item', name='uranium-238', amount=100 },
         { type='item', name='advanced-circuit', amount=500 },
         { type='item', name='steel-plate', amount=250 },
@@ -172,7 +206,7 @@ function malltech.nuclear_machines()
         { type='item', name='speed-module', amount=5 },
         { type='item', name='steel-plate', amount=50 },
         { type='item', name='iron-gear-wheel', amount=100 },
-        { type='item', name='concrete', amount=100 },
+        { type='item', name='hazard-concrete', amount=100 },
     }
 end
 
