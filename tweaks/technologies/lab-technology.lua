@@ -27,7 +27,7 @@ return {
     },
     research_trigger = {
         type = 'craft-item',
-        entity = 'steam-engine',
+        item = 'steam-engine',
         amount = 2
     },
 }

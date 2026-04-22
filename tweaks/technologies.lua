@@ -7,13 +7,14 @@ technologies.enabled = true
 function technologies.data()
     if enabled('tweaks.earlygame') then
         data:extend{
-            require 'technologies.lab-technology'
+            require 'tweaks.technologies.lab-technology'
         }
     end
 end
 
 function technologies.data_updates()
     if not technologies.enabled then return end
+
 
     local tech = data.raw.technology
 
@@ -25,6 +26,19 @@ function technologies.data_updates()
     table.insert(tech['flamethrower'].prerequisites, 'gun-turret')
     table.insert(tech['artillery'].prerequisites, 'gun-turret')
     table.insert(tech['rocket-turret'].prerequisites, 'gun-turret')
+
+
+    if enabled('tweaks.earlygame') then
+        tech['automation-science-pack'].prerequisites = {
+            fns 'lab-tech'
+        }
+
+        table.remove_matching(tech['electronics'].effects,
+            table.matches{ type='unlock-recipe', recipe='inserter' })
+        
+        table.remove_matching(tech['electronics'].effects,
+            table.matches{ type='unlock-recipe', recipe='lab' })
+    end
 
     technologies.tweak_science_packs()
 end

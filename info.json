@@ -5,11 +5,19 @@
 	"author": "kashmira-qeel",
 	"description": "Value tweaks, balance changes, and a few simple but useful new items.",
 	"factorio_version": "2.0",
-	"quality_required": false,
+	"quality_required": true,
+	"rail_bridges_required": true,
+	"spoiling_required": true,
+	"freezing_required": true,
+	"segmented_units_required": true,
+	"expansion_shaders_required": true,
+	"space_travel_required": true,
 	"dependencies" : [
 		"base",
 		"space-age",
 		"elevated-rails",
-		"quality"
+		"quality",
+		"(?) textplates",
+		"(?) even-more-text-plates"
 	]
 }

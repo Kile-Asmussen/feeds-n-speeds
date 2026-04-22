@@ -88,7 +88,7 @@ function earlygame.tweak_technologies()
     local tech = data.raw.technology
 
     tech['steel-processing'].research_trigger = {
-        count = 20,
+        count = 10,
         item = 'iron-plate',
         type = 'craft-item'
     }
@@ -127,7 +127,7 @@ function earlygame.tweak_technologies()
     local steam_power = data.raw.technology['steam-power']
 
     steam_power.research_trigger = {
-        count = 10,
+        count = 2,
         item = 'steel-plate',
         type = 'craft-item'
     }
@@ -143,6 +143,10 @@ function earlygame.tweak_technologies()
         )
     end
 
+    table.insert(tech['steam-power'].effects,
+        { type = 'unlock-recipe', recipe = 'burner-mining-drill' }
+    )
+
 
     table.insert(tech['logistic-science-pack'].prerequisites, 'logistics')
 
@@ -155,7 +159,6 @@ function earlygame.tweak_technologies()
 
         table.append(tech[fns 'basic-materials-processing'].effects, {
             { type = 'unlock-recipe', recipe = 'stone-brick' },
-            { type = 'unlock-recipe', recipe = 'burner-mining-drill' },
         })
 
         table.insert(tech['steam-power'].prerequisites,

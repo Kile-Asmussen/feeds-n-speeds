@@ -12,7 +12,7 @@ return {
             icon = '__base__/graphics/technology/concrete.png',
             icon_size = 256,
             scale = 0.33,
-            shift = {35, 35},
+            shift = {25, 25},
         },
     },
     prerequisites = {

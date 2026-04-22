@@ -24,7 +24,6 @@ function malltech.tweak_technologies()
 end
 
 function malltech.tweak_recipes()
-    local recipe = data.raw.recipe
 
     malltech.assembling_machines()
 
@@ -34,12 +33,13 @@ function malltech.tweak_recipes()
 
     malltech.misc()
 
-    if when'tweaks.nuclear' then
-        malltech.nuclear_machines()
-    end
+    malltech.nuclear_machines()
 end
 
 function malltech.earlygame()
+
+    local recipe = data.raw.recipe
+
 
     if enabled('tweaks.earlygame') then
         recipe['gun-turret'].ingredients = {
@@ -144,6 +144,8 @@ function malltech.assembling_machines()
 end
 
 function malltech.nuclear_machines()
+    if not enabled('tweaks.nuclear') then return end
+
     data.raw.recipe['steam-turbine'].ingredients = {
         { type='item', name='electric-engine-unit', amount=10 },
         { type='item', name='steel-plate', amount=20 },

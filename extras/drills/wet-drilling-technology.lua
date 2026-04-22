@@ -27,7 +27,7 @@ return {
     },
     research_trigger = {
         type = 'craft-item',
-        entity = 'offshore-pump',
+        item = 'offshore-pump',
         amount = 1,
     },
 }
