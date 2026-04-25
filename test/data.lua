@@ -3,6 +3,7 @@ require 'prelude'
 local localization = require 'test.localization'
 
 local data = namespace 'test.data'
+
 data.raw = table.null
 
 function data.__count(tbl)
@@ -23,14 +24,14 @@ function data.__count(tbl)
     return res
 end
 
-local settings = namespace('test.settings')
+local settings = namespace 'test.settings'
 
 function data.extend(self, protos)
     local simple = {}
     local bad = false
     for _, proto in ipairs(protos) do
-        
-        table.insert(simple, '  { name = "' .. proto.name .. '", type = "' .. proto.type .. '" }')
+
+        log(proto.name:gsub('feeds%-n%-speeds%-', 'fns \'') .. '\' => ' .. proto.type)
 
         if proto.type:match('%-setting$') then
             settings[proto.setting_type] = settings(proto.setting_type) or {}
@@ -41,17 +42,12 @@ function data.extend(self, protos)
             data.raw[proto.type] = data.raw[proto.type] or {}
             data.raw[proto.type][proto.name] = proto
         else
-            bad = true
+            error("call to data:extend{ { type = '" .. rp .. "' } } when data.raw isn't loaded")
+            break
         end
 
         localization.register(proto)
 
-    end
-    local string = 'data:extend{\n' .. table.concat(simple, '\n') .. '\n}'
-        if bad then
-        error('BAD CALL TO ' .. string)
-    else
-        log(string)
     end
 end
 

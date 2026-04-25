@@ -1,6 +1,6 @@
 require 'prelude'
 
-local concrete = namespace('tweaks.concrete')
+local concrete = namespace 'tweaks.concrete'
 
 concrete.enabled = true
 

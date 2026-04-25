@@ -3,5 +3,23 @@
         "files.autoSave": "afterDelay",
         "files.autoSaveDelay": 1000
     },
-    "python.analysis.typeCheckingMode": "standard"
+    "python.analysis.typeCheckingMode": "standard",
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+        "*.lua": "${capture}-updates.lua, ${capture}-final-fixes.lua",
+        "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock",
+        "unit-tests.lua": "unit-tests-trusted.lua",
+        "Cargo.toml": "Cargo.lock",
+        ".envrc": "flake.nix",
+        "flake.nix": "flake.lock",
+        "info.json": "changelog.txt, thumbnail.png, Makefile",
+        "test.lua": "rawdata.so",
+        "README.md": "CLAUDE.md, LICENSE",
+        ".gitignore": ".gitattributes",
+        "hook-restrict-*.py": "${capture}.json",
+        "*.json": "${capture}.*.json",
+        "*": "${capture}~",
+        "loading.lua": "data*.lua, settings*.lua, control.lua"
+    }
 }

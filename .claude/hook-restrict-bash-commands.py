@@ -2,18 +2,6 @@
 """
 Restricts Bash tool invocations to an explicit allowlist.
 Deny by default - commands must match an allowed pattern to execute.
-
-Allowed commands are specified in accompanying allowed-bash-commands.json file.
-Supports exact match and glob-style wildcards (* for any sequence).
-
-Example allowed-bash-commands.json:
-[
-    "lua debug-load.lua",
-    "lua debug-data-raw.lua *",
-    "DEPTH=* lua debug-data-raw.lua *",
-    "make build",
-    "make test"
-]
 """
 
 import fnmatch
@@ -25,7 +13,7 @@ import traceback
 import datetime
 from pathlib import Path
 
-ALLOWED_COMMANDS_FILE = ".claude/allowed-bash-commands.json"
+ALLOWED_COMMANDS_FILE = ".claude/bash-commands.json"
 WATCHED_TOOLS = {'Bash'}
 
 __print = print
@@ -61,39 +49,24 @@ def main() -> None:
 
     # Normalize command (strip leading/trailing whitespace)
     command = command.strip()
-    print(f"checking command: {command!r}", file=LOG_FILE)
-
-    # Check for shell metacharacters that could enable command injection
-    if not is_safe_command(command):
-        print(
-            "blocked bash -- contains shell metacharacters",
-            "  " + command,
-            f"Forbidden characters: {' '.join(DANGEROUS)}",
-            "Use single commands only, no chaining or redirection.",
-            "Remember: you are running in the project directory at all times, there is no need to change the current directory",
-            sep = '\n',
-            file=[sys.stderr, LOG_FILE]
-        )
-        sys.exit(2)
+    print(f"command: {command!r}", file=LOG_FILE)
 
     allowed_patterns = load_allowed_commands()
     print(f"allowed patterns: {allowed_patterns}", file=LOG_FILE)
 
     if len(allowed_patterns) == 0:
-        print("no allowed commands configured, blocking all Bash tool usages",
+        print("No allowed Bash command patterns configured, blocking all Bash tool usages",
               file=[sys.stderr, LOG_FILE])
         sys.exit(2)
 
     for pattern in allowed_patterns:
-        if matches_pattern(command, pattern):
-            print(f"allowing-- command matches pattern:{pattern}",
-            file=LOG_FILE)
+        if fnmatch.fnmatchcase(command, pattern):
+            check_command_integrity(command, pattern)
+            print("allowed, matches", pattern, file=LOG_FILE)
             sys.exit(0)
 
-    # No pattern matched - deny
     print(
-        "blocked bash -- command not in allowlist:"
-        f"  {command}\n"
+        f"Blocked Bash({command}) -- it doesn't match the allowed patterns\n"
         "Allowed patterns:",
         *allowed_patterns,
         sep='\n - ',
@@ -104,40 +77,26 @@ def main() -> None:
     sys.exit(2)
 
 DANGEROUS = [
-    ';',    # command separator
-    '|',    # pipe (also catches ||)
-    '`',    # command substitution (backticks)
-    '$',    # variable substitution (also catches $( and ${ )
-    '{',    # function/command definition?
-    '*',    # globs
-    '?',    # globs
-    '\n',   # newline (command separator)
-    '>',    # output redirection
-    '<',    # input redirection
-    '&',    # background execution (also catches &&)
+    '`', '(', '{', '\n', '>', '<', '&&', '&', ';', '||', '|', '(', '$', '$(', '${', '}',
 ]
 
-def is_safe_command(command: str) -> bool:
-    """
-    Check that command contains no shell metacharacters that could
-    enable command chaining or injection.
-    """
+def check_command_integrity(command: str, pattern: str):
 
-    return not any(dangerous in command for dangerous in DANGEROUS)
+    reasons = []
 
+    if '*' in command or '?' in command:
+        reasons.append('contains a glob character -- instead try specify the files directly')
+    
+    for danger in DANGEROUS:
+        if command.count(danger) != pattern.count(danger):
+            reasons.append('mismatch in uses of '{danger}' -- glob patterns cannot cover special characters')
 
-def matches_pattern(command: str, pattern: str) -> bool:
-    """
-    Check if command matches the allowed pattern.
-
-    Supports:
-    - Exact match
-    - Glob-style wildcards (* matches any sequence of characters)
-    - Pattern must match the ENTIRE command (no partial matches)
-    """
-    # Use fnmatch for glob-style matching
-    # fnmatch.fnmatch does case-sensitive matching on Linux
-    return fnmatch.fnmatch(command, pattern)
+    if reasons:
+        print(f"Blocking Bask({command}) because it doesn't fit the pattern {pattern}",
+              reasons,
+              sep='\n - ',
+              file=[sys.stderr, LOG_FILE])
+        sys.exit(2)
 
 
 def load_allowed_commands() -> list[str]:
@@ -151,7 +110,7 @@ def load_allowed_commands() -> list[str]:
         sys.exit(2)
 
     try:
-        commands = json.loads(allowed_file.read_text(encoding="utf-8"))
+        commands = json.loads(allowed_file.read_text(encoding='utf-8'))
         if isinstance(commands, list) and all(isinstance(c, str) for c in commands):
             return commands
     except (json.JSONDecodeError, OSError, ValueError):

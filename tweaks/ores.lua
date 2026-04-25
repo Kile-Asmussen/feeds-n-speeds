@@ -1,6 +1,6 @@
 require 'prelude'
 
-local ores = namespace('tweaks.ores')
+local ores = namespace 'tweaks.ores'
 
 ores.enabled = true
 

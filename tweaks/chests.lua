@@ -22,24 +22,25 @@ function chests.data_updates()
         inventory_sizes[fns 'big-steel-chest'] = 69
     end
 
-    
+    local debuglib = import('debuglib')
     for name, chest in pairs(data.raw['logistic-container']) do
         local recipe = data.raw.recipe[name]
 
         if recipe then
-            local inventory_size = table.find_matching(
+            local base_chest = table.find_matching(
                 recipe.ingredients,
                 function(t) return inventory_sizes[t.name] end
             )
 
-            local adjustment = 11
+            local inventory_size = inventory_sizes[base_chest.name]
+
             if chest.logistic_mode == 'storage' then
-                adjustment = 1
+                inventory_size = inventory_size - 1
+            else
+                inventory_size = inventory_size - 11
             end
         
-            if type(inventory_size) == 'number' then
-                chest.inventory_size = math.max(inventory_size - adjustment, 1)
-            end
+            chest.inventory_size = math.max(inventory_size, 1)
         end
     end
 

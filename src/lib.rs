@@ -22,8 +22,8 @@ fn from_home(s: &str) -> PathBuf {
     return res;
 }
 
-#[mlua::lua_module(name = "rawdata")]
-fn rawdata(lua: &Lua) -> LuaResult<LuaTable> {
+#[mlua::lua_module(name = "test_rawdata")]
+fn test_rawdata(lua: &Lua) -> LuaResult<LuaTable> {
     if !std::fs::exists(from_home(DATA_RAW_DUMP)).map_err(lua_error)? {
         generate_data_raw()?
     }

@@ -123,11 +123,11 @@ local function __ns_mt(path)
     return res
 end
 
-local function namespace(path, res)
+local function namespace(path)
 
     assert(not declared_namespaces[path], 'namespace '.. path .. ' already declared')
 
-    res = res or {}
+    res = {}
     
     res.parent_namespace = table.null
     res.__seal = __seal

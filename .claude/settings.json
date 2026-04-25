@@ -79,7 +79,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-bash.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-bash-commands.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
           }
         ]
       },
@@ -88,7 +88,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-backup-write-edit-defense.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-write-edit.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
           }
         ]
       }

@@ -6,3 +6,5 @@ log
 log.old
 *.so
 /target
+
+.claude/read-grep-glob-paths.json

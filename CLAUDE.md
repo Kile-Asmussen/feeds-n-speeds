@@ -5,88 +5,38 @@ A Factorio 2.0 mod providing value tweaks, balance changes, and new items.
 ## Etiquette and User Profile
 
 - Name: Kashmira Qeel
-- Gender: woman
 - Pronouns: she/her/hers/herself
 - Preferred mode of address: Operator
-- Age: 33
 - Nationality: Dane
 - Education: master's degree in computer science
 - Experience: 5 years employment as software developer
-- Skill-level: competent at software development, software architecture, and project planning
-- Natural languages: English, Danish
-- Programming languages: Lua, Python, Bash, several others not relevant to this project.
-
-Kashmira prefers passive language in describing the state of the project and being addressed as operator, but
-direct addres in second-person from Claude is permissible. She will attempt to be polite but has a mild aversion
-to overly humanizing Claude and working with Claude as a conversation partner. She will therefore tend to
-write prompts in a more imperative format, rather than a more conversational format.
-
-Kashmira uses little in the way IDE tooling in the current project, either for Python or Lua, and tends to make
-a few mistakes because of it, which she needs Claude's help to correct, often calling for multiple reviews
-of the same file.
+- Programming languages: Lua, Python, Rust, Bash, several others
 
 ## Project Structure
 
-```
-FeedsNSpeeds/
-├── data.lua              # Entry point for data stage
-├── data-updates.lua      # Entry point for data-updates stage
-├── data-final-fixes.lua  # Entry point for data-final-fixes stage
-├── settings.lua          # Entry point for settings stage
-├── settings-updates.lua  # Entry point for settings-updates stage
-├── settings-final-fixes.lua # Entry point for settings-final-fixes stage
-├── control.lua           # Entry point for runtime stage
-├── loading.lua           # Lifecycle loader for modules
-├── prelude.lua           # Core module loader (namespace system)
-├── prelude/              # Baseline utilities
-│   ├── table.lua         # Table manipulation functions
-│   └── string.lua        # String utilities
-├── tweaks.lua            # Tweaks module coordinator
-├── tweaks/               # Game value modifications
-│   ├── inserter.lua      # Inserter speed/behavior tweaks
-│   ├── chests.lua        # Chest inventory rebalancing
-│   ├── electric.lua      # Electric pole reach extensions
-│   ├── nuclear.lua       # Nuclear power ratio fixes
-│   ├── ores.lua          # Infinite ore modifications
-│   ├── concrete.lua      # Concrete recipe importance
-│   ├── earlygame.lua     # Early game recipe changes
-│   ├── malltech.lua      # Mall technology restructure
-│   └── timewaster.lua    # Recipe time adjustments
-├── extras.lua            # Extras module coordinator
-├── extras/               # New modded entities
-│   ├── chests/           # Big steel chest variants + hopper
-│   ├── radars/           # Small radar entity
-│   ├── drills/           # Mining drill variants + wet-drilling tech
-│   ├── ores/             # New ore resources (sulfur)
-│   └── altrecipes/       # Alternative recipes + technologies
-├── test/                 # Test stubs for control stage
-│   ├── script.lua        # Event registration stub
-│   ├── defines.lua       # defines.events mock
-│   └── ...
-├── unit-tests.lua        # Test harness entry point (sandboxed)
-├── unit-tests-trusted.lua # Trusted tests (pre-sandbox)
-├── unit-tests/           # Test modules
-├── debug-data-raw.lua    # Vanilla data.raw inspector
-├── debug-data-modded.lua # Modded data.raw inspector
-├── debug-load.lua        # Module loading debugger
-├── debuglib.lua          # Pretty-printer for Lua structures
-├── graphics/             # Sprite assets
-├── locale/en/            # Localization strings
-├── build-scripts/        # Build tooling (export-ignored)
-├── output/               # Build artifacts
-├── slop/                 # Draft code and session logs
-│   ├── LOG.md            # Session progress tracking
-│   └── TODO.md           # Development task list
-└── .claude/              # Claude Code safety hooks and skills
-```
+
+
+### Access
+
+Claude has free access to the following directories:
+
+- `unit-tests/` for setting up a test suite
+- `slop/` for notes and tracking progress
+- All subdirectories of `extras/`
+- All subdirectories of `tweaks/`
+- All subdirectories of `locale/`
+
+Claude has edit rights (not writing rights) to files in `extras/` and `tweaks/`
 
 ## Architecture
+
+The project is split into `extras`, which contains new game objects, while `tweaks` contains changes to existing game objects.
 
 ### Namespace System
 
 The mod uses a custom namespace system defined in `prelude.lua`:
 
-- `namespace(path, tbl?)` - Creates a new namespace (optionally from existing table)
+- `namespace(path)` - Creates a new namespace
 - `import(path)` - Retrieves a declared namespace
 - `fns(name)` - Generates mod-prefixed identifiers (`feeds-n-speeds-{name}`)
 - `isnamespace(thing)` - Type check for namespaces (sealed or unsealed)
@@ -103,7 +53,7 @@ Both `tweaks` and `extras` follow an identical pattern:
 
 Each domain module:
 - Declares a namespace (e.g., `namespace 'tweaks.inserter'`)
-- Sets `enabled = true` (toggleable via settings)
+- Implicitly creates an in-game mod setting with the `enabled = true` line
 - Implements lifecycle functions: `data()`, `data_updates()`, `data_final_fixes()`
 - Seals itself with `return module:__seal()`
 
@@ -111,12 +61,13 @@ Each domain module:
 
 Factorio mod loading stages, each with corresponding entry points:
 
-| Stage | Entry Point | Purpose |
-|-------|-------------|---------|
-| settings | `settings.lua` | Define mod settings |
-| data | `data.lua` | Define new prototypes |
-| data-updates | `data-updates.lua` | Modify existing prototypes |
-| data-final-fixes | `data-final-fixes.lua` | Final adjustments after all mods |
+- `settings.lua` -- create new settings
+- `settings-updates.lua` -- 
+- `settings-final-fixes.lua`
+- `data.lua` -- load new prototypes
+- `data-updates.lua` -- modify existing prototypes
+- `data-final-fixes.lua` -- extreme last resort
+- `control.lua`
 
 ### Settings Integration
 

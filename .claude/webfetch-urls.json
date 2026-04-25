@@ -1,26 +1,8 @@
-{
-  "domains": [
-    "lua-api.factorio.com",
-    "code.claude.com",
-    "wiki.factorio.com",
-    "forums.factorio.com",
-    "mods.factorio.com",
-    "github.com",
-    "docs.python.org",
-    "raw.githubusercontent.com",
-    "platform.claude.com",
-    "*.anthropic.com",
-    "anthropic.com"
-  ],
-  "restrict": {
-    "github.com": [
-      "/wube/factorio-data/*",
-      "/modded-factorio/bobsmods/*"
-    ],
-    "raw.githubusercontent.com": [
-      "/wube/factorio-data/*",
-      "/modded-factorio/bobsmods/*"
-    ]
-  },
-  "exceptions": []
-}
+[
+  "lua-api.factorio.com",
+  "wiki.factorio.com",
+  "forums.factorio.com",
+  "mods.factorio.com",
+  "github.com/wube/factorio-data/*",
+  "raw.githubusercontent.com/wube/factorio-data/*"
+]

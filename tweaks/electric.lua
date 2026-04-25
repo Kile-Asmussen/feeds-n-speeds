@@ -1,6 +1,6 @@
 require 'prelude'
 
-local electric = namespace('tweaks.electric')
+local electric = namespace 'tweaks.electric'
 
 electric.enabled = true
 

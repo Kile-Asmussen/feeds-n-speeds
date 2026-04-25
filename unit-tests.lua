@@ -95,8 +95,8 @@ function import(path)
 end
 
 local __namespace = namespace
-function namespace(path, res)
-    local ns = __namespace(path, res)
+function namespace(path)
+    local ns = __namespace(path)
     allowed_namespaces[path] = true
     return ns
 end

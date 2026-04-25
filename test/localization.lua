@@ -32,12 +32,10 @@ function localization.register(proto)
 
     if not localization.keys[loc_name][proto.name] then
         localization.keys[loc_name][proto.name] = true
-        log('LOCALE [' .. loc_name .. '] ' .. proto.name )
     end
 
     if not localization.keys[description][proto.name] then
         localization.keys[description][proto.name] = true
-        log('LOCALE [' .. description .. '] ' .. proto.name )
     end
 end
 
@@ -61,10 +59,6 @@ function localization.generate_stubs()
     end
     file:close()
     file = nil
-
-    log('LOCALE MAP '.. debuglib.sprint(locale_map))
-    log('EXPLICIT CATEGORIES '.. debuglib.sprint(fns_names_by_category()))
-    log('IMPLICIT CATEGORIES '.. debuglib.sprint(localization.keys))
 
     local res = table.new()
 

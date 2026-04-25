@@ -14,7 +14,7 @@ import traceback
 import datetime
 from pathlib import Path
 
-FORBIDDEN_GLOBS_FILE = ".claude/forbidden-globs.json"
+FORBIDDEN_GLOBS_FILE = ".claude/reads-forbidden-by-globs.json"
 WATCHED_TOOLS = { 'Read', 'Grep' }
 
 __print = print

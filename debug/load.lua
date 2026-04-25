@@ -14,7 +14,7 @@ log("\nSETTINGS-FINAL-FIXES")
 require('settings-final-fixes')
 
 _G.settings = import('test.settings'):__seal()
-data.raw = require('rawdata')
+data.raw = require('test.rawdata')
 
 log("\nDATA")
 require('data')
@@ -30,6 +30,5 @@ _G.storage = {}
 log("\nCONTROL")
 require('control')
 
-
-log('\nMISSING LOCALIZATION')
+log('\nLOCALIZATION')
 log(localization.generate_stubs())

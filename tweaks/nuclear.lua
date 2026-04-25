@@ -1,6 +1,6 @@
 require 'prelude'
 
-local nuclear = namespace('tweaks.nuclear')
+local nuclear = namespace 'tweaks.nuclear'
 
 nuclear.enabled = true
 

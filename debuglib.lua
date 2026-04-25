@@ -3,7 +3,7 @@ require 'prelude'
 local setmetatable = _G.setmetatable
 local getmetatable = _G.getmetatable
 
-local debuglib = namespace('debuglib')
+local debuglib = namespace 'debuglib'
 
 function debuglib.sprint(data, path)
   buffer = debuglib.__new_buffer()

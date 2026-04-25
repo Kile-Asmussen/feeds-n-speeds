@@ -24,9 +24,6 @@ function utilities.resource_autoplace_all_patches(tbl)
         "starting_patch_set_count=", tbl.starting_patch_set_count or "default_starting_resource_patch_set_count", ",",
         "starting_rq_factor=", tbl.starting_rq_factor or 0.21428571428571, "}",
     }
-
-    log(expr)
-
     return expr
 
 end

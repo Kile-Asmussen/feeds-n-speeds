@@ -29,7 +29,7 @@ unzip: build
 
 clean:
 	rm -rf ./target/*
-	rm -f ./*.so
+	rm -f ./test/rawdata.so
 
 install: build ./build-scripts/install.sh
 	@./build-scripts/install.sh
