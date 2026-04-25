@@ -14,11 +14,11 @@ Research Factorio prototypes by inspecting data.raw structures and cross-referen
 
 | Script | Contents | Use Case |
 |--------|----------|----------|
-| `debug-data-raw.lua` | Vanilla prototypes only | Reference vanilla implementations |
-| `debug-data-modded.lua` | Vanilla + mod prototypes | Verify mod additions, check merged state |
-| `debug-load.lua` | Verbose loading output | Debug module loading issues |
+| `debug/data-raw.lua` | Vanilla prototypes only | Reference vanilla implementations |
+| `debug/data-modded.lua` | Vanilla + mod prototypes | Verify mod additions, check merged state |
+| `debug/load.lua` | Mod loading simulation | Debug obvious module loading issues, list missing localization keys |
 
-There is a filter in place which restricts bash commands. Check `.claude/allowed-bash-commands.json` for
+There is a filter in place which restricts bash commands. Check `.claude/bash-commands.json` for
 the exact forms these commands can take. DO NOT attempt to use `cd` to change to the project directory as
 this is always the default working directory, DO NOT attempt to pipe script output into `head` or `tail` to 
 extract only part of the output.
@@ -34,7 +34,7 @@ Direct read access is available to the Factorio installation's data directories 
 | `~/.steam/.../Factorio/data/space-age` | Space Age expansion |
 | `~/.steam/.../Factorio/data/elevated-rails` | Elevated rails |
 
-Full path: `/home/qeela/.steam/steam/steamapps/common/Factorio/data/`
+Full path: `/home/qeela/.steam/steam/steamapps/common/Factorio/data/*`
 
 ### Use Cases
 
@@ -57,26 +57,25 @@ Full path: `/home/qeela/.steam/steam/steamapps/common/Factorio/data/`
 - Read-only access; cannot modify base game files
 - Useful for finding exact field names, graphic dimensions, and locale keys
 
-
 ## Workflow
 
 ### Step 1: Choose Script
 
-- **Inspecting vanilla prototypes:** Use `debug-data-raw.lua`
-- **Inspecting mod prototypes:** Use `debug-data-modded.lua`
+- **Inspecting vanilla prototypes:** Use `debug/data-raw.lua`
+- **Inspecting mod prototypes:** Use `debug/data-modded.lua`
 
 ### Step 2: List Instances in Category
 
 Inspect a category at depth 1 to see all instances:
 ```bash
-DEPTH=1 lua debug-data-raw.lua <category>
-DEPTH=1 lua debug-data-modded.lua <category>
+DEPTH=1 lua debug/data-raw.lua <category>
+DEPTH=1 lua debug/data-modded.lua <category>
 ```
 
 Example:
 ```bash
-DEPTH=1 lua debug-data-raw.lua inserter
-DEPTH=1 lua debug-data-modded.lua container
+DEPTH=1 lua debug/data-raw.lua inserter
+DEPTH=1 lua debug/data-modded.lua container
 ```
 
 Common categories:

@@ -12,22 +12,6 @@ A Factorio 2.0 mod providing value tweaks, balance changes, and new items.
 - Experience: 5 years employment as software developer
 - Programming languages: Lua, Python, Rust, Bash, several others
 
-## Project Structure
-
-
-
-### Access
-
-Claude has free access to the following directories:
-
-- `unit-tests/` for setting up a test suite
-- `slop/` for notes and tracking progress
-- All subdirectories of `extras/`
-- All subdirectories of `tweaks/`
-- All subdirectories of `locale/`
-
-Claude has edit rights (not writing rights) to files in `extras/` and `tweaks/`
-
 ## Architecture
 
 The project is split into `extras`, which contains new game objects, while `tweaks` contains changes to existing game objects.
@@ -62,128 +46,20 @@ Each domain module:
 Factorio mod loading stages, each with corresponding entry points:
 
 - `settings.lua` -- create new settings
-- `settings-updates.lua` -- 
-- `settings-final-fixes.lua`
-- `data.lua` -- load new prototypes
-- `data-updates.lua` -- modify existing prototypes
-- `data-final-fixes.lua` -- extreme last resort
+- `settings-updates.lua` -- unused
+- `settings-final-fixes.lua` -- unused
+- `data.lua` -- load new prototypes (chiefly `extras`)
+- `data-updates.lua` -- modify existing prototypes (chiefly `tweaks`)
+- `data-final-fixes.lua` -- extreme last resort (only `tweaks.ores`)
 - `control.lua`
 
-### Settings Integration
-
-Domains with `enabled` boolean get automatic startup settings via `loading.create_toggle()`. Settings are read back via `loading.read_toggle()` before each lifecycle stage.
-
-## Features
-
-### Tweaks (Game Value Modifications)
-
-| Tweak | Description |
-|-------|-------------|
-| `inserter` | Yellow inserter speed parity, burner leech, disable belt chasing |
-| `chests` | Rebalanced inventory sizes (wooden:9, iron:19, steel:29) |
-| `electric` | Extended pole reach (small:9.5, medium:15.5, big:50, substation:25) |
-| `nuclear` | Smart reactor scaling, adjusted ratios (1 reactor : 5 HX), 50% neighbor bonus |
-| `ores` | Infinite ores with richness based on map settings |
-| `concrete` | Makes concrete prerequisite for advanced infrastructure |
-| `earlygame` | Early game recipe modifications (lab, etc.) |
-| `malltech` | Technology restructure (uranium-processing prerequisites) |
-| `timewaster` | Recipe time adjustments |
-
-### Extras (New Entities & Features)
-
-| Feature | Description |
-|---------|-------------|
-| `chests/big-steel-chest` | 2x2 chest with 96 slots, filterable slots like cargo wagon |
-| `chests/big-steel-hopper` | Linked proxy container for big-steel-chest |
-| `radars/small-radar` | Lower power radar without exploration, replaces radar in artillery shells |
-| `drills/wet-drilling` | Technology triggered by offshore pump; enables fluid mining |
-| `drills/burner-mining-drill-fluid` | Burner drill variant with fluid input for steam mining |
-| `drills/electric-mining-drill-fluid` | Electric drill variant with fluid input |
-| `ores/sulfur-ore` | Minable sulfur resource requiring steam (Frasch process) |
-| `altrecipes/concrete-rail` | Concrete rail technology with tiered recipes |
-
-## Build System
-
-### Prerequisites (via Nix Flake)
-
-- lua, jq, gnumake, ripgrep, wget, python3.14
-
-### Commands
-
-```bash
-make build      # Create distributable zip via git archive
-make test       # Run unit tests via unit-tests.lua
-make install    # Copy to ~/.factorio/mods
-make uninstall  # Remove from ~/.factorio/mods
-make nuke       # Uninstall + remove mod-settings.dat
-```
-
-### Distribution
-
-`.gitattributes` marks files for exclusion from the distribution zip:
-- Build tooling, tests, debug files
-- Source graphics (`.xcf`)
-- Nix/direnv configuration
-- `.claude/` safety hooks
-
 ## Utilities
-
-### prelude/table.lua
-
-Key functions: `table.new()`, `table.null`, `table.matches()`, `table.find_matching()`, `table.descend()`, `table.clone()`, `table.traverse()`, `table.set()`, vector operations (`table.add()`, `table.scale()`, `table.vecadd()`, `table.vecmul()`)
-
-### prelude/string.lua
-
-Key functions: `string.lpad()`, `string.rpad()`, `string.predicate()`, `string.sprint()`, `string.chomp()`
-
-### debuglib.lua
-
-Pretty-printer for Lua data structures with recursion limiting and cycle detection. Controlled by `DEPTH` environment variable.
-
-## Conventions
-
-- All mod identifiers use `fns()` prefix: `feeds-n-speeds-{name}`
-- Entity definitions split across `-building.lua`, `-item.lua`, `-recipe.lua`, `-remnants.lua`, `-explosion.lua`
-- Cross-module references use `import()` to access other namespaces
-- Settings interact: e.g., `tweaks.concrete.enabled` affects `tweaks.electric` and `tweaks.nuclear` recipes
-
-## Testing
-
-### Test Harness
-
-Unit tests are run via `unit-tests.lua`, a sandboxed test harness:
-
-```bash
-lua unit-tests.lua table string prelude    # Run specific test modules
-```
-
-Test files in `unit-tests/` use global functions defined by the harness:
-- `fact(description, fn)` - Register test expected to pass
-- `fiction(description, fn)` - Register test expected to error
-- `assert_eq(a, b)` - Assert equality
-- `assert_ok(val)` - Assert truthy
-- `assert_is(val, type)` - Assert type
 
 ### Sandboxing
 
 The test harness sandboxes test code by nil'ing dangerous globals (`io`, `os`, `debug`, `load`, etc.) after loading trusted modules. This allows Claude to write tests autonomously with reduced risk.
 
 `unit-tests-trusted.lua` contains tests requiring privileged functions (e.g., `setmetatable`) and runs before the sandbox is applied.
-
-### Coverage
-
-112 tests covering `prelude/table.lua`, `prelude/string.lua`, and namespace system.
-
-## Reference Materials
-
-The `references/` sibling directory contains example Factorio mods for reference:
-- 2x2-Chest, Smart_Inserters, SimpleAdjustableInserters
-- NuclearTweaks, ChemicalConcrete, CrushBrickToStone
-- auto_sort_chests, zzzzStopChasingBeltItems
-
-## API Documentation
-
-Factorio Lua API docs: https://lua-api.factorio.com (version 2.0.x)
 
 ## Skills
 
@@ -212,54 +88,30 @@ The operator wants to provide Claude with a high degree of autonomy, without hav
 prompted to accept sensible actions. At the same time the operator is highly conscious of safety
 considerations and wants Claude to only have autonomy to perform a certain class of useful, safe actions.
 
-This has led to the development of the hooks suite currently installed in the `.claude/` directory.
-Claude should familiarize itself with these restrictions to fully employ the allowed degree of
-autonomy for maximum productivity. For this reason, hook denial messages include the allowed
-patterns/commands to enable immediate course-correction without requiring Claude to search configuration files.  
+There are five hooks:
+- Read/grep/glob access to the current project directory and a select others, see `.claude/read-grep-glob-paths.json` for a list.
+- Bash tool restricted to only a set list of allowed commands, see `.claude/bash-commands.json` for the list.
+- Read/grep (with output) access is prevent for certain files (currently none)
+- WebFetch is limited to only a set list of allowed domains, see `.claude/webfetch-urls.json` for the full list. 
+- One as a defense-in-depth safeguard against edits or writes that claude shouldn't do anyway.
+
+Hook denial messages include the allowed patterns/commands to enable immediate course-correction without requiring Claude to search configuration files.  
 
 The `"defaultMode": "dontAsk"` will auto-deny any tool usages not explicitly permitted, and the hooks are there to provide an extra layer of security in case the mode is erroneously changed during a session, e.g. by accepting the execution of a plan.
 
-### Allowed Tools
+### Access
 
-- **File reading**: Read, Glob, Grep (within project directory and allowed paths, see `.claude/read-grep-glob-paths.json`)
-- **File writing**: Write, Edit (only in `slop/**/*` and `unit-tests/*`)
-- **File editing**: Edit (in `extras/**/*`, `tweaks/**/*`, `locale/**/*`, and `CLAUDE.md`)
-- **Shell execution**: Bash (restricted to allowlist via hook, see `.claude/allowed-bash-commands.json`)
-- **File deletion**: Through the `.claude/safe-rm.py` script, permitted as a shell command, which can clean up the slop/ directory
-- **Web access**: WebFetch (restricted domains), WebSearch
-- **Interaction**: AskUserQuestion
-- **Task management**: TaskCreate, TaskGet, TaskList, TaskStop, TaskOutput, TaskUpdate
-- **Scheduling**: CronCreate, CronDelete, CronList
+Claude has free edit/write access to the following directories:
 
-### Denied Tools
+- `unit-tests/` for setting up a test suite
+- `slop/` for notes and tracking progress
+- All subdirectories of `extras/`
+- All subdirectories of `tweaks/`
+- All subdirectories of `locale/`
 
-- **Agent**: Subagent spawning disabled, due to concerns about subagents not having the same enforced
-  restrictions as the parent Claude session.
-- **Protected paths**: Write/Edit to `.claude/**/*` is explicitly denied as defense-in-depth measure,
-  but limited editing is enabled through scripts.
+Claude has edit rights (not writing rights) to files in `extras/` and `tweaks/`
 
-### Hook Restrictions
-
-| Hook | Effect |
-|------|--------|
-| `hook-restrict-read-grep-glob-paths.py` | File operations limited to project directory and Factorio's game files |
-| `hook-forbid-reads-by-glob.py` | Blocks reading `**/raw.lua` (a very large, >20MB) |
-| `hook-restrict-webfetch-urls.py` | WebFetch limited to Factorio-related domains (see `.claude/webfetch-urls.json`) |
-| `hook-restrict-bash.py` | Bash commands must match patterns in `allowed-bash-commands.json`; shell metacharacters blocked. |
-| `hook-backup-write-edit-defense.py` | last line of defense against unauthorized writes and edits |
-
-### Allowed Bash Commands
-
-Defined in `.claude/allowed-bash-commands.json`:
-- `lua unit-tests.lua *` - Run unit tests with explicit module names from the `unit-tests/` directory
-- `lua debug-load.lua` - Debug module loading
-- `DEPTH=N lua debug-data-raw.lua *` - Inspect vanilla data.raw (N=1-5)
-- `DEPTH=N lua debug-data-modded.lua *` - Inspect modded data.raw (N=1-5)
-- `python .claude/safe-rm.py *` - Safe file deletion for cleaning up the `slop/` directory
-- `.claude/fetch-factorio-research.sh` - Copy factorio-research skill to slop/ for editing
-- `.claude/install-factorio-research.sh` - Install edited skill back to .claude/skills/
-
-The `debug-data-raw` and `debug-data-modded` scripts are part of the factorio-research skill.
+Claude can edit CLAUDE.md
 
 ### Implications
 

@@ -26,7 +26,7 @@ install)
 
     cp "$INSTALLED_SKILL" "$INSTALLED_SKILL~"
     cp "$SLOP_SKILL" "$INSTALLED_SKILL"
-
+    echo "updated skill installed"
 ;;
 
 fetch)
@@ -48,11 +48,14 @@ fetch)
     fi 
 
     cp "$INSTALLED_SKILL" "$SLOP_SKILL"
+    echo "skill file has been copied over for editing"
 
 ;;
 
 *)
-    echo "Allowed commands are install and fetch"
+    echo "Allowed commands are"
+    echo "$0 install"
+    echo "$0 fetch"
 ;;
 
 esac

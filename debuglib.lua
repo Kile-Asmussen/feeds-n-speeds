@@ -65,6 +65,7 @@ function debuglib.__sprint_any(buffer, data, name)
     table.insert(buffer.path_list, name)
   end
 
+  log("Sprinting on " .. tostring(name) .. ' ' .. tostring(data))
   debuglib['__sprint_' .. type(data)](buffer, data)
 
   if name ~= nil then
@@ -73,7 +74,11 @@ function debuglib.__sprint_any(buffer, data, name)
 end
 
 function debuglib.__sprint_function(buffer, data)
-  buffer:__push("function() --[[ ... ]] end")
+  local info = debug.getinfo(data)
+  if info and info.name and info.name ~= '' then
+    info.name = ' ' .. info.name
+  end
+  buffer:__push("function" .. info.name .. "() --[[ ... ]] end")
 end
 
 function debuglib.__sprint_userdata(buffer, data)
@@ -200,7 +205,7 @@ function debuglib.__render_key(data)
   end
 
   if type(data) ~= 'string' then
-    error('not a valid table key for debuglib', data)
+    error('not a valid table key for debuglib', type(data))
   end
 
   if data:match('^%s*[a-zA-Z_][a-zA-Z_0-9]*%s*$') then

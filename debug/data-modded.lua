@@ -22,7 +22,7 @@ require('settings')
 require('settings-updates')
 require('settings-final-fixes')
 _G.settings = import('settings'):__seal()
-
+data.__begin()
 require('data')
 require('data-updates')
 require('data-final-fixes')
@@ -36,6 +36,10 @@ local args = table.pack(...)
 
 local ix = 'data' .. debuglib.descent('raw', table.unpack(args))
 local result, found = table.descend(data.raw, table.unpack(args))
+
+if args.n < 2 then
+    debuglib.recursion_limit = 1
+end
 
 if found then
     log(ix .. ' = ' .. debuglib.sprint(result))
