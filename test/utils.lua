@@ -1,3 +1,5 @@
+require 'prelude'
+
 function pipecoverspictures()
     local base_path = '__base__/graphics/entity/pipe-covers/'
     return {

@@ -2,18 +2,6 @@
 """
 Restricts WebFetch tool calls to a list of permitted domains, with path-level
 exceptions that can deny specific URLs within permitted domains.
-
-Configuration is in the accompanying webfetch-urls.json file:
-  {
-    "domains":    ["github.com", "*.microsoft.com"],
-    "exceptions": ["learn.microsoft.com/dangerous/*"]
-  }
-
-'domains' patterns are matched with fnmatchcase against the hostname only.
-'exceptions' patterns are matched with fnmatchcase against hostname + path.
-
-Deny-by-default: URLs whose hostname matches no domain pattern are blocked.
-Exceptions take precedence over domains.
 """
 
 import json
@@ -52,70 +40,84 @@ def flush_log() -> None:
 
 print('',  sys.argv[0], datetime.datetime.now().isoformat(), sep='\n', file=LOG_FILE)
 
-
 def main() -> None:
 
     url = read_hook_input()
+    print(url, file=LOG_FILE)
 
     parsed = urlsplit(url)
+    print(repr(parsed), file=LOG_FILE)
     hostname = parsed.hostname or ""
     path = parsed.path or ""
-    hostname_and_path = hostname + path
 
     print(f"url: {url}", file=LOG_FILE)
     print(f"hostname: {hostname}", file=LOG_FILE)
-    print(f"hostname+path: {hostname_and_path}", file=LOG_FILE)
+    print(f"path: {path}", file=LOG_FILE)
 
-    domains, exceptions, restrict = load_config()
+    patterns = load_config()
 
-    print("allowed domains:", *(domain + res for domain in domains for res in restrict.get(domain, [''])), sep="\n", file=LOG_FILE)
-    print("explicit exceptions:", *exceptions, sep='\n', file=LOG_FILE)
+    print("Url patterns:", *patterns, sep="\n", file=LOG_FILE)
     
-    allowed_by = next((domain for domain in domains if fnmatchcase(hostname, domain)), None)
-    
+    allowed = [p for p in patterns if not p.startswith('!')]
+    exceptions = [p.removeprefix('!') for p in patterns if p.startswith('!')]
+
+    reason: str = ''
+
+    if not allowed:
+        reason = "there are no allowed urls configured"
+
+    allowed_by = next((
+        pat for pat in allowed if fnmatch_url(hostname, path, pat)
+    ), None)
+
     if not allowed_by:
-        print(
-            f"blocked fetch -- hostname '{hostname}' not allowed\n"
-            f"Allowed domains:",
-            *domains,
-            sep = '\n - ',
-            file=[sys.stderr, LOG_FILE]
-        )
-        sys.exit(2)
+        reason = reason or "it is not in allowed list of urls"
+
+    denied_by = next((
+        pat for pat in exceptions if fnmatch_url(hostname, path, pat)
+    ), None)
+
+    if denied_by:
+        reason = reason or f"it matches the disallowed pattern '{denied_by}'"
     
-    allowed_by_path = ''
-    if allowed_by in restrict:
-        allowed_by_path = next((res for res in restrict[allowed_by] if fnmatchcase(path, res)), None)
-        if allowed_by_path is None:
+    if not allowed_by or denied_by:
+        print(f"Blocked WebFetch({hostname + path}) because {reason}.", file=[sys.stderr, LOG_FILE])
+        if allowed:
             print(
-                f"blocked fetch -- path '{hostname}{path}' not allowed\n"
-                f"Allowed paths:",
-                *(allowed_by + res for res in restrict[allowed_by]),
-                sep = '\n - ',
+                "Allowed urls take the form:" if any('*' in pat for pat in allowed) else "Allowed urls:",
+                *allowed,
+                sep='\n',
                 file=[sys.stderr, LOG_FILE]
             )
-            sys.exit(2)
-
-    disallowed_by = next((exception for exception in exceptions if fnmatchcase(hostname_and_path, exception)), None)
-                
-    if disallowed_by:
-        print(
-            f"blocked fetch -- url matches exception pattern `{disallowed_by}'\n"
-            "disallowed patterns:\n",
-            *exceptions,
-            sep="\n - ",
-            file=[sys.stderr, LOG_FILE]
-        )
+        if exceptions:
+            print(
+                "Explicitly disallowed:",
+                *exceptions,
+                sep='\n',
+                file=[sys.stderr, LOG_FILE]
+            )
+    
         sys.exit(2)
 
     print(
-        f"allowing fetch -- hostname permitted by `{allowed_by}{allowed_by_path}'",
+        f"Allowing WebFetch({hostname + path})\nhostname permitted by `{allowed_by}'",
         file=LOG_FILE
     )
     sys.exit(0)
 
+def fnmatch_url(hostname: str, path: str, pattern: str) -> bool:
+    if pattern.startswith('/'):
+        print("looks like path-only pattern",repr(pattern), 'matching against', repr(path), file=LOG_FILE)
+        return fnmatchcase(path, pattern)
+    elif '/' not in pattern:
+        print("looks like hostname-only pattern", repr(pattern), 'matching against', repr(hostname),  file=LOG_FILE)
+        return fnmatchcase(hostname, pattern)
+    elif '/' in pattern:
+        print("looks like a mixed hostname-path pattern", repr(pattern), 'matching against', repr(hostname + path), file=LOG_FILE)
+        return fnmatchcase(hostname + path, pattern)
+    return False
 
-def load_config() -> tuple[list[str], list[str], dict[str, list[str]]]:
+def load_config() -> list[str]:
 
     project_dir = get_project_dir()
 
@@ -129,20 +131,10 @@ def load_config() -> tuple[list[str], list[str], dict[str, list[str]]]:
     try:
         config = json.loads(config_file.read_text(encoding="utf-8"))
         
-        if not isinstance(config, dict):
-            raise ValueError("config must be a JSON object")
-            
-        domains = config.get("domains", [])
-        restrict = config.get("restrict", {})
-        exceptions = config.get("exceptions", [])
+        if not isinstance(config, list) and all(isinstance(d, str) for d in config):
+            raise ValueError("config must be a JSON list of strings")
         
-        if not (isinstance(domains, list) and all(isinstance(d, str) for d in domains)):
-            raise ValueError("'domains' must be a list of strings")
-            
-        if not (isinstance(exceptions, list) and all(isinstance(e, str) for e in exceptions)):
-            raise ValueError("'exceptions' must be a list of strings")
-        
-        return domains, exceptions, restrict
+        return config
         
     except (json.JSONDecodeError, OSError, ValueError) as e:
         print(f"{WEBFETCH_URLS_FILE} not loaded ({e}), blocking as a precaution",

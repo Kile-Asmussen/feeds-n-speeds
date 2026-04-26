@@ -7,7 +7,7 @@ data.raw = require('rawdata')
 
 local args = table.pack( ... )
 
-local ix = 'data' .. debuglib.descent('raw', table.unpack(args))
+local ix = string.tablepath('data.raw', args)
 local result, found = table.descend(data.raw, table.unpack(args))
 
 if args.n < 2 then
@@ -15,7 +15,7 @@ if args.n < 2 then
 end
 
 if found then
-    log(ix .. ' = ' .. debuglib.sprint(result))
+    log(ix .. ' = ' .. debuglib.pp(result, 'data.raw'))
 else
     log('Path not found: ' .. ix)
     if result ~= nil then

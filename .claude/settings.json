@@ -41,7 +41,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "rm -f \"$CLAUDE_PROJECT_DIR/.claude/log\""
+            "command": "mv -f \"$CLAUDE_PROJECT_DIR/.claude/log\" \"$CLAUDE_PROJECT_DIR/.claude/log~\""
           }
         ]
       }
@@ -52,7 +52,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-read-grep-glob-paths.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-read-grep-glob-paths.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\" 1>&2 || exit 2"
           }
         ]
       },
@@ -61,7 +61,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-forbid-reads-by-glob.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-reads-forbidden-by-globs.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\" 1>&2 || exit 2"
           }
         ]
       },
@@ -70,7 +70,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-webfetch-urls.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-webfetch-urls.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\" 1>&2 || exit 2"
           }
         ]
       },
@@ -79,7 +79,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-bash-commands.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-bash-commands.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\" 1>&2 || exit 2"
           }
         ]
       },
@@ -88,7 +88,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-write-edit.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hook-restrict-write-edit.py\" \"$CLAUDE_PROJECT_DIR/.claude/log\" 1>&2 || exit 2"
           }
         ]
       }

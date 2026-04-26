@@ -5,30 +5,15 @@ local debuglib = require 'debuglib'
 
 local data = namespace 'test.data'
 
-data.__changes = {}
-
-
-
-function data.__proxy(tbl, root, path)
-    path = path or {}
-    if type(tbl) ~= 'table' then
-        return tbl
-    else
-        log("proxying " .. root .. debuglib.descent(table.unpack(path)))
-        tbl = { __real = tbl, __root = root, __path = path }
-        setmetatable(tbl, data.__proxy_mt)
-        return tbl
-    end
-end
-
 data.raw = table.null
 
-function data.__begin_proxy()
-    data.raw = data.__proxy(require 'test.rawdata', 'data.raw')
-end
-
-function data.__begin()
-    data.raw = require 'test.rawdata'
+function begin_data_stage(proxy)
+    if proxy then
+        data.raw = table.proxy({tbl=require 'test.rawdata', rootname='data.raw'})
+    else
+        data.raw = require 'test.rawdata'
+    end
+    _G.settings = import('test.settings'):__seal()
 end
 
 function data.__count(tbl)
@@ -56,7 +41,7 @@ function data.extend(self, protos)
     local bad = false
     for _, proto in ipairs(protos) do
 
-        log(proto.name:gsub('feeds%-n%-speeds%-', 'fns \'') .. '\' => ' .. proto.type)
+        log(proto.name:gsub('feeds%-n%-speeds%-', 'fns \'') .. '\' = ' .. proto.type)
 
         if proto.type:match('%-setting$') then
             settings[proto.setting_type] = settings(proto.setting_type) or {}

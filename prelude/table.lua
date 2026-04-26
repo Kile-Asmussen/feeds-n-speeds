@@ -17,10 +17,13 @@ local function __noindex(tbl, ix)
     error('cannot index ' .. tostring(tbl) .. ' with ' .. tostring(ix))
 end
 
+local function __nonewindex(tbl, ix, val)
+    error('cannot add index to ' .. tostring(tbl))
+end
+
 setmetatable(table.null, {
     __tostring = function() return 'table.null' end,
-    __index = __noindex,
-    __newindex = __noindex,
+    __newindex = __nonewindex,
     __metatable = table.null,
 })
 
@@ -202,10 +205,19 @@ function table.clone(tbl)
     return tbl
 end
 
-function table.sorted_keys(tbl)
+function table.sorted_keys(tbl, only)
     local res = {}
-    for k, _ in pairs(tbl) do
-        table.insert(res, k)
+    assert(only == nil or type(only) == 'string', 'argument #2 (optional) must be a string')
+    if only then
+        for k, _ in pairs(tbl) do
+            if type(k) == only then
+                table.insert(res, k)
+            end
+        end
+    else
+        for k, _ in pairs(tbl) do
+            table.insert(res, k)
+        end
     end
     table.sort(res)
     return res
@@ -220,9 +232,11 @@ function table.set(tbl)
     return res
 end
 
-function table.append(tbl, tbl2)
+function table.append(tbl1, tbl2)
+    assert(type(tbl1) == 'table', "argument #1 must be a table")
+    assert(type(tbl2) == 'table', "argument #2 must be a table")
     for _, entry in ipairs(tbl2) do
-        table.insert(tbl, entry)
+        table.insert(tbl1, entry)
     end
 end
 
@@ -317,16 +331,16 @@ local __proxy_mt = {
         newpath = {}
         table.append(newpath, tbl.__path)
         table.insert(newpath, key)
-        table.insert(tbl.__changes, { path = newpath, key = key, val = val }
+        tbl.__changes[tbl.__rootname .. string.tablepath(tbl.path)] = val
     end,
 
     __index = function(tbl, name)
         local val = tbl.__real[name]
-        newpath = {}
-        table.append(newpath, tbl.__path)
-        table.insert(newpath, name)
         if type(val) == 'table' then
-            return table.proxy(val, tbl.__rootname, tbl.__root, newpath, tbl.__changes)
+            newpath = {}
+            table.append(newpath, tbl.__path)
+            table.insert(newpath, name)
+            return table.proxy{tbl=val, rootname=tbl.__rootname, root=tbl.__root, path=newpath, changes=tbl.__changes}
         else
             return val
         end
@@ -357,21 +371,26 @@ local __proxy_mt = {
     end,
 
     __tostring = function(tbl)
-        return tbl.__base ..  .. '<' .. tostring(tbl.__real) .. '>'
-    end
+        return tbl.__base .. string.tablepath(tbl.__path) .. '<' .. tostring(tbl.__real) .. '>'
+    end,
+
+    __metatable = "__proxy_mt"
 }
 
-function table.proxy(tbl, rootname, root, path, changes)
-    rootname = rootname or tostring(tbl)
-    root = root or tbl
-    path = path or {}
-    changes = changes or {}
-    base = base or tostring(tbl)
-    res = {
-        __real = tbl,
-        __rootname = rootname,
-        __path = path,
-        __root = tbl,
-        __changes = changes
+function table.proxy(args)
+    assert(type(args) ~= "table", "table.proxy expects a table with five keys: tbl, [rootname, root, path, changes]")
+    assert(type(args.tb) ~= "table", "table.proxy mandatory key tbl to be a table")
+    args.rootname = args.rootname or tostring(args.tbl)
+    args.root = args.root or args.tbl
+    args.path = args.path or {}
+    args.changes = args.changes or {}
+    local res = {
+        __real = args.tbl,
+        __root = args.root,
+        __rootname = args.rootname,
+        __path = args.path,
+        __changes = args.changes
     }
+    setmetatable(res, __proxy_mt)
+    return res
 end

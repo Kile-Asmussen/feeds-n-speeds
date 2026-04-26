@@ -8,7 +8,7 @@ local mod_identifier_categories = {}
 local getmetatable = _G.getmetatable
 local setmetatable = _G.setmetatable
 
-function enabled(...)
+function _G.enabled(...)
 
     local res = true
 
@@ -20,7 +20,7 @@ function enabled(...)
 
 end
 
-local function fns(category, name)
+function _G.fns(category, name)
     if name == nil then
         name = category
         category = ''
@@ -45,14 +45,14 @@ local function fns(category, name)
     return name
 end
 
-local function fns_names_by_category(cat)
+function _G.fns_names_by_category(cat)
     if cat == nil then 
         return table.clone(mod_identifier_categories)
     end
     return table.sorted_keys(mod_identifier_categories[cat] or {})
 end
 
-local function import(path)
+function _G.import(path)
     assert(type(path) == 'string', "namespace names are strings")
     assert(declared_namespaces[path], 'no such namespace ' .. path)
     return declared_namespaces[path]
@@ -83,7 +83,7 @@ local function __seal(self)
     return self
 end
 
-local function isnamespace(thing)
+function _G.isnamespace(thing)
     if type(thing) ~= 'table' then return false end
     
     if getmetatable(thing) == 'namespace' then return true end
@@ -123,11 +123,11 @@ local function __ns_mt(path)
     return res
 end
 
-local function namespace(path)
+function _G.namespace(path)
 
     assert(not declared_namespaces[path], 'namespace '.. path .. ' already declared')
 
-    res = {}
+    local res = {}
     
     res.parent_namespace = table.null
     res.__seal = __seal
@@ -138,9 +138,3 @@ local function namespace(path)
 
     return res
 end
-
-_G.fns = fns
-_G.import = import
-_G.isnamespace = isnamespace
-_G.fns_names_by_category = fns_names_by_category
-_G.namespace = namespace

@@ -5,236 +5,213 @@ local getmetatable = _G.getmetatable
 
 local debuglib = namespace 'debuglib'
 
-function debuglib.sprint(data, path)
-  buffer = debuglib.__new_buffer()
-  buffer:__sprint_any(data, path)
-  return tostring(buffer)
-end
+debuglib.io = namespace 'debuglib.io'
+debuglib.io.open = _G.io and _G.io.open
+debuglib.io.write = _G.io and _G.io.write
+debuglib.io:__seal()
 
-function debuglib.descent(...)
-  local args = table.pack(...)
-  local buffer = debuglib.__new_buffer()  
-  for _, v in ipairs(args) do
-    local k = debuglib.__render_key(v)
-    if k:match("^%[") then
-      buffer:__push(k)
-    else
-      buffer:__push('.' .. k)
-    end
-  end
+function debuglib.pp(data, root)
+  buffer = debuglib.new_buffer(root)
+  buffer:print_any(data)
   return tostring(buffer)
 end
 
 debuglib.recursion_limit = 2
 
-function debuglib.__new_buffer(path)
+function debuglib.new_buffer(root)
   local res = {
     indent = 0,
+    root = root,
     max_indent = debuglib.recursion_limit or 2,
     seen_tables = { [_G] = '_G' },
-    path_list = path and { path } or {},
+    path = {},
   }
-  setmetatable(res, debuglib.__mt)
+  setmetatable(res, debuglib.__buffer_mt)
   return res
 end
 
-debuglib.__mt = { __index = debuglib, __tostring = table.concat }
+function debuglib.print(buffer, ...)
+    local args = table.pack(...)
+    table.append(buffer, args)
+    if debuglib.io.write then 
+        for _, s in ipairs(args) do
+            debuglib.io.write(s)
+        end
+    end 
+end
 
-debuglib.__push = table.insert
+debuglib.__buffer_mt = { __index = debuglib, __tostring = table.concat }
+debuglib.__buffer_mt.__metatable = debuglib.__buffer_mt.__metatable
 
-function debuglib.__render_path(buffer)
-  local res = nil
-  for _, k in ipairs(buffer.path_list) do
-    if type(k) == 'number' or type(k) == 'boolean' or type(k) == 'nil' then
-      k = '[' .. tostring(k) .. ']'
+function debuglib.print_any(buffer, data, name)  
+  if name ~= nil then
+    table.insert(buffer.path, name)
+  end
+
+  debuglib['print_' .. type(data)](buffer, data)
+
+  if name ~= nil then
+    table.remove(buffer.path)
+  end
+end
+
+function debuglib.print_string(buffer, data)
+  buffer:print(string.repr(data))
+end
+
+local function print_tostring(buffer, data)
+  buffer:print(tostring(data))
+end
+
+debuglib.print_number = print_tostring
+debuglib.print_boolean = print_tostring
+debuglib.print_nil = print_tostring
+debuglib.print_userdata = print_tostring
+debuglib.print_coroutine = print_tostring
+debuglib.IDENTIFIER = '[a-zA-Z_][a-zA-Z0-9_.]*'
+
+local read_files = {}
+local seen_functions = {}
+function debuglib.print_function(buffer, data)
+
+    if seen_functions[data] then
+        buffer:print(seen_functions[data])
+        return
     end
+
+    local info = debug.getinfo(data)
+    local signature = 'function'
+    local _ = nil
     
-    if res == nil then
-      res = k
-    elseif k:sub(1, 1) == '[' then
-      res = res .. k
-    else
-      res = res .. '.' .. k 
+    if debuglib.io.open then
+        if not read_files[info.short_src] then
+            local read_lines = {}
+            local file = debuglib.io.open(info.short_src)
+            for l in file:lines() do
+                table.insert(read_lines, l)
+            end
+            file:close()
+            file = nil
+
+            read_files[info.short_src] = read_lines
+        end
+
+        local line = read_files[info.short_src][info.linedefined]
+        local args = line:match('%(.*%)') or '()'
+        local arg_count = #(args:gsub(debuglib.IDENTIFIER, 'x'):gsub('[^x]', ''))
+
+        local decl_as = line:match('local%s+function%s+') or line:match('function%s')
+        local name = line:sub(line:find(decl_as) + #decl_as, (line:find('%s*%(') or #line + 1) - 1)
+        if name == '' then
+            name = 'function'
+        end
+        local scope = ''
+        if decl_as:match('local') then
+            scope = 'local function '
+        elseif not name:find('%.') then
+            scope = 'global function '
+        elseif name:match('_G%.') then
+            name = name:gsub('_G%.', '')
+            scope = 'global function '
+        else
+            scope = 'function '
+        end
+        
+        signature = scope .. name .. '(' .. arg_count .. ')'
+
+    elseif info.namewhat ~= '' then
+        signature = info.namewhat .. ' ' .. info.name .. '()'
     end
-  end
-  return res
+
+    local render = signature .. ' ' .. info.short_src .. ':' .. info.linedefined
+    seen_functions[data] = render
+
+    buffer:print(render)
 end
 
-function debuglib.__sprint_any(buffer, data, name)  
-  if name ~= nil then
-    table.insert(buffer.path_list, name)
-  end
-
-  log("Sprinting on " .. tostring(name) .. ' ' .. tostring(data))
-  debuglib['__sprint_' .. type(data)](buffer, data)
-
-  if name ~= nil then
-    table.remove(buffer.path_list)
-  end
-end
-
-function debuglib.__sprint_function(buffer, data)
-  local info = debug.getinfo(data)
-  if info and info.name and info.name ~= '' then
-    info.name = ' ' .. info.name
-  end
-  buffer:__push("function" .. info.name .. "() --[[ ... ]] end")
-end
-
-function debuglib.__sprint_userdata(buffer, data)
-  buffer:__push("--[[ userdata not supported ]] nil")
-end
-
-function debuglib.__sprint_string(buffer, data)
-  buffer:__push(debuglib.__render_string(data))
-end
-
-local function __sprint_tostring(buffer, data)
-  buffer:__push(tostring(data))
-end
-
-debuglib.__sprint_number = __sprint_tostring
-debuglib.__sprint_boolean = __sprint_tostring
-debuglib.__sprint_nil = __sprint_tostring
-
-function debuglib.__sprint_coroutine(buffer, data)
-  buffer:__push("--[[ coroutine ]] function() ... end")
-end
-
-function debuglib.__sprint_table(buffer, data)
+function debuglib.print_table(buffer, data)
 
   if buffer.seen_tables[data] then
-    buffer:__push("{ --[[ " .. buffer.seen_tables[data] .. " ]] }")
+    buffer:print(buffer.seen_tables[data])
     return
   else
-    buffer.seen_tables[data] = buffer:__render_path()
+    buffer.seen_tables[data] = string.tablepath(buffer.root, buffer.path)
   end
 
   local is_array = table.is_array(data)
   local is_hash = table.is_hash(data)
 
   if not (is_array or is_hash) then
-    buffer:__push("{}")
+    buffer:print("{}")
     return
   end
 
   if buffer.indent >= debuglib.recursion_limit then
-    buffer:__push('{ --[[ ... ]] }')
+    buffer:print('{ --[[ ... ]] }')
     return
   end
 
-  buffer:__push('{\n')
+  buffer:print('{\n')
 
   buffer.indent = buffer.indent + 1
 
   if is_array and is_hash then
     
-    debuglib.__sprint_elements(buffer, data)
+    debuglib.print_elements(buffer, data)
     
-    buffer:__push(',\n')
+    buffer:print(',\n')
     
-    debuglib.__sprint_keyval_pairs(buffer, data)
+    debuglib.print_keyval_pairs(buffer, data)
 
   elseif is_array then
     
-    debuglib.__sprint_elements(buffer, data)
+    debuglib.print_elements(buffer, data)
   
   elseif is_hash then 
     
-    debuglib.__sprint_keyval_pairs(buffer, data)
+    debuglib.print_keyval_pairs(buffer, data)
 
   end
 
   buffer.indent = buffer.indent - 1
 
-  buffer:__push('\n' .. string.rep('  ', buffer.indent) .. "}")
+  buffer:print('\n' .. string.rep('  ', buffer.indent) .. "}")
 
 end
 
-function debuglib.__sprint_elements(buffer, data)
+function debuglib.print_elements(buffer, data)
   local first = true
   for i, v in ipairs(data) do
 
     if not first then
-      buffer:__push(',\n')
+      buffer:print(',\n')
     end
 
-    buffer:__push(string.rep('  ', buffer.indent))
+    buffer:print(string.rep('  ', buffer.indent))
 
-    buffer:__sprint_any(v, i)
+    buffer:print_any(v, i)
 
     first = false
   end
 end
 
-function debuglib.__sprint_keyval_pairs(buffer, data)
-
-  local order = {
-    insert = table.insert,
-    sort = table.sort
-  }
-
-  for k, _ in pairs(data) do
-    if type(k) == 'string' then
-      order:insert(k)
-    end
-  end
-
-  order:sort()
+function debuglib.print_keyval_pairs(buffer, data)
 
   local first = true
 
-  for i, k in ipairs(order) do
+  for i, k in ipairs(table.sorted_keys(data)) do
 
     v = data[k]
 
     if not first then
-      buffer:__push(',\n')
+      buffer:print(',\n')
     end
 
-    buffer:__push(string.rep('  ', buffer.indent) .. debuglib.__render_key(k) .. ' = ')
-    buffer:__sprint_any(v, k, i)
+    buffer:print(string.rep('  ', buffer.indent) .. string.tableindex(k, true) .. ' = ')
+    buffer:print_any(v, k, i)
 
     first = false
   end
-end
-
-function debuglib.__render_key(data)
-  if type(data) == 'number' then
-    return "['" .. data .. "']"
-  end
-
-  if type(data) ~= 'string' then
-    error('not a valid table key for debuglib', type(data))
-  end
-
-  if data:match('^%s*[a-zA-Z_][a-zA-Z_0-9]*%s*$') then
-    return data
-  else
-    return '[' .. debuglib.__render_string(data) .. ']'
-  end
-end
-
-function debuglib.__render_string(data)
-  local sq = data:match("'")
-  local dq = data:match('"')
-  local nl = data:match('\n')
-  if (sq and dq) or nl then
-    if data:match('^%[') or data:match('%]$') or data:match('%]%]') or data:match('%[%[') then
-      return " [=[" .. data .. "]=] "
-    else
-      return " [[" .. data .. "]] "
-    end
-  elseif sq then
-    return '"' .. data .. '"'
-  else
-    return "'" .. data .. "'"
-  end
-end
-
-
-function debuglib.probe_data_raw()
-  loadstring('return ' + io.read())
 end
 
 return debuglib:__seal()

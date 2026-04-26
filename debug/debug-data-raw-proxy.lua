@@ -3,7 +3,7 @@ require 'test'
 
 local debuglib = require 'debuglib'
 
-data.__begin_proxy()
+begin_data_stage 'proxy'
 
-log(debuglib.sprint(data.raw.recipe['artillery-shell']))
+log(debuglib.pp(data.raw.recipe['artillery-shell'], "['artillery-shell']"))
 

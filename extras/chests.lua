@@ -42,9 +42,7 @@ function chests.control()
     script.on_init(chests.hopper.init_storage)
 
     -- Ensure storage exists on load (migrations may add new fields)
-    script.on_load(function()
-        -- Cannot modify storage in on_load, but can set up metatables if needed
-    end)
+    script.on_load(chests.hopper.on_load)
 
     -- Handle configuration changes (mod updates)
     script.on_configuration_changed(chests.hopper.init_storage)
@@ -58,7 +56,7 @@ function chests.control()
     script.on_event(defines.events.on_entity_died, chests.hopper.on_entity_destroyed, chests.hopper.ENTITY_FILTER)
     script.on_event(defines.events.on_player_mined_entity, chests.hopper.on_entity_destroyed, chests.hopper.ENTITY_FILTER)
     script.on_event(defines.events.on_robot_mined_entity, chests.hopper.on_entity_destroyed, chests.hopper.ENTITY_FILTER)
-    script.on_event(defines.events.script_raised_destroy, chests.hopper.on_entity_destroyed)
+    script.on_event(defines.events.script_raised_destroy, chests.hopper.on_entity_destroyed, chests.hopper.ENTITY_FILTER)
 
 end
 

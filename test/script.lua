@@ -11,7 +11,7 @@ script.__handlers = {
     on_init = nil,
     on_load = nil,
     on_configuration_changed = nil,
-    events = {},  -- [event_id] = { handler = fn, filters = ... }
+    events = {},
 }
 
 function script.on_init(handler)
