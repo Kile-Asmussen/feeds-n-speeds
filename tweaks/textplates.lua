@@ -37,7 +37,7 @@ end
 function textplates.fix_tech(name, material)
     if not data.raw.technology[name] then return end
     data.raw.technology[name].unit = nil
-    data.raw.technology[name].prerequisite = {}
+    data.raw.technology[name].prerequisites = {}
     data.raw.technology[name].research_trigger = {
         type="craft-item",
         item=material,

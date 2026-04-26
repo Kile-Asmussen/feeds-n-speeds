@@ -18,23 +18,24 @@ function script.__reset()
     }
 end
 
-script.__reset()
+script.__reset() 
+local function func(f) return debuglib.function_signature(f, 'short') end
 
 function script.on_init(handler)
     assert(type(handler) == 'function', "argument #1 must be a function")
-    log('on_init ' .. debuglib.function_signature(handler))
+    __log('on_init ' .. func(handler))
     table.insert(script.__handlers.on_init, handler)
 end
 
 function script.on_load(handler)
     assert(type(handler) == 'function', "argument #1 must be a function")
-    log('on_load ' .. debuglib.pp(handler))
+    __log('on_load ' .. func(handler))
     table.insert(script.__handlers.on_load, handler)
 end
 
 function script.on_configuration_changed(handler)
     assert(type(handler) == 'function', "argument #1 must be a function")
-    log('on_configuration_changed ' .. debuglib.function_signature(handler))
+    __log('on_configuration_changed ' .. func(handler))
     table.insert(script.__handlers.on_configuration_changed, handler)
 end
 
@@ -56,7 +57,7 @@ function script.on_event(event, handler, filters)
     if #filters > 0 then
         filtering = '(filters:' .. #filters .. ') '
     end
-    log(defines.event_names[event] .. filtering .. debuglib.function_signature(handler))
+    __log(defines.event_names[event] .. filtering .. func(handler))
 
     script.__handlers.events[event] =  script.__handlers.events[event] or {}
     table.insert(script.__handlers.events[event], { handler = handler, filters = filters })
@@ -65,7 +66,7 @@ end
 function script.on_nth_tick(tick, handler)
     assert(type(tick) == 'number', "argument #1 must be a number")
     assert(type(handler) == 'function', "argument #2 must be a function")
-    log('on_nth_tick(' .. tick .. ') ' .. debuglib.function_signature(handler))
+    __log('on_nth_tick(' .. tick .. ') ' .. func(handler))
     script.__handlers.ticks[tick] = script.__handlers.ticks[tick] or {}
     table.insert(script.__handlers.ticks[tick], handler)
 end

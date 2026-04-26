@@ -59,7 +59,7 @@ fn write_mod_list(mods: &[Mod]) -> LuaResult<()> {
 
 fn factorio_dump_data_raw() -> LuaResult<()> {
     let mut proc = process::Command::new("steam")
-        .args(["-launch", "427520", "--dump-data-raw"])
+        .args(["-launch", "427520", "--dump-data"])
         .spawn()
         .map_err(lua_error)?;
 

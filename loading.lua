@@ -7,7 +7,8 @@ function loading.execute(superdomain, operation, name)
 
     if type(operation) == 'string' then name = operation end
 
-    for domain_name, domain in pairs(superdomain) do
+    for _, domain_name in ipairs(table.sorted_keys(superdomain)) do
+        domain = superdomain[domain_name]
         if
             not domain_name:match('^_')
             and isnamespace(domain)

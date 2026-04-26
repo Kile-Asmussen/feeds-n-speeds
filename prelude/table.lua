@@ -183,6 +183,22 @@ function table.map(tbl, func)
     return res
 end
 
+function table.any(tbl, func)
+    func = func or function(x) return x end
+    for _, v in ipairs(tbl) do
+        if func(v) then return true end
+    end
+    return false
+end
+
+function table.all(tbl, func)
+    func = func or function(x) return x end
+    for _, v in ipairs(tbl) do
+        if not func(v) then return false end
+    end
+    return true
+end
+
 function table.dup(tbl)
     if type(tbl) ~= 'table' then return tbl end
     local res = {}
@@ -318,12 +334,22 @@ function table.isvec(tbl)
     return type(tbl) == 'table' and #tbl == 2 and type(tbl[1]) == 'number' and type(tbl[2]) == 'number'
 end
 
+function table.cut(tbl, n)
+    while #tbl > n do
+        table.remove(tbl)
+    end
+end
+
 local function __proxy_mt_newindex(tbl, key, val)
     tbl.__real[key] = val
-    newpath = {}
+    local newpath = {}
     table.append(newpath, tbl.__path)
     table.insert(newpath, key)
-    tbl.__changes[tbl.__rootname .. string.tablepath(tbl.path)] = val
+    local fullpath = string.tablepath(tbl.__rootname, newpath)
+    table.cut(newpath, tbl.__maxdepth)
+    local path = string.tablepath(tbl.__rootname, newpath)
+    tbl.__hook(not tbl.__changes[path], path, fullpath, val)
+    tbl.__changes[path] = true
 end
 
 local function __proxy_mt_index(tbl, name)
@@ -332,7 +358,14 @@ local function __proxy_mt_index(tbl, name)
         newpath = {}
         table.append(newpath, tbl.__path)
         table.insert(newpath, name)
-        return table.proxy{tbl=val, rootname=tbl.__rootname, root=tbl.__root, path=newpath, changes=tbl.__changes}
+        return table.proxy{
+            tbl=val,
+            rootname=tbl.__rootname,
+            path=newpath,
+            changes=tbl.__changes,
+            hook=tbl.__hook,
+            maxdepth=tbl.__maxdepth
+        }
     else
         return val
     end
@@ -352,7 +385,7 @@ local function __proxy_mt_ipairs(tbl)
     local i = 0
     return function()
         i = i + 1
-        if i <= #tbl then
+        if i <= #(tbl.__real) then
             return i, tbl[i]
         end
     end
@@ -368,8 +401,8 @@ local function __proxy_mt_len(tbl)
     end
 end
 
-function __proxy_mt_tostring(tbl)
-    return tbl.__base .. string.tablepath(tbl.__path) .. '=' .. tostring(tbl.__real)
+local function __proxy_mt_tostring(tbl)
+    return tbl.__rootname .. string.tablepath(tbl.__path) .. '=' .. tostring(tbl.__real)
 end
 
 local __proxy_mt = {
@@ -392,27 +425,27 @@ local function monkeypatch()
     local unpack = table.unpack
     function table.unpack(tbl)
         if getmetatable(tbl) == __proxy_mt then
-            unpack(tbl.__real)
+            return unpack(tbl.__real)
         else
-            unpack(tbl) 
+            return unpack(tbl) 
         end
     end
 
     local concat = table.concat
     function table.concat(tbl, ...)
         if getmetatable(tbl) == __proxy_mt then
-            concat(tbl.__real, ...)
+            return concat(tbl.__real, ...)
         else
-            concat(tbl, ...) 
+            return concat(tbl, ...) 
         end
     end
 
     local sort = table.sort
     function table.sort(tbl, ...)
         if getmetatable(tbl) == __proxy_mt then
-            sort(tbl.__real, ...)
+            return sort(tbl.__real, ...)
         else
-            sort(tbl, ...) 
+            return sort(tbl, ...) 
         end
     end
 
@@ -425,40 +458,56 @@ local function monkeypatch()
         end
     end
 
-    local insert = table.maxn
-    function table.maxn(tbl, ...)
+    local insert = table.insert
+    function table.insert(tbl, ...)
         if getmetatable(tbl) == __proxy_mt then
-            insert(tbl.__real, ...)
+            return insert(tbl.__real, ...)
         else
-            insert(tbl, ...) 
+            return insert(tbl, ...) 
         end
     end
 
     local remove = table.remove
         function table.remove(tbl, ...)
         if getmetatable(tbl) == __proxy_mt then
-            remove(tbl.__real, ...)
+            return remove(tbl.__real, ...)
         else
-            remove(tbl, ...) 
+            return remove(tbl, ...) 
         end
     end
     monkeypatch = function() end
 end
 
 function table.proxy(args)
-    assert(type(args) ~= "table", "table.proxy expects a table with five keys: tbl, [rootname, root, path, changes]")
-    assert(type(args.tb) ~= "table", "table.proxy mandatory key tbl to be a table")
+    assert(type(args) == "table", "table.proxy expects a table with five keys: tbl, [rootname, path, changes]")
+    assert(type(args.tbl) == "table", "table.proxy mandatory key tbl must be a table")
     monkeypatch()
     args.rootname = args.rootname or tostring(args.tbl)
     args.root = args.root or args.tbl
     args.path = args.path or {}
+    args.hook = args.hook or function() end
     args.changes = args.changes or {}
+    args.maxdepth = args.maxdepth or 1000
+
+    assert(type(args.path) == "table",
+        "table.proxy key path must be a table")
+
+    assert(type(args.changes) == "table",
+        "table.proxy key changes must be a table")
+
+    assert(type(args.hook) == "function",
+        "table.proxy key hook must be a function")
+
+    assert(type(args.maxdepth) == "number",
+        "table.proxy key maxdepth must be a number")
+
     local res = {
         __real = args.tbl,
-        __root = args.root,
         __rootname = args.rootname,
         __path = args.path,
-        __changes = args.changes
+        __hook = args.hook,
+        __changes = args.changes,
+        __maxdepth = args.maxdepth
     }
     setmetatable(res, __proxy_mt)
     return res

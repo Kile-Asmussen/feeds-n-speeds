@@ -7,9 +7,7 @@ return {
         effects = {
             { type='unlock-recipe', recipe='textplates-wood'}
         },
-        research_trigger = {
-            { type='mine-entity', entity='tree' }
-        },
+        research_trigger = { type='mine-entity', entity='tree' },
         icon = "__textplates__/graphics/entity/wood/t.png",
         icon_size = 128,
         localised_name = { "technology-name.textplate", {"textplates.wood-C"} }
@@ -21,9 +19,7 @@ return {
         effects = {
             { type='unlock-recipe', recipe='textplates-glass'}
         },
-        research_trigger = {
-            { type='mine-entity', entity='stone' }
-        },
+        research_trigger = { type='mine-entity', entity='stone' },
         icon = "__textplates__/graphics/entity/glass/t.png",
         icon_size = 128,
         localised_name = { "technology-name.textplate", {"textplates.glass-C"} }

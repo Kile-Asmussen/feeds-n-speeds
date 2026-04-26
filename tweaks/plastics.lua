@@ -11,8 +11,8 @@ function plastics.data_updates()
         { type='fluid', name='sulfuric-acid', amount=20 },
     }
 
-    table.insert(data.raw.technology['battery'], 'plastics')
-    table.insert(data.raw.technology['modules'], 'battery')
+    table.insert(data.raw.technology['battery'].prerequisites, 'plastics')
+    table.insert(data.raw.technology['modules'].prerequisites, 'battery')
 
     table.insert(data.raw.recipe['speed-module'].ingredients,
         { type='item', name='battery', amount=2 }

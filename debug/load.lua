@@ -4,27 +4,35 @@ require 'test'
 local localization = require 'test.localization'
 local debuglib = require 'debuglib'
 
-log("\nSETTINGS")
+local log = _G.log
+if not _G.verbose then
+    _G.__log = function() end
+end
+if _G.quiet then
+    _G.log = function() end
+end
+
+log("SETTINGS")
 require('settings')
 
-log("\nSETTINGS-UPDATES")
+log("SETTINGS-UPDATES")
 require('settings-updates')
 
-log("\nSETTINGS-FINAL-FIXES")
+log("SETTINGS-FINAL-FIXES")
 require('settings-final-fixes')
 
-begin_data_stage()
+begin_data_stage 'proxy'
 
-log("\nDATA")
+log("DATA")
 require('data')
 
-log("\nDATA-UPDATES")
+log("DATA-UPDATES")
 require('data-updates')
 
-log("\nDATA-FINAL-FIXES")
+log("DATA-FINAL-FIXES")
 require('data-final-fixes')
 
-log("\nCONTROL")
+log("CONTROL")
 _G.storage = {}
 require('control')
 

@@ -89,6 +89,18 @@ function string.tablepath(base, path)
     return table.concat(res)
 end
 
+function string.matcher(needle, index, plain)
+    return function(haystack) return haystack:match(needle, index, plain) end
+end
+
+function string.matched_by(haystack, index, plain)
+    return function(needle) return haystack:match(needle, index, plain) end
+end
+
+function string.matches(needle, haystack, index, plain)
+    return haystack:match(needle, index, plain)
+end
+
 function string.repr(str)
     if type(str) ~= 'string' then
         error("argument #1 to string.repr must be a string, was " .. type(str))
@@ -107,5 +119,15 @@ function string.repr(str)
         return '"' .. str .. '"'
     else
         return "'" .. str .. "'"
+    end
+end
+
+function string.lines(str)
+    return function()
+        if str == '' then return nil end
+        local ix = (str:find('\n') or #str)
+        local line = str:sub(1, ix) 
+        str = str:sub(ix+1)
+        return line
     end
 end

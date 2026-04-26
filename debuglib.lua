@@ -66,14 +66,18 @@ debuglib.IDENTIFIER = '[a-zA-Z_][a-zA-Z0-9_.]*'
 
 local read_files = {}
 local seen_functions = {}
-function debuglib.function_signature(func)
+function debuglib.function_signature(func, short)
     if seen_functions[func] then
         return seen_functions[func]
     end
 
     local info = debug.getinfo(func)
     local signature = 'function()'
-    local _ = nil
+    local origin = ' ' .. info.short_src .. ':' .. info.linedefined
+
+    if short then
+        origin = ''
+    end
 
     if debuglib.io.open then
         if not read_files[info.short_src] then
@@ -108,9 +112,12 @@ function debuglib.function_signature(func)
         else
             scope = 'function '
         end
-        
-        signature = scope .. name .. '(' .. arg_count .. ') '  .. info.short_src .. ':' .. info.linedefined
 
+        if short then
+            scope = scope:gsub('function ', '')
+        end
+        
+        signature = scope .. name .. '(' .. arg_count .. ') ' .. origin
     elseif info.namewhat ~= '' then
         signature = info.namewhat .. ' ' .. info.name .. '()'
     end
@@ -195,7 +202,7 @@ function debuglib.print_keyval_pairs(buffer, data)
 
   local first = true
 
-  for i, k in ipairs(table.sorted_keys(data)) do
+  for i, k in ipairs(table.sorted_keys(data, 'string')) do
 
     v = data[k]
 

@@ -20,6 +20,5 @@
         "hook-restrict-*.py": "${capture}.json",
         "*.json": "${capture}.*.json",
         "*": "${capture}~",
-        "loading.lua": "data*.lua, settings*.lua, control.lua"
     }
 }

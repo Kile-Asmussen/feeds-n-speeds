@@ -67,7 +67,7 @@ function localization.generate_stubs()
     for _, cat in ipairs(categories) do
         local any = false
         local manual = fns_names_by_category(cat)
-        table.append(manual, localization.keys[cat])
+        table.append(manual, table.sorted_keys(localization.keys[cat]))
         table.sort(manual)
 
         for _, key in ipairs(manual) do
@@ -77,7 +77,6 @@ function localization.generate_stubs()
                     table.insert(res, '[' .. cat .. ']')
                 end
                 table.insert(res, key .. '=')
-                log()
             end
 
         end

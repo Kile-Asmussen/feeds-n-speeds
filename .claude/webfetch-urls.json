@@ -4,5 +4,6 @@
   "forums.factorio.com",
   "mods.factorio.com",
   "github.com/wube/factorio-data/*",
-  "raw.githubusercontent.com/wube/factorio-data/*"
+  "raw.githubusercontent.com/wube/factorio-data/*",
+  "docs.rs/mlua/latest/mlua/*"
 ]

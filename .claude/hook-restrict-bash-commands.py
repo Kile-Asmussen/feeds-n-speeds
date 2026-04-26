@@ -89,7 +89,7 @@ def check_command_integrity(command: str, pattern: str):
     
     for danger in DANGEROUS:
         if command.count(danger) != pattern.count(danger):
-            reasons.append('mismatch in uses of '{danger}' -- glob patterns cannot cover special characters')
+            reasons.append(f"mismatch in uses of '{danger}' -- glob patterns cannot cover special characters")
 
     if reasons:
         print(f"Blocking Bask({command}) because it doesn't fit the pattern {pattern}",

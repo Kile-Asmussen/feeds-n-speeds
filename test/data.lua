@@ -7,31 +7,26 @@ local data = namespace 'test.data'
 
 data.raw = table.null
 
+local proxied = false
+local function log_change(new, cutpath, fullpath, value)
+    if new then
+        __log('changed ' .. cutpath:sub(#'data.raw.'+1))
+    end
+end
+
 function begin_data_stage(proxy)
     if proxy then
-        data.raw = table.proxy({tbl=require 'test.rawdata', rootname='data.raw'})
+        proxied = true
+        data.raw = table.proxy({
+            tbl=require 'test.rawdata',
+            rootname='data.raw',
+            hook=log_change,
+            maxdepth=2,
+        })
     else
         data.raw = require 'test.rawdata'
     end
     _G.settings = import('test.settings'):__seal()
-end
-
-function data.__count(tbl)
-
-    if tbl == nil then
-        tbl = data.raw
-    end
-
-    if type(tbl) ~= 'table' then
-        return 1
-    end
-
-    local res = 0
-    for _, v in pairs(tbl) do
-        res = res + data.__count(v)
-    end
-
-    return res
 end
 
 local settings = namespace 'test.settings'
@@ -41,7 +36,9 @@ function data.extend(self, protos)
     local bad = false
     for _, proto in ipairs(protos) do
 
-        log(proto.type .. ' ' .. proto.name:gsub('feeds%-n%-speeds%-', "fns '") .. "'")
+        assert(proto.name:match('^feeds%-n%-speeds%-'), "prototype " .. proto.name .. " declared, should be feeds-n-speeds-" .. proto.name)
+
+        __log(proto.type .. ' ' .. proto.name:gsub('feeds%-n%-speeds%-', "fns-"))
 
         if proto.type:match('%-setting$') then
             settings[proto.setting_type] = settings(proto.setting_type) or {}
@@ -49,8 +46,10 @@ function data.extend(self, protos)
             proto.value = proto.default_value
 
         elseif data.raw ~= table.null then
-            data.raw[proto.type] = data.raw[proto.type] or {}
-            data.raw[proto.type][proto.name] = proto
+            local raw = data.raw
+            if proxied then raw = data.raw.__real end
+            raw[proto.type] = raw[proto.type] or {}
+            raw[proto.type][proto.name] = proto
         else
             error("call to data:extend{ { type = '" .. rp .. "' } } when data.raw isn't loaded")
             break

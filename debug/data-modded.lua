@@ -1,27 +1,14 @@
---! Inspect data.raw with mod prototypes merged
---!
---! Usage:
---!   DEPTH=2 lua inspect-data.lua container feeds-n-speeds-big-steel-chest
---!   DEPTH=1 lua inspect-data.lua recipe
---!
---! Loads all mod stages silently, then inspects data.raw.
---! For verbose loading output, use debug-load.lua instead.
-
 require 'prelude'
-
-
--- Load test harness (sets up data.raw from raw.lua)
 require 'test'
 
--- Suppress logging during load (use debug-load.lua for verbose output)
-local real_log = log
+local log = __log
 function log() end
+function __log() end
 
 require('settings')
 require('settings-updates')
 require('settings-final-fixes')
-_G.settings = import('settings'):__seal()
-data.__begin()
+begin_data_stage()
 require('data')
 require('data-updates')
 require('data-final-fixes')
