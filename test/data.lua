@@ -2,8 +2,11 @@ require 'prelude'
 
 local localization = require 'test.localization'
 local debuglib = require 'debuglib'
+local rawdata = require 'test.rawdata'
 
 local data = namespace 'test.data'
+
+_G.modlist = {}
 
 data.raw = table.null
 
@@ -18,13 +21,13 @@ function begin_data_stage(proxy)
     if proxy then
         proxied = true
         data.raw = table.proxy({
-            tbl=require 'test.rawdata',
+            tbl=rawdata.load(_G.modlist),
             rootname='data.raw',
             hook=log_change,
             maxdepth=2,
         })
     else
-        data.raw = require 'test.rawdata'
+        data.raw = rawdata.load(_G.modlist)
     end
     _G.settings = import('test.settings'):__seal()
 end
@@ -51,7 +54,7 @@ function data.extend(self, protos)
             raw[proto.type] = raw[proto.type] or {}
             raw[proto.type][proto.name] = proto
         else
-            error("call to data:extend{ { type = '" .. rp .. "' } } when data.raw isn't loaded")
+            error("call to data:extend{ { type = '" .. proto.type .. "' } } when data.raw isn't loaded")
             break
         end
 

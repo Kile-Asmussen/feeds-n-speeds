@@ -3,6 +3,7 @@
 ## In Progress
 
 - [ ] Space Age DLC integration
+- [ ] Textplates integration (`tweaks/textplates.lua`) — use `rawdata.load({"FeedsNSpeeds", "textplates", "even-more-text-plates-2_0"})` to get a modded dump and verify that `fix_tech` and `fix_recipe` produce the expected prototype changes. Check that triggered techs fire correctly in-game and that recipes are properly locked behind them.
 
 ## Long-term Goals
 

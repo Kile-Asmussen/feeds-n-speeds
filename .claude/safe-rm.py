@@ -38,6 +38,7 @@ PROJECT_DIR = get_project_dir()
 # Configuration
 ALLOWED_ROOTS = [
     PROJECT_DIR / "slop",
+    Path.home() / ".factorio/script-output"
 ]
 
 def die(msg: str) -> None:
