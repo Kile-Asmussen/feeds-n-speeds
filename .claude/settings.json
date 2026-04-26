@@ -12,6 +12,8 @@
       "Write(extras/*/*)",
       "Write(tweaks/*/*)",
       "Edit(locale/**/*)",
+      "Write(src/*)",
+      "Edit(src/*)",
       "Edit(CLAUDE.md)",
       "Write(unit-tests/*)",
       "Edit(unit-tests/*)",
