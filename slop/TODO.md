@@ -1,5 +1,9 @@
 # FeedsNSpeeds Development TODO
 
+## Bugs
+
+- [ ] The rust raw data loading library does not seem to adequately reset the state of the mod-list.json back to what it was, leading to changes visible in-game. Further investigation needed to verify it is a current issue.
+
 ## In Progress
 
 - [ ] Space Age DLC integration
