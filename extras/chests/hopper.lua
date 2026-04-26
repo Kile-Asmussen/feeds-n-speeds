@@ -20,7 +20,6 @@ hopper.entity_filter = {
     { filter = "name", name = fns_chest },
 }
 
-
 function hopper.init_storage()
     storage.neighbors = storage.neighbors or {}
     storage.hopper_links = storage.hopper_links or {}

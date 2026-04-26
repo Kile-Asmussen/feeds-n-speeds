@@ -13,17 +13,10 @@ table.setmetatable = setmetatable
 
 table.null = {}
 
-local function __noindex(tbl, ix)
-    error('cannot index ' .. tostring(tbl) .. ' with ' .. tostring(ix))
-end
-
-local function __nonewindex(tbl, ix, val)
-    error('cannot add index to ' .. tostring(tbl))
-end
-
 setmetatable(table.null, {
     __tostring = function() return 'table.null' end,
-    __newindex = __nonewindex,
+    __index = function() end,
+    __newindex = function() error("table.null is immutable") end,
     __metatable = table.null,
 })
 
@@ -325,61 +318,137 @@ function table.isvec(tbl)
     return type(tbl) == 'table' and #tbl == 2 and type(tbl[1]) == 'number' and type(tbl[2]) == 'number'
 end
 
-local __proxy_mt = {
-    __newindex = function(tbl, key, val)
-        tbl.__real[key] = val
+local function __proxy_mt_newindex(tbl, key, val)
+    tbl.__real[key] = val
+    newpath = {}
+    table.append(newpath, tbl.__path)
+    table.insert(newpath, key)
+    tbl.__changes[tbl.__rootname .. string.tablepath(tbl.path)] = val
+end
+
+local function __proxy_mt_index(tbl, name)
+    local val = tbl.__real[name]
+    if type(val) == 'table' then
         newpath = {}
         table.append(newpath, tbl.__path)
-        table.insert(newpath, key)
-        tbl.__changes[tbl.__rootname .. string.tablepath(tbl.path)] = val
-    end,
+        table.insert(newpath, name)
+        return table.proxy{tbl=val, rootname=tbl.__rootname, root=tbl.__root, path=newpath, changes=tbl.__changes}
+    else
+        return val
+    end
+end
 
-    __index = function(tbl, name)
-        local val = tbl.__real[name]
-        if type(val) == 'table' then
-            newpath = {}
-            table.append(newpath, tbl.__path)
-            table.insert(newpath, name)
-            return table.proxy{tbl=val, rootname=tbl.__rootname, root=tbl.__root, path=newpath, changes=tbl.__changes}
-        else
-            return val
+local function __proxy_mt_pairs(tbl)
+    local k = nil
+    return function()
+        k = next(tbl.__real, k)
+        if k then
+            return k, tbl[k]
         end
-    end,
+    end
+end
 
-    __pairs = function(tbl)
-        local k = nil
-        return function()
-            k = next(tbl.__real, k)
-            if k then
-                return k, tbl[k]
-            end
+local function __proxy_mt_ipairs(tbl)
+    local i = 0
+    return function()
+        i = i + 1
+        if i <= #tbl then
+            return i, tbl[i]
         end
-    end,
+    end
+end
 
-    __ipairs = function(tbl)
-        local i = 0
-        return function()
-            i = i + 1
-            if i <= #tbl then
-                return i, tbl[i]
-            end
+local function __proxy_mt_len(tbl)
+    local i = 0
+    return function()
+        i = i + 1
+        if i <= #tbl then
+            return i, tbl[i]
         end
-    end,
+    end
+end
 
-    __len = function(tbl)
-        return #tbl.__real
-    end,
+function __proxy_mt_tostring(tbl)
+    return tbl.__base .. string.tablepath(tbl.__path) .. '=' .. tostring(tbl.__real)
+end
 
-    __tostring = function(tbl)
-        return tbl.__base .. string.tablepath(tbl.__path) .. '<' .. tostring(tbl.__real) .. '>'
-    end,
+local __proxy_mt = {
+    __newindex = __proxy_mt_newindex,
+    __index = __proxy_mt_index,
 
-    __metatable = "__proxy_mt"
+    __pairs = __proxy_mt_pairs,
+
+    __ipairs = __proxy_mt_ipairs,
+
+    __len = __proxy_mt_len,
+    __tostring = __proxy_mt_tostring,
+
+    __metatable = __proxy_mt
 }
+
+local print = _G.print
+local function monkeypatch()
+    print("monkeypatching table functions")
+    local unpack = table.unpack
+    function table.unpack(tbl)
+        if getmetatable(tbl) == __proxy_mt then
+            unpack(tbl.__real)
+        else
+            unpack(tbl) 
+        end
+    end
+
+    local concat = table.concat
+    function table.concat(tbl, ...)
+        if getmetatable(tbl) == __proxy_mt then
+            concat(tbl.__real, ...)
+        else
+            concat(tbl, ...) 
+        end
+    end
+
+    local sort = table.sort
+    function table.sort(tbl, ...)
+        if getmetatable(tbl) == __proxy_mt then
+            sort(tbl.__real, ...)
+        else
+            sort(tbl, ...) 
+        end
+    end
+
+    local maxn = table.maxn
+    function table.maxn(tbl, ...)
+        if getmetatable(tbl) == __proxy_mt then
+            maxn(tbl.__real, ...)
+        else
+            maxn(tbl, ...) 
+        end
+    end
+
+    local insert = table.maxn
+    function table.maxn(tbl, ...)
+        if getmetatable(tbl) == __proxy_mt then
+            insert(tbl.__real, ...)
+        else
+            insert(tbl, ...) 
+        end
+    end
+
+    local remove = table.remove
+        function table.remove(tbl, ...)
+        if getmetatable(tbl) == __proxy_mt then
+            remove(tbl.__real, ...)
+        else
+            remove(tbl, ...) 
+        end
+    end
+    monkeypatch = function() end
+end
 
 function table.proxy(args)
     assert(type(args) ~= "table", "table.proxy expects a table with five keys: tbl, [rootname, root, path, changes]")
     assert(type(args.tb) ~= "table", "table.proxy mandatory key tbl to be a table")
+    monkeypatch()
     args.rootname = args.rootname or tostring(args.tbl)
     args.root = args.root or args.tbl
     args.path = args.path or {}

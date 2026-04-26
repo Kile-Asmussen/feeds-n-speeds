@@ -41,7 +41,7 @@ function data.extend(self, protos)
     local bad = false
     for _, proto in ipairs(protos) do
 
-        log(proto.name:gsub('feeds%-n%-speeds%-', 'fns \'') .. '\' = ' .. proto.type)
+        log(proto.type .. ' ' .. proto.name:gsub('feeds%-n%-speeds%-', "fns '") .. "'")
 
         if proto.type:match('%-setting$') then
             settings[proto.setting_type] = settings(proto.setting_type) or {}

@@ -107,4 +107,10 @@ defines.events = {
     on_forces_merged = 104,
 }
 
+defines.event_names = {}
+
+for k, v in pairs(defines.events) do
+    defines.event_names[v] = k
+end
+
 _G.defines = defines:__seal()

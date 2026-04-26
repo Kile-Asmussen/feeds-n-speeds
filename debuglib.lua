@@ -7,60 +7,54 @@ local debuglib = namespace 'debuglib'
 
 debuglib.io = namespace 'debuglib.io'
 debuglib.io.open = _G.io and _G.io.open
-debuglib.io.write = _G.io and _G.io.write
 debuglib.io:__seal()
 
 function debuglib.pp(data, root)
-  buffer = debuglib.new_buffer(root)
-  buffer:print_any(data)
-  return tostring(buffer)
+    buffer = debuglib.new_buffer(root)
+    buffer:print_any(data)
+    return tostring(buffer)
 end
 
 debuglib.recursion_limit = 2
 
 function debuglib.new_buffer(root)
-  local res = {
-    indent = 0,
-    root = root,
-    max_indent = debuglib.recursion_limit or 2,
-    seen_tables = { [_G] = '_G' },
-    path = {},
-  }
-  setmetatable(res, debuglib.__buffer_mt)
-  return res
+    local res = {
+        indent = 0,
+        root = root,
+        max_indent = debuglib.recursion_limit or 2,
+        seen_tables = { [_G] = '_G' },
+        path = {},
+    }
+    setmetatable(res, debuglib.__buffer_mt)
+    return res
 end
 
 function debuglib.print(buffer, ...)
     local args = table.pack(...)
     table.append(buffer, args)
-    if debuglib.io.write then 
-        for _, s in ipairs(args) do
-            debuglib.io.write(s)
-        end
-    end 
 end
 
 debuglib.__buffer_mt = { __index = debuglib, __tostring = table.concat }
 debuglib.__buffer_mt.__metatable = debuglib.__buffer_mt.__metatable
 
 function debuglib.print_any(buffer, data, name)  
-  if name ~= nil then
-    table.insert(buffer.path, name)
-  end
+    if name ~= nil then
+        table.insert(buffer.path, name)
+    end
 
-  debuglib['print_' .. type(data)](buffer, data)
+    debuglib['print_' .. type(data)](buffer, data)
 
-  if name ~= nil then
-    table.remove(buffer.path)
-  end
+    if name ~= nil then
+        table.remove(buffer.path)
+    end
 end
 
 function debuglib.print_string(buffer, data)
-  buffer:print(string.repr(data))
+    buffer:print(string.repr(data))
 end
 
 local function print_tostring(buffer, data)
-  buffer:print(tostring(data))
+    buffer:print(tostring(data))
 end
 
 debuglib.print_number = print_tostring
@@ -72,17 +66,15 @@ debuglib.IDENTIFIER = '[a-zA-Z_][a-zA-Z0-9_.]*'
 
 local read_files = {}
 local seen_functions = {}
-function debuglib.print_function(buffer, data)
-
-    if seen_functions[data] then
-        buffer:print(seen_functions[data])
-        return
+function debuglib.function_signature(func)
+    if seen_functions[func] then
+        return seen_functions[func]
     end
 
-    local info = debug.getinfo(data)
-    local signature = 'function'
+    local info = debug.getinfo(func)
+    local signature = 'function()'
     local _ = nil
-    
+
     if debuglib.io.open then
         if not read_files[info.short_src] then
             local read_lines = {}
@@ -117,16 +109,20 @@ function debuglib.print_function(buffer, data)
             scope = 'function '
         end
         
-        signature = scope .. name .. '(' .. arg_count .. ')'
+        signature = scope .. name .. '(' .. arg_count .. ') '  .. info.short_src .. ':' .. info.linedefined
 
     elseif info.namewhat ~= '' then
         signature = info.namewhat .. ' ' .. info.name .. '()'
     end
 
-    local render = signature .. ' ' .. info.short_src .. ':' .. info.linedefined
-    seen_functions[data] = render
+    seen_functions[func] = signature
 
-    buffer:print(render)
+    return signature
+    
+end
+
+function debuglib.print_function(buffer, data)
+    buffer:print(debuglib.function_signature(data))
 end
 
 function debuglib.print_table(buffer, data)
