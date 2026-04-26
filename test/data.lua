@@ -7,51 +7,7 @@ local data = namespace 'test.data'
 
 data.__changes = {}
 
-data.__proxy_mt = {
-    __newindex = function(tbl, name, val)
-        tbl.__real[name] = val
-        newpath = {}
-        table.append(newpath, tbl.__path)
-        table.insert(newpath, name)
-        local changed_key = tbl.__root .. debuglib.descent(table.unpack(newpath))
-        log(changed_key .. ' = ' .. tostring(val))
-        data.__changes[changed_key] = val
-    end,
 
-    __index = function(tbl, name)
-        local val = tbl.__real[name]
-        newpath = {}
-        table.append(newpath, tbl.__path)
-        table.insert(newpath, name)
-        if type(val) == 'table' then
-            return data.__proxy(val, tbl.__root, newpath)
-        else
-            return val
-        end
-    end,
-
-    __pairs = function(tbl)
-        local k = nil
-        return function()
-            k = next(tbl.__real, k)
-            if k then
-                return k, tbl[k]
-            end
-        end
-    end,
-
-    __ipairs = function(tbl)
-        local i = 0
-        return function()
-            i = i + 1
-            if i <= #tbl then
-                return i, tbl[i]
-            end
-        end
-    end,
-
-    __metatable = "data.__proxy_mt"
-}
 
 function data.__proxy(tbl, root, path)
     path = path or {}

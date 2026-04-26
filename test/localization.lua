@@ -60,8 +60,6 @@ function localization.generate_stubs()
     file:close()
     file = nil
 
-    local res = table.new()
-
     local categories = table.sorted_keys(localization.keys)
 
     for _, cat in ipairs(categories) do
@@ -75,9 +73,9 @@ function localization.generate_stubs()
             if not locale_map[cat] or not locale_map[cat][key] then
                 if not any then
                     any = true
-                    res:insert('[' .. cat .. ']')
+                    table.insert(res, '[' .. cat .. ']')
                 end
-                res:insert(key .. '=')
+                table.insert(res, key .. '=')
             end
 
         end

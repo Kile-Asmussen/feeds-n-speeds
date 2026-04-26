@@ -56,3 +56,41 @@ function string.chomp(str)
 
     return str
 end
+
+function string.tablekey(value)
+  if type(value) ~= 'string' then
+    return "[" .. tostring(value) .. "]"
+  end
+
+  if data:match('^%s*[a-zA-Z_][a-zA-Z_0-9]*%s*$') then
+    return data
+  else
+    local repr = value:repr()
+    if repr:sub(1, 1) == '[' then
+        return '[ ' .. repr .. ' ]'
+    else
+        return '[' .. repr .. ']'
+    end
+  end
+end
+
+function string.repr(str)
+    if type(str) ~= 'string' then
+        error("argument #1 to string.repr must be a string, was " .. type(str))
+    end
+
+    local sq = str:match("'")
+    local dq = str:match('"')
+    local nl = str:match('\n')
+    if (sq and dq) or nl then
+        if str:match('^%[') or str:match('%]$') or str:match('%]%]') or str:match('%[%[') then
+        return "[=[" .. str .. "]=]"
+        else
+        return "[[" .. str .. "]]"
+        end
+    elseif sq then
+        return '"' .. str .. '"'
+    else
+        return "'" .. str .. "'"
+    end
+end

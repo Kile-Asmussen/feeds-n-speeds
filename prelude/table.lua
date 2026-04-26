@@ -1,35 +1,7 @@
 --! Utility functions for tables
 
--- Internally used metatable
-local __table_mt = {
-    __index = _G.table,
-    __newindex = function(tbl, k, v)
-        assert(_G.table[k] == nil, "Don't overwrite table function names")
-        _G.table.rawset(tbl, k, v)
-    end,
-}
 local setmetatable = _G.setmetatable
 local getmetatable = _G.getmetatable
-
---- Create or update a table with a metatable
---- containing the `table' namespace as extra
---- methods
-function table.new(res, ...)
-    if res == nil then
-        res = {}
-    else
-        local rest = table.pack(...)
-        if rest.n > 0 then
-            table.insert(rest, 1, res)
-            res = rest
-            res.n = nil            
-        elseif type(res) ~= 'table' then
-            res = {res}
-        end
-    end
-    setmetatable(res, __table_mt)
-    return res
-end
 
 -- Extra methods for the metatable
 table.rawget = rawget
@@ -337,4 +309,69 @@ end
 
 function table.isvec(tbl)
     return type(tbl) == 'table' and #tbl == 2 and type(tbl[1]) == 'number' and type(tbl[2]) == 'number'
+end
+
+local __proxy_mt = {
+    __newindex = function(tbl, key, val)
+        tbl.__real[key] = val
+        newpath = {}
+        table.append(newpath, tbl.__path)
+        table.insert(newpath, key)
+        table.insert(tbl.__changes, { path = newpath, key = key, val = val }
+    end,
+
+    __index = function(tbl, name)
+        local val = tbl.__real[name]
+        newpath = {}
+        table.append(newpath, tbl.__path)
+        table.insert(newpath, name)
+        if type(val) == 'table' then
+            return table.proxy(val, tbl.__rootname, tbl.__root, newpath, tbl.__changes)
+        else
+            return val
+        end
+    end,
+
+    __pairs = function(tbl)
+        local k = nil
+        return function()
+            k = next(tbl.__real, k)
+            if k then
+                return k, tbl[k]
+            end
+        end
+    end,
+
+    __ipairs = function(tbl)
+        local i = 0
+        return function()
+            i = i + 1
+            if i <= #tbl then
+                return i, tbl[i]
+            end
+        end
+    end,
+
+    __len = function(tbl)
+        return #tbl.__real
+    end,
+
+    __tostring = function(tbl)
+        return tbl.__base ..  .. '<' .. tostring(tbl.__real) .. '>'
+    end
+}
+
+function table.proxy(tbl, rootname, root, path, changes)
+    rootname = rootname or tostring(tbl)
+    root = root or tbl
+    path = path or {}
+    changes = changes or {}
+    base = base or tostring(tbl)
+    res = {
+        __real = tbl,
+        __rootname = rootname,
+        __path = path,
+        __root = tbl,
+        __changes = changes
+    }
 end

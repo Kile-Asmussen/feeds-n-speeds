@@ -14,25 +14,25 @@ log("\nSETTINGS-FINAL-FIXES")
 require('settings-final-fixes')
 
 _G.settings = import('test.settings'):__seal()
-data.__begin_proxy()
+data.__begin()
 
 log("\nDATA")
 require('data')
 
-log(table.concat(table.sorted_keys(data.__changes), '\n'))
-data.__changes = {}
+-- log(table.concat(table.sorted_keys(data.__changes), '\n'))
+-- data.__changes = {}
 
 log("\nDATA-UPDATES")
 require('data-updates')
 
-log(table.concat(table.sorted_keys(data.__changes), '\n'))
-data.__changes = {}
+-- log(table.concat(table.sorted_keys(data.__changes), '\n'))
+-- data.__changes = {}
 
 log("\nDATA-FINAL-FIXES")
 require('data-final-fixes')
 
-log(table.concat(table.sorted_keys(data.__changes), '\n'))
-data.__changes = {}
+-- log(table.concat(table.sorted_keys(data.__changes), '\n'))
+-- data.__changes = {}
 
 _G.storage = {}
 
