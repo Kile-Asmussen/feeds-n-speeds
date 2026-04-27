@@ -1,12 +1,4 @@
 #!/usr/bin/env python3
-"""
-
-Blocks any tool call whose path resolves outside $CLAUDE_PROJECT_DIR unless
-the raw path string appears verbatim in read-grep-glob-paths.json in the
-
-read-grep-glob-paths.json format:
-    ["C:/some/other/dir", "~/some/config/file"]
-"""
 
 import json
 import os

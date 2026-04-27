@@ -94,7 +94,7 @@ def load_forbidden_globs() -> set[str]:
     forbidden_globs_file = project_dir / FORBIDDEN_GLOBS_FILE
 
     if not forbidden_globs_file.exists():
-        print(f"{FORBIDDEN_GLOBS_FILE} not found, blocking as a precaution",
+        print(f"{str(FORBIDDEN_GLOBS_FILE)} was not found, stop and ask the user for help.",
             file=[sys.stderr, LOG_FILE])
         sys.exit(2)
 
@@ -102,10 +102,14 @@ def load_forbidden_globs() -> set[str]:
         globs = json.loads(forbidden_globs_file.read_text(encoding="utf-8"))
         if isinstance(globs, list) and all(isinstance(g, str) for g in globs):
             return set(globs)
-    except (json.JSONDecodeError, OSError, ValueError):
-        pass
+        else:
+           print(f"{str(FORBIDDEN_GLOBS_FILE)} not an array of strings, stop and ask the user for help.", file=[sys.stderr, LOG_FILE])
+    except json.JSONDecodeError:
+        print(F"The {str(FORBIDDEN_GLOBS_FILE)} file is malformed JSON, stop and ask the user for help.", file=[sys.stderr, LOG_FILE])
+    except OSError, ValueError:
+       print(f"{str(FORBIDDEN_GLOBS_FILE)} not loaded correctly, stop and ask the user for help.", file=[sys.stderr, LOG_FILE])
 
-    print(f"{FORBIDDEN_GLOBS_FILE} not loaded, blocking as a precaution", file=[sys.stderr, LOG_FILE])
+ 
     sys.exit(2)
 
 def get_project_dir() -> Path:
