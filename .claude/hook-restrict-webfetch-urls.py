@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Restricts WebFetch tool calls to a list of permitted domains, with path-level
-exceptions that can deny specific URLs within permitted domains.
-"""
 
 import json
 import os

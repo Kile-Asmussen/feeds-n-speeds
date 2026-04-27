@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""
-Blocks Reads of forbidden files, as well as Greps with output_mode of content that
-would read from forbidden files.
 
-Globs determining which files are forbidden are in accompanying forbidden-globs.json file
-"""
 
 import json
 import os

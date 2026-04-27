@@ -1,12 +1,4 @@
 #!/usr/bin/env python3
-"""
-Last line of defense against unauthorized Write/Edit operations.
-
-Validates that all Write/Edit tool calls target paths that:
-1. Are within $CLAUDE_PROJECT_DIR
-2. Are NOT within the .claude/ directory
-3. Match at least one allowed glob pattern from .claude/settings.json
-"""
 
 import json
 import os
