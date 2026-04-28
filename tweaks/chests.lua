@@ -18,10 +18,6 @@ function chests.data_updates()
         ['steel-chest'] = 29,
     }
 
-    if extras.chests.enabled then
-        inventory_sizes[fns 'big-steel-chest'] = 69
-    end
-
     local debuglib = import('debuglib')
     for name, chest in pairs(data.raw['logistic-container']) do
         local recipe = data.raw.recipe[name]
@@ -48,6 +44,17 @@ function chests.data_updates()
         if inventory_sizes[name] then
             chest.inventory_size = inventory_sizes[name]
         end
+    end
+
+    local recipes = data.raw.recipe
+
+    recipes['wooden-chest'].ingredients = { { type='item', name='wood', amount=3 } }
+    recipes['iron-chest'].ingredients = { { type='item', name='iron-plate', amount=6 } }
+    recipes['steel-chest'].ingredients = { { type='item', name='steel-plate', amount=6 } }
+
+    if enabled 'extras.chests' then
+        inventory_sizes[fns 'big-steel-chest'] = 69
+        recipes[fns 'big-steel-chest'].ingredients =  { { type='item', name='steel-plate', amount=24 } }
     end
 end
 
