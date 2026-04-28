@@ -4,6 +4,10 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
+    nix-claude-code = {
+      url = "github:ryoppippi/nix-claude-code";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -11,12 +15,15 @@
       nixpkgs,
       flake-utils,
       rust-overlay,
+      nix-claude-code,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        overlays = [ rust-overlay.overlays.default ];
+        overlays = [
+          rust-overlay.overlays.default
+        ];
         pkgs = import nixpkgs { inherit system overlays; };
       in
       {
@@ -46,6 +53,7 @@
 
             packages = with pkgs; [
               (python314.withPackages (ps: [ ]))
+              nix-claude-code.packages.x86_64-linux."2.1.112"
               wget
               lua
               jq

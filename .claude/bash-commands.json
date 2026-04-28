@@ -4,16 +4,14 @@
     "DEPTH=1 lua debug/data-raw.lua *",
     "DEPTH=2 lua debug/data-raw.lua *",
     "DEPTH=3 lua debug/data-raw.lua *",
-    "DEPTH=4 lua debug/data-raw.lua *",
-    "DEPTH=5 lua debug/data-raw.lua *",
     "DEPTH=1 lua debug/data-modded.lua",
     "DEPTH=1 lua debug/data-modded.lua *",
     "DEPTH=2 lua debug/data-modded.lua *",
     "DEPTH=3 lua debug/data-modded.lua *",
-    "DEPTH=4 lua debug/data-modded.lua *",
-    "DEPTH=5 lua debug/data-modded.lua *",
     "lua unit-tests.lua *",
     "python .claude/safe-rm.py *",
     ".claude/factorio-research.sh fetch",
-    ".claude/factorio-research.sh install"
+    ".claude/factorio-research.sh install",
+    "make rawdata",
+    "make install"
 ]

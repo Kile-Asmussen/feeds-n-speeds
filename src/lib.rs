@@ -139,7 +139,13 @@ fn factorio_dump_data(mod_names: &[String]) -> LuaResult<()> {
         last_size = size;
     }
 
+    // Restore before waiting — Factorio may write mod-list.json on clean exit,
+    // overwriting a restore done after wait(). Steam exits almost immediately
+    // (Factorio is a grandchild), so wait() returns quickly regardless.
+    write_mod_list_file(&orig)?;
     steam.wait().map_err(lua_error)?;
+    // Give Factorio time to finish its own exit writes, then restore again.
+    std::thread::sleep(Duration::from_secs(5));
     write_mod_list_file(&orig)?;
 
     // move the dump into the cache

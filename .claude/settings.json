@@ -1,34 +1,37 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
-      "Bash",
-      "Read",
-      "Glob",
-      "Grep",
-      "Write(slop/**/*)",
-      "Edit(slop/**/*)",
-      "Edit(extras/**/*)",
-      "Edit(tweaks/**/*)",
-      "Write(extras/*/*)",
-      "Write(tweaks/*/*)",
-      "Edit(locale/**/*)",
-      "Write(src/*)",
-      "Edit(src/*)",
-      "Edit(CLAUDE.md)",
-      "Write(unit-tests/*)",
-      "Edit(unit-tests/*)",
-      "WebFetch",
-      "WebSearch",
       "AskUserQuestion",
+      "Bash",
       "CronCreate",
       "CronDelete",
       "CronList",
+      "Edit(CLAUDE.md)",
+      "Edit(extras/*.lua)",
+      "Edit(extras/**/*.lua)",
+      "Edit(locale/**/*)",
+      "Edit(slop/**/*)",
+      "Edit(src/*)",
+      "Edit(tweaks/*.lua)",
+      "Edit(tweaks/**/*.lua)",
+      "Edit(unit-tests/*)",
+      "Glob",
+      "Grep",
+      "Read",
       "TaskCreate",
       "TaskGet",
       "TaskList",
-      "TaskStop",
       "TaskOutput",
-      "TaskUpdate"
+      "TaskStop",
+      "TaskUpdate",
+      "WebFetch",
+      "WebSearch",
+      "Write(extras/*/*.lua)",
+      "Write(slop/**/*)",
+      "Write(src/*)",
+      "Write(tweaks/*/*.lua)",
+      "Write(unit-tests/*.lua)"
     ],
     "defaultMode": "dontAsk",
     "deny": [
@@ -43,7 +46,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "mv -f \"$CLAUDE_PROJECT_DIR/.claude/log\" \"$CLAUDE_PROJECT_DIR/.claude/log~\""
+            "command": "mv -f \"$CLAUDE_PROJECT_DIR/.claude/log\" \"$CLAUDE_PROJECT_DIR/.claude/log~\" || true"
           }
         ]
       }

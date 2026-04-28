@@ -92,6 +92,8 @@ def main() -> None:
                 sep='\n',
                 file=[sys.stderr, LOG_FILE]
             )
+        
+        print("Stop and ask the user for help if this is an important page to access.", file=[sys.stderr, LOG_FILE])
     
         sys.exit(2)
 

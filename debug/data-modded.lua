@@ -1,9 +1,11 @@
 require 'prelude'
 require 'test'
 
-local log = __log
-function log() end
-function __log() end
+local __log = _G.__log
+function _G.log() end
+function _G.__log() end
+
+_G.modlist = {"textplates", "even-more-text-plates"}
 
 require('settings')
 require('settings-updates')
@@ -12,9 +14,6 @@ begin_data_stage()
 require('data')
 require('data-updates')
 require('data-final-fixes')
-
--- Restore print for output
-log = real_log
 
 local debuglib = require 'debuglib'
 
@@ -28,10 +27,10 @@ if args.n < 2 then
 end
 
 if found then
-    log(ix .. ' = ' .. debuglib.pp(result, 'data.raw'))
+    __log(ix .. ' = ' .. debuglib.pp(result, 'data.raw'))
 else
-    log('Path not found: ' .. ix)
+    __log('Path not found: ' .. ix)
     if result ~= nil then
-        log('Stopped at value of type: ' .. type(result))
+        __log('Stopped at value of type: ' .. type(result))
     end
 end

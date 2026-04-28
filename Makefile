@@ -19,9 +19,11 @@ export OUTPUT_DIR := ./target
 .PHONY: all build clean rawdata
 .PHONY: install uninstall clean-reinstall nuke 
 
-build: $(OUTPUT_DIR)/$(ZIPFILE)
-$(OUTPUT_DIR)/$(ZIPFILE): $(FILES) ./build-scripts/build.sh
+build: # $(OUTPUT_DIR)/$(ZIPFILE)
 	./build-scripts/build.sh
+
+# $(OUTPUT_DIR)/$(ZIPFILE): $(FILES) ./build-scripts/build.sh
+# ./build-scripts/build.sh
 
 unzip: build
 	rm -rf $(OUTPUT_DIR)/$(NAME_VERSION)

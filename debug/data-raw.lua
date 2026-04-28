@@ -3,7 +3,8 @@ require 'test'
 
 local debuglib = require 'debuglib'
 
-data.raw = require('rawdata')
+_G.modlist = {"textplates", "even-more-text-plates"}
+begin_data_stage()
 
 local args = table.pack( ... )
 

@@ -65,35 +65,39 @@ def main() -> None:
             print("allowed, matches", pattern, file=LOG_FILE)
             sys.exit(0)
 
-    print(
-        f"Blocked Bash({command}) -- it doesn't match the allowed patterns\n"
-        "Allowed patterns:",
-        *allowed_patterns,
-        sep='\n - ',
-        file=[sys.stderr, LOG_FILE]
-    )
+        
+    if "[*]" in command:
+        print("Don't use a literal [*] -- that is a stand-in for a literal asterisk, use that instead", file=[sys.stderr, LOG_FILE])
+    else:
+        print(
+            f"Blocked Bash({command}) -- it doesn't match the allowed patterns\n"
+            "Allowed patterns:", *allowed_patterns,
+            sep='\n - ',
+            file=[sys.stderr, LOG_FILE]
+        )
     print("Remember, you are running in the project root,",
         "there is no need for absolute paths.", file=[sys.stderr, LOG_FILE])
     sys.exit(2)
 
 DANGEROUS = [
-    '`', '(', '{', '\n', '>', '<', '&&', '&', ';', '||', '|', '(', '$', '$(', '${', '}',
+    '`', '(', '{', '\n', '>', '<', '&&', '&', ';', '||', '|', '(', '$', '$(', '${', '}', '?'
 ]
 
 def check_command_integrity(command: str, pattern: str):
 
     reasons = []
 
-    if '*' in command or '?' in command:
-        reasons.append('contains a glob character -- instead try specify the files directly')
-    
+
     for danger in DANGEROUS:
         if command.count(danger) != pattern.count(danger):
             reasons.append(f"mismatch in uses of '{danger}' -- glob patterns cannot cover special characters")
 
+    if command.count('*') != pattern.count('[*]'):
+            reasons.append(f"mismatch in uses of '*' -- you can only use the glob stars exactly as they appear in the allowed patterns")
+
     if reasons:
         print(f"Blocking Bask({command}) because it doesn't fit the pattern {pattern}",
-              reasons,
+              *reasons,
               sep='\n - ',
               file=[sys.stderr, LOG_FILE])
         sys.exit(2)
