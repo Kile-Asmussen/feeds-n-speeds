@@ -4,6 +4,7 @@
 log
 *.log
 log.old
+log~
 *.so
 /target
 
