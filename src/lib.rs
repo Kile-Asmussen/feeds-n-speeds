@@ -13,6 +13,11 @@ const MOD_LIST: &str = ".factorio/mods/mod-list.json";
 const DUMP_CACHE_DIR: &str = ".factorio/script-output/rawdata-cache";
 const BASE_MODS: &[&str] = &["base", "space-age", "quality", "elevated-rails"];
 
+const DEFINES_MOD_NAME: &str = "dump-defines";
+const DEFINES_SCENARIO: &str = "dump-defines/dump-defines";
+const DEFINES_OUTPUT: &str = ".factorio/script-output/defines.json";
+const DEFINES_CACHE: &str = ".factorio/script-output/rawdata-cache/defines.json";
+
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, Eq, Debug, Hash)]
 struct Mod {
     name: String,
@@ -156,6 +161,88 @@ fn factorio_dump_data(mod_names: &[String]) -> LuaResult<()> {
     Ok(())
 }
 
+fn factorio_dump_defines(mod_src: &std::path::Path) -> LuaResult<()> {
+    let orig = read_mod_list_file()?;
+    let mod_dst = from_home(&format!(".factorio/mods/{}", DEFINES_MOD_NAME));
+    let map_gen = mod_src.join("map-gen-settings.json");
+    let output = from_home(DEFINES_OUTPUT);
+    let cache = from_home(DEFINES_CACHE);
+
+    // Disable all non-base mods for a faster load — defines are engine-injected
+    // and identical regardless of which mods are active.
+    let base_only: Vec<Mod> = orig
+        .mods
+        .iter()
+        .map(|m| Mod {
+            name: m.name.clone(),
+            enabled: BASE_MODS.contains(&&m.name[..]),
+        })
+        .collect();
+    write_mod_list_file(&ModListFile { mods: base_only })?;
+
+    // install the mod by symlinking into the mods directory
+    let _ = std::fs::remove_file(&mod_dst);
+    std::os::unix::fs::symlink(mod_src, &mod_dst).map_err(lua_error)?;
+
+    let _ = std::fs::remove_file(&output);
+
+    let mut steam = process::Command::new("steam")
+        .args([
+            "-applaunch", "427520",
+            "--start-server-load-scenario", DEFINES_SCENARIO,
+            "--map-gen-settings", map_gen.to_str().unwrap(),
+        ])
+        .spawn()
+        .map_err(lua_error)?;
+
+    let deadline = Instant::now() + DUMP_TIMEOUT;
+    let mut last_size: Option<u64> = None;
+    loop {
+        if Instant::now() > deadline {
+            let _ = steam.wait();
+            let _ = std::fs::remove_file(&mod_dst);
+            write_mod_list_file(&orig)?;
+            return Err(LuaError::RuntimeError(
+                "timed out waiting for Factorio to write defines.json".into(),
+            ));
+        }
+        std::thread::sleep(DUMP_POLL_INTERVAL);
+        let size = std::fs::metadata(&output).ok().map(|m| m.len());
+        if let Some(sz) = size {
+            if sz > 0 && last_size == size {
+                break;
+            }
+        }
+        last_size = size;
+    }
+
+    write_mod_list_file(&orig)?;
+    let _ = std::fs::remove_file(&mod_dst);
+    steam.wait().map_err(lua_error)?;
+    std::thread::sleep(Duration::from_secs(5));
+    write_mod_list_file(&orig)?;
+    let _ = std::fs::remove_file(&mod_dst);
+
+    std::fs::create_dir_all(cache.parent().unwrap()).map_err(lua_error)?;
+    std::fs::rename(&output, &cache).map_err(lua_error)?;
+
+    Ok(())
+}
+
+fn load_defines(lua: &Lua) -> LuaResult<LuaTable> {
+    let path = from_home(DEFINES_CACHE);
+    let json =
+        serde_json::from_slice::<Map<String, Value>>(&std::fs::read(&path).map_err(lua_error)?)
+            .map_err(lua_error)?;
+
+    match json_to_lua(lua, Value::Object(json))? {
+        LuaValue::Table(t) => Ok(t),
+        _ => Err(lua_error(serde_json::Error::custom(
+            "defines.json root is not an object",
+        ))),
+    }
+}
+
 fn load_dump(lua: &Lua, mod_names: &[String]) -> LuaResult<LuaTable> {
     let path = cache_path(mod_names);
     let json =
@@ -244,6 +331,26 @@ fn test_rawdata(lua: &Lua) -> LuaResult<LuaTable> {
                 factorio_dump_data(&names)?;
             }
             load_dump(lua, &names)
+        })?,
+    )?;
+
+    // dump_defines(mod_src_path: string) -- runs Factorio with the dump-defines scenario
+    exports.set(
+        "dump_defines",
+        lua.create_function(|_lua, mod_src: String| {
+            factorio_dump_defines(std::path::Path::new(&mod_src))
+        })?,
+    )?;
+
+    // load_defines() -> defines table; dumps first if cache is missing
+    exports.set(
+        "load_defines",
+        lua.create_function(|lua, mod_src: String| {
+            let cache = from_home(DEFINES_CACHE);
+            if !cache.exists() {
+                factorio_dump_defines(std::path::Path::new(&mod_src))?;
+            }
+            load_defines(lua)
         })?,
     )?;
 

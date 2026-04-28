@@ -1,0 +1,9 @@
+{
+  "name": "dump-defines",
+  "version": "0.0.1",
+  "title": "Dump Defines",
+  "author": "FeedsNSpeeds",
+  "description": "Dumps the defines table to script-output/defines.json on init, then exits.",
+  "factorio_version": "2.0",
+  "dependencies": []
+}
