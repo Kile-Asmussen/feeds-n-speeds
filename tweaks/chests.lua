@@ -53,7 +53,7 @@ function chests.data_updates()
     recipes['iron-chest'].ingredients = { { type='item', name='iron-plate', amount=6 } }
     recipes['steel-chest'].ingredients = { { type='item', name='steel-plate', amount=6 } }
 
-    if enabled 'extras.chestse' then
+    if enabled 'extras.chests' then
         recipes[fns 'big-steel-chest'].ingredients =  { { type='item', name='steel-plate', amount=24 } }
     end
 end
