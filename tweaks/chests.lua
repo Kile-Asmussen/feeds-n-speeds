@@ -16,6 +16,7 @@ function chests.data_updates()
         ['wooden-chest'] = 9,
         ['iron-chest'] = 19,
         ['steel-chest'] = 29,
+        [fns 'big-steel-chest'] = 69
     }
 
     local debuglib = import('debuglib')
@@ -52,8 +53,7 @@ function chests.data_updates()
     recipes['iron-chest'].ingredients = { { type='item', name='iron-plate', amount=6 } }
     recipes['steel-chest'].ingredients = { { type='item', name='steel-plate', amount=6 } }
 
-    if enabled 'extras.chests' then
-        inventory_sizes[fns 'big-steel-chest'] = 69
+    if enabled 'extras.chestse' then
         recipes[fns 'big-steel-chest'].ingredients =  { { type='item', name='steel-plate', amount=24 } }
     end
 end
