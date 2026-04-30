@@ -268,6 +268,11 @@ function malltech.rail()
         { type='item', name='arithmetic-combinator', amount=3 },
     }
 
+    if enabled('extras.radars') then
+        recipe['train-stop'].ingredients[1] = { type='item', name=fns 'small-radar', amount=1 }
+        recipe.locomotive.ingredients[1] = { type='item', name=fns 'small-radar', amount=1 }
+    end
+
 end
 
 function malltech.nuclear_machines()
