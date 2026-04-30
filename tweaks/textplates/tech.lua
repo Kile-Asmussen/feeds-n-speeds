@@ -11,7 +11,8 @@ return {
         research_trigger = { type='craft-item', item='wooden-chest', amount=1 },
         icon = "__even-more-text-plates-2_0__/graphics/entity/wood/t.png",
         icon_size = 128,
-        localised_name = { "technology-name.textplate", {"textplates.wood-C"} }
+        localised_name = { "technology-name.textplate", {"textplates.wood-C"} },
+        hidden = true,
     },
 
     {
@@ -24,7 +25,8 @@ return {
         research_trigger = { type='mine-entity', entity='stone' },
         icon = "__textplates__/graphics/entity/glass/t.png",
         icon_size = 128,
-        localised_name = { "technology-name.textplate", {"textplates.glass-C"} }
+        localised_name = { "technology-name.textplate", {"textplates.glass-C"} },
+        hidden = true,
     },
 
     {
@@ -37,7 +39,8 @@ return {
         research_trigger = { type='craft-item', item='iron-plate', amount=1 },
         icon = "__textplates__/graphics/entity/iron/t.png",
         icon_size = 128,
-        localised_name = { "technology-name.textplate", {"textplates.iron-C"} }
+        localised_name = { "technology-name.textplate", {"textplates.iron-C"} },
+        hidden = true,
     },
 
     {
@@ -50,7 +53,8 @@ return {
         research_trigger = { type='craft-item', item='copper-plate', amount=1 },
         icon = "__textplates__/graphics/entity/copper/t.png",
         icon_size = 128,
-        localised_name = { "technology-name.textplate", {"textplates.copper-C"} }
+        localised_name = { "technology-name.textplate", {"textplates.copper-C"} },
+        hidden = true,
     },
 
     {
@@ -63,6 +67,7 @@ return {
         research_trigger = { type='craft-item', item='stone-brick', amount=1 },
         icon = "__textplates__/graphics/entity/stone/t.png",
         icon_size = 128,
-        localised_name = { "technology-name.textplate", {"textplates.stone-C"} }
+        localised_name = { "technology-name.textplate", {"textplates.stone-C"} },
+        hidden = true,
     }
 }

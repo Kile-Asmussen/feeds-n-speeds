@@ -63,6 +63,7 @@ function textplates.fix_tech(name, material, prerequisites, trigger)
         item=material,
         amount=1
     }
+    tech.hidden = true
 end
 
 return textplates:__seal()

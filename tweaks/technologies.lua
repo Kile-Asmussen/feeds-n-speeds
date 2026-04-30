@@ -26,6 +26,7 @@ function technologies.data_updates()
     table.insert(tech['flamethrower'].prerequisites, 'gun-turret')
     table.insert(tech['artillery'].prerequisites, 'gun-turret')
     table.insert(tech['rocket-turret'].prerequisites, 'gun-turret')
+    table.insert(tech['tesla-weapons'].prerequisites, 'gun-turret')
 
 
     if enabled('tweaks.earlygame') then
@@ -48,6 +49,15 @@ function technologies.data_updates()
             )
             table.find_matching(tech['steel-axe'].effects, table.matches{type='character-mining-speed'}).modifier = 0.5
         end
+    end
+
+    if enabled('tweaks.concrete') then
+        tech['automated-rail-transportation'].unit = nil
+        tech['automated-rail-transportation'].research_trigger = {
+            type = 'craft-item',
+            item = 'rail',
+            count = 1000,
+        }
     end
 
     technologies.tweak_science_packs()

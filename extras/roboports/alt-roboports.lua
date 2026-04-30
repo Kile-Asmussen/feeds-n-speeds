@@ -15,9 +15,10 @@ sleeper.energy_usage = "15kW"
 sleeper.draw_construction_radius_visualization = false
 sleeper.draw_logistic_radius_visualization = false
 sleeper.name = fns 'sleeper-roboport'
-sleeper.base.layers[1].tint = { 0.9, 0.9, 0.6 }
 sleeper.minable.result = sleeper.name
 sleeper.base_animation.animation_speed = 0.25
+sleeper.base_animation.run_mode = 'backward'
+sleeper.base_animation.tint = { 1, 1, 0.0 }
 
 log_only.material_slots_count = 0
 log_only.logistics_radius = 25
@@ -26,8 +27,10 @@ log_only.charging_energy = "750kW"
 log_only.draw_construction_radius_visualization = false
 log_only.energy_source.input_flow_limit = "10MW"
 log_only.name = fns 'logistics-roboport'
-log_only.base.layers[1].tint = { 1, 0.9, 0.7 }
 log_only.minable.result = log_only.name
+log_only.base_animation.run_mode = 'backward'
+log_only.base_animation.animation_speed = 0.50
+log_only.base_animation.tint = { 1, 0.7, 0.0 }
 
 cons_only.radar_range = 3
 cons_only.logistics_radius = 10
@@ -35,9 +38,13 @@ cons_only.construction_radius = 65
 cons_only.logistics_connection_distance = 35
 cons_only.draw_logistic_radius_visualization = false
 cons_only.name = fns 'construction-roboport'
-cons_only.base.layers[1].tint = { 0.8, 1, 0.8 }
+cons_only.base_animation.animation_speed = 0.75
+cons_only.base_animation.tint = { 0.0, 1, 0.0 }
+
 
 local base_item = data.raw.item.roboport
+
+base_item.ordering = 'c[signal]-a[roboport]-a[vanilla]'
 
 local sleeper_item = table.clone(base_item)
 local log_item = table.clone(base_item)
@@ -50,7 +57,7 @@ sleeper_item.icons = {
 }
 sleeper_item.name = sleeper.name
 sleeper_item.place_result = sleeper_item.name
-sleeper_item.ordering = 'c[signal]-a[roboport]-a[sleeper]'
+sleeper_item.ordering = 'c[signal]-a[roboport]-b[sleeper]'
 
 log_item.icon = nil
 log_item.icons = {
@@ -59,7 +66,7 @@ log_item.icons = {
 }
 log_item.name = log_only.name
 log_item.place_result = log_item.name
-log_item.ordering = 'c[signal]-a[roboport]-b[logistic]'
+log_item.ordering = 'c[signal]-a[roboport]-c[logistic]'
 
 cons_item.icon = nil
 cons_item.icons = {
@@ -68,7 +75,7 @@ cons_item.icons = {
 }
 cons_item.name = cons_only.name
 cons_item.place_result = cons_item.name
-cons_item.ordering = 'c[signal]-a[roboport]-c[construction]'
+cons_item.ordering = 'c[signal]-a[roboport]-d[construction]'
 
 local base_recipe = data.raw.recipe.roboport
 

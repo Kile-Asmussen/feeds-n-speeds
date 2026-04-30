@@ -178,23 +178,96 @@ function malltech.assembling_machines()
 
     recipe['assembling-machine-1'].ingredients = {
         { type='item', name='inserter', amount=3 },
+        { type='item', name='iron-chest', amount=1 },
         { type='item', name='electronic-circuit', amount=3 },
         { type='item', name='iron-plate', amount=4 },
     }
 
     recipe['assembling-machine-2'].ingredients = {
-        { type='item', name='fast-inserter', amount=3 },
-        { type='item', name='electronic-circuit', amount=3 },
+        { type='item', name='fast-inserter', amount=4 },
+        { type='item', name='splitter', amount=1 },
         { type='item', name='pipe', amount=2 },
         { type='item', name='steel-plate', amount=4 },
     }
 
     recipe['assembling-machine-3'].ingredients = {
-        { type='item', name='fast-inserter', amount=3 },
+        { type='item', name='fast-inserter', amount=6 },
         { type='item', name='speed-module', amount=3 },
-        { type='item', name='pump', amount=1 },
-        { type='item', name='refined-concrete', amount=4 },
+        { type='item', name='steel-plate', amount=4 },
+        { type='item', name='pump', amount=2 },
+        { type='item', name='refined-hazard-concrete', amount=10 },
     }
+
+    if enabled('tweaks.batteries') then
+        table.insert(recipe['assembling-machine-3'].ingredients,
+        { type='item', name='plastic-bar', amount=4 })
+    end
+end
+
+function malltech.chemical()
+    local recipe = data.raw.recipe
+
+    recipe['chemical-plant'].ingredients = {
+        { type='item', name='pump', amount=3 },
+        { type='item', name='storage-tank', amount=1 },
+        { type='item', name='pipe', amount=10 },
+        { type='item', name='electronic-circuit', amount=10 },
+        { type='item', name='copper-plate', amount=20 },
+    }
+
+    recipe['oil-refinery'].ingredients = {
+        { type='item', name='pump', amount=5 },
+        { type='item', name='pipe', amount=20 },
+        { type='item', name='steel-furnace', amount=2 },
+        { type='item', name='electronic-circuit', amount=10 },
+    }
+
+    recipe['pumpjack'].ingredients = {
+        { type='item', name='engine-unit', amount=5 },
+        { type='item', name='underground-pipe', amount=4 },
+        { type='item', name='electronic-circuit', amount=5 },
+        { type='item', name='steel-plate', amount=5 },
+    }
+
+    if enabled('tweaks.concrete') then
+        table.insert(recipe['oil-refinery'].ingredients,
+            { type='item', name='hazard-concrete', amount=20 }
+        )
+    end
+end
+
+function malltech.rail()
+    local recipe = data.raw.recipe
+
+    table.insert(data.raw.technology.railway.prerequisites, 'circuit-network')
+
+    recipe.locomotive.ingredients = {
+        { type='item', name='radar', amount=1 },
+        { type='item', name='decider-combinator', amount=3 },
+        { type='item', name='engine-unit', amount=20 },
+        { type='item', name='steel-plate', amount=20 },
+        { type='item', name='lamp', amount=3 },
+    }
+
+    recipe['rail-chain-signal'].ingredients = {
+        { type='item', name='decider-combinator', amount=1 },
+        { type='item', name='arithmetic-combinator', amount=1 },
+        { type='item', name='display-panel', amount=1 },
+    }
+
+    recipe['rail-signal'].ingredients = {
+        { type='item', name='decider-combinator', amount=1 },
+        { type='item', name='arithmetic-combinator', amount=1 },
+        { type='item', name='display-panel', amount=1 },
+    }
+
+    recipe['train-stop'].ingredients = {
+        { type='item', name='radar', amount=1 },
+        { type='item', name='steel-plate', amount=3 },
+        { type='item', name='lamp', amount=1 },
+        { type='item', name='arithmetic-combinator', amount=3 },
+    }
+
 end
 
 function malltech.nuclear_machines()

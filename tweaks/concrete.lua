@@ -51,14 +51,17 @@ function concrete.data_updates()
     )
     
     table.insert(tech['oil-processing'].prerequisites, 'concrete')
+    table.insert(tech['advanced-material-processing-2'].prerequisites, 'concrete')
 
-    table.insert(recipes['oil-refinery'].ingredients,
-        { name = 'concrete', type = 'item', amount = 10 }
-    )
+    if not enabled('tweaks.malltech') then
+        table.insert(recipes['oil-refinery'].ingredients,
+            { name = 'concrete', type = 'item', amount = 10 }
+        )
 
-    table.insert(recipes['electric-furnace'].ingredients,
-        { name = 'concrete', type = 'item', amount = 10 }
-    )
+        table.insert(recipes['electric-furnace'].ingredients,
+            { name = 'concrete', type = 'item', amount = 10 }
+        )
+    end
 
     for _, tile in pairs(data.raw.tile) do
         if tile.name:matches("stone%-path") then
