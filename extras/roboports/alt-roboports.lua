@@ -18,6 +18,7 @@ sleeper.draw_logistic_radius_visualization = false
 sleeper.name = fns 'sleeper-roboport'
 sleeper.base.layers[1].tint = { 0.9, 0.9, 0.6 }
 sleeper.minable.result = sleeper.name
+sleeper.base_animation.animation_speed = 0.25
 
 log_only.material_slots_count = 0
 log_only.logistics_radius = 25

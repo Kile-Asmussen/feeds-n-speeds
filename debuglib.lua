@@ -10,6 +10,7 @@ debuglib.io.open = _G.io and _G.io.open
 debuglib.io:__seal()
 
 function debuglib.pp(data, root)
+    root = root or '_'
     buffer = debuglib.new_buffer(root)
     buffer:print_any(data)
     return tostring(buffer)
@@ -80,18 +81,21 @@ function debuglib.function_signature(func, short)
     end
 
     if debuglib.io.open then
-        if not read_files[info.short_src] then
+        if not read_files[info.short_src] and info.short_src then
             local read_lines = {}
             local file = debuglib.io.open(info.short_src)
-            for l in file:lines() do
-                table.insert(read_lines, l)
+            if file then
+                for l in file:lines() do
+                    table.insert(read_lines, l)
+                end
+                file:close()
+                file = nil
+                read_files[info.short_src] = read_lines
             end
-            file:close()
-            file = nil
-
-            read_files[info.short_src] = read_lines
         end
+    end
 
+    if read_files[info.short_src] then
         local line = read_files[info.short_src][info.linedefined]
         local args = line:match('%(.*%)') or '()'
         local arg_count = #(args:gsub(debuglib.IDENTIFIER, 'x'):gsub('[^x]', ''))
