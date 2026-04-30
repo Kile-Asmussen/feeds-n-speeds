@@ -1,5 +1,4 @@
 require 'prelude'
-local debuglib = require 'debuglib'
 
 local base = data.raw.roboport.roboport
 
@@ -38,12 +37,6 @@ cons_only.draw_logistic_radius_visualization = false
 cons_only.name = fns 'construction-roboport'
 cons_only.base.layers[1].tint = { 0.8, 1, 0.8 }
 
-debuglib.recursion_limit = 1
-log(debuglib.pp(base))
-log(debuglib.pp(sleeper))
-log(debuglib.pp(log_only))
-log(debuglib.pp(cons_only))
-
 local base_item = data.raw.item.roboport
 
 local sleeper_item = table.clone(base_item)
@@ -57,6 +50,7 @@ sleeper_item.icons = {
 }
 sleeper_item.name = sleeper.name
 sleeper_item.place_result = sleeper_item.name
+sleeper_item.ordering = 'c[signal]-a[roboport]-a[sleeper]'
 
 log_item.icon = nil
 log_item.icons = {
@@ -65,6 +59,7 @@ log_item.icons = {
 }
 log_item.name = log_only.name
 log_item.place_result = log_item.name
+log_item.ordering = 'c[signal]-a[roboport]-b[logistic]'
 
 cons_item.icon = nil
 cons_item.icons = {
@@ -73,6 +68,7 @@ cons_item.icons = {
 }
 cons_item.name = cons_only.name
 cons_item.place_result = cons_item.name
+cons_item.ordering = 'c[signal]-a[roboport]-c[construction]'
 
 local base_recipe = data.raw.recipe.roboport
 

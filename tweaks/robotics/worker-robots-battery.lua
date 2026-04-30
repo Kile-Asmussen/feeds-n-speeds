@@ -1,6 +1,6 @@
 require 'prelude'
 
-local function name(l) return fns('worker-robots-battery-' .. l) end
+local function name(l) return fns('worker-robots-battery') .. '-' .. l end
 
 local function worker_robots_battery_tech(level, modifier, count, formula, time, cost, prereq)
     return {
@@ -33,7 +33,8 @@ local function worker_robots_battery_tech(level, modifier, count, formula, time,
             count_formula = formula,
             ingredients = table.imap(cost, function(s) return { s .. '-science-pack', 1 } end),
             time = time
-        }
+        },
+        max_level = level == 7 and 'infinite' or nil
     }
 end
 

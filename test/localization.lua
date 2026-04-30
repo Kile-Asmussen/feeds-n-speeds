@@ -23,6 +23,12 @@ end
 
 function localization.register(proto)
     if proto.localised_name then return end
+
+    local proto_name = proto.name
+
+    if proto.type == 'technology' then
+        proto_name = proto_name:gsub('%-%d+$', '')
+    end
     
     local loc_name = lockey(proto, 'name')
     local description = lockey(proto, 'description')
@@ -30,12 +36,12 @@ function localization.register(proto)
     localization.keys[loc_name] = localization.keys[loc_name] or {}
     localization.keys[description] = localization.keys[description] or {}
 
-    if not localization.keys[loc_name][proto.name] then
-        localization.keys[loc_name][proto.name] = true
+    if not localization.keys[loc_name][proto_name] then
+        localization.keys[loc_name][proto_name] = true
     end
 
-    if not localization.keys[description][proto.name] then
-        localization.keys[description][proto.name] = true
+    if not localization.keys[description][proto_name] then
+        localization.keys[description][proto_name] = true
     end
 end
 
