@@ -16,6 +16,18 @@ return {
         { type = 'item', name = 'iron-stick', amount = 1 },
         { type = 'fluid', name = 'water', amount = 100 },
     },
+    icons = {
+        {
+            icon = '__base__/graphics/icons/concrete.png',
+            icon_size = 64,
+        },
+        {
+            icon = '__base__/graphics/icons/stone.png',
+            icon_size = 64,
+            scale = 0.25,
+            shift = {-8, -8},
+        },
+    },
     results = {
         { type = 'item', name = 'concrete', amount = 8 },
     },

@@ -176,11 +176,10 @@ function table.project(tbl, func)
 end
 
 function table.map(tbl, func)
-    local res = {}
     for k, v in pairs(tbl) do
-        res[k] = func(v, k)
+        tbl[k] = func(v, k)
     end
-    return res
+    return tbl
 end
 
 function table.any(tbl, func)
@@ -247,6 +246,7 @@ function table.append(tbl1, tbl2)
     for _, entry in ipairs(tbl2) do
         table.insert(tbl1, entry)
     end
+    return tbl1
 end
 
 function table.add(tbl, tbl2)

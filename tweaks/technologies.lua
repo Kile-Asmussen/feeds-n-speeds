@@ -38,6 +38,16 @@ function technologies.data_updates()
         
         table.remove_matching(tech['electronics'].effects,
             table.matches{ type='unlock-recipe', recipe='lab' })
+
+        if not enabled('tweaks.timewaster') then
+            table.insert(tech[fns 'basic-materials-processing'].effects,
+                {
+                    modifier = 0.5,
+                    type = 'character-mining-speed'
+                }
+            )
+            table.find_matching(tech['steel-axe'].effects, table.matches{type='character-mining-speed'}).modifier = 0.5
+        end
     end
 
     technologies.tweak_science_packs()
@@ -57,8 +67,6 @@ function technologies.tweak_science_packs()
         { type = 'item', name = 'transport-belt', amount = 2 },
         { type = 'item', name = 'small-lamp', amount = 1 },
     }
-
-    
 
     table.insert(data.raw.technology['logistic-science-pack'].prerequisites, 'lamp')
 

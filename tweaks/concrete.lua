@@ -59,6 +59,20 @@ function concrete.data_updates()
     table.insert(recipes['electric-furnace'].ingredients,
         { name = 'concrete', type = 'item', amount = 10 }
     )
+
+    for _, tile in pairs(data.raw.tile) do
+        if tile.name:matches("stone%-path") then
+            tile.walking_speed_modifier = 1.4
+        elseif tile.name:matches("refined%-concrete") then
+            tile.walking_speed_modifier = 1.7
+        elseif tile.name:matches("concrete") then
+            tile.walking_speed_modifier = 2.0
+        end
+
+        if tile.name:matches("concrete") and tile.name:matches("hazard") then
+            tile.walking_speed_modifier = 1 / tile.walking_speed_modifier
+        end
+    end
 end
 
 return concrete:__seal()

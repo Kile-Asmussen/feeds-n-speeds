@@ -137,6 +137,8 @@ timewaster.CRAFTING_TIMES = {
 function timewaster.data_updates()
     if not timewaster.enabled then return end
 
+    data.raw.technology['steel-axe'] = nil
+
     -- Update mining times
     for entity_type, entities in pairs(timewaster.MINING_TIMES) do
         local category = data.raw[entity_type]

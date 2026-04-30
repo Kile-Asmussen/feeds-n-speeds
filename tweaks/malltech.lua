@@ -34,6 +34,8 @@ function malltech.tweak_recipes()
     malltech.misc()
 
     malltech.nuclear_machines()
+
+    malltech.robotics()
 end
 
 function malltech.earlygame()
@@ -67,11 +69,10 @@ function malltech.earlygame()
             { type='item', name='inserter', amount=1 },
         }
 
-        if enabled('tweaks.plastics') then
+        if enabled('tweaks.batteries') then
             recipe['bulk-inserter'].ingredients = {
                 { type='item', name='plastic-bar', amount=10 },
                 { type='item', name='electronic-circuit', amount=10 },
-                { type='item', name='hazard-concrete', amount=1 },
                 { type='item', name='fast-inserter', amount=1 },
             }
         end
@@ -111,6 +112,8 @@ function malltech.misc()
         { type='item', name='hazard-concrete', amount=10 },
     }
 
+    table.insert(data.raw.technology['effect-transmission'].prerequisites, 'efficiency-module')
+
     table.insert(recipe['substation'].ingredients,
         { type='item', name='iron-stick', amount=5 }
     )
@@ -131,6 +134,7 @@ function malltech.mining_drills()
         { type='item', name='iron-plate', amount=5 },
         { type='item', name='steel-plate', amount=1 },
     }
+
     table.insert(
         data.raw.technology['electric-mining-drill'].prerequisites,
         'steel-processing'
@@ -155,6 +159,9 @@ function malltech.mining_drills()
     }
 
     if enabled('tweaks.earlygame') then
+        recipe['burner-mining-drill'].ingredients[3]  = { type='item', name='steel-plate', amount=1 }
+        recipe['electric-mining-drill'].ingredients[4]  = { type='item', name='steel-plate', amount=2 }
+
         table.insert(
             recipe['steam-engine'].ingredients,
             { type='item', name='steel-plate', amount=1 }
@@ -233,6 +240,33 @@ function malltech.nuclear_machines()
             table.matches{ name = 'concrete', type = 'item' }
         ).name = 'hazard-concrete'
     end
+end
+
+function malltech.robotics()
+    data.raw.recipe['roboport'].ingredients = {
+        { type='item', name='battery', amount=30 },
+        { type='item', name='steel-plate', amount=20 },
+        { type='item', name='advanced-circuit', amount=45 },
+        { type='item', name='radar', amount=1 },
+    }
+
+    if enabled('extras.radars') then
+        data.raw.recipe['roboport'].ingredients[4] = {  type='item', name='small-radar', amount=2 }
+    end
+
+    if enabled('tweaks.concrete') then
+        table.insert(data.raw.recipe['roboport'].ingredients,
+            {  type='item', name='hazard-concrete', amount=20 }
+        )
+    end
+end
+
+function malltech.energy()
+    data.raw.recipe['accumulator'].ingredients = {
+        { type='item', name='battery', amount=5 },
+        { type='item', name='steel-plate', amount=2 },
+        { type='item', name='electronic-circuit', amount=5 },
+    }
 end
 
 return malltech:__seal()

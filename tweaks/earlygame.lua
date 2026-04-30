@@ -121,7 +121,7 @@ function earlygame.tweak_technologies()
     local steam_power = data.raw.technology['steam-power']
 
     steam_power.research_trigger = {
-        count = 2,
+        count = 10,
         item = 'steel-plate',
         type = 'craft-item'
     }

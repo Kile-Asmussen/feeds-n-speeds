@@ -1,6 +1,6 @@
 require 'prelude'
 
-local plastics = namespace 'tweaks.plastics'
+local plastics = namespace 'tweaks.batteries'
 
 function plastics.data_updates()
 
@@ -17,12 +17,15 @@ function plastics.data_updates()
     table.insert(data.raw.recipe['speed-module'].ingredients,
         { type='item', name='battery', amount=2 }
     )
+    
     table.insert(data.raw.recipe['productivity-module'].ingredients,
         { type='item', name='battery', amount=2 }
     )
+
     table.insert(data.raw.recipe['efficiency-module'].ingredients,
         { type='item', name='battery', amount=2 }
     )
+
     table.insert(data.raw.recipe['quality-module'].ingredients,
         { type='item', name='battery', amount=2 }
     )

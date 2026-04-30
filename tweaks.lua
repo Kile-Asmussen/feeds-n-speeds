@@ -52,6 +52,7 @@ tweaks.sulfur_processing = require 'tweaks.sulfur-processing'
 tweaks.technologies = require 'tweaks.technologies'
 tweaks.machines = require 'tweaks.machines'
 tweaks.textplates = require 'tweaks.textplates'
-tweaks.plastics = require 'tweaks.plastics'
+tweaks.batteries = require 'tweaks.batteries'
+tweaks.robotics = require 'tweaks.robotics'
 
 return tweaks:__seal()
