@@ -251,13 +251,28 @@ function malltech.robotics()
     }
 
     if enabled('extras.radars') then
-        data.raw.recipe['roboport'].ingredients[4] = {  type='item', name='small-radar', amount=2 }
+        data.raw.recipe['roboport'].ingredients[4] = {  type='item', name=fns 'small-radar', amount=2 }
     end
 
     if enabled('tweaks.concrete') then
         table.insert(data.raw.recipe['roboport'].ingredients,
             {  type='item', name='hazard-concrete', amount=20 }
         )
+    end
+
+    if enabled('extras.roboports') then
+        data.raw.recipe[fns 'sleeper-roboport'].ingredients = {
+            { type = 'item', amount = 1, name='roboport' },
+            { type = 'item', amount = 5, name='constant-combinator' },
+        }
+        data.raw.recipe[fns 'logistics-roboport'].ingredients = {
+            { type = 'item', amount = 1, name='roboport' },
+            { type = 'item', amount = 5, name='arithmetic-combinator' },
+        }
+        data.raw.recipe[fns 'construction-roboport'].ingredients = {
+            { type = 'item', amount = 1, name='roboport' },
+            { type = 'item', amount = 5, name='decider-combinator' },
+        }
     end
 end
 

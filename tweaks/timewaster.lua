@@ -80,6 +80,11 @@ timewaster.MINING_TIMES = {
     },
 }
 
+local function check(on, off, ...)
+    local args = table.pack(...)
+    return function() return enabled(table.unpack(args)) and on or off end
+end
+
 -- Crafting times (energy_required) for recipes
 -- Format: [recipe_name] = energy_required
 timewaster.CRAFTING_TIMES = {
@@ -101,7 +106,7 @@ timewaster.CRAFTING_TIMES = {
     ['centrifuge'] = 10.0,
 
     -- Furnaces
-    ['stone-furnace'] = function() return enabled('extras.altrecipes') and 4.0 or 2.0 end,
+    ['stone-furnace'] = check(4.0, 2.0, 'extras.altrecipes'),
     [fns 'stone-furnace'] = 2.0,
     ['steel-furnace'] = 3.0,
     ['electric-furnace'] = 5.0,
@@ -112,7 +117,11 @@ timewaster.CRAFTING_TIMES = {
 
     -- Logistics
     ['roboport'] = 10.0,
+    [fns 'sleeper-roboport'] = check(1.0, 10.0, 'tweaks.malltech'),
+    [fns 'construction-roboport'] = check(1.0, 10.0, 'tweaks.malltech'),
+    [fns 'logistics-roboport'] = check(1.0, 10.0, 'tweaks.malltech'),
     ['radar'] = 5.0,
+    [fns 'small-radar'] = 3.0,
     ['medium-electric-pole'] = 1.0,
     ['big-electric-pole'] = 2.0,
     ['substation'] = 3.0,

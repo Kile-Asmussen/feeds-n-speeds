@@ -21,7 +21,7 @@ require('settings-updates')
 log("SETTINGS-FINAL-FIXES")
 require('settings-final-fixes')
 
-begin_data_stage 'proxy'
+begin_data_stage()
 
 log("DATA")
 require('data')
@@ -35,12 +35,6 @@ require('data-final-fixes')
 log("CONTROL")
 _G.storage = {}
 require('control')
-
-local rec_lim = debuglib.recursion_limit
-debuglib.recursion_limit = 5
-debuglib.pp(script.__handlers, "handlers")
-debuglib.recursion_limit = rec_lim
-
 
 log('\nLOCALIZATION')
 log(localization.generate_stubs())

@@ -182,6 +182,22 @@ function table.map(tbl, func)
     return tbl
 end
 
+function table.icollect(tbl, func)
+    local res = {}
+    for i, v in ipairs(tbl) do
+        res[i] = func(v, i)
+    end
+    return res
+end
+
+function table.collect(tbl, func)
+    local res = {}
+    for k, v in pairs(tbl) do
+        res[k] = func(v, k)
+    end
+    return res
+end
+
 function table.any(tbl, func)
     func = func or function(x) return x end
     for _, v in ipairs(tbl) do
@@ -209,7 +225,7 @@ end
 
 function table.clone(tbl)
     if type(tbl) ~= 'table' then return tbl end
-    tbl = table.map(tbl, table.clone)
+    tbl = table.collect(tbl, table.clone)
     return tbl
 end
 
@@ -383,22 +399,17 @@ end
 
 local function __proxy_mt_ipairs(tbl)
     local i = 0
+    local n = #tbl
     return function()
         i = i + 1
-        if i <= #(tbl.__real) then
+        if i <= n then
             return i, tbl[i]
         end
     end
 end
 
 local function __proxy_mt_len(tbl)
-    local i = 0
-    return function()
-        i = i + 1
-        if i <= #tbl then
-            return i, tbl[i]
-        end
-    end
+    return #tbl.__real
 end
 
 local function __proxy_mt_tostring(tbl)

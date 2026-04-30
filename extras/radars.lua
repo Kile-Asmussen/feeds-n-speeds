@@ -1,7 +1,6 @@
 require 'prelude'
 
 local radars = namespace 'extras.radars'
-local debuglib = require 'debuglib'
 
 radars.enabled = true
 

@@ -1,12 +1,17 @@
 require 'prelude'
 
 local robotics = namespace 'tweaks.robotics'
+robotics.enabled = true
 
 function robotics.data()
+    if not robotics.enabled then return end
+
     data:extend(require 'tweaks.robotics.worker-robots-battery')
 end
 
 function robotics.data_updates()
+    if not robotics.enabled then return end
+
     local roboports = data.raw.roboport
 
     roboports.roboport.charging_slots = 6
@@ -28,17 +33,17 @@ function robotics.data_updates()
 
         roboports[fns 'sleeper-roboport'].ingredients = {
             { type='item', name='roboport', amount=1 },
-            { type='item', name='constant-combinator', amount=1 },
+            { type='item', name='constant-combinator', amount=5 },
         }
 
         roboports[fns 'logistics-roboport'].ingredients = {
             { type='item', name='roboport', amount=1 },
-            { type='item', name='arithmetic-combinator', amount=1 },
+            { type='item', name='arithmetic-combinator', amount=5 },
         }
 
         roboports[fns 'construction-roboport'].ingredients = {
             { type='item', name='roboport', amount=1 },
-            { type='item', name='decider-combinator', amount=1 },
+            { type='item', name='decider-combinator', amount=5 },
         }
     end
 

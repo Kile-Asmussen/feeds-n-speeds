@@ -48,7 +48,6 @@ function _G.log(str)
     assert(type(str) == 'string', "argument #1 must be a string not " .. type(str))
 
     local traceback = string.lines(debug.traceback())
-    traceback()
     local filename = ''
     local lineno = ''
     for l in traceback do
@@ -56,11 +55,12 @@ function _G.log(str)
         if not table.any(skip, l:matched_by()) then
             lineno = l:match(':%d+:')
             filename = l:sub(1, (l:find(lineno) or #l + 1) - 1)
+            break
         end
     end
     local where = filename .. lineno
     if #where > 0 then
-        print(where, str)
+        print(where .. ' ' .. str)
     else
         print(str)
     end
