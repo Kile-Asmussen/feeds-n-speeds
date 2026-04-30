@@ -36,6 +36,10 @@ function malltech.tweak_recipes()
     malltech.nuclear_machines()
 
     malltech.robotics()
+    
+    malltech.chemical()
+    
+    malltech.rail()
 end
 
 function malltech.earlygame()
