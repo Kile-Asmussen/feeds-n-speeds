@@ -64,17 +64,22 @@ function concrete.data_updates()
     end
 
     for _, tile in pairs(data.raw.tile) do
-        if tile.name:matches("stone%-path") then
-            tile.walking_speed_modifier = 1.4
-        elseif tile.name:matches("refined%-concrete") then
-            tile.walking_speed_modifier = 1.7
-        elseif tile.name:matches("concrete") then
-            tile.walking_speed_modifier = 2.0
+
+        if tile.name:match('stone%-path') then
+            tile.walking_speed_modifier = 1.2
         end
 
-        if tile.name:matches("concrete") and tile.name:matches("hazard") then
+        if tile.name:match('concrete') then
+            tile.walking_speed_modifier = 1.5
+            if tile.name:match('refined') then
+                tile.walking_speed_modifier = 2.0
+            end
+        end
+
+        if tile.name:match('hazard') then
             tile.walking_speed_modifier = 1 / tile.walking_speed_modifier
         end
+
     end
 end
 

@@ -104,8 +104,6 @@ timewaster.CRAFTING_TIMES = {
     ['chemical-plant'] = 8.0,
     ['oil-refinery'] = 15.0,
     ['centrifuge'] = 10.0,
-
-    -- Furnaces
     ['stone-furnace'] = check(4.0, 2.0, 'extras.altrecipes'),
     [fns 'stone-furnace'] = 2.0,
     ['steel-furnace'] = 3.0,
@@ -125,6 +123,7 @@ timewaster.CRAFTING_TIMES = {
     ['medium-electric-pole'] = 1.0,
     ['big-electric-pole'] = 2.0,
     ['substation'] = 3.0,
+    ['storage-tank'] = 5.0,
 
     -- Chests
     ['wooden-chest'] = 1,
@@ -141,6 +140,14 @@ timewaster.CRAFTING_TIMES = {
 
     -- Space Age (only where vanilla times are too short)
     ['recycler'] = 5.0,
+
+    ['locomotive'] = 10.0,
+    ['cargo-wagon'] = 8.0,
+    ['fluid-wagon'] = 8.0,
+    -- also set mining time
+
+    ['engine-unit'] = 5.0,
+    ['electric-engine-unit'] = 5.0,
 }
 
 function timewaster.data_updates()

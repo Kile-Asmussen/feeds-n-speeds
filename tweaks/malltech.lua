@@ -38,7 +38,7 @@ function malltech.tweak_recipes()
     malltech.robotics()
     
     malltech.chemical()
-    
+
     malltech.rail()
 end
 
@@ -98,7 +98,7 @@ function malltech.earlygame()
         recipe['lab'].ingredients = {
             { type='item', name='transport-belt', amount=3 },
             { type='item', name='inserter', amount=3 },
-            { type='item', name='stone-brick', amount=3 },
+            { type='item', name='copper-plate', amount=10 },
             { type='item', name='electronic-circuit', amount=10 },
         }
     end
@@ -228,7 +228,7 @@ function malltech.chemical()
 
     recipe['pumpjack'].ingredients = {
         { type='item', name='engine-unit', amount=5 },
-        { type='item', name='underground-pipe', amount=4 },
+        { type='item', name='pipe-to-ground', amount=4 },
         { type='item', name='electronic-circuit', amount=5 },
         { type='item', name='steel-plate', amount=5 },
     }
@@ -236,6 +236,10 @@ function malltech.chemical()
     if enabled('tweaks.concrete') then
         table.insert(recipe['oil-refinery'].ingredients,
             { type='item', name='hazard-concrete', amount=20 }
+        )
+
+        table.insert(recipe['electric-furnace'].ingredients,
+            { name = 'hazard-concrete', type = 'item', amount = 10 }
         )
     end
 end
@@ -250,25 +254,25 @@ function malltech.rail()
         { type='item', name='decider-combinator', amount=3 },
         { type='item', name='engine-unit', amount=20 },
         { type='item', name='steel-plate', amount=20 },
-        { type='item', name='lamp', amount=3 },
+        { type='item', name='small-lamp', amount=3 },
     }
 
     recipe['rail-chain-signal'].ingredients = {
         { type='item', name='decider-combinator', amount=1 },
         { type='item', name='arithmetic-combinator', amount=1 },
-        { type='item', name='display-panel', amount=1 },
+        { type='item', name='small-lamp', amount=1 },
     }
 
     recipe['rail-signal'].ingredients = {
         { type='item', name='decider-combinator', amount=1 },
         { type='item', name='arithmetic-combinator', amount=1 },
-        { type='item', name='display-panel', amount=1 },
+        { type='item', name='small-lamp', amount=3 },
     }
 
     recipe['train-stop'].ingredients = {
         { type='item', name='radar', amount=1 },
         { type='item', name='steel-plate', amount=3 },
-        { type='item', name='lamp', amount=1 },
+        { type='item', name='small-lamp', amount=2 },
         { type='item', name='arithmetic-combinator', amount=3 },
     }
 

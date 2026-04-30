@@ -11,7 +11,14 @@ function machines.data_updates()
 end
 
 function machines.tweak_assemblers()
+    local am1 = data.raw['assembling-machine']['assembling-machine-1']
+    local am2 = data.raw['assembling-machine']['assembling-machine-2']
+
+    am2.crafting_speed = 1.0
+
     local am3 = data.raw['assembling-machine']['assembling-machine-3']
+
+    am3.crafting_speed = 1.5
 
     -- Replace the input fluid box with east-west through-flow connections
     am3.fluid_boxes[1].production_type = 'input'
