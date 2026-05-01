@@ -6,7 +6,7 @@ timewaster.enabled = true
 
 -- Mining times scaled by approximate entity size/complexity
 -- Format: [entity_type][entity_name] = mining_time
-timewaster.MINING_TIMES = {
+local mining_times = {
     ['generator'] = {
         ['steam-engine'] = 1.5,      -- 3x5 entity
         ['steam-turbine'] = 2.0,     -- larger, more complex
@@ -92,6 +92,141 @@ timewaster.MINING_TIMES = {
     },
 }
 
+-- Returns longer, shorter tile dimensions of an entity's selection_box, rounded up.
+local function footprint(prototype_type, entity_name)
+    local entity = data.raw[prototype_type] and data.raw[prototype_type][entity_name]
+    assert(entity, 'footprint: no such entity ' .. prototype_type .. '/' .. entity_name)
+    local box = entity.selection_box
+    assert(box, 'footprint: ' .. entity_name .. ' has no selection_box')
+
+    local w = math.ceil(box[2][1] - box[1][1])
+    local h = math.ceil(box[2][2] - box[1][2])
+
+    local long = math.max(w, h)
+    local short = math.min(w, h)
+
+    if entity.fluid_box and entity.fluid_box.pipe_connections then
+        local underground = table.find_matching(entity.fluid_box.pipe_connections,
+            table.matches{ connection_type='underground' }
+        )
+        if underground then
+            long = long + underground.max_underground_distance
+        end
+    end
+
+    if entity.type == 'underground-belt' then
+        long = long + entity.max_distance
+    end
+end
+
+local function weight(item_name)
+    local item = data.raw.item[item_name]
+    local recipe = data.raw.recipe[item_name]
+    if not recipe then return 1 end
+
+    local sum = 0
+
+    for _, ingredient in ipairs(recipe.ingredients) do
+        
+        if ingredient.type == 'item' and data.raw.item[ingredient.name].place_result then
+            sum = sum + weight(ingredient.name)
+        elseif ingredient.type == 'fluid' then
+            sum = sum + math.ceil(ingredient.amount / 10)
+        elseif ingredient.type == 'item' then
+            sum = sum + ingredient.amount
+        end
+    end
+
+    sum = sum / table.find_matching(recipe.results, table.matches{name=item_name}).amount
+end
+
+local footprint_stack_sizes = {
+    { lo=1, hi=1, stack=100 }, -- walls, power poles, chests, inserters
+    { lo=2, hi=2, stack=50 }, -- offshore pump, combinators
+    { lo=4, hi=4, stack=40 }, -- turrets, power switch, rail, big power poles
+    { lo=6, hi=10, stack=20 }, -- 
+    { lo=20, hi=49, stack=10 },
+    { lo=50, hi=99, stack=5 },
+    { lo=100, hi=1000, stack=1 },
+}
+
+local function check_footprint(prototype_type, entity_name)
+    penalty = footprint_penalties[entity_name] or 0
+    local long, short = footprint(prototype_type, entity_name)
+    local area = long * short + weight(entity_name) / 15
+    return function()
+        for _, class in ipairs(footprint_stack_sizes) do
+            if class.lo <= area and area <= class.hi then
+                return class.stack
+            end 
+        end
+    end
+end
+
+-- Stack sizes for placeable buildings, tiered by footprint
+-- Tiers: 1 (9x9+), 5 (5x5), 10 (3x4–4x5), 20 (2x3–3x3), 50 (1x1–2x2)
+timewaster.STACK_SIZES = {
+    -- 1x1 → 50
+    ['small-electric-pole']  = 100,
+    ['medium-electric-pole'] = 100,
+    ['gate']                 = 100,
+    ['stone-wall']           = 100,
+
+    -- 2x2 → 20
+    ['big-electric-pole']    = 20,
+    ['substation']           = 20,
+    ['lightning-collector']  = 20,
+
+    -- 2x3–3x3 → 20
+    ['stone-furnace']        = 20,
+    ['steel-furnace']        = 20,
+    ['boiler']               = 20,
+    ['radar']                = 20,
+    ['lab']                  = 20,
+    ['crusher']              = 20,
+    ['agricultural-tower']   = 20,
+
+    -- 3x3–3x5 → 10
+    ['electric-furnace']     = 10,
+    ['assembling-machine-1'] = 10,
+    ['assembling-machine-2'] = 10,
+    ['assembling-machine-3'] = 10,
+    ['storage-tank']         = 10,
+    ['steam-engine']         = 10,
+    ['electric-mining-drill']= 10,
+    ['recycler']             = 10,
+    ['burner-mining-drill']  = 10,
+    ['thruster']             = 10,
+
+    -- 3x5–4x5 → 5
+    ['chemical-plant']       = 5,
+    ['centrifuge']           = 5,
+    ['steam-turbine']        = 5,
+    ['heat-exchanger']       = 5,
+    ['pumpjack']             = 5,
+    ['roboport']             = 5,
+    ['biochamber']           = 5,
+    ['foundry']              = 5,
+
+    -- 5x5 → 5
+    ['oil-refinery']             = 5,
+    ['electromagnetic-plant']    = 5,
+    ['cryogenic-plant']          = 5,
+    ['nuclear-reactor']          = 5,
+    ['heating-tower']            = 5,
+    ['big-mining-drill']         = 5,
+    ['asteroid-collector']       = 5,
+
+    -- Trains → 5 (large but long)
+    ['locomotive']           = 5,
+    ['cargo-wagon']          = 5,
+    ['fluid-wagon']          = 5,
+    ['artillery-wagon']      = 5,
+
+    -- 9x9 → 1
+    ['rocket-silo']          = 1,
+}
+
 local function check(on, off, ...)
     local args = table.pack(...)
     return function() return enabled(table.unpack(args)) and on or off end
@@ -169,7 +304,7 @@ function timewaster.data_updates()
     data.raw.technology['steel-axe'] = nil
 
     -- Update mining times
-    for entity_type, entities in pairs(timewaster.MINING_TIMES) do
+    for entity_type, entities in pairs(mining_times) do
         local category = data.raw[entity_type]
         if category then
             for entity_name, mining_time in pairs(entities) do
@@ -181,6 +316,18 @@ function timewaster.data_updates()
                         entity.minable.mining_time = mining_time
                     end
                 end
+            end
+        end
+    end
+
+    -- Update stack sizes
+    for item_name, stack_size in pairs(timewaster.STACK_SIZES) do
+        local item = data.raw.item[item_name]
+        if item then
+            if type(stack_size) == 'function' then
+                item.stack_size = stack_size()
+            elseif type(stack_size) == 'number' then
+                item.stack_size = stack_size
             end
         end
     end

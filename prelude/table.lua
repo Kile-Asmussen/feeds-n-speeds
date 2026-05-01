@@ -265,7 +265,7 @@ function table.append(tbl1, tbl2)
     return tbl1
 end
 
-function table.add(tbl, tbl2)
+function table.vecsum(tbl, tbl2)
     assert(type(tbl) == 'table' and type(tbl2) == 'table', "cannot take vector sum of non-tables")
     assert(#tbl == #tbl2, "cannot take vector sum of vectors of different dimensions")
     local res = {}
@@ -284,7 +284,7 @@ function table.vecadd(tbl, tbl2)
     return tbl
 end
 
-function table.scale(tbl, k)
+function table.vecscale(tbl, k)
     assert(type(tbl) == 'table', "cannot scale a non-vector")
     assert(type(k) == 'number', "cannot scale by a non-number scalar")
     local res = {}
@@ -303,11 +303,28 @@ function table.vecmul(tbl, k)
     return tbl
 end
 
-function table.sum(tbl, res)
+function table.sum(tbl, res, map)
     assert(type(tbl) == 'table', "argument #1 must be a table")
+
+    if type(res) == 'function' then
+        map = res
+        res = 0
+    end
+
     res = res or 0
+    assert(type(res) == 'number', "argument #2 must be a number")
+
+    local err =  "argument #1 must only contain numbers"
+    if map then
+        err =  "argument #1 must have all its elements map to numbers"
+    end
+    
+    map = map or function(n) return n end
+    assert(type(res) == 'function', "argument #3 must be a function")
 
     for _, n in ipairs(tbl) do
+        n = map(n)
+        assert(type(n) == 'number', err)
         res = res + n
     end
 

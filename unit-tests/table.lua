@@ -244,7 +244,7 @@ end)
 fact('table.add sums vectors', function()
     local v1 = {1, 2, 3}
     local v2 = {4, 5, 6}
-    local v3 = table.add(v1, v2)
+    local v3 = table.vecsum(v1, v2)
     assert_eq(v3[1], 5)
     assert_eq(v3[2], 7)
     assert_eq(v3[3], 9)
@@ -252,7 +252,7 @@ fact('table.add sums vectors', function()
 end)
 
 fiction('table.add errors on dimension mismatch', function()
-    table.add({1, 2}, {1, 2, 3})
+    table.vecsum({1, 2}, {1, 2, 3})
 end)
 
 -- table.vecadd tests
@@ -269,7 +269,7 @@ end)
 -- table.scale tests
 fact('table.scale multiplies vector', function()
     local v = {1, 2, 3}
-    local v2 = table.scale(v, 2)
+    local v2 = table.vecscale(v, 2)
     assert_eq(v2[1], 2)
     assert_eq(v2[2], 4)
     assert_eq(v2[3], 6)

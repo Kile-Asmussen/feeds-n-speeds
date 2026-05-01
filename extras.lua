@@ -48,5 +48,6 @@ extras.ores = require('extras.ores')
 extras.electroboiler = require('extras.electroboiler')
 extras.utilities = require('extras.utilities')
 extras.roboports = require('extras.roboports')
+extras.heavy = require('extras.heavy')
 
 return extras:__seal()

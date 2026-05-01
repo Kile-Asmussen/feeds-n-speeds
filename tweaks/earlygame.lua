@@ -32,52 +32,7 @@ function earlygame.tweak_military()
         { type = 'item', name = 'iron-plate', amount = 3 },
     }
 
-    if
-        enabled('extras.ores', 'extras.drills')
-    then
-        recipes['firearm-magazine'].energy_required = 2
-        recipes['firearm-magazine'].ingredients = {
-            { type = 'item', name = 'iron-plate', amount = 2 },
-            { type = 'item', name = 'copper-plate', amount = 2 },
-            { type = 'item', name = 'sulfur', amount = 1 },
-            { type = 'item', name = 'coal', amount = 1 },
-        }
-        recipes['firearm-magazine'].results = {
-            { type = 'item', name = 'firearm-magazine', amount = 2 },
-        }
 
-        recipes['piercing-rounds-magazine'].ingredients = {
-            { type = 'item', name = 'steel-plate', amount = 1 },
-            { type = 'item', name = 'firearm-magazine', amount = 2 },
-            { type = 'item', name = 'sulfur', amount = 1 },
-            { type = 'item', name = 'coal', amount = 1 },
-        }
-
-        recipes['shotgun-shell'].energy_required = 6
-        recipes['shotgun-shell'].ingredients = {
-            { type = 'item', name = 'copper-plate', amount = 2 },
-            { type = 'item', name = 'iron-plate', amount = 2 },
-            { type = 'item', name = 'sulfur', amount = 1 },
-            { type = 'item', name = 'coal', amount = 1 },
-        }
-        recipes['shotgun-shell'].results = {
-            { type = 'item', name = 'shotgun-shell', amount = 2 },
-        }
-
-        recipes['piercing-shotgun-shell'].ingredients = {
-            { type = 'item', name = 'shotgun-shell', amount = 2 },
-            { type = 'item', name = 'steel-plate', amount = 1 },
-            { type = 'item', name = 'sulfur', amount = 1 },
-            { type = 'item', name = 'coal', amount = 1 },
-        }
-
-        recipes['grenade'].ingredients = {
-            { type = 'item', name = 'steel-plate', amount = 1 },
-            { type = 'item', name = 'sulfur', amount = 5 },
-            { type = 'item', name = 'coal', amount = 5 },
-        }
-
-    end
 
 
 end

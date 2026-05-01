@@ -29,6 +29,10 @@
 - [ ] Make big steel chest slightly cheaper ~ 20 steel
   - [ ] also make iron chest and steel chest only take 6 plate (six sides to a cube)
 
+## Potential spinoffs
+
+- [ ] Extract big steel chest + hoppers into a standalone mod — self-contained enough to be useful without the rest of FeedsNSpeeds.
+
 ## Necessary tasks
 
 - [ ] Item/recipe ordering cleanup: With all features researched, the in-game crafting menu is cluttered. Review and improve ordering strings across all items and recipes for better organization.
@@ -43,6 +47,10 @@
 - [ ] Add migration scripts for settings changes
 
 # FeedsNSpeeds Development Ergonomics TODO
+
+## Localization stub generator improvements
+
+- [ ] Skip recipe stubs when the recipe has a single result item (Factorio inherits the item's name/description automatically). Check for `results` with one entry, or a `main_product` field set on the prototype.
 
 ## Enhanced Out-of-Game Testing Pipeline
 
@@ -63,6 +71,8 @@ The goal is a three-stage pipeline before ever booting the game:
 
 - [ ] Investigate how factorio reports prototype loading errors when using --dump-data mode.
 - [ ] **Wire `load_defines` into the test harness** — replace the hand-rolled `test/defines.lua` with values loaded from the cached `defines.json`; fixes the incomplete 8-direction stub and all made-up event IDs
-- [ ] **Import core lualib directly** — `util.lua`, `math2d.lua`, `meld.lua` etc. live at a known path in the Steam install; wire them into `test.lua` via `stub_libs` redirects the same way `resource-autoplace` already is, so mod code that `require`s them gets the real implementations
+- [ ] **Import core lualib directly** — `util.lua`, `math2d.lua`, `meld.lua` etc. live at a known path in the Steam install; wire them into `test.lua` via `stub_libs` redirects the same way `resource-autoplace` already is, so mod code that `require`s them gets the real implementations. Two approaches:
+  - **Makefile copy rule**: add a `test/lualib` target that `cp`s the needed files out of the Steam install, add `test/lualib/` to `.gitignore`, make it a prerequisite of the test target. `stub_libs` entries point at `test.lualib.util` etc.
+  - **serpent via luarocks/clone**: `util.lua` depends on `serpent` (Factorio's serializer). It turns out serpent is pure Lua and available on luarocks and GitHub — a Makefile rule could `luarocks install serpent` or clone the repo into `test/lualib/` alongside the copied lualib files.
 - [ ] **Headless prototype error reporting** — investigate what Factorio prints to stdout/stderr/log when a prototype error occurs under `--start-server` or `--dump-data`; figure out how to surface these in an automated check (see existing In Progress item)
 - [ ] **Automate the headless check** — once error reporting is understood, add a `make check` target (or similar) that installs FeedsNSpeeds, runs headless Factorio, and exits non-zero on prototype errors

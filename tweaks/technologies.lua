@@ -20,14 +20,7 @@ function technologies.data_updates()
 
     if enabled 'tweaks.military' then    
         -- Gun turret depends on military
-        table.insert(tech['gun-turret'].prerequisites, 'military')
 
-        -- Other turrets depend on gun turret
-        table.insert(tech['laser-turret'].prerequisites, 'gun-turret')
-        table.insert(tech['flamethrower'].prerequisites, 'gun-turret')
-        table.insert(tech['artillery'].prerequisites, 'gun-turret')
-        table.insert(tech['rocket-turret'].prerequisites, 'gun-turret')
-        table.insert(tech['tesla-weapons'].prerequisites, 'gun-turret')
     end
 
     if enabled('tweaks.earlygame') then
@@ -89,12 +82,24 @@ function technologies.tweak_science_packs()
         { type = 'fluid', name = 'sulfuric-acid', amount = 10 },
     }
 
+    recipes['military-science-pack'].category = 'crafting-with-fluid'
+    recipes['military-science-pack'].ingredients = {
+        { type = 'item', name = 'piercing-rounds', amount = 1 },
+        { type = 'item', name = 'grenade', amount = 1 },
+        { type = 'item', name = 'stone-wall', amount = 2 },
+        { type = 'fluid', name = 'crude-oil', amount = 10 },
+    }
+
+    table.append(data.raw.technology['military-science-pack'].prerequisites, 
+        { 'automation-2', 'oil-gathering' }
+    )
+
     recipes['production-science-pack'].category = 'crafting-with-fluid'
     recipes['production-science-pack'].ingredients = {
         { type = 'item', name = 'rail', amount = 40 },
         { type = 'item', name = 'substation', amount = 1 },
         { type = 'item', name = 'productivity-module', amount = 1 },
-        { type = 'fluid', name = 'steam', amount = 140 },
+        { type = 'fluid', name = 'steam', amount = 200 },
     }
 
 

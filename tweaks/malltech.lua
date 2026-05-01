@@ -48,14 +48,8 @@ function malltech.earlygame()
 
     local recipe = data.raw.recipe
 
-    if enabled('tweaks.earlygame') then
 
-        recipe['gun-turret'].ingredients = {
-            { type='item', name='electronic-circuit', amount=8 },
-            { type='item', name='iron-plate', amount=4 },
-            { type='item', name='submachine-gun', amount=2 },
-            { type='item', name='iron-gear-wheel', amount=8 },
-        }
+    if enabled('tweaks.earlygame') then
 
         recipe['inserter'].ingredients = {
             { type='item', name='iron-stick', amount=2 },
@@ -75,35 +69,32 @@ function malltech.earlygame()
             { type='item', name='inserter', amount=1 },
         }
 
-        if enabled('tweaks.batteries') then
-            recipe['bulk-inserter'].ingredients = {
-                { type='item', name='plastic-bar', amount=10 },
+
+        if enabled('tweaks.technologies') then
+            recipe['lab'].ingredients = {
+                { type='item', name='transport-belt', amount=3 },
+                { type='item', name='inserter', amount=3 },
+                { type='item', name='copper-plate', amount=10 },
                 { type='item', name='electronic-circuit', amount=10 },
-                { type='item', name='fast-inserter', amount=1 },
             }
         end
 
-        if enabled('tweaks.concrete') then
-            table.insert(recipe['bulk-inserter'].ingredients,
-            { type='item', name='hazard-concrete', amount=1})
-        end
-
-    else
-        recipe['gun-turret'].ingredients = {
-            { type='item', name='electronic-circuit', amount=8 },
-            { type='item', name='iron-plate', amount=12 },
-            { type='item', name='iron-gear-wheel', amount=10 },
-        }
     end
 
-    if enabled('tweaks.technologies') then
-        recipe['lab'].ingredients = {
-            { type='item', name='transport-belt', amount=3 },
-            { type='item', name='inserter', amount=3 },
-            { type='item', name='copper-plate', amount=10 },
+
+    if enabled('tweaks.batteries') then
+        recipe['bulk-inserter'].ingredients = {
+            { type='item', name='plastic-bar', amount=10 },
             { type='item', name='electronic-circuit', amount=10 },
+            { type='item', name='fast-inserter', amount=1 },
         }
     end
+
+    if enabled('tweaks.concrete') then
+        table.insert(recipe['bulk-inserter'].ingredients,
+        { type='item', name='hazard-concrete', amount=1})
+    end
+
 end
 
 function malltech.misc()
@@ -117,6 +108,15 @@ function malltech.misc()
         { type='item', name='copper-cable', amount=5 },
         { type='item', name='hazard-concrete', amount=10 },
     }
+
+
+    if not enabled('tweaks.military') then
+        recipe['gun-turret'].ingredients = {
+            { type='item', name='electronic-circuit', amount=8 },
+            { type='item', name='iron-plate', amount=12 },
+            { type='item', name='iron-gear-wheel', amount=10 },
+        }
+    end
 
     table.insert(data.raw.technology['effect-transmission'].prerequisites, 'efficiency-module')
 

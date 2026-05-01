@@ -28,4 +28,38 @@ function utilities.resource_autoplace_all_patches(tbl)
 
 end
 
+utilities.icon_sizes = {
+    technology = 256,
+    recipe = 64,
+    item = 64,
+}
+
+utilities.placements = {
+    upleft = { -8, 8 },
+    loleft = { -8, 8 },
+    upright = { 8, -8 },
+    loright = { 8, 8 },
+}
+
+function utilities.iconify(thing, other_icon, placement)
+    placement = placement or 'loleft'
+
+    thing.icons = {
+        {
+            icon = thing.icon,
+            scale = 0.5,
+            icon_size = utilities.icon_sizes[thing.type] or error("unrecognized icon-having thing: "..thing.type)
+        },
+        {
+            icon = other_icon,
+            icon_size = 64,
+            floating = true,
+            scale = 0.25,
+            shift = utilities.placements[placement] or error("unknown placement " .. placement),
+        }
+    }
+    thing.icon = nil
+end
+
+
 return utilities:__seal()

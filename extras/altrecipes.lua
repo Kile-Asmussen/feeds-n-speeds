@@ -37,13 +37,26 @@ function altrecipes.rails()
     )
 
     -- Concrete rail recipes only with concrete tweaks
-    if tweaks.concrete.enabled then
+    if enabled('tweaks.concrete') then
         data:extend{
             require 'extras.altrecipes.rail-2-recipe',
             require 'extras.altrecipes.rail-3-recipe',
             require 'extras.altrecipes.concrete-rail-technology',
         }
     end
+end
+
+function altrecipes.ammo()
+    if enabled('extras.ores', 'extras.drills', 'tweaks.earlygame', 'tweaks.military') then
+        data:extend(require 'extras.altrecipes.ammo')
+    end
+end
+
+function altrecipes.ammo_tech()
+    if not enabled('extras.ores', 'extras.drills', 'tweaks.earlygame', 'tweaks.military') then return end
+    
+    table.insert(data.raw.technology['uranium-ammo'].effects, { type='unlock-recipe', recipe = fns 'uranium-shotgun-shell' })
+
 end
 
 function altrecipes.stone_furnace()

@@ -198,7 +198,7 @@ end
 -------------------------------------------------------------------------------
 
 -- Use prelude/table.lua instead:
---   table.add(pos, offset)   -- vector addition (returns new)
---   table.scale(pos, factor) -- scalar multiply (returns new)
+--   table.vecsum(pos, offset)   -- vector addition (returns new)
+--   table.vecscale(pos, factor) -- scalar multiply (returns new)
 --   table.vecadd(pos, offset) -- in-place addition
 --   table.vecmul(pos, factor) -- in-place multiply
