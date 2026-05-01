@@ -81,6 +81,10 @@ function concrete.data_updates()
         end
 
     end
+
+    table.find_matching(recipes['artillery-turret'].ingredients,
+        table.matches{type='item', name='refined-concrete'}
+    ).name = 'refined-hazard-concrete'
 end
 
 return concrete:__seal()

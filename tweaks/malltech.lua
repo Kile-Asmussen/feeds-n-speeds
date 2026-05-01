@@ -40,6 +40,8 @@ function malltech.tweak_recipes()
     malltech.chemical()
 
     malltech.rail()
+
+    malltech.energy()
 end
 
 function malltech.earlygame()
@@ -121,6 +123,8 @@ function malltech.misc()
     table.insert(recipe['substation'].ingredients,
         { type='item', name='iron-stick', amount=5 }
     )
+
+    recipe['display-panel'].ingredients = table.clone(recipe['small-lamp'].ingredients)
 end
 
 function malltech.mining_drills()
@@ -211,6 +215,10 @@ end
 function malltech.chemical()
     local recipe = data.raw.recipe
 
+    recipe['storage-tank'].ingredients = {
+        { type='item', name='steel-plate', amount=10 }
+    }
+
     recipe['chemical-plant'].ingredients = {
         { type='item', name='pump', amount=3 },
         { type='item', name='storage-tank', amount=1 },
@@ -227,7 +235,7 @@ function malltech.chemical()
     }
 
     recipe['pumpjack'].ingredients = {
-        { type='item', name='engine-unit', amount=5 },
+        { type='item', name='pump', amount=2 },
         { type='item', name='pipe-to-ground', amount=4 },
         { type='item', name='electronic-circuit', amount=5 },
         { type='item', name='steel-plate', amount=5 },
@@ -280,6 +288,11 @@ function malltech.rail()
         recipe['train-stop'].ingredients[1] = { type='item', name=fns 'small-radar', amount=1 }
         recipe.locomotive.ingredients[1] = { type='item', name=fns 'small-radar', amount=1 }
     end
+
+    recipe['artillery-wagon'].ingredients = {
+        { type='item', name='locomotive', amount=1 },
+        { type='item', name='artillery-turret', amount=1 },
+    }
 
 end
 
@@ -365,9 +378,32 @@ end
 function malltech.energy()
     data.raw.recipe['accumulator'].ingredients = {
         { type='item', name='battery', amount=5 },
+        { type='item', name='copper-cable', amount=5 },
+        { type='item', name='electronic-circuit', amount=3 },
         { type='item', name='steel-plate', amount=2 },
-        { type='item', name='electronic-circuit', amount=5 },
     }
+
+    if enabled('tweaks.electric') then
+        data.raw.recipe['power-switch'].ingredients = {
+            { type='item', name='advanced-circuit', amount=2 },
+            { type='item', name='copper-cable', amount=10 },
+            { type='item', name='iron-gear-wheel', amount=5 },
+            { type='item', name='steel-plate', amount=5 },
+        }
+        if enabled('tweaks.concrete') then
+            table.insert(
+                data.raw.recipe['power-switch'].ingredients,
+                { type='item', name='hazard-concrete', amount=5 }
+            )
+        end
+    else
+        data.raw.recipe['power-switch'].ingredients = {
+            { type='item', name='electronic-circuit', amount=5 },
+            { type='item', name='copper-cable', amount=10 },
+            { type='item', name='iron-gear-wheel', amount=5 },
+            { type='item', name='steel-plate', amount=5 },
+        }
+    end
 end
 
 return malltech:__seal()

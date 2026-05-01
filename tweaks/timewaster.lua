@@ -78,6 +78,18 @@ timewaster.MINING_TIMES = {
     ['thruster'] = {
         ['thruster'] = 1.0,               -- Space platform
     },
+    ['locomotive'] = {
+        ['locomotive'] = 5.0,
+    },
+    ['cargo-wagon'] = {
+        ['cargo-wagon'] = 3.0,
+    },
+    ['fluid-wagon'] = {
+        ['fluid-wagon'] = 3.0,
+    },
+    ['artillery-wagon'] = {
+        ['artillery-wagon'] = 5.0,
+    },
 }
 
 local function check(on, off, ...)
@@ -144,6 +156,7 @@ timewaster.CRAFTING_TIMES = {
     ['locomotive'] = 10.0,
     ['cargo-wagon'] = 8.0,
     ['fluid-wagon'] = 8.0,
+    ['artillery-wagon'] = 8.0,
     -- also set mining time
 
     ['engine-unit'] = 5.0,

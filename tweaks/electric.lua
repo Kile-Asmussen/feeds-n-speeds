@@ -15,12 +15,16 @@ function electric.data_updates()
     local big = electric_pole['big-electric-pole']
     local substation = electric_pole.substation
 
-    small.maximum_wire_distance = 9.5
-    medium.maximum_wire_distance = 15.5
+    small.maximum_wire_distance = 8.5
+    medium.maximum_wire_distance = 10
     big.maximum_wire_distance = 50
-    substation.maximum_wire_distance = 25
+    substation.maximum_wire_distance = 22
 
-    local tweaks = import 'tweaks'
+    table.remove_matching(data.raw.technology['circuit-network'],
+        table.matches{type='unlock-recipe', recipe='power-switch'}
+    )
+
+    table.insert(data.raw.technology['electric-energy-distribution-2'], { type='unlock-recipe', recipe='power-switch' })
 
     if enabled('tweaks.concrete') then 
         table.insert(data.raw.technology['electric-energy-distribution-1'].prerequisites, 'concrete')
