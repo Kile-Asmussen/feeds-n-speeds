@@ -18,16 +18,17 @@ function technologies.data_updates()
 
     local tech = data.raw.technology
 
-    -- Gun turret depends on military
-    table.insert(tech['gun-turret'].prerequisites, 'military')
+    if enabled 'tweaks.military' then    
+        -- Gun turret depends on military
+        table.insert(tech['gun-turret'].prerequisites, 'military')
 
-    -- Other turrets depend on gun turret
-    table.insert(tech['laser-turret'].prerequisites, 'gun-turret')
-    table.insert(tech['flamethrower'].prerequisites, 'gun-turret')
-    table.insert(tech['artillery'].prerequisites, 'gun-turret')
-    table.insert(tech['rocket-turret'].prerequisites, 'gun-turret')
-    table.insert(tech['tesla-weapons'].prerequisites, 'gun-turret')
-
+        -- Other turrets depend on gun turret
+        table.insert(tech['laser-turret'].prerequisites, 'gun-turret')
+        table.insert(tech['flamethrower'].prerequisites, 'gun-turret')
+        table.insert(tech['artillery'].prerequisites, 'gun-turret')
+        table.insert(tech['rocket-turret'].prerequisites, 'gun-turret')
+        table.insert(tech['tesla-weapons'].prerequisites, 'gun-turret')
+    end
 
     if enabled('tweaks.earlygame') then
         tech['automation-science-pack'].prerequisites = {

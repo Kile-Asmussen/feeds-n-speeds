@@ -14,6 +14,8 @@ local function lockey(proto, class)
         or proto.type == 'autoplace-control'
     then
         return proto.type .. '-' .. class
+    elseif proto.type:match('%-turret$') then
+        return 'turret'
     elseif proto.type:match("%-setting$") then
         return 'mod-setting-' .. class
     else
