@@ -125,6 +125,15 @@ function malltech.misc()
     )
 
     recipe['display-panel'].ingredients = table.clone(recipe['small-lamp'].ingredients)
+
+    recipe['car'].ingredients = {
+        { type='item', name='engine-unit', amount=8 },
+        { type='item', name='steel-plate', amount=8 },
+        { type='item', name='pipe', amount=2 },
+        { type='item', name='electronic-circuit', amount=5 },
+        { type='item', name='iron-gear-wheel', amount=10 },
+        { type='item', name='small-lamp', amount=2 },
+    }
 end
 
 function malltech.mining_drills()
@@ -230,8 +239,9 @@ function malltech.chemical()
     recipe['oil-refinery'].ingredients = {
         { type='item', name='pump', amount=5 },
         { type='item', name='pipe', amount=20 },
-        { type='item', name='steel-furnace', amount=2 },
+        { type='item', name='steel-plate', amount=10 },
         { type='item', name='electronic-circuit', amount=10 },
+        { type='item', name='stone-brick', amount=10 },
     }
 
     recipe['pumpjack'].ingredients = {
@@ -242,9 +252,7 @@ function malltech.chemical()
     }
 
     if enabled('tweaks.concrete') then
-        table.insert(recipe['oil-refinery'].ingredients,
-            { type='item', name='hazard-concrete', amount=20 }
-        )
+        recipe['oil-refinery'].ingredients[5] = { type='item', name='hazard-concrete', amount=20 }
 
         table.insert(recipe['electric-furnace'].ingredients,
             { name = 'hazard-concrete', type = 'item', amount = 10 }
