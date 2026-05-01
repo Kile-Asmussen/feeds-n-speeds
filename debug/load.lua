@@ -12,6 +12,8 @@ if _G.quiet then
     _G.log = function() end
 end
 
+_G.modlist = {"textplates", "even-more-text-plates"}
+
 log("SETTINGS")
 require('settings')
 

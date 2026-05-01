@@ -89,6 +89,14 @@ function nuclear.data_updates()
         )
 
     end
+
+    if enabled('tweaks.technologies') then
+        table.insert(data.raw.technology['production-science-pack'].prerequisites, 'nuclear-power')
+
+        data.raw.technology['heating-tower'].effects = {
+            { type = 'unlock-recipe', recipe='heating-tower' }
+        }
+    end
 end
 
 return nuclear:__seal()

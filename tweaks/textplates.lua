@@ -4,10 +4,22 @@ local textplates = namespace 'tweaks.textplates'
 textplates.enabled = true
 
 function textplates.data()
+    if not textplates.enabled then return end
+
+    if not mods['textplates'] then return end
+
     data:extend(require 'tweaks.textplates.tech')
+
+    if mods['even-more-text-plates'] then
+        data:extend(require 'tweaks.textplates.more-tech')
+    end 
 end
 
 function textplates.data_updates()
+
+    if not textplates.enabled then return end
+
+    if not mods['textplates'] then return end
 
     textplates.fix_recipe('textplate-small-stone')
     textplates.fix_recipe('textplate-small-iron')

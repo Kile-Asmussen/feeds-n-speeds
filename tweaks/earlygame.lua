@@ -17,24 +17,6 @@ function earlygame.tweak_military()
 
     local tech = data.raw.technology
     local recipes = data.raw.recipe
-
-    recipes['submachine-gun'].ingredients = {
-        { type = 'item', name = 'steel-plate', amount = 1 },
-        { type = 'item', name = 'iron-plate', amount = 2 },
-        { type = 'item', name = 'copper-plate', amount = 2 },
-    }
-
-    -- Enable vanilla pistol recipe (normally hidden since player starts with one)
-    recipes['pistol'].hidden = false
-    recipes['pistol'].enabled = true
-    recipes['pistol'].ingredients = {
-        { type = 'item', name = 'copper-plate', amount = 1 },
-        { type = 'item', name = 'iron-plate', amount = 3 },
-    }
-
-
-
-
 end
 
 function earlygame.tweak_technologies()

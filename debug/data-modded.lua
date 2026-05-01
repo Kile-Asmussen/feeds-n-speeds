@@ -18,6 +18,7 @@ require('data-final-fixes')
 local debuglib = require 'debuglib'
 
 local args = table.pack(...)
+table.imap(args, function(s) return tonumber(s) or s end)
 
 local ix =  string.tablepath('data.raw', args)
 local result, found = table.descend(data.raw, table.unpack(args))

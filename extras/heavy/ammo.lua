@@ -1,20 +1,23 @@
 require 'prelude'
 local debuglib = require 'debuglib'
 
-local ushell_ammo = table.clone(data.raw.ammo['piercing-shotgun-shell'])
+local ushell = table.clone(data.raw.ammo['piercing-shotgun-shell'])
 local ushell_proj = table.clone(data.raw.projectile['piercing-shotgun-pellet'])
-local ushell = table.clone(data.raw.recipe['uranium-rounds-magazine'])
+local ushell_recipe = table.clone(data.raw.recipe['uranium-rounds-magazine'])
 
 ushell_proj.name = fns 'uranium-shotgun-pellet'
 ushell_proj.action.action_delivery.target_effects.damage.amount = 24
 
-ushell.ingredients[1].name = 'piercing-shotgun-shell'
-ushell.results[1].name =  fns 'uranium-shotgun-shell'
-ushell.name = fns'uranium-shotgun-shell'
+ushell.name = fns 'uranium-shotgun-shell'
 
-ushell_ammo.name = fns 'uranium-shotgun-shell'
-ushell_ammo.icon = nil
-ushell_ammo.icons = {
+ushell_recipe.name = ushell.name
+ushell_recipe.ingredients[1].name = 'piercing-shotgun-shell'
+ushell_recipe.results[1].name = ushell.name
+
+
+
+ushell.icon = nil
+ushell.icons = {
     {
         icon = data.raw.ammo['piercing-shotgun-shell'].icon,
         icon_size = 64,
@@ -23,10 +26,10 @@ ushell_ammo.icons = {
     }
 }
 
-if ushell_ammo.ammo_type.action[1].repeat_count then
-    ushell_ammo.ammo_type.action[1].action_delivery.projectile = ushell_proj.name
+if ushell.ammo_type.action[1].repeat_count then
+    ushell.ammo_type.action[1].action_delivery.projectile = ushell_proj.name
 else
-    ushell_ammo.ammo_type.action[2].action_delivery.projectile = ushell_proj.name
+    ushell.ammo_type.action[2].action_delivery.projectile = ushell_proj.name
 end
 
 local napalm = table.clone(data.raw.fluid['light-oil'])
@@ -36,8 +39,16 @@ napalm.flow_color = { 0.77, 0, 0.3 }
 napalm.icons = {
     {
         icon = napalm.icon,
-        tint = { 1, 0.8, 0.8 }
-    }
+        icon_size = 64,
+        scale = 0.5,
+        tint = { 1, 0.3, 0.3 }
+    },
+    {
+        icon = data.raw.item['plastic-bar'].icon,
+        float=true,
+        icon_size = 64,
+        scale = 0.125
+    },
 }
 napalm.icon = nil
 
@@ -48,23 +59,27 @@ local napalm_recipe = {
     energy_required = 1,
     ingredients = {
         { type='fluid', name='light-oil', amount=50 },
-        { type='fluid', name='plastic-bar', amount=5 },
+        { type='item', name='plastic-bar', amount=2 },
     },
-    result = {
+    results = {
         { type='fluid', name=fns 'napalm', amount=50 }
     }
 }
 
 local flamer = table.clone(data.raw.ammo['flamethrower-ammo'])
 flamer.name = fns 'flamethrower-ammo'
+flamer.magazine_size = 150
 
 local flamer_recipe = table.clone(data.raw.recipe['flamethrower-ammo'])
 flamer_recipe.localised_name = {"", { "item-name.flamethrower-ammo" }}
 flamer_recipe.localised_description = {"", { "item-description.flamethrower-ammo" }}
 flamer_recipe.name = fns 'flamethrower-ammo'
+flamer_recipe.results = {
+    { type='item', name= fns 'flamethrower-ammo', amount=1}
+}
 flamer_recipe.ingredients = {
-    { type='fluid', name='napalm', amount='100' },
-    { type='item', name='plastic-bar', amount=2 },
+    { type='fluid', name=fns'napalm', amount=100 },
+    { type='item', name='barrel', amount=1 },
 }
 
 local flamer_stream = table.clone(data.raw.stream['handheld-flamethrower-fire-stream'])
@@ -76,13 +91,14 @@ if flamer_stream.action[1].type ~= 'area' then
     area = 2
     direct = 1
 end
+flamer_stream.action[area].radius = 3.5
 
 local damage = 2
-if flamer_stream.action[area].action_delivery.target_effects[2].type ~= 'damage' then
+if flamer_stream.action[area].action_delivery.target_effects[damage].type ~= 'damage' then
     damage = 1
 end
+flamer_stream.action[area].action_delivery.target_effects[damage].damage.amount = 5
 
-flamer_stream.action[area].action_delivery.target_effects[2].damage.amount = 5
 flamer_stream.action[direct].action_delivery.target_effects[1].initial_ground_flame_count = 4
 
 local tank_flamer_stream = table.clone(data.raw.stream['tank-flamethrower-fire-stream'])
@@ -100,6 +116,7 @@ end
 return {
     ushell,
     ushell_proj,
+    ushell_recipe,
     napalm,
     napalm_recipe,
     flamer,

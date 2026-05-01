@@ -52,7 +52,7 @@ function _G.log(str)
     local lineno = ''
     for l in traceback do
         l = l:gsub('^%s+', '')
-        if not table.any(skip, l:matched_by()) then
+        if not table.iany(skip, l:matched_by()) then
             lineno = l:match(':%d+:')
             filename = l:sub(1, (l:find(lineno) or #l + 1) - 1)
             break

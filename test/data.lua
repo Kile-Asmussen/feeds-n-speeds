@@ -7,6 +7,7 @@ local rawdata = require 'test.rawdata'
 local data = namespace 'test.data'
 
 _G.modlist = {}
+_G.mods = table.null
 
 data.raw = table.null
 
@@ -30,6 +31,7 @@ function begin_data_stage(proxy)
         data.raw = rawdata.load(_G.modlist)
     end
     _G.settings = import('test.settings'):__seal()
+    _G.mods = table.collect(table.set(_G.modlist), function() return 'X.X.X' end)
 end
 
 local settings = namespace 'test.settings'

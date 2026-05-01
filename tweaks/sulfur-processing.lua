@@ -76,8 +76,8 @@ function sulfur_processing.data_updates()
     )
 
     data.raw.recipe['explosives'].ingredients = {
-        { type='item', name='solid-fuel', amount='2'},
-        { type='fluid', name='sulfuric-acid', amount='20'},
+        { type='item', name='solid-fuel', amount=2},
+        { type='fluid', name='sulfuric-acid', amount=20},
     }
 end
 

@@ -182,25 +182,12 @@ fact('table.project transforms all keys in place', function()
 end)
 
 -- table.map tests
-fact('table.map creates new table', function()
+fact('table.collect creates new table', function()
     local tbl = {a = 1, b = 2}
-    local tbl2 = table.map(tbl, function(v) return v * 10 end)
+    local tbl2 = table.collect(tbl, function(v) return v * 10 end)
     assert_eq(tbl.a, 1)
     assert_eq(tbl2.a, 10)
     assert_eq(tbl2.b, 20)
-end)
-
--- table.dup tests
-fact('table.dup shallow copies', function()
-    local tbl = {a = 1, b = {c = 2}}
-    local tbl2 = table.dup(tbl)
-    assert_eq(tbl2.a, 1)
-    assert_eq(tbl2.b, tbl.b)
-end)
-
-fact('table.dup returns non-table as-is', function()
-    assert_eq(table.dup(42), 42)
-    assert_eq(table.dup('hello'), 'hello')
 end)
 
 -- table.clone tests

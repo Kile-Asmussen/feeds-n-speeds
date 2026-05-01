@@ -10,6 +10,7 @@ function altrecipes.data()
     altrecipes.rails()
     altrecipes.stone_furnace()
     altrecipes.concrete_wall()
+    altrecipes.ammo()
 end
 
 function altrecipes.data_updates()
@@ -47,16 +48,9 @@ function altrecipes.rails()
 end
 
 function altrecipes.ammo()
-    if enabled('extras.ores', 'extras.drills', 'tweaks.earlygame', 'tweaks.military') then
+    if enabled('tweaks.military') then
         data:extend(require 'extras.altrecipes.ammo')
     end
-end
-
-function altrecipes.ammo_tech()
-    if not enabled('extras.ores', 'extras.drills', 'tweaks.earlygame', 'tweaks.military') then return end
-    
-    table.insert(data.raw.technology['uranium-ammo'].effects, { type='unlock-recipe', recipe = fns 'uranium-shotgun-shell' })
-
 end
 
 function altrecipes.stone_furnace()

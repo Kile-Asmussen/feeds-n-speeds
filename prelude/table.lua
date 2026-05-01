@@ -198,35 +198,60 @@ function table.collect(tbl, func)
     return res
 end
 
-function table.any(tbl, func)
+function table.iany(tbl, func)
     func = func or function(x) return x end
-    for _, v in ipairs(tbl) do
-        if func(v) then return true end
+    for i, v in ipairs(tbl) do
+        if func(v, i) then return true end
     end
     return false
 end
 
+function table.any(tbl, func)
+    func = func or function(x) return x end
+    for k, v in pairs(tbl) do
+        if func(v, k) then return true end
+    end
+    return false
+end
+
+function table.iall(tbl, func)
+    func = func or function(x) return x end
+    for i, v in ipairs(tbl) do
+        if not func(v, i) then return false end
+    end
+    return true
+end
+
 function table.all(tbl, func)
     func = func or function(x) return x end
-    for _, v in ipairs(tbl) do
-        if not func(v) then return false end
+    for k, v in pairs(tbl) do
+        if not func(v, k) then return false end
     end
     return true
 end
 
 function table.dup(tbl)
     if type(tbl) ~= 'table' then return tbl end
-    local res = {}
-    for k,v in pairs(tbl) do
-        res[k] = v
+    return table.collect(tbl, function(x) return x end)
+end
+
+local function clone_with(seen)
+    local function clone(tbl)
+        if type(tbl) == 'table' then
+            if not seen[tbl] then
+                seen[tbl] = table.collect(tbl, clone)
+            end
+            return seen[tbl]
+        else
+            return tbl
+        end
     end
-    return res
+    return clone
 end
 
 function table.clone(tbl)
     if type(tbl) ~= 'table' then return tbl end
-    tbl = table.collect(tbl, table.clone)
-    return tbl
+    return clone_with({})(tbl)
 end
 
 function table.sorted_keys(tbl, only)
@@ -306,9 +331,9 @@ end
 function table.sum(tbl, res, map)
     assert(type(tbl) == 'table', "argument #1 must be a table")
 
-    if type(res) == 'function' then
+    if type(res) == 'function' and map == nil then
         map = res
-        res = 0
+        res = nil
     end
 
     res = res or 0
@@ -320,7 +345,7 @@ function table.sum(tbl, res, map)
     end
     
     map = map or function(n) return n end
-    assert(type(res) == 'function', "argument #3 must be a function")
+    assert(type(map) == 'function', "argument #3 must be a function")
 
     for _, n in ipairs(tbl) do
         n = map(n)

@@ -18,10 +18,6 @@ function technologies.data_updates()
 
     local tech = data.raw.technology
 
-    if enabled 'tweaks.military' then    
-        -- Gun turret depends on military
-
-    end
 
     if enabled('tweaks.earlygame') then
         tech['automation-science-pack'].prerequisites = {
@@ -84,7 +80,7 @@ function technologies.tweak_science_packs()
 
     recipes['military-science-pack'].category = 'crafting-with-fluid'
     recipes['military-science-pack'].ingredients = {
-        { type = 'item', name = 'piercing-rounds', amount = 1 },
+        { type = 'item', name = 'piercing-rounds-magazine', amount = 1 },
         { type = 'item', name = 'grenade', amount = 1 },
         { type = 'item', name = 'stone-wall', amount = 2 },
         { type = 'fluid', name = 'crude-oil', amount = 10 },
