@@ -44,6 +44,7 @@ function military.guns()
     }
     recipes.shotgun.category = fns 'hand-crafting'
     recipes.pistol.category = fns 'hand-crafting'
+    recipes['light-armor'].category = fns 'hand-crafting'
     recipes['shotgun-shell'].enabled = true
 
     data.raw.gun.pistol.attack_parameters.cooldown = 20
@@ -230,7 +231,8 @@ function military.ammo()
     local recipes = data.raw.recipe
 
     recipes['shotgun-shell'].energy_required = 4
-    recipes['shotgun-shell'].results[1].amount = 4
+    recipes['shotgun-shell'].results[1].amount = 2
+    recipes['piercing-shotgun-shell'].results[1].amount = 2
     recipes['firearm-magazine'].energy_required = 2
     recipes['firearm-magazine'].results[1].amount = 2
 

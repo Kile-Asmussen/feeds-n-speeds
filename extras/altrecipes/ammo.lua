@@ -66,7 +66,7 @@ local pshell = table.clone(recipes['piercing-shotgun-shell'])
 pshell.icon = data.raw.ammo[pshell.name].icon
 pshell.name = fns 'piercing-shotgun-shell-mass-production'
 pshell.category = 'crafting-with-fluid'
-shell.energy_required = 2
+pshell.energy_required = 2
 pshell.ingredients = {
     { type='item', name='explosives', amount=1 },
     { type='fluid', name='petroleum-gas', amount=30 },

@@ -23,15 +23,16 @@ function start.inventory()
 
     remote.call("freeplay", "set_ship_items", {
         ["iron-plate"] = 10,
-        ["iron-stick"] = 20,
+        ["pipe"] = 10,
         ["iron-gear-wheel"] = 5,
         ["copper-cable"] = 20,
-        ["copper-plate"] = 10,
         ["electronic-circuit"] = 5,
     })
 
     remote.call("freeplay", "set_debris_items", {
         ["steel-plate"] = 5,
+        ["iron-stick"] = 20,
+        ["copper-plate"] = 10,
     })
     
 end

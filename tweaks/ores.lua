@@ -18,8 +18,6 @@ function ores.data_final_fixes()
             
             resource.normal = 100
             resource.minimum = 100
-             
-            resource.minable.mining_time = 1
             
             resource.stage_counts = { 600, 400, 300, 150, 100, 50, 25, 17 }
 
