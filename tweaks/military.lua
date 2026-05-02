@@ -48,17 +48,18 @@ function military.guns()
     recipes['shotgun-shell'].enabled = true
 
     data.raw.gun.pistol.attack_parameters.cooldown = 20
-    data.raw.gun.pistol.attack_parameters.damage_modifier = 1.2
+    data.raw.gun.pistol.attack_parameters.damage_modifier = 1.5
     
     data.raw.gun.shotgun.attack_parameters.cooldown = 100
-    data.raw.gun.shotgun.attack_parameters.damage_modifier = 1.2
+    data.raw.gun.shotgun.attack_parameters.damage_modifier = 1.5
     data.raw.gun.shotgun.attack_parameters.movement_slow_down_factor = 0.3
 
     data.raw.gun['submachine-gun'].attack_parameters.cooldown = 10
     data.raw.gun['submachine-gun'].attack_parameters.movement_slow_down_factor = 0.4
+    data.raw.gun['submachine-gun'].attack_parameters.damage_modifier = 1.2
 
     data.raw.gun['combat-shotgun'].attack_parameters.cooldown = 50
-    data.raw.gun['combat-shotgun'].attack_parameters.damage_modifier = nil
+    data.raw.gun['combat-shotgun'].attack_parameters.damage_modifier = 1.2
     data.raw.gun['combat-shotgun'].attack_parameters.movement_slow_down_factor = 0.5
 
     recipes['flamethrower'].ingredients = {

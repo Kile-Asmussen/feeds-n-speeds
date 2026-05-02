@@ -41,11 +41,13 @@ local mining_times = {
         ['recycler'] = 1.0,               -- 3x3, Fulgora
     },
     ['mining-drill'] = {
-        ['burner-mining-drill'] = 0.5,
-        ['electric-mining-drill'] = 0.8,
+        ['burner-mining-drill'] = 1,
+        [fns 'burner-mining-drill-fluid'] = 1,
+        ['electric-mining-drill'] = 1.5,
+        [fns 'electric-mining-drill-fluid'] = 1.5,
         ['pumpjack'] = 1.0,
         -- Space Age
-        ['big-mining-drill'] = 2.0,       -- 5x5, Vulcanus
+        ['big-mining-drill'] = 3.0,       -- 5x5, Vulcanus
     },
     ['lab'] = {
         ['lab'] = 1.0,               -- 3x3 entity

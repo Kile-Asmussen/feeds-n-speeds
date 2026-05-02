@@ -41,7 +41,9 @@ function heavy_weapons.data_updates()
 
             proj = data.raw.projectile[proj.projectile]
 
-            proj.force_condition = 'enemy'
+            proj.force_condition = 'not-same'
+
+            proj.action.action_delivery.target_effects.apply_damage_to_trees = true
         end
     end
 end
