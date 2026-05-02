@@ -55,6 +55,7 @@ local napalm_recipe = {
     name = fns 'napalm',
     category = 'chemistry',
     energy_required = 1,
+    enabled = false,
     ingredients = {
         { type='fluid', name='light-oil', amount=50 },
         { type='item', name='plastic-bar', amount=2 },

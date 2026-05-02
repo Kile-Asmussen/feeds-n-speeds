@@ -5,6 +5,11 @@ start.enabled = true
 
 function start.control()
     script.on_init(start.inventory)
+    script.on_load(start.fix_technologies)
+end
+
+function start.fix_technologies()
+    -- TODO
 end
 
 function start.inventory()
