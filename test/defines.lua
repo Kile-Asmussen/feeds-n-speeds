@@ -98,13 +98,15 @@ defines.events = {
     on_surface_created = 60,
     on_surface_deleted = 61,
     on_chunk_generated = 62,
-
+    
     -- Misc
     on_tick = 100,
     on_nth_tick = 101,
     on_runtime_mod_setting_changed = 102,
     on_force_created = 103,
     on_forces_merged = 104,
+    
+    on_console_chat = 200,
 }
 
 defines.event_names = {}

@@ -126,7 +126,7 @@ end
 --- (searches the numeric keys)
 function table.remove_matching(array, thing)
     if type(thing) ~= 'function' then
-        thing = table.predicate(thing)
+        thing = table.matches(thing)
     end
     assert(type(array) == 'table', "argument #1 must be a table")
 

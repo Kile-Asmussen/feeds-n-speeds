@@ -30,16 +30,18 @@ function electric.data_updates()
         table.insert(data.raw.technology['electric-energy-distribution-1'].prerequisites, 'concrete')
 
         table.insert(data.raw.recipe['medium-electric-pole'].ingredients,
-            { type = "item", name = "concrete", amount = 2 }
+            { type = "item", name = "concrete", amount = 1 }
         )
 
         table.insert(data.raw.recipe['big-electric-pole'].ingredients,
-            { type = "item", name = "concrete", amount = 5 }
+            { type = "item", name = "concrete", amount = 4 }
         )
 
-        table.insert(data.raw.recipe['substation'].ingredients,
-            { type = "item", name = "concrete", amount = 20 }
-        )
+        if not enabled('tweaks.malltech') then
+            table.insert(data.raw.recipe['substation'].ingredients,
+                { type = "item", name = "concrete", amount = 10 }
+            )
+        end
     end
 end
 

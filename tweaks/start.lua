@@ -5,11 +5,13 @@ start.enabled = true
 
 function start.control()
     script.on_init(start.inventory)
-    script.on_load(start.fix_technologies)
+    script.on_event(defines.events.on_console_chat, start.fix_technologies)
 end
 
-function start.fix_technologies()
-    -- TODO
+function start.fix_technologies(event)
+    if event.message == 'reset-tech' and event.player_index then
+        game.players[event.player_index].force.reset_technology_effects()
+    end
 end
 
 function start.inventory()

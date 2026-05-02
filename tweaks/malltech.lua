@@ -120,10 +120,6 @@ function malltech.misc()
 
     table.insert(data.raw.technology['effect-transmission'].prerequisites, 'efficiency-module')
 
-    table.insert(recipe['substation'].ingredients,
-        { type='item', name='iron-stick', amount=5 }
-    )
-
     recipe['display-panel'].ingredients = table.clone(recipe['small-lamp'].ingredients)
 
     recipe['car'].ingredients = {
@@ -386,10 +382,22 @@ end
 function malltech.energy()
     data.raw.recipe['accumulator'].ingredients = {
         { type='item', name='battery', amount=5 },
-        { type='item', name='copper-cable', amount=5 },
-        { type='item', name='electronic-circuit', amount=3 },
-        { type='item', name='steel-plate', amount=2 },
+        { type='item', name='copper-cable', amount=3 },
+        { type='item', name='electronic-circuit', amount=1 },
+        { type='item', name='iron-plate', amount=2 },
     }
+
+    data.raw.recipe['substation'].ingredients = {
+        { type='item', name='big-power-pole', amount=1 },
+        { type='item', name='accumulator', amount=1 },
+        { type='item', name='advance-circuit', amount=5 },
+        { type='item', name='hazard-concrete', amount=10 }
+    }
+
+    table.insert(
+        data.raw.technology['electric-energy-distribution-2'].prerequisites,
+        'electric-energy-accumulators'
+    )
 
     if enabled('tweaks.electric') then
         data.raw.recipe['power-switch'].ingredients = {
@@ -404,6 +412,10 @@ function malltech.energy()
                 { type='item', name='hazard-concrete', amount=5 }
             )
         end
+
+        table.insert(data.raw.technology['electric-energy-distribution-2'].effects,
+            table.remove_matching( data.raw.technology['circuit-network'].effects, { recipe = 'power-switch' } )
+        )
     else
         data.raw.recipe['power-switch'].ingredients = {
             { type='item', name='electronic-circuit', amount=5 },
