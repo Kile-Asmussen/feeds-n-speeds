@@ -20,78 +20,25 @@ setmetatable(table.null, {
     __metatable = table.null,
 })
 
-function table.iscallable(fn)
-    return type(fn) == 'function' or
-        (type(fn) == 'table' and type(getmetatable(fn)) == 'table' and getmetatable(fn).__call ~= nil)
-end
-
---- Recurse into a table containing other tables
---- using a list of keys
-function table.descend(tbl, ...)
-    keys = table.pack(...)
-    
-    for _, key in ipairs(keys) do
-        if type(tbl) ~= 'table' then
-            return tbl, false
-        end
-
-        if tbl[key] then
-            tbl = tbl[key]
-        else
-            return tbl, false
-        end
-    end
-    
-    return tbl, true
-end
-
---- Remove an element matching a predicate from a table
---- (searches the numeric keys)
-function table.remove_matching(array, predicate)
-    assert(table.iscallable(predicate), "predicate must be a function")
-
-    local index = 0
-
-    for i, e in ipairs(array) do
-        if predicate(e) then
-            index = i
-            break
-        end
-    end
-
-    if index == 0 then return end
-
-    value = array[index]
-
-    table.remove(array, index)
-
-    return value
-end
-
---- Find an element matching a predicate among the numeric keys
-function table.find_matching(array, predicate)
-    assert(type(array) == 'table', "argument #1 must be a table")
-    assert(table.iscallable(predicate), "argument #2 must be callable")
-
-    for _, e in ipairs(array) do
-        if predicate(e) then
-            return e
-        end
-    end
-    return nil
-end
-
 --- Check if a reference table contains the same keys and elements
 --- as a candidate table. If candidate is not given, returns a predicate function instead.
-function table.matches(reference, candidate)
-    assert(type(reference) == "table", "Cannot match on non-table data of type " .. type(reference))
+function table.matches(reference, ...)
+    local args = table.pack(...)
 
-    if candidate == nil then
+    if args.n == 0 then
         return function(candidate)
-            if candidate == nil then return false end
             return table.matches(reference, candidate)
         end
     end
+
+    local candidate = args[1]
+
+    if type(reference) == 'function' then
+        return reference(candidate)
+    elseif type(reference) ~= 'table' then
+        return reference == candidate
+    end
+
 
     if type(candidate) ~= "table" then return false end
 
@@ -118,6 +65,95 @@ function table.matches(reference, candidate)
 
     return true
 end
+
+
+function table.search(tbl, thing)
+    if type(thing) ~= 'function' then
+        thing = table.matches(thing)
+    end
+
+    if thing(tbl) then return tbl end
+
+    if type(tbl) ~= 'table' then return nil end
+
+    for k, v in pairs(tbl) do
+        local found = table.search(v, thing)
+        if found then return found end
+    end
+
+    return nil
+end
+
+--- Recurse into a table containing other tables
+--- using a list of keys
+function table.descend(tbl, ...)
+    keys = table.pack(...)
+    
+    for _, key in ipairs(keys) do
+        if type(tbl) ~= 'table' then
+            return tbl, false
+        end
+
+        if tbl[key] then
+            tbl = tbl[key]
+        else
+            return tbl, false
+        end
+    end
+    
+    return tbl, true
+end
+
+function table.index_of(array, thing)
+    if type(thing) ~= 'function' then
+        thing = table.predicate(thing)
+    end
+    assert(type(array) == 'table', "argument #1 must be a table")
+
+    local index = nil
+
+    for i, e in ipairs(array) do
+        if thing(e, i) then
+            index = i
+            break
+        end
+    end
+
+    return index
+end
+
+--- Remove an element matching a predicate from a table
+--- (searches the numeric keys)
+function table.remove_matching(array, thing)
+    if type(thing) ~= 'function' then
+        thing = table.predicate(thing)
+    end
+    assert(type(array) == 'table', "argument #1 must be a table")
+
+    local ix = table.index_of(array, thing)
+    if ix then 
+        return table.remove(array, ix)
+    else
+        return nil
+    end
+end
+
+--- Find an element matching a predicate among the numeric keys
+function table.find_matching(array, thing)
+    if type(thing) ~= 'function' then
+        thing = table.matches(thing)
+    end
+    assert(type(array) == 'table', "argument #1 must be a table")
+
+    local ix = table.index_of(array, thing)
+    if ix then 
+        return array[ix]
+    else
+        return nil
+    end
+end
+
+
 
 function table.contains(tbl, val)
     assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(tbl))
@@ -223,6 +259,9 @@ function table.iall(tbl, func)
 end
 
 function table.all(tbl, func)
+    if type(func) ~= 'function' then
+        log(require('debuglib').pp(func))
+    end
     func = func or function(x) return x end
     for k, v in pairs(tbl) do
         if not func(v, k) then return false end
@@ -358,12 +397,12 @@ end
 
 function table.iall(tbl, pred)
     assert(type(tbl) == 'table', "argument #1 must be a table")
-    assert(table.iscallable(pred), "argument #2 must be callable")
     local res = true
-
+    
     if pred == nil then
         function pred(v) return v and true or false end
     end
+    assert(type(pred) == 'function', "argument #2 must be a function")
 
     for i, v in ipairs(tbl) do
         res = res and pred(v)

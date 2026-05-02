@@ -8,7 +8,7 @@ return {
     flags = { 'placeable-neutral' },
     order = 'a-b-f',
     minable = {
-        mining_time = 1,
+        mining_time = 2,
         required_fluid = 'steam',
         fluid_amount = 10,
         result = 'sulfur',

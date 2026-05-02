@@ -7,16 +7,9 @@ local utilities = require 'extras.utilities'
 local noise = {
     name = fns 'sulfur-ore',
     has_starting_area_placement = enabled('extras.drills', 'tweaks.earlygame') and 1 or 0,
-    base_density = 0.9,
     base_spots_per_km2 = 1.25,
-    has_starting_area_placement = 0,
-    random_spot_size_minimum = 1,
-    random_spot_size_maximum = 3,
-    random_spot_size_maximum = 3,
-
     regular_patch_set_index = "var('" .. fns 'sulfur-ore-regular-index' .. "')",
-    starting_rq_factor=10/70,
-    regular_rq_factor=0.1,
+    starting_rq_factor=11/70,
 }
 
 if enabled('extras.drills', 'tweaks.earlygame') then

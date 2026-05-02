@@ -184,6 +184,7 @@ function military.turrets()
     end
 
     data.raw['ammo-turret']['rocket-turret'].attack_parameters.cooldown = 40
+    data.raw['ammo-turret']['rocket-turret'].attack_parameters.min_range = 10
     
     data.raw['ammo-turret']['railgun-turret'].max_health = 800
     data.raw['electric-turret']['laser-turret'].max_health = 600
@@ -464,6 +465,22 @@ function military.technologies()
 
     tech['railgun-shooting-speed-1'].unit.ingredients = table.clone(tech['railgun'].unit.ingredients)
     tech['railgun-damage-1'].unit.ingredients = table.clone(tech['railgun'].unit.ingredients)
+
+
+
+    table.insert(tech['stronger-explosives-5'].effects,
+        { type='turret-attack', modifier = 0.4, turret_id = 'rocket-turret' }
+    )
+
+    table.insert(tech['stronger-explosives-6'].prerequisites, 'planet-discovery-gleba')
+
+    table.insert(tech['stronger-explosives-6'].effects,
+        { type='turret-attack', modifier = 0.5, turret_id = 'rocket-turret' }
+    )
+
+    table.insert(tech['stronger-explosives-7'].effects,
+        { type='turret-attack', modifier = 0.5, turret_id = 'rocket-turret' }
+    )
 end
 
 return military:__seal()

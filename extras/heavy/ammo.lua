@@ -6,15 +6,13 @@ local ushell_proj = table.clone(data.raw.projectile['piercing-shotgun-pellet'])
 local ushell_recipe = table.clone(data.raw.recipe['uranium-rounds-magazine'])
 
 ushell_proj.name = fns 'uranium-shotgun-pellet'
-ushell_proj.action.action_delivery.target_effects.damage.amount = 24
+ushell_proj.action.action_delivery.target_effects.damage.amount = 16
 
 ushell.name = fns 'uranium-shotgun-shell'
 
 ushell_recipe.name = ushell.name
 ushell_recipe.ingredients[1].name = 'piercing-shotgun-shell'
 ushell_recipe.results[1].name = ushell.name
-
-
 
 ushell.icon = nil
 ushell.icons = {

@@ -7,12 +7,14 @@ return {
         {
             icon = '__base__/graphics/icons/stone-furnace.png',
             icon_size = 64,
+            float=true,
             scale = 0.33,
             shift = { 0, -20 }
         },
         {
             icon = '__base__/graphics/icons/stone-furnace.png',
             icon_size = 64,
+            float=true,
             scale = 0.33,
             shift = { -15, -15 }
         },
@@ -20,12 +22,14 @@ return {
         {
             icon = '__base__/graphics/icons/stone-furnace.png',
             icon_size = 64,
+            float=true,
             scale = 0.33,
             shift = { 15, -15 }
         },
         {
             icon = '__base__/graphics/technology/steel-axe.png',
             icon_size = 256,
+            float=true,
             scale = 0.1875,
             shift = { 0, 5 }
         },        

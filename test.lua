@@ -38,9 +38,9 @@ local skip = {
     "stack traceback:",
     "debug/.*%.lua",
     "test%.lua",
-    "test/.*%.lua",
-    "prelude/.*%.lua",
-    "prelude%.lua",
+    -- "test/.*%.lua",
+    -- "prelude/.*%.lua",
+    -- "prelude%.lua",
     "%[C%]"
 }
 
@@ -54,11 +54,11 @@ function _G.log(str)
         l = l:gsub('^%s+', '')
         if not table.iany(skip, l:matched_by()) then
             lineno = l:match(':%d+:')
-            filename = l:sub(1, (l:find(lineno) or #l + 1) - 1)
+            filename = l:sub(1, (lineno and l:find(lineno) or #l + 1) - 1)
             break
         end
     end
-    local where = filename .. lineno
+    local where = filename .. tostring(lineno)
     if #where > 0 then
         print(where .. ' ' .. str)
     else

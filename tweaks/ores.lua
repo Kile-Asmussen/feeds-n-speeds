@@ -36,7 +36,6 @@ function ores.data_final_fixes()
     ores.fix_starting_patch_shape('default-iron-ore-patches')
     ores.fix_starting_patch_shape('default-copper-ore-patches')
     ores.fix_starting_patch_shape('default-coal-patches')
-    ores.fix_starting_patch_shape('default-crude-oil-patches')
     ores.fix_starting_patch_shape('default-stone-patches')
     ores.fix_starting_patch_shape('default-uranium-ore-patches')
     ores.fix_starting_patch_shape(fns 'sulfur-ore-patches')
@@ -47,7 +46,7 @@ function ores.fix_starting_patch_shape(name)
     local expr = noise.expression
 
     local mult = expr:match('starting_blob_amplitude_multiplier%s*=%s*%d+%.%d+')
-    local mult_num = tonumber(mult:match('%d+%.%d+')) / 2
+    local mult_num = tonumber(mult:match('%d+%.%d+')) / 1.5
     local new_mult = mult:gsub('%d+%.%d+', tostring(mult_num))
     expr = expr:gsub(mult, new_mult)
 

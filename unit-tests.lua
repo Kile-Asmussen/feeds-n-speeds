@@ -33,7 +33,7 @@ local __expect_not_ok = {}
 --- Register a test expected to pass
 function fact(description, test_func)
     assert(type(description) == 'string', 'test description must be a string')
-    assert(table.iscallable(test_func), 'test must be a function')
+    assert(type(test_func) == 'function', 'test must be a function')
     assert(__expect_ok[description] == nil, 'duplicate test: ' .. description)
     __expect_ok[description] = test_func
 end
@@ -41,7 +41,7 @@ end
 --- Register a test expected to fail (error)
 function fiction(description, test_func)
     assert(type(description) == 'string', 'test description must be a string')
-    assert(table.iscallable(test_func), 'test must be a function')
+    assert(type(test_func) == 'function', 'test must be a function')
     assert(__expect_not_ok[description] == nil, 'duplicate test: ' .. description)
     __expect_not_ok[description] = test_func
 end

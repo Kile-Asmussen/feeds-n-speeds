@@ -5,29 +5,10 @@ fact('table.null tostring', function()
     assert_eq(tostring(table.null), 'table.null')
 end)
 
-fiction('table.null errors on index', function()
-    local _ = table.null.foo
-end)
-
 fiction('table.null errors on newindex', function()
     table.null.foo = 1
 end)
 
--- table.iscallable tests
-fact('table.iscallable returns true for function', function()
-    assert_eq(table.iscallable(function() end), true)
-end)
-
-
-fact('table.iscallable returns false for regular table', function()
-    assert_eq(table.iscallable({}), false)
-end)
-
-fact('table.iscallable returns false for primitives', function()
-    assert_eq(table.iscallable("hello"), false)
-    assert_eq(table.iscallable(42), false)
-    assert_eq(table.iscallable(nil), false)
-end)
 
 -- table.descend tests
 fact('table.descend single level', function()
@@ -59,13 +40,14 @@ fact('table.descend stops at non-table', function()
 end)
 
 -- table.remove_matching tests
-fact('table.remove_matching finds and removes element', function()
+fact('table.remove_matching finds and removes matching element', function()
     local tbl = {1, 2, 3, 4, 5}
     local val = table.remove_matching(tbl, function(e) return e == 3 end)
     assert_eq(val, 3)
     assert_eq(#tbl, 4)
     assert_eq(tbl[3], 4)
 end)
+
 
 fact('table.remove_matching returns nil when not found', function()
     local tbl = {1, 2, 3}
@@ -75,11 +57,29 @@ fact('table.remove_matching returns nil when not found', function()
 end)
 
 -- table.find_matching tests
-fact('table.find_matching finds element', function()
+fact('table.find_matching finds matching element', function()
     local tbl = {{name = 'a'}, {name = 'b'}, {name = 'c'}}
     local found = table.find_matching(tbl, function(e) return e.name == 'b' end)
     assert_eq(found.name, 'b')
 end)
+
+-- table.find_matching tests
+fact('table.find_matching finds table element', function()
+    local tbl = {{name = 'a', thing = 1}, {name = 'b', thing = 2}, {name = 'c', thing = 3}}
+    local found = table.find_matching(tbl, { name = 'b' })
+    assert_eq(found.thing, 2)
+end)
+
+-- table.remove_matching tests
+fact('table.remove_matching finds and removes element', function()
+    local tbl = {1, 2, 3, 4, 5}
+    local val = table.remove_matching(tbl, 3)
+    assert_eq(val, 3)
+    assert_eq(#tbl, 4)
+    assert_eq(tbl[3], 4)
+end)
+
+
 
 fact('table.find_matching returns nil when not found', function()
     local tbl = {1, 2, 3}

@@ -100,13 +100,12 @@ function debuglib.function_signature(func, short)
         local args = line:match('%(.*%)') or '()'
         local arg_count = #(args:gsub(debuglib.IDENTIFIER, 'x'):gsub('[^x]', ''))
 
-        local decl_as = line:match('local%s+function%s+') or line:match('function%s')
+        local decl_as = line:match('local%s+function%s*') or line:match('function%s*')
         local name = line:sub(line:find(decl_as) + #decl_as, (line:find('%s*%(') or #line + 1) - 1)
-        if name == '' then
-            name = 'function'
-        end
         local scope = ''
-        if decl_as:match('local') then
+        if name:match('^%s*$') then
+            scope = 'function'
+        elseif decl_as:match('local') then
             scope = 'local function '
         elseif not name:find('%.') then
             scope = 'global function '

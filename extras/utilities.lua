@@ -22,7 +22,7 @@ function utilities.resource_autoplace_all_patches(tbl)
         "seed1=", tbl.seed1 or 400, ",",
         "starting_blob_amplitude_multiplier=", tbl.starting_blob_amplitude_multiplier or 0.125, ",",
         "starting_patch_set_count=", tbl.starting_patch_set_count or "default_starting_resource_patch_set_count", ",",
-        "starting_rq_factor=", tbl.starting_rq_factor or 10/70, "}",
+        "starting_rq_factor=", tbl.starting_rq_factor or 12/70, "}",
     }
     return expr
 

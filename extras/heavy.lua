@@ -21,6 +21,29 @@ function heavy_weapons.data_updates()
         table.insert(data.raw.technology['uranium-ammo'].effects,
         {type='unlock-recipe', recipe=fns 'uranium-shotgun-shell'})
     end
+
+    for i = 2, 7 do
+        local ppd = data.raw.technology['physical-projectile-damage-' .. i]
+        
+        local turret = table.clone(table.find_matching(ppd.effects, {type='turret-attack'}))
+
+        turret.turret_id = fns 'shotgun-turret'
+        turret.modifier = 0.15
+
+        table.insert(ppd.effects, turret)
+    end
+
+    local debuglib = require 'debuglib'
+
+    for n, ammo in pairs(data.raw.ammo) do
+        if ammo.ammo_category == 'shotgun-shell' then 
+            local shoot = table.search(ammo.ammo_type, { type = 'projectile' })
+            
+            local proj = data.raw.projectile[shoot.projectile]
+
+            proj.action.force = 'enemy'
+        end
+    end
 end
 
 return heavy_weapons:__seal()
