@@ -37,11 +37,11 @@ function heavy_weapons.data_updates()
 
     for n, ammo in pairs(data.raw.ammo) do
         if ammo.ammo_category == 'shotgun-shell' then 
-            local shoot = table.search(ammo.ammo_type, { type = 'projectile' })
-            
-            local proj = data.raw.projectile[shoot.projectile]
+            local proj = table.search(ammo.ammo_type, { type = 'projectile' })
 
-            proj.action.force = 'enemy'
+            proj = data.raw.projectile[proj.projectile]
+
+            proj.force_condition = 'enemy'
         end
     end
 end

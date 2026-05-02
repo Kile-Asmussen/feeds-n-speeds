@@ -23,6 +23,7 @@
 ### Minor tweaks
 
 **Earlygame:**
+- [ ] Change starting inventory: remove burner-mining-drill, add shotgun + shotgun shells alongside the pistol
 - [ ] Steam power should take more crafted steel to unlock (10)
   - [ ] remove steel pickaxe too and just put the mining upgrade under steam power
 - [ ] Burner drills should take steel plate (1) to craft

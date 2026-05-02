@@ -55,5 +55,6 @@ tweaks.textplates = require 'tweaks.textplates'
 tweaks.batteries = require 'tweaks.batteries'
 tweaks.robotics = require 'tweaks.robotics'
 tweaks.military = require 'tweaks.military'
+tweaks.start = require 'tweaks.start'
 
 return tweaks:__seal()
