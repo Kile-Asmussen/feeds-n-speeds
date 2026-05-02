@@ -74,6 +74,7 @@ function military.guns()
             { type='item', name='copper-plate', amount=2 },
             { type='item', name='iron-plate', amount=4 },
             { type='item', name='iron-gear-wheel', amount=4 },
+            { type='item', name='steel-plate', amount=1 },
             { type='item', name='wood', amount=2 },
         }
 
@@ -83,6 +84,7 @@ function military.guns()
                 { type='item', name='iron-plate', amount=4 },
                 { type='item', name='iron-gear-wheel', amount=4 },
                 { type='item', name='wood', amount=2 },
+                { type='item', name='steel-plate', amount=1 },
             }
         end
 
@@ -319,13 +321,13 @@ function military.ammo()
     recipes['distractor-capsule'].ingredients = {
         { type = 'item', name = 'solid-fuel', amount = 3 },
         { type = 'item', name = 'iron-gear-wheel', amount = 3 },
-        { type = 'item', name = 'defender-capsule', amount = 1 },
         { type = 'item', name = 'advanced-circuit', amount = 1 },
-        { type = 'item', name = 'battery', amount = 3 },
+        { type = 'item', name = 'battery', amount = 5 },
     }
 
     recipes['destroyer-capsule'].ingredients = {
         { type = 'item', name = 'rocket-fuel', amount = 1 },
+        { type = 'item', name = 'iron-gear-wheel', amount = 5 },
         { type = 'item', name = 'advanced-circuit', amount = 5 },
         { type = 'item', name = 'copper-cable', amount = 10 },
         { type = 'item', name = 'battery', amount = 10 },
