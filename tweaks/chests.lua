@@ -58,4 +58,4 @@ function chests.data_updates()
     end
 end
 
-return chests:__seal()
+return seal_namespace(chests)
