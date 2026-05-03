@@ -9,5 +9,5 @@ crate-type = ["cdylib"]
 [dependencies]
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = { version = "1.0.149" }
-mlua = { version = "0.11.6", features = ["lua52", "module"] }
+mlua = { version = "0.12.0-rc.1", features = ["lua52", "module"] }
 assert-impl = "0.1.3"
