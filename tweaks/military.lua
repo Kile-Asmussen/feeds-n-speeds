@@ -160,7 +160,7 @@ function military.turrets()
             { type='item', name='battery', amount=10 },
             { type='item', name='advanced-circuit', amount=5 },
             { type='item', name='electric-engine-unit', amount=2 },
-            { type='item', name='small-lamp', amount=100 },
+            { type='item', name='small-lamp', amount=10 },
         }
 
         table.append(recipes['tesla-turret'].ingredients, {
