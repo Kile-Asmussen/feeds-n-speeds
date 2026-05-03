@@ -22,6 +22,8 @@ function heavy_weapons.data_updates()
         {type='unlock-recipe', recipe=fns 'uranium-shotgun-shell'})
     end
 
+    fns_locale_key('modifier-description', 'shotgun-turret-attack-bonus')
+
     for i = 2, 7 do
         local ppd = data.raw.technology['physical-projectile-damage-' .. i]
         

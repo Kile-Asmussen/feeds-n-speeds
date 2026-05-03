@@ -487,7 +487,7 @@ function military.technologies()
     tech['railgun-shooting-speed-1'].unit.ingredients = table.clone(tech['railgun'].unit.ingredients)
     tech['railgun-damage-1'].unit.ingredients = table.clone(tech['railgun'].unit.ingredients)
 
-
+    fns_locale_key("modifier-description", "rocket-turret-attack-bonus")
 
     table.insert(tech['stronger-explosives-5'].effects,
         { type='turret-attack', modifier = 0.4, turret_id = 'rocket-turret' }
