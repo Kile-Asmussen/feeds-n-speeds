@@ -5,11 +5,7 @@ local technologies = namespace 'tweaks.technologies'
 technologies.enabled = true
 
 function technologies.data()
-    if enabled('tweaks.earlygame') then
-        data:extend{
-            require 'tweaks.technologies.lab-technology'
-        }
-    end
+
 end
 
 function technologies.data_updates()
@@ -18,6 +14,7 @@ function technologies.data_updates()
 
     local tech = data.raw.technology
 
+    table.insert(tech['logistic-science-pack'].prerequisites, 'logistics')
 
     if enabled('tweaks.earlygame') then
         tech['automation-science-pack'].prerequisites = {

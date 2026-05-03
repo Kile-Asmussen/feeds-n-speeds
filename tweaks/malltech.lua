@@ -388,9 +388,9 @@ function malltech.energy()
     }
 
     data.raw.recipe['substation'].ingredients = {
-        { type='item', name='big-power-pole', amount=1 },
+        { type='item', name='big-electric-pole', amount=1 },
         { type='item', name='accumulator', amount=1 },
-        { type='item', name='advance-circuit', amount=5 },
+        { type='item', name='advanced-circuit', amount=5 },
         { type='item', name='hazard-concrete', amount=10 }
     }
 

@@ -33,7 +33,7 @@ local function __ns_not_found(self, name)
     assert(tostring(self) .. '.' .. name .. ' not found')
 end
 
-local function __ns_path(self) return 'namespace:' .. tostring(paths[self]) end
+local function __ns_path(self) return paths[self] end
 
 local __ns_mt = {
     __tostring = __ns_path,

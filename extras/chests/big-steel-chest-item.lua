@@ -26,8 +26,6 @@ return {
     volume = 0.6
   },
   name = fns 'big-steel-chest',
-  localised_name = {"", { fns_locale_key( 'entity-name', 'big-steel-chest') }},
-  localised_description = {"", { fns_locale_key( 'entity-description', 'big-steel-chest') }},
   order = 'a[items]-d[big-steel-chest]',
   pick_sound = {
     aggregation = {

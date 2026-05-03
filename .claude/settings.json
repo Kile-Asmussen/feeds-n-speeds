@@ -11,6 +11,7 @@
       "Edit(extras/*.lua)",
       "Edit(extras/**/*.lua)",
       "Edit(locale/**/*)",
+      "Edit(test/localisation.lua)",
       "Edit(slop/**/*)",
       "Edit(src/*)",
       "Edit(tweaks/*.lua)",

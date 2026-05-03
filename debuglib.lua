@@ -217,17 +217,7 @@ function debuglib.print_keyval_pairs(buffer, data)
 
   local first = true
 
-  local keys = table.sorted_keys(data, 'string')
-  local extrakeys = {}
-
-  for k, _ in pairs(data) do
-    if type(k) == 'table' then
-        table.insert(extrakeys, k)
-    end
-  end
-  table.sort(extrakeys, function(a, b) return tostring(a) < tostring(b) end)
-
-  table.append(keys, extrakeys)
+  local keys = table.sorted_keys(data)
 
   for i, k in ipairs(keys) do
 

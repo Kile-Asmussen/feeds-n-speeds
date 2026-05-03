@@ -43,31 +43,52 @@ function localisation.skip_key(cat, key, reason)
     table.insert(localisation.skipped_keys[cat][key], reason)
 end
 
+local ITEM_TYPES = table.set{
+    'item', 'ammo', 'capsule', 'gun', 'module', 'tool', 'armor', 'repair-tool',
+    'blueprint', 'blueprint-book', 'deconstruction-item', 'upgrade-item',
+    'copy-paste-tool', 'selection-tool', 'spidertron-remote',
+    'item-with-entity-data', 'item-with-label', 'item-with-inventory',
+    'item-with-tags', 'rail-planner', 'space-platform-starter-pack',
+}
+
+local EQUIPMENT_TYPES = table.set{
+    'active-defense-equipment', 'battery-equipment', 'belt-immunity-equipment',
+    'energy-shield-equipment', 'equipment-ghost', 'generator-equipment',
+    'inventory-bonus-equipment', 'movement-bonus-equipment',
+    'night-vision-equipment', 'roboport-equipment', 'solar-panel-equipment',
+}
+
 function localisation.key_category(proto)
-    --[[
-        HI CLAUDE!
-        
-        This function is brittle and incomplete. Can you find some way to robustly
-        determine whether a prototype is an entity?
-        
-        (If there isn't something shorter/cleverer, the solution can just be with a big table
-        exhaustively listing the mappings.)
-    ]]
-
-    if
-        proto.type == 'item'
-        or proto.type == 'recipe'
-        or proto.type == 'technology'
-        or proto.type == 'autoplace-control'
-    then
-        return proto.type
-        
-    elseif proto.type:match('%-turret$') then
-        return 'turret'
-
-    elseif proto.type:match("%-setting$") then
+    if ITEM_TYPES[proto.type] then
+        return 'item'
+    elseif EQUIPMENT_TYPES[proto.type] then
+        return 'equipment'
+    elseif proto.type == 'fluid' then
+        return 'fluid'
+    elseif proto.type == 'tile' then
+        return 'tile'
+    elseif proto.type == 'recipe' then
+        return 'recipe'
+    elseif proto.type == 'technology' then
+        return 'technology'
+    elseif proto.type == 'autoplace-control' then
+        return 'autoplace-control'
+    elseif proto.type:match('%-setting$') then
         return 'mod-setting'
-
+    elseif proto.type == 'noise-expression'
+        or proto.type == 'noise-function'
+        or proto.type == 'recipe-category'
+        or proto.type == 'resource-category'
+        or proto.type == 'fuel-category'
+        or proto.type == 'ammo-category'
+        or proto.type == 'damage-type'
+        or proto.type == 'collision-layer'
+        or proto.type == 'deliver-category'
+        or proto.type == 'module-category'
+        or proto.type == 'equipment-category'
+        or proto.type == 'burner-usage'
+    then
+        return nil
     else
         return 'entity'
     end
@@ -93,9 +114,11 @@ function localisation.register(proto)
     end
     
     local category = localisation.key_category(proto)
+    if not category then return end
+
     local loc_name = category .. '-name'
     local loc_desc = category .. '-description'
-    
+
     localisation.add_key(loc_name, proto_name, proto.localised_name)
     localisation.add_key(loc_desc, proto_name, proto.localised_description)
 end
@@ -148,33 +171,99 @@ function localisation.add_manual_keys()
 end
 
 function localisation.winnow_unneeded_keys()
-    --[[
-        HI CLAUDE!
-        This is your task. Write this function out to determine whether a key is
-        strictly speaking unnecessary.
+    local function skip_pair(base_cat, proto_name, reason)
+        localisation.skip_key(base_cat .. '-name', proto_name, reason)
+        localisation.skip_key(base_cat .. '-description', proto_name, reason)
+    end
 
-        There's an algorithm for it below. Do note the changes to add_key which now saves the localised
+    local function proto_has_explicit_locale(cat_name, proto_name)
+        local cat = localisation.keys[cat_name]
+        return cat and cat[proto_name] and not table.is_empty(cat[proto_name])
+    end
 
-        Here's the algorithm:
-    
-        c.f. https://wiki.factorio.com/Tutorial:Localisation
+    -- General pass: a non-empty localised_name/description on the prototype means
+    -- Factorio uses it directly and never consults the locale file for that key.
+    for cat_name, keys in pairs(localisation.keys) do
+        local base_cat = cat_name:gsub('%-name$', ''):gsub('%-description$', '')
+        for proto_name, content in pairs(keys) do
+            if not table.is_empty(content) then
+                skip_pair(base_cat, proto_name, 'prototype provides localised string directly')
+            end
+        end
+    end
 
-        Default behavior of factorio in determining localised_name
+    -- Item-specific pass: items with no explicit localised_name can still inherit
+    -- from place_result or placed_as_equipment_result.
+    local function result_covered(result_name, result_locale_cat)
+        if not result_name then return false end
+        -- result has explicit localised_name → Factorio uses it
+        if proto_has_explicit_locale(result_locale_cat .. '-name', result_name) then return true end
+        -- result has no explicit string → Factorio falls back to the locale file key
+        local result_keys = localisation.keys[result_locale_cat .. '-name']
+        return result_keys ~= nil and result_keys[result_name] ~= nil
+    end
 
-        1. if localised_name is provided in the item prototype which is not table.is_empty, then skip it
+    for item_name, _ in pairs(localisation.keys['item-name'] or {}) do
+        local proto
+        for type_name, _ in pairs(ITEM_TYPES) do
+            local cat = data.raw[type_name]
+            if cat and cat[item_name] then
+                proto = cat[item_name]
+                break
+            end
+        end
+        if not proto then goto continue end
 
-        2. if there is place_result and it has localised_name that is not table.is_empty, use the localised_name of place_result
+        if result_covered(proto.place_result, 'entity') then
+            skip_pair('item', item_name, 'inherited from place_result entity locale')
+        elseif result_covered(proto.placed_as_equipment_result, 'equipment') then
+            skip_pair('item', item_name, 'inherited from placed_as_equipment_result locale')
+        end
 
-        3. if there is place_result with an empty localised_name, use 'entity-name.<name of that prototype>'
+        ::continue::
+    end
 
-        4. if there is placed_as_equipment_result then use the same algorithm as step 2 and 3 but with placed_as_equipment_result instead of place_result
-        
-        6. if all else fails that requires a real 'item-name.<item name>'' key
+    -- Recipe pass: a recipe whose main product item is already covered needs no
+    -- recipe-name/description locale entry either.
+    local function product_is_covered(name)
+        for _, cat in ipairs{'item', 'fluid'} do
+            local skipped = localisation.skipped_keys[cat .. '-name']
+            if skipped and skipped[name] then return true end
+            if proto_has_explicit_locale(cat .. '-name', name) then return true end
+            local keys = localisation.keys[cat .. '-name']
+            if keys and keys[name] then return true end
+        end
+        return false
+    end
 
-        (localised_description works the same)
-    ]]
+    local function recipe_main_product(recipe)
+        if recipe.main_product == "" then return nil end
+        if recipe.main_product then
+            -- find it in results
+            for _, r in ipairs(recipe.results or {}) do
+                if r.name == recipe.main_product and r.type ~= 'fluid' then
+                    return r.name
+                end
+            end
+            return nil
+        end
+        -- no main_product field: covered only if exactly one result of any type
+        local results = recipe.results or {}
+        if #results == 1 then return results[1].name end
+        return nil
+    end
 
-    localisation.skip_key("entity", "skip-this-key", "because of reasons")
+    for recipe_name, _ in pairs(localisation.keys['recipe-name'] or {}) do
+        local proto = data.raw['recipe'] and data.raw['recipe'][recipe_name]
+        if not proto then goto continue2 end
+
+        local main = recipe_main_product(proto)
+        if main and product_is_covered(main) then
+            skip_pair('recipe', recipe_name, 'inherited from main product item locale')
+        end
+
+        ::continue2::
+    end
 end
 
 function localisation.finalize()
@@ -196,15 +285,16 @@ function localisation.list_missing_locale_keys()
         local any = false
         local keys_in_cat = table.sorted_keys(localisation.keys[cat])
 
+        local skipped = localisation.skipped_keys[cat] or {}
+
         for _, key in ipairs(keys_in_cat) do
-            if not locale_map[cat] or not locale_map[cat][key] then
+            if not skipped[key] and (not locale_map[cat] or not locale_map[cat][key]) then
                 if not any then
                     any = true
                     table.insert(res, '[' .. cat .. ']')
                 end
                 table.insert(res, key .. '=')
             end
-
         end
     end
 

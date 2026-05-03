@@ -305,20 +305,38 @@ function table.clone(tbl)
     return clone_with({})(tbl)
 end
 
-function table.sorted_keys(tbl, only)
+function table.unsorted_keys(tbl)
     local res = {}
-    assert(only == nil or type(only) == 'string', 'argument #2 (optional) must be a string')
-    if only then
-        for k, _ in pairs(tbl) do
-            if type(k) == only then
-                table.insert(res, k)
-            end
-        end
-    else
-        for k, _ in pairs(tbl) do
+     for k, _ in pairs(tbl) do
+        table.insert(res, k)
+    end
+    return res
+end
+
+local types = {
+    string = true,
+    number = true,
+    boolean = true,
+    table = true,
+    userdata = true,
+    coroutine = true,
+    ['nil'] = true,
+    ['function'] = true
+}
+
+function table.unsorted_keys_of(tbl, only)
+    local res = {}
+    assert(types[only], 'argument #2 must be the name of a type')
+     for k, _ in pairs(tbl) do
+        if type(k) == only then
             table.insert(res, k)
         end
     end
+    return res
+end
+
+function table.sorted_keys(tbl)
+    local res = table.unsorted_keys_of(tbl, 'string')
     table.sort(res)
     return res
 end

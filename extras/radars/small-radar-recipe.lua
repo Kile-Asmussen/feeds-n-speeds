@@ -17,8 +17,6 @@ return {
       type = 'item'
     }
   },
-  localised_name = { "", {fns_locale_key('entity-name', 'small-radar')} },
-  localised_description = {"", {fns_locale_key("entity-description",'small-radar')} },
   name = fns 'small-radar',
   results = {
     {

@@ -5,18 +5,11 @@ earlygame.enabled = true
 
 function earlygame.data_updates()
     if not earlygame.enabled then return end
+    
+    data:extend{ require 'tweaks.earlygame.lab-technology' }
 
     earlygame.tweak_technologies()
     earlygame.tweak_recipes()
-    earlygame.tweak_military()
-end
-
-function earlygame.tweak_military()
-    local extras = import 'extras'
-    local tweaks = import 'tweaks'
-
-    local tech = data.raw.technology
-    local recipes = data.raw.recipe
 end
 
 function earlygame.tweak_technologies()
@@ -24,16 +17,18 @@ function earlygame.tweak_technologies()
 
     local tech = data.raw.technology
 
-    tech['steel-processing'].research_trigger = {
+    local steel = tech['steel-processing']
+
+    steel.research_trigger = {
         count = 10,
         item = 'iron-plate',
         type = 'craft-item'
     }
 
-    tech['steel-processing'].unit = nil
-    tech['steel-processing'].prerequisites = nil
+    steel.unit = nil
+    steel.prerequisites = nil
 
-    tech['steel-processing'].effects = {
+    steel.effects = {
         { type = 'unlock-recipe', recipe = 'steel-plate' },
         { type = 'unlock-recipe', recipe = 'iron-stick' },
         { type = 'unlock-recipe', recipe = 'iron-gear-wheel' },
@@ -41,8 +36,10 @@ function earlygame.tweak_technologies()
         { type = 'unlock-recipe', recipe = 'steel-chest' }
     }
 
-    tech['steel-processing'].localised_description = {'technology-description.feeds-n-speeds-tweaked-steel-processing'}
+    steel.localised_description = {"", {fns_locale_key('technology-description', 'tweaked-steel-processing')}}
 
+    table.remove_matching(tech['electronics'].effects, {recipe='inserter'})
+    tech['electronics'].localised_description = {"", {fns_locale_key("technology-description", 'tweaked-electronics')}}
 
     if enabled('extras.chests') then
 
@@ -56,6 +53,8 @@ function earlygame.tweak_technologies()
     end
 
     local steam_power = data.raw.technology['steam-power']
+
+    steam_power.localised_description = {"", { fns_locale_key('technology-description', 'tweaked-steam-power') } }
 
     steam_power.research_trigger = {
         count = 10,
@@ -78,7 +77,6 @@ function earlygame.tweak_technologies()
         { type = 'unlock-recipe', recipe = 'burner-mining-drill' }
     )
 
-    table.insert(tech['logistic-science-pack'].prerequisites, 'logistics')
 
     if enabled('extras.altrecipes') then
         tech[fns 'basic-materials-processing'].research_trigger = {
