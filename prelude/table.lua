@@ -15,7 +15,6 @@ table.null = {}
 
 setmetatable(table.null, {
     __tostring = function() return 'table.null' end,
-    __index = function() end,
     __newindex = function() error("table.null is immutable") end,
     __metatable = table.null,
 })
@@ -24,6 +23,7 @@ setmetatable(table.null, {
 --- as a candidate table. If candidate is not given, returns a predicate function instead.
 function table.matches(reference, ...)
     local args = table.pack(...)
+    assert(args.n <= 1, "Too many arguments, expected 0 or 1")
 
     if args.n == 0 then
         return function(candidate)
@@ -106,7 +106,7 @@ end
 
 function table.index_of(array, thing)
     if type(thing) ~= 'function' then
-        thing = table.predicate(thing)
+        thing = table.matches(thing)
     end
     assert(type(array) == 'table', "argument #1 must be a table")
 
@@ -138,7 +138,7 @@ function table.remove_matching(array, thing)
     end
 end
 
---- Find an element matching a predicate among the numeric keys
+--- Find an element matching a predicate/table pattern among the numeric keys
 function table.find_matching(array, thing)
     if type(thing) ~= 'function' then
         thing = table.matches(thing)
@@ -153,65 +153,69 @@ function table.find_matching(array, thing)
     end
 end
 
-
-
-function table.contains(tbl, val)
-    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(tbl))
-    for _, v in ipairs(tbl) do
-        if v == val then return true end
-    end
-    return val
+function table.is_empty(tbl)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    return not next(tbl)
 end
 
-function table.is_populated(tbl)
-    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(tbl))
-    for _ in pairs(tbl) do
-        return true
-    end
-    return false
+function table.has_array(tbl)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    return table.maxn(tbl) ~= 0
 end
 
-function table.is_hash(tbl)
-    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(tbl))
-    for k, _ in pairs(tbl) do
-        if type(k) ~= 'number' then
-            return true
-        end
-    end
-    return false
+function table.is_assoc(tbl)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    return table.is_empty(tbl) or not table.has_array(tbl)
 end
 
 function table.is_array(tbl)
-    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(tbl))
-    for k, _ in ipairs(tbl) do
-        return true
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    local k
+    repeat
+        k = next(tbl, k)
+    until type(k) ~= 'number'
+    return k == nil
+end
+
+function table.has_assoc(tbl)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    local k
+    repeat
+        k = next(tbl, k)
+    until type(k) ~= 'number' or k == nil
+    return k ~= nil and type(k) ~= 'number'
+end
+
+function table.size(tbl)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    local k = next(tbl)
+    local n = 0
+    while k do
+        n = n + 1
+        k = next(tbl, k)
     end
-    return false
+    return n
 end
 
 function table.imap(tbl, func)
-    assert(type(tbl) == "table", "Argument #1 cannot match on non-table data of type " .. type(tbl))
+    assert(type(tbl) == "table", "argument #1 must be a table")
     for i, v in ipairs(tbl) do
         tbl[i] = func(v, i)
     end
     return tbl
 end
 
-function table.ieach(tbl, func)
+function table.each(tbl, func)
+    assert(type(tbl) == "table", "argument #1 must be a table")
     for i, v in ipairs(tbl) do
         func(v, i)
     end
     return tbl
 end
 
-function table.project(tbl, func)
-    for k, v in pairs(tbl) do
-        tbl[k] = func(v, k)
-    end
-    return tbl
-end
-
 function table.map(tbl, func)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    assert(type(func) == "function", "argument #2 must be a function")
     for k, v in pairs(tbl) do
         tbl[k] = func(v, k)
     end
@@ -219,6 +223,8 @@ function table.map(tbl, func)
 end
 
 function table.icollect(tbl, func)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    assert(type(func) == "function", "argument #2 must be a function")
     local res = {}
     for i, v in ipairs(tbl) do
         res[i] = func(v, i)
@@ -227,6 +233,8 @@ function table.icollect(tbl, func)
 end
 
 function table.collect(tbl, func)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    assert(type(func) == "function", "argument #2 must be a function")
     local res = {}
     for k, v in pairs(tbl) do
         res[k] = func(v, k)
@@ -235,7 +243,9 @@ function table.collect(tbl, func)
 end
 
 function table.iany(tbl, func)
+    assert(type(tbl) == "table", "argument #1 must be a table")
     func = func or function(x) return x end
+    assert(type(func) == "function", "argument #2 must be a function")
     for i, v in ipairs(tbl) do
         if func(v, i) then return true end
     end
@@ -243,7 +253,9 @@ function table.iany(tbl, func)
 end
 
 function table.any(tbl, func)
+    assert(type(tbl) == "table", "argument #1 must be a table")
     func = func or function(x) return x end
+    assert(type(func) == "function", "argument #2 must be a function")
     for k, v in pairs(tbl) do
         if func(v, k) then return true end
     end
@@ -511,9 +523,7 @@ local __proxy_mt = {
     __metatable = __proxy_mt
 }
 
-local print = _G.print
 local function monkeypatch()
-    print("monkeypatching table functions")
     local unpack = table.unpack
     function table.unpack(tbl)
         if getmetatable(tbl) == __proxy_mt then

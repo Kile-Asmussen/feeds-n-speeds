@@ -13,7 +13,7 @@
         "Cargo.toml": "Cargo.lock",
         ".envrc": "flake.nix",
         "flake.nix": "flake.lock",
-        "info.json": "changelog.txt, thumbnail.png, Makefile",
+        "info.json": "changelog.txt, thumbnail.png",
         "test.lua": "rawdata.so",
         "README.md": "CLAUDE.md, LICENSE",
         ".gitignore": ".gitattributes",

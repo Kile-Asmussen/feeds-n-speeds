@@ -31,4 +31,4 @@ function radars.data_updates()
     ingredient.name = fns 'small-radar'
 end
 
-return radars:__seal()
+return seal_namespace(radars)

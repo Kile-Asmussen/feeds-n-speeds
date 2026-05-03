@@ -35,12 +35,6 @@ function string.rpad(self, length, char)
     return self .. char:rep(length - #self)
 end
 
-function string.predicate(needle, func)
-    func = func or string.match
-    assert(table.iscallable(func), "Predicate given isn't callable.")
-    return function(haystack) return func(haystack, needle) end
-end
-
 function string.sprint(...)
     return table.concat(table.imap(table.pack(...), tostring), '\t')
 end
@@ -89,16 +83,12 @@ function string.tablepath(base, path)
     return table.concat(res)
 end
 
-function string.matcher(needle, index, plain)
+function string.pattern(needle, index, plain)
     return function(haystack) return haystack:match(needle, index, plain) end
 end
 
-function string.matched_by(haystack, index, plain)
+function string.match_function(haystack, index, plain)
     return function(needle) return haystack:match(needle, index, plain) end
-end
-
-function string.matches(needle, haystack, index, plain)
-    return haystack:match(needle, index, plain)
 end
 
 function string.repr(str)

@@ -49,4 +49,4 @@ function robotics.data_updates()
 
 end
 
-return robotics:__seal()
+return seal_namespace(robotics)

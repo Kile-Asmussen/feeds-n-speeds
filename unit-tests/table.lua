@@ -15,28 +15,28 @@ fact('table.descend single level', function()
     local tbl = {a = 1}
     local val, hit = table.descend(tbl, 'a')
     assert_eq(val, 1)
-    assert_ok(hit)
+    assert(hit)
 end)
 
 fact('table.descend multiple levels', function()
     local tbl = {a = {b = {c = 42}}}
     local val, hit = table.descend(tbl, 'a', 'b', 'c')
     assert_eq(val, 42)
-    assert_ok(hit)
+    assert(hit)
 end)
 
 fact('table.descend returns value, false for missing key', function()
     local tbl = {a = 1}
     local val, hit = table.descend(tbl, 'a', 'b')
     assert_eq(val, 1)
-    assert_ok(not hit)
+    assert(not hit)
 end)
 
 fact('table.descend stops at non-table', function()
     local tbl = {a = 42}
     local val, hit = table.descend(tbl, 'a', 'b')
     assert_eq(val, 42)
-    assert_ok(not hit)
+    assert(not hit)
 end)
 
 -- table.remove_matching tests
@@ -117,41 +117,50 @@ fact('table.matches with predicate function', function()
     assert_eq(table.matches({a = pred}, {a = 3}), false)
 end)
 
--- table.contains tests
-fact('table.contains finds value', function()
-    assert_eq(table.contains({1, 2, 3}, 2), true)
-end)
-
-fact('table.contains returns value when not found', function()
-    assert_eq(table.contains({1, 2, 3}, 99), 99)
-end)
-
 -- table.is_populated tests
-fact('table.is_populated returns true for non-empty', function()
-    assert_eq(table.is_populated({1}), true)
-    assert_eq(table.is_populated({a = 1}), true)
+fact('table.is_empty returns false for non-empty', function()
+    assert(not table.is_empty({1}))
+    assert(not table.is_empty({a = 1}))
 end)
 
-fact('table.is_populated returns false for empty', function()
-    assert_eq(table.is_populated({}), false)
+fact('table.is_populated returns true for empty', function()
+    assert(table.is_empty({}))
 end)
 
--- table.is_hash tests
-fact('table.is_hash returns true for string keys', function()
-    assert_eq(table.is_hash({a = 1}), true)
-end)
+-- table.is_assoc, has_assoc tests
+fact('table.is_assoc and has_assoc properties', function()
+    assert(    table.is_assoc({a = 1}))
+    assert(    table.has_assoc({a = 1}))
 
-fact('table.is_hash returns false for numeric only', function()
-    assert_eq(table.is_hash({1, 2, 3}), false)
+    assert(not table.is_assoc({1, 2, 3}))
+    assert(not table.has_assoc({1, 2, 3}))
+
+    assert(not table.is_assoc({3, n = 1}))
+    assert(    table.has_assoc({3, n = 1}))
+
+    assert(    table.is_assoc({}))
+    assert(not table.has_assoc({}))
+
+    assert(not table.is_assoc({[100] = 'a'}))
+    assert(not table.has_assoc({[100] = 'a'}))
 end)
 
 -- table.is_array tests
-fact('table.is_array returns true for numeric keys', function()
-    assert_eq(table.is_array({1, 2, 3}), true)
-end)
+fact('table.is_array and has_array properties', function()
+    assert(not table.is_array({a = 1}))
+    assert(not table.has_array({a = 1}))
 
-fact('table.is_array returns false for empty', function()
-    assert_eq(table.is_array({}), false)
+    assert(    table.is_array({1, 2, 3}))
+    assert(    table.has_array({1, 2, 3}))
+    
+    assert(not table.is_array({3, n = 1}))
+    assert(    table.has_array({3, n = 1}))
+
+    assert(    table.is_array({}))
+    assert(not table.has_array({}))
+
+    assert(    table.is_array({[100] = 'a'}))
+    assert(    table.has_array({[100] = 'a'}))
 end)
 
 -- table.imap tests
@@ -168,17 +177,9 @@ end)
 fact('table.ieach iterates without modifying', function()
     local tbl = {1, 2, 3}
     local sum = 0
-    table.ieach(tbl, function(v) sum = sum + v end)
+    table.each(tbl, function(v) sum = sum + v end)
     assert_eq(sum, 6)
     assert_eq(tbl[1], 1)
-end)
-
--- table.project tests
-fact('table.project transforms all keys in place', function()
-    local tbl = {a = 1, b = 2}
-    table.project(tbl, function(v) return v * 10 end)
-    assert_eq(tbl.a, 10)
-    assert_eq(tbl.b, 20)
 end)
 
 -- table.map tests
@@ -196,7 +197,7 @@ fact('table.clone deep copies', function()
     local tbl2 = table.clone(tbl)
     assert_eq(tbl2.a, 1)
     assert_eq(tbl2.b.c, 2)
-    assert_ok(tbl2.b ~= tbl.b, 'should be different reference')
+    assert(tbl2.b ~= tbl.b, 'should be different reference')
 end)
 
 -- table.sorted_keys tests
@@ -301,7 +302,7 @@ fact('table.traverse visits nested tables', function()
     table.traverse(tbl, function(v, k)
         table.insert(visited, k)
     end)
-    assert_ok(#visited >= 2)
+    assert(#visited >= 2)
 end)
 
 fact('table.traverse can replace values', function()

@@ -1,4 +1,4 @@
--- Predicate for localization stub generation.
+-- Predicate for localisation stub generation.
 -- Returns true if a prototype's name/description stubs can be skipped
 -- because Factorio will inherit them automatically.
 --

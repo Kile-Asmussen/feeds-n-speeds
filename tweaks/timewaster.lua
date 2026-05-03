@@ -347,4 +347,4 @@ function timewaster.data_updates()
     end
 end
 
-return timewaster:__seal()
+return seal_namespace(timewaster)

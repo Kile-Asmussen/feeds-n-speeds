@@ -121,4 +121,4 @@ function earlygame.data_final_fixes()
 
 end
 
-return earlygame:__seal()
+return seal_namespace(earlygame)

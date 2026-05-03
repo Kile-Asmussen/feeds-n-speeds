@@ -23,4 +23,4 @@ function roboports.data_updates()
     })
 end
 
-return roboports:__seal()
+return seal_namespace(roboports)

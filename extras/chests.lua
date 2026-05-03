@@ -57,4 +57,4 @@ end
 
 chests.hopper = require 'extras.chests.hopper'
 
-return chests:__seal()
+return seal_namespace(chests)

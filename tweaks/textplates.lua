@@ -78,4 +78,4 @@ function textplates.fix_tech(name, material, prerequisites, trigger)
     tech.hidden = true
 end
 
-return textplates:__seal()
+return seal_namespace(textplates)

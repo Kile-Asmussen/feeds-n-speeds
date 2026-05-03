@@ -62,4 +62,4 @@ function utilities.iconify(thing, other_icon, placement)
 end
 
 
-return utilities:__seal()
+return seal_namespace(utilities)

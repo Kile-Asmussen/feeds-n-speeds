@@ -4,26 +4,37 @@ local setmetatable = _G.setmetatable
 local getmetatable = _G.getmetatable
 
 local debuglib = namespace 'debuglib'
+assert(isnamespace(debuglib), "what the fuck")
 
-debuglib.io = namespace 'debuglib.io'
-debuglib.io.open = _G.io and _G.io.open
-debuglib.io:__seal()
+debuglib.io = _G.io and { open = _G.io.open } or {}
 
-function debuglib.pp(data, root)
-    root = root or '_'
-    buffer = debuglib.new_buffer(root)
+function debuglib.pp(data, root, rec)
+    if not rec and type(root) == 'number' then
+        rec = root
+        root = nil
+    end
+
+    if data == _G then
+        data = table.dup(_G)
+        root = root or '_G'
+    else
+        root = root or '_'
+    end
+
+    buffer = debuglib.new_buffer(root, rec)
     buffer:print_any(data)
     return tostring(buffer)
 end
 
 debuglib.recursion_limit = 2
 
-function debuglib.new_buffer(root)
+function debuglib.new_buffer(root, rec_limit)
+    rec_limit = rec_limit or debuglib.recursion_limit or 2
     local res = {
         indent = 0,
         root = root,
-        max_indent = debuglib.recursion_limit or 2,
-        seen_tables = { [_G] = '_G' },
+        max_indent = rec_limit,
+        seen_tables = { [_G] = '_G', [table.null] = 'table.null' },
         path = {},
     }
     setmetatable(res, debuglib.__buffer_mt)
@@ -144,24 +155,25 @@ function debuglib.print_table(buffer, data)
     buffer.seen_tables[data] = string.tablepath(buffer.root, buffer.path)
   end
 
-  local is_array = table.is_array(data)
-  local is_hash = table.is_hash(data)
-
-  if not (is_array or is_hash) then
+  if table.is_empty(data) then
     buffer:print("{}")
     return
   end
 
-  if buffer.indent >= debuglib.recursion_limit then
+  if buffer.indent >= buffer.max_indent then
     buffer:print('{ --[[ ... ]] }')
     return
   end
+
+
+  local has_array = table.has_array(data)
+  local has_assoc = table.has_assoc(data)
 
   buffer:print('{\n')
 
   buffer.indent = buffer.indent + 1
 
-  if is_array and is_hash then
+  if has_array and has_assoc then
     
     debuglib.print_elements(buffer, data)
     
@@ -169,11 +181,11 @@ function debuglib.print_table(buffer, data)
     
     debuglib.print_keyval_pairs(buffer, data)
 
-  elseif is_array then
+  elseif has_array then
     
     debuglib.print_elements(buffer, data)
   
-  elseif is_hash then 
+  elseif has_assoc then 
     
     debuglib.print_keyval_pairs(buffer, data)
 
@@ -205,7 +217,19 @@ function debuglib.print_keyval_pairs(buffer, data)
 
   local first = true
 
-  for i, k in ipairs(table.sorted_keys(data, 'string')) do
+  local keys = table.sorted_keys(data, 'string')
+  local extrakeys = {}
+
+  for k, _ in pairs(data) do
+    if type(k) == 'table' then
+        table.insert(extrakeys, k)
+    end
+  end
+  table.sort(extrakeys, function(a, b) return tostring(a) < tostring(b) end)
+
+  table.append(keys, extrakeys)
+
+  for i, k in ipairs(keys) do
 
     v = data[k]
 
@@ -218,6 +242,8 @@ function debuglib.print_keyval_pairs(buffer, data)
 
     first = false
   end
+
 end
 
-return debuglib:__seal()
+assert(isnamespace(debuglib), "what the fuck")
+return seal_namespace(debuglib)

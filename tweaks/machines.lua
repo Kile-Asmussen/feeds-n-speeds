@@ -63,4 +63,4 @@ function machines.tweak_inserters()
     end
 end
 
-return machines:__seal()
+return seal_namespace(machines)

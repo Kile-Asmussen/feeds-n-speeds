@@ -462,7 +462,7 @@ function military.technologies()
     if enabled('extras.altrecipes') then
         tech['military-4'].prerequisites = { 'utility-science-pack', 'military-3' }
         local altrecipes = require 'extras.altrecipes'
-        tech['military-4'].localised_description = {"", { fns('technology-description', 'military-4-mass-production') }}
+        tech['military-4'].localised_description = {"", { fns_locale_key('technology-description', 'military-4-mass-production') }}
         tech['military-4'].effects = table.icollect(require('extras.altrecipes.ammo'),
             function(t) return { type='unlock-recipe', recipe=t.name } end
         )
@@ -504,4 +504,4 @@ function military.technologies()
     )
 end
 
-return military:__seal()
+return seal_namespace(military)

@@ -44,4 +44,4 @@ function start.inventory()
     
 end
 
-return start:__seal()
+return seal_namespace(start)

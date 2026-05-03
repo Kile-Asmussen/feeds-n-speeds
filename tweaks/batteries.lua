@@ -32,4 +32,4 @@ function plastics.data_updates()
 
 end
 
-return plastics:__seal()
+return seal_namespace(plastics)

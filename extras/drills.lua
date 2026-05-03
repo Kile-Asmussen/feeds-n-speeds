@@ -51,4 +51,4 @@ function drills.data_updates()
     }
 end
 
-return drills:__seal()
+return seal_namespace(drills)

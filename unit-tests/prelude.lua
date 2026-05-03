@@ -19,7 +19,7 @@ end)
 fact('fns() takes two arguments', function()
     local id = fns('entity-description', 'thingy')
     assert_eq(id, 'entity-description.feeds-n-speeds-thingy')
-    assert_ok(fns_names_by_category('entity-description')['feeds-n-speeds-thingy'])
+    assert(table.index_of(fns_names_by_category('entity-description'), 'feeds-n-speeds-thingy'))
 end)
 
 fiction('fns() errors on number', function()
@@ -54,12 +54,6 @@ fact('namespace() has __seal method', function()
     local ns = namespace 'test.ns.module3'
     assert_is(ns.__seal, 'function')
 end)
-
-fact('namespace() sets parent_namespace to table.null', function()
-    local ns = namespace 'test.ns.module4'
-    assert_eq(ns.parent_namespace, table.null)
-end)
-
 -- import() tests
 fact('import() retrieves declared namespace', function()
     local ns = namespace 'test.ns.importable'
@@ -86,40 +80,40 @@ end)
 
 fact('isnamespace() returns true for unsealed namespace', function()
     local ns = namespace 'test.ns.unsealed'
-    assert_ok(isnamespace(ns))
+    assert(isnamespace(ns))
 end)
 
 fact('isnamespace() returns true for sealed namespace', function()
     local ns = namespace 'test.ns.sealcheck'
-    ns:__seal()
-    assert_ok(isnamespace(ns))
+    seal_namespace(ns)
+    assert(isnamespace(ns))
 end)
 
 -- __seal() tests
 fact('__seal() seals the namespace', function()
     local ns = namespace 'test.ns.toseal'
     ns.data = 'before'
-    local sealed = ns:__seal()
+    local sealed = seal_namespace(ns)
     assert_eq(sealed, ns)
 end)
 
 fiction('sealed namespace errors on write', function()
     local ns = namespace 'test.ns.sealed1'
     ns.data = 'value'
-    ns:__seal()
+    seal_namespace(ns)
     ns.newkey = 'fail'
 end)
 
 fact('sealed namespace allows read', function()
     local ns = namespace 'test.ns.sealed2'
     ns.data = 'readable'
-    ns:__seal()
+    seal_namespace(ns)
     assert_eq(ns.data, 'readable')
 end)
 
 fact('__seal removes itself', function()
     local ns = namespace 'test.ns.sealed3'
-    ns:__seal()
+    seal_namespace(ns)
     assert_eq(ns.__seal, nil)
 end)
 
@@ -133,12 +127,4 @@ end)
 fact('namespace call syntax returns nil for missing key', function()
     local ns = namespace 'test.ns.callable2'
     assert_eq(ns('nonexistent'), nil)
-end)
-
--- nested namespace parent tracking
-fact('namespace tracks parent when nested', function()
-    local parent = namespace 'test.ns.parent'
-    local child = namespace 'test.ns.parent.child'
-    parent.child = child
-    assert_eq(child.parent_namespace, parent)
 end)

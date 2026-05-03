@@ -95,4 +95,4 @@ function altrecipes.concrete_wall()
     end
 end
 
-return altrecipes:__seal()
+return seal_namespace(altrecipes)

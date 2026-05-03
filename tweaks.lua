@@ -57,4 +57,4 @@ tweaks.robotics = require 'tweaks.robotics'
 tweaks.military = require 'tweaks.military'
 tweaks.start = require 'tweaks.start'
 
-return tweaks:__seal()
+return seal_namespace(tweaks)

@@ -80,4 +80,4 @@ function ores.data_updates()
     end
 end
 
-return ores:__seal()
+return seal_namespace(ores)

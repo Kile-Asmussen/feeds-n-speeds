@@ -7,10 +7,13 @@
         "isnamespace",
         "isum",
         "isvec",
+        "localised",
         "mlua",
         "tbl",
         "vecadd",
         "vecmul"
     ],
-    "flagWords": []
+    "flagWords": [
+        "localization"
+    ]
 }

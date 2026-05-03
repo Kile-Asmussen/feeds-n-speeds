@@ -83,4 +83,4 @@ function concrete.data_updates()
     end
 end
 
-return concrete:__seal()
+return seal_namespace(concrete)

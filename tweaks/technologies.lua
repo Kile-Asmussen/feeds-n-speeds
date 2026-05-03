@@ -113,4 +113,4 @@ function technologies.tweak_science_packs()
     )
 end
 
-return technologies:__seal()
+return seal_namespace(technologies)

@@ -81,4 +81,4 @@ function sulfur_processing.data_updates()
     }
 end
 
-return sulfur_processing:__seal()
+return seal_namespace(sulfur_processing)

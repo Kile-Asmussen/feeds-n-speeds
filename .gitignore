@@ -8,4 +8,6 @@ log~
 *.so
 /target
 
+/lualib
+
 .claude/read-grep-glob-paths.json

@@ -8,6 +8,8 @@ PATSUBST_COLONS := $(patsubst %:,%,$(FILTER_OUT_JUNK))
 IGNORE_FILES := $(shell git check-ignore -- $(ALL_FILES))
 FILES := $(filter-out $(IGNORE_FILES), $(PATSUBST_COLONS))
 
+FACTORIO_DIR := ~/.steam/steam/steamapps/common/Factorio
+
 export NAME := $(shell jq -r '.name' info.json)
 export VERSION := $(shell jq -r '.version' info.json)
 export NAME_VERSION := $(NAME)_$(VERSION)
@@ -47,5 +49,7 @@ nuke: uninstall
 rawdata: 
 	@./build-scripts/rawdata.sh 
 
+lualib:
+	@cp -r $(FACTORIO_DIR)/data/core/lualib ./lualib
 
 

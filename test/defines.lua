@@ -115,4 +115,4 @@ for k, v in pairs(defines.events) do
     defines.event_names[v] = k
 end
 
-_G.defines = defines:__seal()
+_G.defines = seal_namespace(defines)

@@ -50,4 +50,4 @@ extras.utilities = require('extras.utilities')
 extras.roboports = require('extras.roboports')
 extras.heavy = require('extras.heavy')
 
-return extras:__seal()
+return seal_namespace(extras)

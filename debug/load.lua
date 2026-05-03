@@ -1,42 +1,47 @@
 require 'prelude'
 require 'test'
 
-local localization = require 'test.localization'
+local localisation = require 'test.localisation'
 local debuglib = require 'debuglib'
 
-local log = _G.log
-if not _G.verbose then
+local log = _G.__log
+if not _G.VERBOSE then
     _G.__log = function() end
 end
-if _G.quiet then
+if _G.QUIET then
     _G.log = function() end
 end
 
 _G.modlist = {"textplates", "even-more-text-plates"}
 
-log("SETTINGS")
+log("\nSETTINGS")
 require('settings')
 
-log("SETTINGS-UPDATES")
+log("\nSETTINGS-UPDATES")
 require('settings-updates')
 
-log("SETTINGS-FINAL-FIXES")
+log("\nSETTINGS-FINAL-FIXES")
 require('settings-final-fixes')
 
 begin_data_stage()
 
-log("DATA")
+log("\nDATA")
 require('data')
 
-log("DATA-UPDATES")
+log("\nDATA-UPDATES")
 require('data-updates')
 
-log("DATA-FINAL-FIXES")
+log("\nDATA-FINAL-FIXES")
 require('data-final-fixes')
 
-log("CONTROL")
+log("\nCONTROL")
 _G.storage = {}
 require('control')
 
-log('\nLOCALIZATION')
-log(localization.generate_stubs())
+localisation.finalize()
+
+log('\nNEEDED LOCALISATION')
+log(localisation.list_missing_locale_keys())
+
+log('\nSUPERFLUOUS LOCALISATION')
+log(localisation.list_superfluous_locale_keys())

@@ -18,20 +18,20 @@ function loading.execute(superdomain, operation, name)
     end
 
     table.sort(domains,
-        function(d1, d2) return (d1('priority') or 0) > (d2('priority') or 0) end 
+        function(d1, d2) return (d1/'priority' or 0) > (d2/'priority' or 0) end 
     )
 
     for _, domain in ipairs(domains) do
         if type(operation) == 'function' then
             operation(domain)
         elseif type(operation) == 'string' then
-            (domain(operation) or function() end)()
+            (domain/operation or function() end)()
         end
     end
 end
 
 function loading.create_toggle(domain)
-    if isnamespace(domain) and type(domain 'enabled') == 'boolean'
+    if isnamespace(domain) and type(domain/'enabled') == 'boolean'
     then
         data:extend{{
             type = 'bool-setting',
@@ -43,7 +43,7 @@ function loading.create_toggle(domain)
 end
 
 function loading.read_toggle(domain)
-    if isnamespace(domain) and type(domain 'enabled') == 'boolean'
+    if isnamespace(domain) and type(domain/'enabled') == 'boolean'
     then
         local set = settings.startup[fns(tostring(domain) .. '-enable')]
         if set then
@@ -52,4 +52,4 @@ function loading.read_toggle(domain)
     end
 end
 
-return loading:__seal()
+return seal_namespace(loading)

@@ -52,31 +52,6 @@ fact('string.rpad method syntax', function()
     assert_eq(('x'):rpad(4, '-'), 'x---')
 end)
 
--- string.predicate tests
-fact('string.predicate creates matcher', function()
-    local pred = string.predicate('foo')
-    assert_eq(pred('foobar'), 'foo')
-    assert_eq(pred('bazqux'), nil)
-end)
-
-fact('string.predicate with custom function', function()
-    local pred = string.predicate('hello', function(haystack, needle)
-        return haystack == needle
-    end)
-    assert_eq(pred('hello'), true)
-    assert_eq(pred('world'), false)
-end)
-
-fact('string.predicate with pattern', function()
-    local pred = string.predicate('^%d+$')
-    assert_eq(type(pred('12345')), 'string')
-    assert_eq(pred('abc'), nil)
-end)
-
-fiction('string.predicate errors on non-callable', function()
-    string.predicate('test', 'not a function')
-end)
-
 -- string.sprint tests
 fact('string.sprint single value', function()
     assert_eq(string.sprint('hello'), 'hello')

@@ -45,4 +45,4 @@ function electric.data_updates()
     end
 end
 
-return electric:__seal()
+return seal_namespace(electric)

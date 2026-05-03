@@ -48,4 +48,4 @@ function heavy_weapons.data_updates()
     end
 end
 
-return heavy_weapons:__seal()
+return seal_namespace(heavy_weapons)

@@ -37,7 +37,7 @@ return {
     {
         type = 'autoplace-control',
         name = fns 'sulfur-ore',
-        localised_name = {'', '[entity=' .. fns 'sulfur-ore' .. '] ', { fns('entity-name', 'sulfur-ore')}},
+        localised_name = {'', '[entity=' .. fns 'sulfur-ore' .. '] ', { fns_locale_key('entity-name', 'sulfur-ore')}},
         category = 'resource',
         richness = true,
         order = 'a-g',

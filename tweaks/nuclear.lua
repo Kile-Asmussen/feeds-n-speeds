@@ -41,7 +41,7 @@ function nuclear.data()
     -- It presents a challenge, sure, but feels inconsistent with
     -- every other avenue of power generation being 'smart'
     nuclear_reactor.scale_energy_usage = true
-    nuclear_reactor.localised_description = {"", {fns('entity-description', 'tweaked-nuclear-reactor')}}
+    nuclear_reactor.localised_description = {"", {fns_locale_key('entity-description', 'tweaked-nuclear-reactor')}}
 
     -- Energy output of a nuclear reactor is buffed slightly
     -- Coincidentally, an 8 GJ nuclear fuel cell will last
@@ -63,7 +63,7 @@ function nuclear.data()
     -- Sync temperature limits with tweaked nuclear system
     heating_tower.heat_buffer.max_temperature = max_temperature
     heating_tower.scale_energy_usage = true
-    heating_tower.localised_description = {"", {fns('entity-description', 'tweaked-heating-tower')}}
+    heating_tower.localised_description = {"", {fns_locale_key('entity-description', 'tweaked-heating-tower')}}
 end
 
 function nuclear.data_updates()
@@ -99,4 +99,4 @@ function nuclear.data_updates()
     end
 end
 
-return nuclear:__seal()
+return seal_namespace(nuclear)

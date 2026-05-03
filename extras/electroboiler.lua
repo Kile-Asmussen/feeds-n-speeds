@@ -20,4 +20,4 @@ function electroboiler.data()
     })
 end
 
-return electroboiler:__seal()
+return seal_namespace(electroboiler)

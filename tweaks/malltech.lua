@@ -426,4 +426,4 @@ function malltech.energy()
     end
 end
 
-return malltech:__seal()
+return seal_namespace(malltech)

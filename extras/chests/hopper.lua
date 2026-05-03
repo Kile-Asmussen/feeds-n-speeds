@@ -274,4 +274,4 @@ function hopper.on_entity_destroyed(event)
 end
 
 
-return hopper:__seal()
+return seal_namespace(hopper)
