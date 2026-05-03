@@ -15,6 +15,7 @@ function technologies.data_updates()
     local tech = data.raw.technology
 
     table.insert(tech['logistic-science-pack'].prerequisites, 'logistics')
+    table.insert(tech['uranium-mining'].prerequisites, 'electric-mining-drill')
 
     if enabled('tweaks.earlygame') then
         tech['automation-science-pack'].prerequisites = {

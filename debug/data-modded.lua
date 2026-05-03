@@ -23,9 +23,9 @@ table.imap(args, function(s) return tonumber(s) or s end)
 local ix =  string.tablepath('data.raw', args)
 local result, found = table.descend(data.raw, table.unpack(args))
 
-if args.n < 2 then
-    debuglib.recursion_limit = 1
-end
+-- if args.n < 2 then
+    -- debuglib.recursion_limit = 1
+-- end
 
 if found then
     __log(ix .. ' = ' .. debuglib.pp(result, 'data.raw'))

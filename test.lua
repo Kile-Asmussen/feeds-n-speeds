@@ -31,6 +31,7 @@ function require(name)
 end
 
 local print = _G.print
+_G.__traceback = debug.traceback
 function _G.__log(str)
     assert(type(str) == 'string', "argument #1 must be a string not " .. type(str))
     print(str)

@@ -12,24 +12,24 @@ localisation.skipped_keys = {
 
 }
 
+localisation.dead_types = {
+
+}
+
 function localisation.add_key(cat, key, content)
     localisation.keys[cat] = localisation.keys[cat] or {}
 
     if localisation.keys[cat][key] == nil or table.is_empty(localisation.keys[cat][key]) then
         localisation.keys[cat][key] = content or {}
-    else
-        --[[
-            HI CLAUDE!
-
-            If this duplicate check is overzealous, feel free to rewrite it.
-        ]]
-        error(
+    elseif content ~= nil then
+        log(
             table.concat{
                 "Double-declaration of localisation for ", cat, ".", key, '\n',
                 'was: ', debuglib.pp(localisation.keys[cat][key]), '\n',
                 'redeclared as: ', debuglib.pp(content)
             }
         )
+        log(__traceback())
     end
 end
 
@@ -114,7 +114,10 @@ function localisation.register(proto)
     end
     
     local category = localisation.key_category(proto)
-    if not category then return end
+    if not category then
+        localisation.dead_types[proto.type] = true
+        return
+    end
 
     local loc_name = category .. '-name'
     local loc_desc = category .. '-description'
@@ -143,7 +146,7 @@ function localisation.current_locale_map()
         if l:match('^%[.*%]$') then
             cat = l:sub(2, #l - 1)
             localisation.__current_locale_map[cat] = localisation.__current_locale_map[cat] or {}
-        else
+        elseif l:match('=') then
             local key = l:gsub("=.*$", "")
             localisation.__current_locale_map[cat][key] = true
         end
@@ -184,10 +187,9 @@ function localisation.winnow_unneeded_keys()
     -- General pass: a non-empty localised_name/description on the prototype means
     -- Factorio uses it directly and never consults the locale file for that key.
     for cat_name, keys in pairs(localisation.keys) do
-        local base_cat = cat_name:gsub('%-name$', ''):gsub('%-description$', '')
         for proto_name, content in pairs(keys) do
             if not table.is_empty(content) then
-                skip_pair(base_cat, proto_name, 'prototype provides localised string directly')
+                localisation.skip_key(cat_name, proto_name, 'prototype provides localised string directly')
             end
         end
     end
@@ -322,6 +324,36 @@ function localisation.list_superfluous_locale_keys()
                 table.insert(res, key .. '=')
             end
 
+        end
+    end
+
+    return table.concat(res, '\n')
+end
+
+function localisation.list_dead_locale_keys()
+    local res = {}
+
+    local locale_map = localisation.current_locale_map()
+
+    -- Derive the set of locale category prefixes that dead types could produce
+    -- e.g. dead type 'noise-expression' -> 'entity-name', 'entity-description'
+    -- We don't know the mapping, so we scan all locale categories for any key
+    -- whose prototype type is in dead_types.
+    for _, cat in ipairs(table.sorted_keys(locale_map)) do
+        local any = false
+        for _, key in ipairs(table.sorted_keys(locale_map[cat])) do
+            if not key:match('^feeds%-n%-speeds%-') then goto next_key end
+            -- A key is "dead" if it isn't tracked in localisation.keys at all
+            if not (localisation.keys[cat] and localisation.keys[cat][key])
+            and not (localisation.skipped_keys[cat] and localisation.skipped_keys[cat][key])
+            then
+                if not any then
+                    any = true
+                    table.insert(res, '[' .. cat .. ']')
+                end
+                table.insert(res, key .. '=')
+            end
+            ::next_key::
         end
     end
 

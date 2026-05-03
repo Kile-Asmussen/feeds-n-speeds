@@ -193,7 +193,7 @@ function debuglib.print_table(buffer, data)
 
   buffer.indent = buffer.indent - 1
 
-  buffer:print('\n' .. string.rep('  ', buffer.indent) .. "}")
+  buffer:print('\n', string.rep('  ', buffer.indent), "}")
 
 end
 
@@ -227,7 +227,7 @@ function debuglib.print_keyval_pairs(buffer, data)
       buffer:print(',\n')
     end
 
-    buffer:print(string.rep('  ', buffer.indent) .. string.tableindex(k, true) .. ' = ')
+    buffer:print(string.rep('  ', buffer.indent), string.tableindex(k, true), ' = ')
     buffer:print_any(v, k, i)
 
     first = false
@@ -235,5 +235,4 @@ function debuglib.print_keyval_pairs(buffer, data)
 
 end
 
-assert(isnamespace(debuglib), "what the fuck")
 return seal_namespace(debuglib)

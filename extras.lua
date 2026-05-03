@@ -32,6 +32,10 @@ function extras.data()
     loading.execute(extras, 'data')
 end
 
+function extras.data2()
+    loading.execute(extras, 'data2')
+end
+
 function extras.data_updates()
     loading.execute(extras, 'data_updates')
 end

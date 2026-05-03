@@ -4,6 +4,7 @@ require 'prelude'
 
 return {
     enabled = false,
+    localised_name = {"", {"item-name.rail"}},
     icons = {
         { icon = '__base__/graphics/icons/rail.png', icon_size = 64 },
         {

@@ -64,6 +64,8 @@ function nuclear.data()
     heating_tower.heat_buffer.max_temperature = max_temperature
     heating_tower.scale_energy_usage = true
     heating_tower.localised_description = {"", {fns_locale_key('entity-description', 'tweaked-heating-tower')}}
+
+    data.raw.technology['heating-tower'].localised_description = {"", {fns_locale_key('technology-description', 'tweaked-heating-tower')}}
 end
 
 function nuclear.data_updates()

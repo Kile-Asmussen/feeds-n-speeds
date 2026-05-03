@@ -33,13 +33,21 @@ function drills.data_updates()
     -- Remove fluid input from vanilla electric mining drill
     data.raw['mining-drill']['electric-mining-drill'].input_fluid_box = nil
 
-    -- Remove uranium-mining technology (mining-with-fluid now from wet-drilling)
-    data.raw.technology['uranium-mining'].hidden = true
+    drills.fix_uranium_processing(fns 'wet-drilling')
+end
+
+function drills.fix_uranium_processing(tech_name)
+    local tech = data.raw.technology
+
+    if tech['uranium-mining'].hidden then return end
+
+    tech['uranium-mining'].hidden = true
 
     -- Convert uranium-processing from trigger-based to science-based
-    local uranium = data.raw.technology['uranium-processing']
+    local uranium = tech['uranium-processing']
+
+    uranium.prerequisites = { tech_name, 'concrete', 'chemical-science-pack' }
     uranium.research_trigger = nil
-    uranium.prerequisites = { 'chemical-science-pack', 'concrete' }
     uranium.unit = {
         count = 100,
         time = 30,

@@ -6,6 +6,8 @@ require 'prelude'
 return {
     type = 'recipe',
     name = fns 'purifying-heavy-oil-cracking',
+    localised_name = {"", {"recipe-name.heavy-oil-cracking"}},
+    localised_description = {"", {fns_locale_key("recipe-description", "clean-oil")}},
     category = 'organic-or-chemistry',
     enabled = false,
     energy_required = 2.5,  -- slightly slower than vanilla (2)

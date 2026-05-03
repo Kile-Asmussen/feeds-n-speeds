@@ -55,7 +55,7 @@ function utilities.iconify(thing, other_icon, placement)
             icon_size = 64,
             floating = true,
             scale = 0.25,
-            shift = utilities.placements[placement] or error("unknown placement " .. placement),
+            shift = table.dup(utilities.placements[placement]) or error("unknown placement " .. placement),
         }
     }
     thing.icon = nil

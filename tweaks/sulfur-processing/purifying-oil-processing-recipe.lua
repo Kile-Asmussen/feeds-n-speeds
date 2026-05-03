@@ -6,6 +6,8 @@ require 'prelude'
 return {
     type = 'recipe',
     name = fns 'purifying-oil-processing',
+    localised_name = {"", {"recipe-name.basic-oil-processing"}},
+    localised_description = {"", {fns_locale_key("recipe-description", "clean-oil")}},
     category = 'oil-processing',
     enabled = false,
     energy_required = 6,  -- slightly slower than basic (5)

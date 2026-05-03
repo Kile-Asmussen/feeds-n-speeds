@@ -8,6 +8,7 @@ return {
     type = 'recipe',
     name = fns 'simple-concrete',
     category = 'crafting-with-fluid',
+    localised_description = {""},
     enabled = false,
     energy_required = 10,
     ingredients = {

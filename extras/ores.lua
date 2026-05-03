@@ -13,6 +13,11 @@ function ores.data()
             require 'extras.ores.sulfur-ore-noise-expressions'
         )
     }
+
+    -- Add sulfur drilling technology
+    data:extend{
+        require 'extras.ores.sulfur-drilling-technology',
+    }
 end
 
 function ores.data_updates()
@@ -62,21 +67,14 @@ function ores.data_updates()
     data.raw.planet.nauvis.map_gen_settings.autoplace_controls[fns 'sulfur-ore'] = {}
     data.raw.planet.nauvis.map_gen_settings.autoplace_settings.entity.settings[fns 'sulfur-ore'] = {}
 
-    -- If drills module is disabled, provide alternate path to fluid mining
+    import('extras.drills').fix_uranium_processing(fns 'sulfur-drilling')
+
     if not enabled('extras.drills') then
-        
-        -- Hide vanilla uranium-mining (mining-with-fluid now from sulfur-drilling)
-        data.raw.technology['uranium-mining'].hidden = true
-
-        -- Add sulfur drilling technology
-        data:extend{
-            require 'extras.ores.sulfur-drilling-technology',
-        }
-
-        -- Make uranium-processing depend on sulfur-drilling
         table.insert(data.raw.technology['uranium-processing'].prerequisites,
             fns 'sulfur-drilling'
         )
+    else
+        data.raw.technology[fns 'sulfur-drilling'].hidden = true
     end
 end
 

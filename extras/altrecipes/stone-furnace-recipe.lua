@@ -4,6 +4,7 @@ require 'prelude'
 return {
     type = 'recipe',
     name = fns 'stone-furnace',
+    localised_name = {"", {"item-name.stone-furnace"}},
     order = 'a[stone-furnace]-b[stone-brick]',
     icons = {
         {

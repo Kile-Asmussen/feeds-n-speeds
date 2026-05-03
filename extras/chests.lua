@@ -22,12 +22,12 @@ function chests.data_updates()
 
     local tech =  data.raw.technology
 
-    table.insert(tech['steel-processing'].effects, {
-        type = 'unlock-recipe',
-        recipe = fns 'big-steel-chest',
-    })
-    
     if not enabled('tweaks.earlygame') then
+        table.insert(tech['steel-processing'].effects, {
+            type = 'unlock-recipe',
+            recipe = fns 'big-steel-chest',
+        })
+    
         table.insert(tech['automation-2'].effects, {
             type = 'unlock-recipe',
             recipe = fns 'big-steel-hopper',

@@ -165,6 +165,7 @@ return {
       0.35 * 2
     }
   },
+  localised_description = {""},
   corpse = fns 'big-steel-chest-remnants',
   damaged_trigger_effect = {
     damage_type_filters = 'fire',

@@ -3,9 +3,19 @@ require 'prelude'
 return {
     type = 'technology',
     name = fns 'sulfur-drilling',
-    icon = '__base__/graphics/technology/sulfur-processing.png',
-    icon_size = 256,
-    prerequisites = { 'sulfur-processing' },
+    icons = { 
+        {
+            icon = '__base__/graphics/technology/sulfur-processing.png',
+            icon_size = 256,
+            scale=0.5
+        },
+        {
+            icon = '__base__/graphics/technology/mining-productivity.png',
+            icon_size = 256,
+            scale=0.5
+        },
+    },
+    prerequisites = { 'sulfur-processing', 'electric-mining-drill' },
     effects = {
         {
             type = 'mining-with-fluid',

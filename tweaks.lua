@@ -32,6 +32,10 @@ function tweaks.data()
     loading.execute(tweaks, 'data')
 end
 
+function tweaks.data2()
+    loading.execute(tweaks, 'data2')
+end
+
 function tweaks.data_updates()
     loading.execute(tweaks, 'data_updates')
 end

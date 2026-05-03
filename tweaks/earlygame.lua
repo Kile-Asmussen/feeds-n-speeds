@@ -3,10 +3,14 @@ require 'prelude'
 local earlygame = namespace 'tweaks.earlygame'
 earlygame.enabled = true
 
+function earlygame.data()
+    if not earlygame.enabled then return end
+
+    data:extend{ require 'tweaks.earlygame.lab-technology' }
+end
+
 function earlygame.data_updates()
     if not earlygame.enabled then return end
-    
-    data:extend{ require 'tweaks.earlygame.lab-technology' }
 
     earlygame.tweak_technologies()
     earlygame.tweak_recipes()
@@ -42,14 +46,10 @@ function earlygame.tweak_technologies()
     tech['electronics'].localised_description = {"", {fns_locale_key("technology-description", 'tweaked-electronics')}}
 
     if enabled('extras.chests') then
-
-        table.insert(tech.automation.effects,
-            { type = 'unlock-recipe', recipe = fns 'big-steel-chest' }
-        )
-
-        table.insert(tech.automation.effects,
+        table.append(tech.automation.effects, {
+            { type = 'unlock-recipe', recipe = fns 'big-steel-chest' },
             { type = 'unlock-recipe', recipe = fns 'big-steel-hopper' }
-        )
+        })
     end
 
     local steam_power = data.raw.technology['steam-power']
@@ -76,7 +76,6 @@ function earlygame.tweak_technologies()
     table.insert(tech['steam-power'].effects,
         { type = 'unlock-recipe', recipe = 'burner-mining-drill' }
     )
-
 
     if enabled('extras.altrecipes') then
         tech[fns 'basic-materials-processing'].research_trigger = {

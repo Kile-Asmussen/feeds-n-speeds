@@ -17,9 +17,8 @@ function robotics.data_updates()
     roboports.roboport.charging_slots = 6
 
     if enabled('extras.roboports') then
-        roboports[fns 'sleeper-roboport'].charging_slots = 8
-        roboports[fns 'logistics-roboport'].charging_slots = 6
-        roboports[fns 'construction-roboport'].charging_slots = 4
+        roboports[fns 'logistics-roboport'].charging_slots = 8
+        roboports[fns 'construction-roboport'].charging_slots = 6
     else
 
     end
