@@ -11,7 +11,6 @@ end
 function technologies.data_updates()
     if not technologies.enabled then return end
 
-
     local tech = data.raw.technology
 
     table.insert(tech['logistic-science-pack'].prerequisites, 'logistics')
@@ -35,7 +34,7 @@ function technologies.data_updates()
                     type = 'character-mining-speed'
                 }
             )
-            table.find_matching(tech['steel-axe'].effects, table.matches{type='character-mining-speed'}).modifier = 0.5
+            table.find_matching(tech['steel-axe'].effects, {type='character-mining-speed'}).modifier = 0.5
         end
     end
 
@@ -55,14 +54,14 @@ function technologies.tweak_science_packs()
     local recipes = data.raw.recipe
 
     recipes['automation-science-pack'].ingredients = {
-        { type = 'item', name = 'iron-stick', amount = 2 },
-        { type = 'item', name = 'electronic-circuit', amount = 1 },
+        { type = 'item', name = 'iron-plate', amount = 1 },
+        { type = 'item', name = 'copper-plate', amount = 1 },
         { type = 'item', name = 'stone-brick', amount = 1 }
     }
 
     recipes['logistic-science-pack'].ingredients = {
         { type = 'item', name = 'inserter', amount = 1 },
-        { type = 'item', name = 'transport-belt', amount = 2 },
+        { type = 'item', name = 'transport-belt', amount = 1 },
         { type = 'item', name = 'small-lamp', amount = 1 },
     }
 

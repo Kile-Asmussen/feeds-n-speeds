@@ -233,8 +233,6 @@ end
 function military.ammo()
     local recipes = data.raw.recipe
 
-    capsule['grenade']
-
     recipes['shotgun-shell'].energy_required = 4
     recipes['shotgun-shell'].results[1].amount = 2
     recipes['piercing-shotgun-shell'].results[1].amount = 2

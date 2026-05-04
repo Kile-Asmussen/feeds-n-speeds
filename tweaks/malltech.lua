@@ -14,6 +14,7 @@ function malltech.tweak_technologies()
     local tech = data.raw.technology
 
     table.insert(tech['automation-2'].prerequisites, 'fast-inserter')
+    table.append(tech['automation-3'].prerequisites, {'bulk-inserter', 'construction-robotics' 'logistic-robotics'})
 
     -- Centrifuge requires electric-engine-unit and speed-module
     table.insert(tech['uranium-processing'].prerequisites, 'speed-module')
@@ -29,7 +30,7 @@ function malltech.tweak_recipes()
 
     malltech.mining_drills()
     
-    malltech.earlygame()
+    malltech.inserters()
 
     malltech.misc()
 
@@ -44,57 +45,52 @@ function malltech.tweak_recipes()
     malltech.energy()
 end
 
-function malltech.earlygame()
+function malltech.inserters()
 
     local recipe = data.raw.recipe
 
+    recipe['inserter'].ingredients = {
+        { type='item', name='iron-stick', amount=2 },
+        { type='item', name='iron-gear-wheel', amount=1 },
+        { type='item', name='electronic-circuit', amount=1 },
+    }
 
-    if enabled('tweaks.earlygame') then
+    recipe['long-handed-inserter'].ingredients = {
+        { type='item', name='iron-stick', amount=2 },
+        { type='item', name='iron-gear-wheel', amount=1 },
+        { type='item', name='electronic-circuit', amount=1 },
+        { type='item', name='inserter', amount=1 },
+    }
 
-        recipe['inserter'].ingredients = {
-            { type='item', name='iron-stick', amount=2 },
-            { type='item', name='iron-gear-wheel', amount=1 },
-            { type='item', name='electronic-circuit', amount=1 },
-        }
+    recipe['fast-inserter'].ingredients = {
+        { type='item', name='iron-stick', amount=2 },
+        { type='item', name='iron-gear-wheel', amount=1 },
+        { type='item', name='electronic-circuit', amount=1 },
+        { type='item', name='inserter', amount=1 },
+    }
 
-        recipe['long-handed-inserter'].ingredients = {
-            { type='item', name='iron-stick', amount=2 },
-            { type='item', name='iron-gear-wheel', amount=1 },
-            { type='item', name='inserter', amount=1 },
-        }
+    recipe['lab'].ingredients = {
+        { type='item', name='transport-belt', amount=3 },
+        { type='item', name='inserter', amount=3 },
+        { type='item', name='copper-plate', amount=10 },
+        { type='item', name='electronic-circuit', amount=10 },
+    }
 
-        recipe['fast-inserter'].ingredients = {
-            { type='item', name='iron-gear-wheel', amount=1 },
-            { type='item', name='electronic-circuit', amount=2 },
-            { type='item', name='inserter', amount=1 },
-        }
+    recipe['bulk-inserter'].category = 'advanced-crafting'
+    recipe['bulk-inserter'].ingredients = {
+        { type='item', name='steel-plate', amount=2 },
+        { type='item', name='advanced-circuit', amount=2 },
+        { type='item', name='engine-unit', amount=2 },
+        { type='item', name='fast-inserter', amount=4 },
+    }
 
-
-        if enabled('tweaks.technologies') then
-            recipe['lab'].ingredients = {
-                { type='item', name='transport-belt', amount=3 },
-                { type='item', name='inserter', amount=3 },
-                { type='item', name='copper-plate', amount=10 },
-                { type='item', name='electronic-circuit', amount=10 },
-            }
-        end
-
-    end
-
-
-    if enabled('tweaks.batteries') then
-        recipe['bulk-inserter'].ingredients = {
-            { type='item', name='plastic-bar', amount=10 },
-            { type='item', name='electronic-circuit', amount=10 },
-            { type='item', name='fast-inserter', amount=1 },
-        }
-    end
-
-    if enabled('tweaks.concrete') then
-        table.insert(recipe['bulk-inserter'].ingredients,
-        { type='item', name='hazard-concrete', amount=1})
-    end
-
+    recipe['stack-inserter'].category = 'advanced-crafting'
+    recipe['stack-inserter'].ingredients = {
+        { type='item', name='carbon-fiber', amount=2 },
+        { type='item', name='processing-unit', amount=1 },
+        { type='item', name='electric-engine-unit', amount=2 },
+        { type='item', name='bulk-inserter', amount=2 },
+    }
 end
 
 function malltech.misc()
@@ -191,30 +187,24 @@ function malltech.assembling_machines()
 
     recipe['assembling-machine-1'].ingredients = {
         { type='item', name='inserter', amount=3 },
-        { type='item', name='iron-chest', amount=1 },
         { type='item', name='electronic-circuit', amount=3 },
-        { type='item', name='iron-plate', amount=4 },
+        { type='item', name='iron-chest', amount=1 },
     }
 
     recipe['assembling-machine-2'].ingredients = {
-        { type='item', name='fast-inserter', amount=4 },
-        { type='item', name='splitter', amount=1 },
+        { type='item', name='fast-inserter', amount=3 },
+        { type='item', name='electronic-circuit', amount=5 },
         { type='item', name='pipe', amount=2 },
-        { type='item', name='steel-plate', amount=4 },
+        { type='item', name='steel-chest', amount=1 },
     }
 
     recipe['assembling-machine-3'].ingredients = {
-        { type='item', name='fast-inserter', amount=6 },
-        { type='item', name='speed-module', amount=3 },
-        { type='item', name='steel-plate', amount=4 },
+        { type='item', name='bulk-inserter', amount=3 },
+        { type='item', name='speed-module', amount=1 },
+        { type='item', name='electric-engine-unit', amount=3 },
+        { type='item', name='storage-chest', amount=1 }
         { type='item', name='pump', amount=2 },
-        { type='item', name='refined-hazard-concrete', amount=10 },
     }
-
-    if enabled('tweaks.batteries') then
-        table.insert(recipe['assembling-machine-3'].ingredients,
-        { type='item', name='plastic-bar', amount=4 })
-    end
 end
 
 function malltech.chemical()
