@@ -1,5 +1,9 @@
 # FeedsNSpeeds Functional Feature TODO
 
+## Structural problems
+
+- [ ] The mod misuses the data-updates stage in unintended ways. With almost no exceptions, the current `.data_update()` functions should be called at the data stage, after the `.data()` functions, and renamed to something like `.data2()`. 
+
 ## Bugs
 
 - [ ] The rust raw data loading library does not seem to adequately reset the state of the mod-list.json back to what it was, leading to changes visible in-game. Further investigation needed to verify it is a current issue.

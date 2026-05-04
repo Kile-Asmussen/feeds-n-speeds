@@ -253,9 +253,8 @@ function military.ammo()
         }
     end
 
-    if
-        enabled('extras.ores', 'extras.drills', 'tweaks.earlygame')
-    then
+    if enabled('extras.ores', 'extras.drills', 'tweaks.earlygame') then
+        
         recipes['firearm-magazine'].ingredients = {
             { type = 'item', name = 'iron-plate', amount = 2 },
             { type = 'item', name = 'copper-plate', amount = 2 },
