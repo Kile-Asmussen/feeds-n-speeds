@@ -14,7 +14,7 @@ function malltech.tweak_technologies()
     local tech = data.raw.technology
 
     table.insert(tech['automation-2'].prerequisites, 'fast-inserter')
-    table.append(tech['automation-3'].prerequisites, {'bulk-inserter', 'construction-robotics' 'logistic-robotics'})
+    table.append(tech['automation-3'].prerequisites, {'bulk-inserter', 'logistic-robotics'})
 
     -- Centrifuge requires electric-engine-unit and speed-module
     table.insert(tech['uranium-processing'].prerequisites, 'speed-module')
