@@ -70,7 +70,7 @@ function utilities.iconify(thing, other_icon, placement)
     thing.icon = nil
 end
 
-local science_pack_tier = {
+utilities.science_pack_tier = {
     ["automation-science-pack"]      = 1,
     ["logistic-science-pack"]        = 2,
     ["military-science-pack"]        = 3,
@@ -85,56 +85,55 @@ local science_pack_tier = {
     ["promethium-science-pack"]      = 8,
 }
 
--- Build a reverse index: recipe name -> list of technologies that unlock it
-function utilities.build_recipe_to_techs()
-    local index = {}
+local entity_to_techs = table.null
+
+function utilities.entity_tier(name)
+    if entity_to_techs ~= table.null then goto result end
+
+    entity_to_techs = {}
+
     for _, tech in pairs(data.raw.technology) do
-        if tech.effects then
-            for _, effect in pairs(tech.effects) do
-                if effect.type == "unlock-recipe" then
-                    local name = effect.recipe
-                    index[name] = index[name] or {}
-                    table.insert(index[name], tech)
+        for _, eff in ipairs(tech.effects or table.null) do
+            if eff.type == 'unlock-recipe' then
+                for _, res in pairs(data.raw.recipe[eff.recipe].results) do
+                    if res.type == 'item' then
+                        local place =data.raw.item[res.name].placeable_result
+                        if data.raw.item[res.name].placeable_result then
+                            entity_to_techs[place] = entity_to_techs[place] or {}
+                            table.insert(entity_to_techs[place], tech.name)
+                        end
+                    end
                 end
             end
         end
     end
-    return index
+
+    ::result::
+    if not entity_to_techs[name] then return 0 end
+    return table.max(table.collect(entity_to_techs[name], utilities.highest_unlock))
 end
 
-function utilities.highest_tier_for_tech(tech)
-    local best = 0
-    if tech.unit and tech.unit.ingredients then
-        for _, ingredient in pairs(tech.unit.ingredients) do
-            local pack = ingredient.name or ingredient[1]
-            local tier = science_pack_tier[pack]
-            if tier and tier > best then
-                best = tier
-            end
-        end
-    end
-    return best
+function utilities.highest_tier_pack(name)
+    local technology = data.raw.technology[name]
+    assert(technology, "no such technology: " .. name)
+    if not technology.unit then return 0 end
+
+    local highest = table.max(technology.unit.ingredients, function(u, v)
+        return utilities.science_pack_tier[u[1]] < utilities.science_pack_tier[v[1]]
+    end)
+    return utilities.science_pack_tier[highest[1]]
 end
 
-local recipe_to_techs = nil
+local highest_unlock = {}
 
-function utilities.highest_unlock_tier(recipe_name)
-    if not recipe_to_techs then
-        recipe_to_techs = build_recipe_to_techs()
+function utilities.highest_unlock(name)
+    if not highest_unlock[name] then
+        local tech = data.raw.technology[name]
+        local prereqs = table.collect(tech.prerequisites, utilities.highest_unlock)
+        table.insert(prereqs, utilities.highest_unlock(name))
+        highest_unlock[name] = table.max(prereqs)
     end
-
-    local techs = recipe_to_techs[recipe_name]
-    if not techs then
-        return nil  -- no unlock needed, available from start
-    end
-
-    local best = 0
-    for _, tech in pairs(techs) do
-        local tier = highest_tier_for_tech(tech)
-        if tier > best then best = tier end
-    end
-
-    return best > 0 and best or nil
+    return highest_unlock[name]
 end
 
 return seal_namespace(utilities)

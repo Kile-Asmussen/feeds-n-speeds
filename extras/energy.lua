@@ -7,9 +7,9 @@ energy.enabled = true
 function energy.data()
 
     data:extend{
-        require 'extras.electroboiler.electroboiler-building',
-        require 'extras.electroboiler.electroboiler-item',
-        require 'extras.electroboiler.electroboiler-recipe',
+        require 'extras.energy.electroboiler-building',
+        require 'extras.energy.electroboiler-item',
+        require 'extras.energy.electroboiler-recipe',
     }
 
     -- Unlock with steam-power technology

@@ -632,3 +632,25 @@ function table.proxy(args)
     setmetatable(res, __proxy_mt)
     return res
 end
+
+function table.max(tbl)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+    local max = tbl[1]
+    for _, n in ipairs(tbl) do
+        max = math.max(max, n)
+    end
+    return max
+end
+
+function table.max_by(tbl, func)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+    assert(type(func) == 'function', "argument #2 must be a function")
+    local max, argmax = nil, nil
+    for i, v in ipairs(tbl) do
+        if func(max, v) then
+            max = v
+            argmax = i
+        end
+    end
+    return max, argmax
+end

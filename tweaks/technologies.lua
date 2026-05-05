@@ -106,13 +106,16 @@ function technologies.tweak_science_packs()
 
 
     local tech = data.raw.technology
+    
     table.insert(tech['production-science-pack'].prerequisites,
         'electric-energy-distribution-2'
     )
+
     table.remove_matching(tech['production-science-pack'].prerequisites,
         function(v) return v == 'advanced-material-processing-2' end
     )
 
+    recipes['utility-science-pack'].emissions_multiplier = 1.5
     recipes['utility-science-pack'].category = 'crafting-with-fluid'
     table.insert(recipes['utility-science-pack'].ingredients,
         { type = 'fluid', name = 'water', amount = 1000 }

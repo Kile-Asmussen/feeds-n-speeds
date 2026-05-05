@@ -5,23 +5,23 @@ return {
     name = fns 'basic-materials-processing',
     icons = {
         {
-            icon = '__base__/graphics/icons/stone-furnace.png',
-            icon_size = 64,
+            icon = '__base__/graphics/entity/stone-furnace/stone-furnace.png',
+            icon_size = 146,
             float=true,
             scale = 0.33,
             shift = { 0, -20 }
         },
         {
-            icon = '__base__/graphics/icons/stone-furnace.png',
-            icon_size = 64,
+            icon = '__base__/graphics/entity/stone-furnace/stone-furnace.png',
+            icon_size = 150,
             float=true,
             scale = 0.33,
             shift = { -15, -15 }
         },
 
         {
-            icon = '__base__/graphics/icons/stone-furnace.png',
-            icon_size = 64,
+            icon = '__base__/graphics/entity/stone-furnace/stone-furnace.png',
+            icon_size = 150,
             float=true,
             scale = 0.33,
             shift = { 15, -15 }
