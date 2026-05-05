@@ -23,7 +23,7 @@ function radars.data()
 
 end
 
-function radars.data_updates()
+function radars.data2()
     local ingredient = table.find_matching(data.raw.recipe['artillery-shell'].ingredients,
         table.matches{ type='item', name = 'radar'}
     )

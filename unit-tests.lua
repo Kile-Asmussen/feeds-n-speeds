@@ -1,16 +1,3 @@
---! Test harness for unit tests
---!
---! This file is the entry point. It defines global test functions
---! and requires test modules, then runs all registered tests.
---!
---! Usage in test files:
---!   fact('description of passing test', function()
---!       assert(1 + 1 == 2)
---!   end)
---!
---!   fiction('description of expected failure', function()
---!       error('this should error')
---!   end)
 
 require 'prelude'
 local debuglib = require 'debuglib'

@@ -1,11 +1,10 @@
 require 'prelude'
 
-local electroboiler = namespace 'extras.electroboiler'
+local energy = namespace 'extras.electroboiler'
 
-electroboiler.enabled = true
+energy.enabled = true
 
-function electroboiler.data()
-    if not electroboiler.enabled then return end
+function energy.data()
 
     data:extend{
         require 'extras.electroboiler.electroboiler-building',
@@ -20,4 +19,4 @@ function electroboiler.data()
     })
 end
 
-return seal_namespace(electroboiler)
+return seal_namespace(energy)

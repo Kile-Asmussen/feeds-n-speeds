@@ -3,9 +3,10 @@ require 'prelude'
 local loading = namespace 'loading'
 
 function loading.execute(superdomain, operation)
-    local domains = {}
+    assert(isnamespace(superdomain), "argument #1 must be a namespace")
+    assert(type(operation) ~= 'string', "argument #2 must be a function")
 
-    if type(operation) == 'string' then operation = loading.if_enabled(operation) end
+    local domains = {}
 
     for _, domain_name in ipairs(table.sorted_keys(superdomain)) do
         domain = superdomain[domain_name]
@@ -22,11 +23,7 @@ function loading.execute(superdomain, operation)
     )
 
     for _, domain in ipairs(domains) do
-        if type(operation) == 'function' then
-            operation(domain)
-        elseif type(operation) == 'string' then
-            (domain/operation or function() end)()
-        end
+        operation(domain)
     end
 end
 
@@ -52,11 +49,17 @@ function loading.read_toggle(domain)
     end
 end
 
+function loading.call(stage)
+    return function(domain)
+        (domain/stage or function() end)()
+    end
+end
+
 function loading.if_enabled(stage)
     return function(domain)
         if domain/'enabled' then
             if type(stage) == 'string' then
-                (domain/'string' or function() end)()
+                (domain/stage or function() end)()
             else
                 stage(domain)
             end

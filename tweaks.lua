@@ -5,43 +5,43 @@ local loading = require 'loading'
 local tweaks = namespace 'tweaks'
 
 function tweaks.create_toggles()
-    loading.execute(tweaks, loading.create_toggle, 'create_toggle')
+    loading.execute(tweaks, loading.create_toggle)
 end
 
 function tweaks.read_toggles()
-    loading.execute(tweaks, loading.read_toggle, 'read_toggle')
+    loading.execute(tweaks, loading.read_toggle)
 end
 
 function tweaks.settings()
-    loading.execute(tweaks, 'settings')
+    loading.execute(tweaks, loading.call('settings'))
 end
 
 function tweaks.settings_updates()
-    loading.execute(tweaks, 'settings_updates')
+    loading.execute(tweaks, loading.call('settings_updates'))
 end
 
 function tweaks.settings_final_fixes()
-    loading.execute(tweaks, 'settings_final_fixes')
+    loading.execute(tweaks, loading.call('settings_final_fixes'))
 end
 
 function tweaks.control()
-    loading.execute(tweaks, 'control')
+    loading.execute(tweaks, loading.if_enabled('control'))
 end
 
 function tweaks.data()
-    loading.execute(tweaks, 'data')
+    loading.execute(tweaks, loading.if_enabled('data'))
 end
 
 function tweaks.data2()
-    loading.execute(tweaks, 'data2')
+    loading.execute(tweaks, loading.if_enabled('data2'))
 end
 
 function tweaks.data_updates()
-    loading.execute(tweaks, 'data_updates')
+    loading.execute(tweaks, loading.if_enabled('data_updates'))
 end
 
 function tweaks.data_final_fixes()
-    loading.execute(tweaks, 'data_final_fixes')
+    loading.execute(tweaks, loading.if_enabled('data_final_fixes'))
 end
 
 tweaks.chests = require 'tweaks.chests'

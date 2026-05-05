@@ -9,5 +9,6 @@ log~
 /target
 
 /lualib
+/output
 
 .claude/read-grep-glob-paths.json

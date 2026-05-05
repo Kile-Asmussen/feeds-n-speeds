@@ -28,6 +28,15 @@ function utilities.resource_autoplace_all_patches(tbl)
 
 end
 
+function utilities.settings()
+    data:extend{{
+        type = 'bool-setting',
+        name = fns 'restart-toggle',
+        setting_type = 'startup',
+        default_value = true,
+    }}
+end
+
 utilities.icon_sizes = {
     technology = 256,
     recipe = 64,

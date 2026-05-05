@@ -4,14 +4,6 @@ local malltech = namespace 'tweaks.malltech'
 malltech.enabled = true
 
 function malltech.data2()
-    if not malltech.enabled then return end
-
-    malltech.tweak_recipes()
-    malltech.tweak_technologies()
-end
-
-function malltech.tweak_recipes()
-
     malltech.assembling_machines()
 
     malltech.mining_drills()
@@ -172,7 +164,7 @@ function malltech.assembling_machines()
     local recipe = data.raw.recipe
     local tech = data.raw.technology
 
-    table.append(tech['automation-2'].prerequisites, {'fast-inserter', 'engine-units'})
+    table.append(tech['automation-2'].prerequisites, {'fast-inserter', 'engine'})
     table.append(tech['automation-3'].prerequisites, {'bulk-inserter', 'logistic-robotics'})
 
     if not enabled('tweaks.earlygame') then

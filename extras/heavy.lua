@@ -14,7 +14,7 @@ function heavy_weapons.data()
     end
 end
 
-function heavy_weapons.data_updates()
+function heavy_weapons.data2()
     if not heavy_weapons.enabled then return end
 
     if enabled('tweaks.military') then

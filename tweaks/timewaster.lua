@@ -335,7 +335,7 @@ function timewaster.data2()
     data.raw.technology['steel-axe'] = nil
 
     -- Update mining times
-    for entity_type, entities in pairs(mining_times) do
+    for entity_type, entities in pairs(timewaster.mining_times) do
         local category = data.raw[entity_type]
         if category then
             for entity_name, mining_time in pairs(entities) do

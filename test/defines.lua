@@ -60,6 +60,7 @@ defines.events = {
     on_player_mined_entity = 5,
     on_robot_mined_entity = 6,
     script_raised_destroy = 7,
+    script_raised_revive = 8,
 
     -- Player actions
     on_player_created = 10,

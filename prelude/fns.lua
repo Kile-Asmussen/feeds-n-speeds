@@ -1,14 +1,18 @@
 
 
 local mod_identifiers = {}
+local mod_prefixes = {}
 local mod_identifier_categories = {}
 
-function _G.fns(name, ...)
+function _G.fns(name, sep, ...)
+    sep = sep or '-'
     assert(select('#', ...) == 0, "too many arguments")
+    assert(type(sep) == 'string', "invalid separator: " .. tostring(sep))
     assert(type(name) == 'string', "invalid name: " .. tostring(name))
 
-    name = string.gsub(name, '[^a-zA-Z0-9]', '-')
-    name = 'feeds-n-speeds-' .. name
+    prefix = table.concat({'feeds', 'n', 'speeds'}, sep)
+    name = prefix .. sep .. string.gsub(name, '[^a-zA-Z0-9]', sep)
+    table.insert(mod_prefixes, prefix)
     mod_identifiers[name] = true
 
     return name
@@ -25,6 +29,10 @@ function _G.fns_locale_key(category, name)
     mod_identifier_categories[category][name] = true
     
     return category .. '.' .. name
+end
+
+function _G.is_fns_name(name)
+    return table.index_of(mod_prefixes, function(pref) return name:sub(1, #pref) == pref end) and true or false
 end
 
 function _G.fns_categorized_names()

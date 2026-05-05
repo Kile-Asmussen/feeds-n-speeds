@@ -41,7 +41,8 @@ function data.extend(self, protos)
     local bad = false
     for _, proto in ipairs(protos) do
 
-        assert(proto.name:match('^feeds%-n%-speeds%-'), "prototype " .. proto.name .. " declared, should be feeds-n-speeds-" .. proto.name)
+
+        assert(is_fns_name(proto.name), "not an fns-based name: " .. proto.name)
 
         __log(proto.type .. ' ' .. proto.name:gsub('feeds%-n%-speeds%-', "fns-"))
 

@@ -14,7 +14,7 @@ return {
     ingredients = {
         { type = 'item', name = 'stone', amount = 2 },
         { type = 'item', name = 'stone-brick', amount = 5 },
-        { type = 'item', name = 'iron-stick', amount = 1 },
+        { type = 'item', name = 'iron-stick', amount = 2 },
         { type = 'fluid', name = 'water', amount = 100 },
     },
     icons = {

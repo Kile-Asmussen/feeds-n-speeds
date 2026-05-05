@@ -1,7 +1,8 @@
 require 'prelude'
 
 return {
-    { type = 'collision-layer', name = fns 'stable-tile' },
-    { type = 'collision-layer', name = fns 'extra-stable-tile' },
-    { type = 'collision-layer', name = fns 'hazard-tile' },
+    { type = 'collision-layer', name = fns('basic_pavement', '_') },
+    { type = 'collision-layer', name = fns('sturdy_pavement', '_') },
+    { type = 'collision-layer', name = fns('foundation_pavement', '_') },
+    { type = 'collision-layer', name = fns('hazard_markings', '_') },
 }

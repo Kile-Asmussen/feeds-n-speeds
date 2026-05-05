@@ -20,7 +20,7 @@ function ores.data()
     }
 end
 
-function ores.data_updates()
+function ores.data2()
     if not ores.enabled then return end
 
     local name = fns 'sulfur-ore'

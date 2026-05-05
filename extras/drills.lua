@@ -31,7 +31,7 @@ function drills.data2()
     
 end
 
-function drills.data_updates()
+function drills.data2()
     if not drills.enabled then return end
 
     -- Remove fluid input from vanilla electric mining drill

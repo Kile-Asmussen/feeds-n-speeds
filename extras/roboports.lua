@@ -8,7 +8,7 @@ function roboports.data()
     data:extend(require 'extras.roboports.alt-roboports')
 end
 
-function roboports.data_updates()
+function roboports.data2()
     if not roboports.enabled then return end
     table.append(data.raw.technology['logistic-robotics'].effects, {
         { type='unlock-recipe', recipe=fns 'sleeper-roboport' },
