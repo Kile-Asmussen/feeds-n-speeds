@@ -10,7 +10,7 @@ return {
     order = 'a-b-f',
     minable = {
         mining_time = 2,
-        required_fluid = 'steam',
+        required_fluid = 'water',
         fluid_amount = 10,
         result = 'sulfur',
         mining_particle = 'stone-particle',

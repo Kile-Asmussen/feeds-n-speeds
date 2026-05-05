@@ -13,7 +13,7 @@ function altrecipes.data()
     altrecipes.ammo()
 end
 
-function altrecipes.data_updates()
+function altrecipes.data2()
     if not altrecipes.enabled then return end
 
     altrecipes.stone_furnace_update()

@@ -27,6 +27,10 @@ function drills.data()
     table.insert(data.raw.technology['electric-mining-drill'].prerequisites, fns 'wet-drilling')
 end
 
+function drills.data2()
+    
+end
+
 function drills.data_updates()
     if not drills.enabled then return end
 

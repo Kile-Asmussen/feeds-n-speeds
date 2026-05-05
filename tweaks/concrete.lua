@@ -12,7 +12,7 @@ function concrete.data()
     }
 end
 
-function concrete.data_updates()
+function concrete.data2()
 
     if not concrete.enabled then return end
 
@@ -55,7 +55,7 @@ function concrete.data_updates()
 
     if not enabled('tweaks.malltech') then
         table.insert(recipes['oil-refinery'].ingredients,
-            { name = 'concrete', type = 'item', amount = 10 }
+            { name = 'concrete', type = 'item', amount = 25 }
         )
 
         table.insert(recipes['electric-furnace'].ingredients,

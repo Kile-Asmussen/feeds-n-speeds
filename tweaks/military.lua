@@ -16,7 +16,7 @@ function military.data()
     end
 end
 
-function military.data_updates()
+function military.data2()
     if not military.enabled then return end
 
     table.insert(data.raw.character.character.crafting_categories, fns 'hand-crafting')
@@ -50,7 +50,7 @@ function military.guns()
     data.raw.gun.pistol.attack_parameters.cooldown = 20
     data.raw.gun.pistol.attack_parameters.damage_modifier = 1.5
     
-    data.raw.gun.shotgun.attack_parameters.cooldown = 100
+    data.raw.gun.shotgun.attack_parameters.cooldown = 80
     data.raw.gun.shotgun.attack_parameters.damage_modifier = 1.5
     data.raw.gun.shotgun.attack_parameters.movement_slow_down_factor = 0.3
 
@@ -58,7 +58,7 @@ function military.guns()
     data.raw.gun['submachine-gun'].attack_parameters.movement_slow_down_factor = 0.4
     data.raw.gun['submachine-gun'].attack_parameters.damage_modifier = 1.2
 
-    data.raw.gun['combat-shotgun'].attack_parameters.cooldown = 50
+    data.raw.gun['combat-shotgun'].attack_parameters.cooldown = 40
     data.raw.gun['combat-shotgun'].attack_parameters.damage_modifier = 1.2
     data.raw.gun['combat-shotgun'].attack_parameters.movement_slow_down_factor = 0.5
 

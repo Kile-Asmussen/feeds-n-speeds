@@ -2,7 +2,7 @@ require 'prelude'
 
 local plastics = namespace 'tweaks.batteries'
 
-function plastics.data_updates()
+function plastics.data2()
 
     data.raw.recipe['battery'].ingredients = {
         { type='item', name='iron-plate', amount=1 },

@@ -4,10 +4,8 @@ local chests = namespace 'tweaks.chests'
 
 chests.enabled = true
 
-function chests.data_updates()
+function chests.data2()
     if not chests.enabled then return end
-
-    local extras = import 'extras'
 
     local container = data.raw.container
     local logistic = data.raw['logistic-container']

@@ -2,10 +2,10 @@ require 'prelude'
 
 local loading = namespace 'loading'
 
-function loading.execute(superdomain, operation, name)
+function loading.execute(superdomain, operation)
     local domains = {}
 
-    if type(operation) == 'string' then name = operation end
+    if type(operation) == 'string' then operation = loading.if_enabled(operation) end
 
     for _, domain_name in ipairs(table.sorted_keys(superdomain)) do
         domain = superdomain[domain_name]
@@ -48,6 +48,18 @@ function loading.read_toggle(domain)
         local set = settings.startup[fns(tostring(domain) .. '-enable')]
         if set then
             domain.enabled = set.value
+        end
+    end
+end
+
+function loading.if_enabled(stage)
+    return function(domain)
+        if domain/'enabled' then
+            if type(stage) == 'string' then
+                (domain/'string' or function() end)()
+            else
+                stage(domain)
+            end
         end
     end
 end

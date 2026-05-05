@@ -47,6 +47,7 @@ function chests.control()
     script.on_event(defines.events.on_built_entity, chests.hopper.on_entity_built, chests.hopper.entity_filter)
     script.on_event(defines.events.on_robot_built_entity, chests.hopper.on_entity_built, chests.hopper.entity_filter)
     script.on_event(defines.events.script_raised_built, chests.hopper.on_entity_built)
+    script.on_event(defines.events.script_raised_revive, chests.hopper.on_entity_built)
 
     script.on_event(defines.events.on_entity_died, chests.hopper.on_entity_destroyed, chests.hopper.entity_filter)
     script.on_event(defines.events.on_player_mined_entity, chests.hopper.on_entity_destroyed, chests.hopper.entity_filter)

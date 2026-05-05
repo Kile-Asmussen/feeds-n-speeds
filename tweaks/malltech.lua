@@ -3,25 +3,11 @@ require 'prelude'
 local malltech = namespace 'tweaks.malltech'
 malltech.enabled = true
 
-function malltech.data_updates()
+function malltech.data2()
     if not malltech.enabled then return end
 
     malltech.tweak_recipes()
     malltech.tweak_technologies()
-end
-
-function malltech.tweak_technologies()
-    local tech = data.raw.technology
-
-    table.insert(tech['automation-2'].prerequisites, 'fast-inserter')
-    table.append(tech['automation-3'].prerequisites, {'bulk-inserter', 'logistic-robotics'})
-
-    -- Centrifuge requires electric-engine-unit and speed-module
-    table.insert(tech['uranium-processing'].prerequisites, 'speed-module')
-    table.insert(tech['uranium-processing'].prerequisites, 'electric-engine')
-
-    -- Nuclear machines require electric-engine-unit
-    table.insert(tech['nuclear-power'].prerequisites, 'electric-engine')
 end
 
 function malltech.tweak_recipes()
@@ -184,27 +170,44 @@ end
 
 function malltech.assembling_machines()
     local recipe = data.raw.recipe
+    local tech = data.raw.technology
+
+    table.append(tech['automation-2'].prerequisites, {'fast-inserter', 'engine-units'})
+    table.append(tech['automation-3'].prerequisites, {'bulk-inserter', 'logistic-robotics'})
+
+    if not enabled('tweaks.earlygame') then
+        table.append(tech['automation'].prerequisites, {'steel-processing'})
+        tech['steel-processing'].unit.count = 10
+        tech['steel-processing'].unit.time = 10
+    end
 
     recipe['assembling-machine-1'].ingredients = {
         { type='item', name='inserter', amount=3 },
         { type='item', name='electronic-circuit', amount=3 },
+        { type='item', name='steel-plate', amount=2 },
         { type='item', name='iron-chest', amount=1 },
     }
 
     recipe['assembling-machine-2'].ingredients = {
-        { type='item', name='fast-inserter', amount=3 },
-        { type='item', name='electronic-circuit', amount=5 },
+        { type='item', name='fast-inserter', amount=4 },
+        { type='item', name='engine-unit', amount=2 },
+        { type='item', name='electronic-circuit', amount=6 },
         { type='item', name='pipe', amount=2 },
         { type='item', name='steel-chest', amount=1 },
     }
 
     recipe['assembling-machine-3'].ingredients = {
-        { type='item', name='bulk-inserter', amount=3 },
-        { type='item', name='speed-module', amount=1 },
-        { type='item', name='electric-engine-unit', amount=3 },
+        { type='item', name='bulk-inserter', amount=5 },
+        { type='item', name='speed-module', amount=3 },
+        { type='item', name='electric-engine-unit', amount=10 },
         { type='item', name='storage-chest', amount=1 },
         { type='item', name='pump', amount=2 },
+        { type='item', name='refined-concrete', amount=10 },
     }
+
+    if enabled('tweaks.concrete') then
+        recipe['assembling-machine-3'].ingredients[6].name = 'refined-hazard-concrete'
+    end
 end
 
 function malltech.chemical()
@@ -215,23 +218,23 @@ function malltech.chemical()
     }
 
     recipe['chemical-plant'].ingredients = {
-        { type='item', name='pump', amount=3 },
+        { type='item', name='pump', amount=2 },
         { type='item', name='storage-tank', amount=1 },
         { type='item', name='pipe', amount=10 },
         { type='item', name='electronic-circuit', amount=10 },
-        { type='item', name='copper-plate', amount=20 },
+        { type='item', name='copper-plate', amount=10 },
     }
 
     recipe['oil-refinery'].ingredients = {
         { type='item', name='pump', amount=5 },
         { type='item', name='pipe', amount=20 },
-        { type='item', name='steel-plate', amount=10 },
+        { type='item', name='steel-furnace', amount=1 },
+        { type='item', name='storage-tank', amount=1 },
         { type='item', name='electronic-circuit', amount=10 },
-        { type='item', name='stone-brick', amount=10 },
     }
 
     recipe['pumpjack'].ingredients = {
-        { type='item', name='pump', amount=2 },
+        { type='item', name='pump', amount=1 },
         { type='item', name='pipe-to-ground', amount=4 },
         { type='item', name='electronic-circuit', amount=5 },
         { type='item', name='steel-plate', amount=5 },
@@ -294,6 +297,10 @@ function malltech.nuclear_machines()
     if not enabled('tweaks.nuclear') then return end
 
     local recipe = data.raw.recipe
+    local tech = data.raw.technology
+
+    table.insert(tech['uranium-processing'].prerequisites, 'speed-module')
+    table.insert(tech['uranium-processing'].prerequisites, 'electric-engine')
 
     recipe['steam-turbine'].ingredients = {
         { type='item', name='electric-engine-unit', amount=10 },

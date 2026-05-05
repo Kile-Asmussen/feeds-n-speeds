@@ -4,7 +4,7 @@ local electric = namespace 'tweaks.electric'
 
 electric.enabled = true
 
-function electric.data_updates()
+function electric.data2()
 
     if not electric.enabled then return end
 

@@ -59,10 +59,19 @@ function technologies.tweak_science_packs()
         { type = 'item', name = 'stone-brick', amount = 1 }
     }
 
+    if enabled('tweaks.earlygame', 'extras.drills', 'extras.ores') then
+        table.insert(recipes['automation-science-pack'].ingredients,
+        { type = 'item', name = 'sulfur', amount = 1  })
+    else
+        table.insert(recipes['automation-science-pack'].ingredients,
+        { type = 'item', name = 'coal', amount = 1  })
+    end
+
     recipes['logistic-science-pack'].ingredients = {
         { type = 'item', name = 'inserter', amount = 1 },
         { type = 'item', name = 'transport-belt', amount = 1 },
         { type = 'item', name = 'small-lamp', amount = 1 },
+        { type = 'item', name = 'pipe', amount = 1 },
     }
 
     table.insert(data.raw.technology['logistic-science-pack'].prerequisites, 'lamp')
@@ -71,7 +80,7 @@ function technologies.tweak_science_packs()
     recipes['chemical-science-pack'].ingredients = {
         { type = 'item', name = 'engine-unit', amount = 2 },
         { type = 'item', name = 'advanced-circuit', amount = 3 },
-        { type = 'item', name = 'concrete', amount = 5 },
+        { type = 'item', name = 'concrete', amount = 10 },
         { type = 'fluid', name = 'sulfuric-acid', amount = 10 },
     }
 

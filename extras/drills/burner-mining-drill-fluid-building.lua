@@ -13,10 +13,9 @@ drill.localised_description = {"", {fns_locale_key("entity-description", "lubric
 -- Add fluid input on north side (same side as output chute, intentionally awkward)
 -- Note: defines.direction is runtime-only; use numeric direction (0 = north)
 -- Filter to steam only: usable for sulfur ore, not uranium (sulfuric acid)
--- production_type = 'input' prevents through-flow icon (single connection)
 drill.input_fluid_box = {
     volume = 50,
-    filter = 'steam',
+    filter = 'water',
     production_type = 'input',
     pipe_connections = {
         {

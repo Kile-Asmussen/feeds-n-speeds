@@ -18,8 +18,8 @@ export MODS_DIR := $(HOME)/.factorio/mods
 export MOD_LIST := mod-list.json
 export OUTPUT_DIR := ./target
 
-.PHONY: all build clean rawdata
-.PHONY: install uninstall clean-reinstall nuke 
+.PHONY: all build clean rawdata lualib load
+.PHONY: install uninstall clean-reinstall nuke
 
 build: # $(OUTPUT_DIR)/$(ZIPFILE)
 	./build-scripts/build.sh
@@ -35,7 +35,7 @@ clean:
 	rm -rf ./target/*
 	rm -f ./test/rawdata.so
 
-install: build ./build-scripts/install.sh
+install: build ./build-scripts/install.sh load
 	@./build-scripts/install.sh
 
 uninstall: ./build-scripts/uninstall.sh
@@ -48,6 +48,10 @@ nuke: uninstall
 
 rawdata: 
 	@./build-scripts/rawdata.sh 
+
+load: 
+	@lua debug/load.lua
+
 
 lualib:
 	@cp -r $(FACTORIO_DIR)/data/core/lualib ./lualib
