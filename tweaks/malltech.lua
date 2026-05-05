@@ -202,7 +202,7 @@ function malltech.assembling_machines()
         { type='item', name='bulk-inserter', amount=3 },
         { type='item', name='speed-module', amount=1 },
         { type='item', name='electric-engine-unit', amount=3 },
-        { type='item', name='storage-chest', amount=1 }
+        { type='item', name='storage-chest', amount=1 },
         { type='item', name='pump', amount=2 },
     }
 end

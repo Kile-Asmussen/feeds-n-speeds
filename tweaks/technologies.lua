@@ -54,8 +54,8 @@ function technologies.tweak_science_packs()
     local recipes = data.raw.recipe
 
     recipes['automation-science-pack'].ingredients = {
-        { type = 'item', name = 'iron-plate', amount = 1 },
-        { type = 'item', name = 'copper-plate', amount = 1 },
+        { type = 'item', name = 'iron-plate', amount = 2 },
+        { type = 'item', name = 'copper-plate', amount = 2 },
         { type = 'item', name = 'stone-brick', amount = 1 }
     }
 
