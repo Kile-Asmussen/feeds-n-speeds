@@ -9,7 +9,7 @@ function robotics.data()
     data:extend(require 'tweaks.robotics.worker-robots-battery')
 end
 
-function robotics.data_updates()
+function robotics.data2()
     if not robotics.enabled then return end
 
     local roboports = data.raw.roboport

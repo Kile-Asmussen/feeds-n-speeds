@@ -15,7 +15,7 @@ function textplates.data()
     end 
 end
 
-function textplates.data_updates()
+function textplates.data2()
 
     if not textplates.enabled then return end
 

@@ -11,9 +11,7 @@ function military.data()
         }
     }
 
-    if enabled('tweaks.malltech') then
-        data:extend(require 'tweaks.military.guns')
-    end
+    data:extend(require 'tweaks.military.guns')
 end
 
 function military.data2()
@@ -107,8 +105,8 @@ function military.guns()
 
     recipes[fns'submachine-gun-plastic-stock'].ingredients = table.clone(recipes['submachine-gun'].ingredients)
     recipes[fns'combat-shotgun-plastic-stock'].ingredients = table.clone(recipes['combat-shotgun'].ingredients)
-    table.find_matching(recipes[fns'submachine-gun-plastic-stock'].ingredients, table.matches{name='wood'}).name = 'plastic-bar'
-    table.find_matching(recipes[fns'combat-shotgun-plastic-stock'].ingredients, table.matches{name='wood'}).name = 'plastic-bar'
+    table.find_matching(recipes[fns'submachine-gun-plastic-stock'].ingredients, {name='wood'}).name = 'plastic-bar'
+    table.find_matching(recipes[fns'combat-shotgun-plastic-stock'].ingredients, {name='wood'}).name = 'plastic-bar'
 
 
     recipes['railgun'].ingredients = {

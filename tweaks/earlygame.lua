@@ -9,7 +9,7 @@ function earlygame.data()
     data:extend{ require 'tweaks.earlygame.lab-technology' }
 end
 
-function earlygame.data_updates()
+function earlygame.data2()
     if not earlygame.enabled then return end
 
     earlygame.tweak_technologies()

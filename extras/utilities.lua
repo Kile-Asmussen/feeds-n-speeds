@@ -61,5 +61,71 @@ function utilities.iconify(thing, other_icon, placement)
     thing.icon = nil
 end
 
+local science_pack_tier = {
+    ["automation-science-pack"]      = 1,
+    ["logistic-science-pack"]        = 2,
+    ["military-science-pack"]        = 3,
+    ["chemical-science-pack"]        = 3,
+    ["production-science-pack"]      = 4,
+    ["utility-science-pack"]         = 4,
+    ["space-science-pack"]           = 5,
+    ["metallurgic-science-pack"]     = 6,
+    ["electromagnetic-science-pack"] = 6,
+    ["agricultural-science-pack"]    = 6,
+    ["cryogenic-science-pack"]       = 7,
+    ["promethium-science-pack"]      = 8,
+}
+
+-- Build a reverse index: recipe name -> list of technologies that unlock it
+function utilities.build_recipe_to_techs()
+    local index = {}
+    for _, tech in pairs(data.raw.technology) do
+        if tech.effects then
+            for _, effect in pairs(tech.effects) do
+                if effect.type == "unlock-recipe" then
+                    local name = effect.recipe
+                    index[name] = index[name] or {}
+                    table.insert(index[name], tech)
+                end
+            end
+        end
+    end
+    return index
+end
+
+function utilities.highest_tier_for_tech(tech)
+    local best = 0
+    if tech.unit and tech.unit.ingredients then
+        for _, ingredient in pairs(tech.unit.ingredients) do
+            local pack = ingredient.name or ingredient[1]
+            local tier = science_pack_tier[pack]
+            if tier and tier > best then
+                best = tier
+            end
+        end
+    end
+    return best
+end
+
+local recipe_to_techs = nil
+
+function utilities.highest_unlock_tier(recipe_name)
+    if not recipe_to_techs then
+        recipe_to_techs = build_recipe_to_techs()
+    end
+
+    local techs = recipe_to_techs[recipe_name]
+    if not techs then
+        return nil  -- no unlock needed, available from start
+    end
+
+    local best = 0
+    for _, tech in pairs(techs) do
+        local tier = highest_tier_for_tech(tech)
+        if tier > best then best = tier end
+    end
+
+    return best > 0 and best or nil
+end
 
 return seal_namespace(utilities)

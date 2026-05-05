@@ -14,7 +14,7 @@ function sulfur_processing.data()
     }
 end
 
-function sulfur_processing.data_updates()
+function sulfur_processing.data2()
     if not sulfur_processing.enabled then return end
 
     -- Modify sulfuric acid recipe: steel plate catalyst (80% return chance)

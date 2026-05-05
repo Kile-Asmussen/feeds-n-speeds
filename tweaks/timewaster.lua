@@ -6,7 +6,7 @@ timewaster.enabled = true
 
 -- Mining times scaled by approximate entity size/complexity
 -- Format: [entity_type][entity_name] = mining_time
-local mining_times = {
+timewaster.mining_times = {
     ['generator'] = {
         ['steam-engine'] = 1.5,      -- 3x5 entity
         ['steam-turbine'] = 2.0,     -- larger, more complex
@@ -168,65 +168,94 @@ end
 -- Stack sizes for placeable buildings, tiered by footprint
 -- Tiers: 1 (9x9+), 5 (5x5), 10 (3x4–4x5), 20 (2x3–3x3), 50 (1x1–2x2)
 timewaster.STACK_SIZES = {
-    -- 1x1 → 50
-    ['small-electric-pole']  = 100,
-    ['medium-electric-pole'] = 100,
-    ['gate']                 = 100,
     ['stone-wall']           = 100,
+    ['gate']                 = 50,
+    ['small-electric-pole']  = 50,
+    ['medium-electric-pole'] = 30,
 
-    -- 2x2 → 20
+    -- 2x2 'complicated'
     ['big-electric-pole']    = 20,
     ['substation']           = 20,
     ['lightning-collector']  = 20,
 
-    -- 2x3–3x3 → 20
-    ['stone-furnace']        = 20,
-    ['steel-furnace']        = 20,
-    ['boiler']               = 20,
-    ['radar']                = 20,
-    ['lab']                  = 20,
-    ['crusher']              = 20,
-    ['agricultural-tower']   = 20,
+    -- 2x2 'light'
+    ['stone-furnace']        = 30,
+    ['burner-mining-drill']  = 30,
+    [fns 'small-radar']      = 30,
 
-    -- 3x3–3x5 → 10
-    ['electric-furnace']     = 10,
-    ['assembling-machine-1'] = 10,
-    ['assembling-machine-2'] = 10,
-    ['assembling-machine-3'] = 10,
-    ['storage-tank']         = 10,
-    ['steam-engine']         = 10,
-    ['electric-mining-drill']= 10,
-    ['recycler']             = 10,
-    ['burner-mining-drill']  = 10,
-    ['thruster']             = 10,
+    -- 2x2 'medium'
+    ['steel-furnace']        = 20,
+    ['pumpjack']             = 20,
+    -- 2x3
+    ['boiler']               = 20,
+
+    -- 2x3 heavy
+
+    -- 3x3 'light'
+    ['radar']                = 20,
+
+    -- 3x3 'big'
+    ['lab']                  = 10,
+
+    -- 4x2 'light'
+    ['crusher']              = 20,
+    -- 4x2 'complex'
+    ['recycler']              = 10,
+
+
+    -- 3x3 'huge'
+    ['agricultural-tower']   = 5,
+
+    -- 3x3 'too useful to limit'
+    ['electric-furnace']      = 20,
+    ['electric-mining-drill'] = 20,
+    ['chemical-plant']        = 20,
+    -- 5x5 'too useful to limit'
+    ['oil-refinery']          = 10,
+    
+    -- 3x3 'progressive'
+    ['assembling-machine-1']  = 30,
+    ['assembling-machine-2']  = 20,
+    ['assembling-machine-3']  = 10,
+    
+    -- 3x3 'cumbersome'
+    ['storage-tank']          = 10,
+    ['steam-engine']          = 10,
+
+    -- 4x5 'almost too big'
+    ['thruster']              = 2,
 
     -- 3x5–4x5 → 5
-    ['chemical-plant']       = 5,
+
     ['centrifuge']           = 5,
     ['steam-turbine']        = 5,
-    ['heat-exchanger']       = 5,
-    ['pumpjack']             = 5,
+    ['heat-exchanger']       = 10,
     ['roboport']             = 5,
-    ['biochamber']           = 5,
     ['foundry']              = 5,
+    
+    -- 4x4
+    ['biochamber']           = 10,
+    ['electromagnetic-plant']    = 10,
 
-    -- 5x5 → 5
-    ['oil-refinery']             = 5,
-    ['electromagnetic-plant']    = 5,
+    -- 5x5
     ['cryogenic-plant']          = 5,
-    ['nuclear-reactor']          = 5,
     ['heating-tower']            = 5,
     ['big-mining-drill']         = 5,
     ['asteroid-collector']       = 5,
 
-    -- Trains → 5 (large but long)
-    ['locomotive']           = 5,
+    -- Trains
     ['cargo-wagon']          = 5,
     ['fluid-wagon']          = 5,
-    ['artillery-wagon']      = 5,
+    -- super heavy
+    ['locomotive']           = 2,
+    ['artillery-wagon']      = 2,
 
-    -- 9x9 → 1
+    -- 5x5 'super heavy'
+    ['nuclear-reactor']          = 1,
+
+    -- 8x8 and above
     ['rocket-silo']          = 1,
+    ['landing-pad']          = 1,
 }
 
 local function check(on, off, ...)
@@ -300,7 +329,7 @@ timewaster.CRAFTING_TIMES = {
     ['electric-engine-unit'] = 5.0,
 }
 
-function timewaster.data_updates()
+function timewaster.data2()
     if not timewaster.enabled then return end
 
     data.raw.technology['steel-axe'] = nil

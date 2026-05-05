@@ -41,11 +41,6 @@ function nuclear.data2()
     nuclear_reactor.neighbour_bonus = 0.5
 
     data.raw.technology['heating-tower'].localised_description = {"", {fns_locale_key('technology-description', 'tweaked-heating-tower')}}
-end
-
-function nuclear2()
-
-    if not nuclear.enabled then return end
 
     if enabled('tweaks.concrete') and not enabled('tweaks.malltech') then
 

@@ -4,7 +4,7 @@ local ores = namespace 'tweaks.ores'
 
 ores.enabled = true
 
-function ores.data_final_fixes()
+function ores.data_updates()
 
     if not ores.enabled then return end
 

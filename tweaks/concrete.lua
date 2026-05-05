@@ -10,6 +10,9 @@ function concrete.data()
     data:extend{
         require 'tweaks.concrete.simple-concrete',
     }
+    data:extend(
+        require 'tweaks.concrete.collision_layers'
+    )
 end
 
 function concrete.data2()
@@ -52,17 +55,9 @@ function concrete.data2()
     
     table.insert(tech['oil-processing'].prerequisites, 'concrete')
     table.insert(tech['advanced-material-processing-2'].prerequisites, 'concrete')
+end
 
-    if not enabled('tweaks.malltech') then
-        table.insert(recipes['oil-refinery'].ingredients,
-            { name = 'concrete', type = 'item', amount = 25 }
-        )
-
-        table.insert(recipes['electric-furnace'].ingredients,
-            { name = 'concrete', type = 'item', amount = 10 }
-        )
-    end
-
+function concrete.data_updates()
     for _, tile in pairs(data.raw.tile) do
 
         if tile.name:match('stone%-path') then
