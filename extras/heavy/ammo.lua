@@ -120,7 +120,9 @@ else
     napalm_ammo.ammo_type[2].action.action_delivery.stream = napalm_steam.name
 end
 
-return {
+local hidden = not enabled('tweaks.military')
+
+local res = {
     ushell,
     ushell_proj,
     ushell_recipe,
@@ -131,3 +133,7 @@ return {
     napalm_ammo_recipe,
     tank_napalm_steam
 }
+
+for _, x in ipairs(res) do x.hidden = hidden end
+
+return res

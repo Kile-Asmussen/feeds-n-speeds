@@ -1,4 +1,4 @@
-requre 'prelude'
+require 'prelude'
 
 local cliffsplosives = namespace 'tweaks.cliffsplosive'
 cliffsplosives.enabled = true
@@ -20,4 +20,12 @@ function cliffsplosives.data2()
     }
 
     cliffs.prerequisites = { 'military-4' }
+
+    local splodes = data.raw.reicpe['cliff-explosives']
+
+    splodes.ingredients = {
+        { type='item', name='explosives', amount=20 },
+        { type='item', name='barrel', amount=1 },
+        { type='item', name='cluster-grenade', amount=1 },
+    }
 end
