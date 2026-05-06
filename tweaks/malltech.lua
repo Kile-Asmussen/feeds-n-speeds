@@ -54,19 +54,17 @@ function malltech.inserters()
         { type='item', name='electronic-circuit', amount=10 },
     }
 
-    recipe['bulk-inserter'].category = 'advanced-crafting'
     recipe['bulk-inserter'].ingredients = {
         { type='item', name='steel-plate', amount=2 },
-        { type='item', name='advanced-circuit', amount=2 },
+        { type='item', name='advanced-circuit', amount=1 },
         { type='item', name='engine-unit', amount=2 },
         { type='item', name='fast-inserter', amount=4 },
     }
 
-    recipe['stack-inserter'].category = 'advanced-crafting'
     recipe['stack-inserter'].ingredients = {
         { type='item', name='carbon-fiber', amount=2 },
-        { type='item', name='processing-unit', amount=1 },
-        { type='item', name='electric-engine-unit', amount=2 },
+        { type='item', name='efficiency-module', amount=1 },
+        { type='item', name='electric-engine-unit', amount=4 },
         { type='item', name='bulk-inserter', amount=2 },
     }
 end
