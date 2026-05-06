@@ -65,11 +65,11 @@ local tier3 = fns('foundation_pavement', '_')
 local tier3h = fns('foundation_pavement_hazard', '_')
 
 local strings = {
-    [tier1] = "stone-brick",
-    [tier2] = "concrete",
-    [tier2h] = "hazard-concrete",
-    [tier3] = "refined-concrete",
-    [tier3h] = "refined-hazard-concrete",
+    [tier1] = 'simple-machinery',
+    [tier2] = 'machinery',
+    [tier2h] = 'dangerous-machinery',
+    [tier3] = 'heavy-machinery',
+    [tier3h] = 'dangerous-heavy-machinery',
 }
 
 function concrete.adjust_tiles()
@@ -79,7 +79,6 @@ function concrete.adjust_tiles()
         if tile.name:match('stone%-path') then
             tile.walking_speed_modifier = 1.3
             tile.collision_mask.layers[tier1] = true
-            tile.localised_description = {fns_locale_key("item-description", "pavement"), {fns_locale_key("item-description", "basic-pavement")}}
         end
 
         if tile.name:match('concrete') then
@@ -88,28 +87,20 @@ function concrete.adjust_tiles()
             tile.collision_mask.layers[tier2] = true
             tile.collision_mask.layers[tier2h] = tile.name:match('hazard') and true or nil
 
-            tile.localised_description = {fns_locale_key("item-description", "pavement"), {fns_locale_key("item-description", "sturdy-pavement")}}
-
             if tile.name:match('hazard') then
                 tile.walking_speed_modifier = 1.0
-                tile.localised_description[2] = {fns_locale_key("item-description", "sturdy-pavement-hazard")}
             end
 
             if tile.name:match('refined') then
                 tile.walking_speed_modifier = 2.0
                 tile.collision_mask.layers[tier3] = true
                 tile.collision_mask.layers[tier3h] = tile.name:match('hazard') and true or nil
-                tile.localised_description[2] = {fns_locale_key("item-description", "foundation-pavement")}
-
 
                 if tile.name:match('hazard') then
                     tile.walking_speed_modifier = 1.0
-                    tile.localised_description[2] = {fns_locale_key("item-description", "foundation-pavement-hazard")}
                 end
 
             end
-
-
         end
     end
 
@@ -128,9 +119,12 @@ function concrete.adjust_tiles()
     }
 end
 
-local function search_radius(ent)
-    local rad = ent.resource_searching_radius
-    return { { -rad - 1, -rad - 1 }, { rad + 1, rad + 1 } }
+local function search_radius(n)
+    n = n or 0
+    return function(ent)
+        local rad = ent.resource_searching_radius
+        return { { -rad - 1 - n, -rad - 1 - n}, { rad + 1 + n, rad + 1 + n} }
+    end
 end
 
 local function plus(n)
@@ -146,40 +140,35 @@ end
 
 concrete.needs_paving = {
     ['assembling-machine'] = {
-        ['assembling-machine-2'] = { tier1 },
+        ['assembling-machine-1'] = { tier1 },
+        ['assembling-machine-2'] = { tier2 },
         ['assembling-machine-3'] = { tier2h, r=plus(1) },
         ['chemical-plant'] = { tier1 },
         ['oil-refinery'] = { tier2, r=plus(1) },
-        ['biochamber'] = { r=plus(2), no = true },
+        ['biochamber'] = { tier1 },
         ['centrifuge'] = { tier2h, r=plus(2) },
         ['cryogenic-plant'] = { tier3, r=plus(2) },
         ['electromagnetic-plant'] = { tier3, r=plus(2) },
         ['foundry'] = { tier2, r=plus(2) },
-        ['captive-biter-spawner'] = { no = true, r=plus(2) }
+        ['captive-biter-spawner'] = { no = true }
     },
 
     ['mining-drill'] = {
-        ['burner-mining-drill'] = { no = true, r=search_radius },
-        [fns 'burner-mining-drill-fluid'] = { no = true, r=search_radius },
-        ['electric-mining-drill'] = { no = true, r=search_radius },
-        [fns 'electric-mining-drill-fluid'] = { no = true, r=search_radius },
-        ['big-mining-drill'] = { no = true, r=search_radius },
-        ['pumpjack'] = { no = true, r=search_radius }
+        ['burner-mining-drill'] = { no = true, r=search_radius(1) },
+        [fns 'burner-mining-drill-fluid'] = { no = true, r=search_radius(1) },
+        ['electric-mining-drill'] = { no = true, r=search_radius() },
+        [fns 'electric-mining-drill-fluid'] = { no = true, r=search_radius() },
+        ['big-mining-drill'] = { no = true, r=search_radius() },
+        ['pumpjack'] = { no = true, r=plus(1) }
     },
 
     ['lab'] = {
         ['lab'] = { tier1 },
-        ['biolab'] = { r=plus(1), no = true },
+        ['biolab'] = { no = true },
     },
 
     ['agricultural-tower'] = {
-        ['agricultural-tower'] = {
-            no = true,
-            r=function(ent)
-                local radius = ent.radius * math.ceil(math.abs(ent.collision_box[1][1]*2))
-                return plus(radius)(ent)
-            end
-        }
+        ['agricultural-tower'] = { tier1 }
     },
 
     ['furnace'] = {
@@ -189,6 +178,7 @@ concrete.needs_paving = {
     },
 
     ['boiler'] = {
+        ['boiler'] = { tier1 },
         [fns 'electroboiler'] = { tier1 },
         ['heat-exchanger'] = { tier2h, r=plus(1) },
     },
@@ -206,6 +196,7 @@ concrete.needs_paving = {
     },
 
     ['generator'] = {
+        ['steam-engine'] = { tier1 }
         ['steam-turbine'] = { tier2, r=plus(1) }
     },
 
@@ -240,7 +231,7 @@ concrete.needs_paving = {
         ['roboport'] = { tier2, r=plus(1) },
         [fns 'logistics-roboport'] = { tier3h, r=plus(1) },
         [fns 'sleeper-roboport'] = { tier2, r=plus(1) },
-        [fns 'construction-roboport'] = { tier1 },
+        [fns 'construction-roboport'] = { tier1, r=plus(1) },
     },
 
     ['accumulator'] = {
@@ -298,9 +289,17 @@ function concrete.flooring()
                     required_tiles = {
                         layers = table.set(val)
                     },
-                    colliding_tiles = { layers = val.no and { [tier1] = true } or {} }
+                    colliding_tiles = { layers = val.no and { [tier1] = true } or {} },
+                    remove_on_collision = true,
                 }
             }
+
+            if strings[val[1]] then
+                entity.localised_name
+                    = {fns_locale_key('item-name', strings[val[1]]),
+                        entity.localised_name or {"entity-name."..entity.name}
+                    }
+            end
         end
     end
 end

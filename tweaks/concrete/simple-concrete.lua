@@ -12,7 +12,6 @@ return {
     enabled = false,
     energy_required = 10,
     ingredients = {
-        { type = 'item', name = 'stone', amount = 2 },
         { type = 'item', name = 'stone-brick', amount = 5 },
         { type = 'item', name = 'iron-stick', amount = 2 },
         { type = 'fluid', name = 'water', amount = 100 },
@@ -30,7 +29,7 @@ return {
         },
     },
     results = {
-        { type = 'item', name = 'concrete', amount = 8 },
+        { type = 'item', name = 'concrete', amount = 5 },
     },
     order = 'b[concrete]-a[simple]',
 }

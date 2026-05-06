@@ -87,6 +87,8 @@ function localisation.key_category(proto)
         or proto.type == 'module-category'
         or proto.type == 'equipment-category'
         or proto.type == 'burner-usage'
+        or proto.type == 'projectile'
+        or proto.type == 'stream'
     then
         return nil
     else
