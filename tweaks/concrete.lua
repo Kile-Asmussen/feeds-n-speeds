@@ -196,8 +196,8 @@ concrete.needs_paving = {
     },
 
     ['generator'] = {
-        ['steam-engine'] = { tier1 }
-        ['steam-turbine'] = { tier2, r=plus(1) }
+        ['steam-engine'] = { tier1 },
+        ['steam-turbine'] = { tier2, r=plus(1) },
     },
 
     ['inserter'] = {

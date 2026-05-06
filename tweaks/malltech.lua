@@ -47,12 +47,6 @@ function malltech.inserters()
         { type='item', name='inserter', amount=1 },
     }
 
-    recipe['lab'].ingredients = {
-        { type='item', name='transport-belt', amount=3 },
-        { type='item', name='inserter', amount=3 },
-        { type='item', name='copper-plate', amount=10 },
-        { type='item', name='electronic-circuit', amount=10 },
-    }
 
     recipe['bulk-inserter'].ingredients = {
         { type='item', name='steel-plate', amount=2 },
@@ -71,6 +65,13 @@ end
 
 function malltech.misc()
     local recipe = data.raw.recipe
+
+    recipe['lab'].ingredients = {
+        { type='item', name='transport-belt', amount=3 },
+        { type='item', name='inserter', amount=3 },
+        { type='item', name='copper-plate', amount=10 },
+        { type='item', name='electronic-circuit', amount=10 },
+    }
 
     recipe['beacon'].ingredients = {
         { type='item', name='efficiency-module', amount=1 },
