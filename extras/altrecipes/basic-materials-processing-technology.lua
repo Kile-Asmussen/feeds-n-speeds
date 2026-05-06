@@ -8,29 +8,14 @@ return {
             icon = '__base__/graphics/entity/stone-furnace/stone-furnace.png',
             icon_size = 146,
             float=true,
-            scale = 0.33,
+            scale = 0.5,
             shift = { 0, -20 }
-        },
-        {
-            icon = '__base__/graphics/entity/stone-furnace/stone-furnace.png',
-            icon_size = 150,
-            float=true,
-            scale = 0.33,
-            shift = { -15, -15 }
-        },
-
-        {
-            icon = '__base__/graphics/entity/stone-furnace/stone-furnace.png',
-            icon_size = 150,
-            float=true,
-            scale = 0.33,
-            shift = { 15, -15 }
         },
         {
             icon = '__base__/graphics/technology/steel-axe.png',
             icon_size = 256,
             float=true,
-            scale = 0.1875,
+            scale = 0.33,
             shift = { 0, 5 }
         },        
     },

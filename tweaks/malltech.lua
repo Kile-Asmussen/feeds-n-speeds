@@ -80,7 +80,6 @@ function malltech.misc()
         { type='item', name='electronic-circuit', amount=15 },
         { type='item', name='steel-plate', amount=5 },
         { type='item', name='copper-cable', amount=5 },
-        { type='item', name='hazard-concrete', amount=10 },
     }
 
 
@@ -194,12 +193,7 @@ function malltech.assembling_machines()
         { type='item', name='electric-engine-unit', amount=10 },
         { type='item', name='storage-chest', amount=1 },
         { type='item', name='pump', amount=2 },
-        { type='item', name='refined-concrete', amount=10 },
     }
-
-    if enabled('tweaks.concrete') then
-        recipe['assembling-machine-3'].ingredients[6].name = 'refined-hazard-concrete'
-    end
 end
 
 function malltech.chemical()
@@ -231,14 +225,6 @@ function malltech.chemical()
         { type='item', name='electronic-circuit', amount=5 },
         { type='item', name='steel-plate', amount=5 },
     }
-
-    if enabled('tweaks.concrete') then
-        recipe['oil-refinery'].ingredients[5] = { type='item', name='hazard-concrete', amount=20 }
-
-        table.insert(recipe['electric-furnace'].ingredients,
-            { name = 'hazard-concrete', type = 'item', amount = 10 }
-        )
-    end
 end
 
 function malltech.rail()
@@ -307,7 +293,7 @@ function malltech.nuclear_machines()
     }
 
     recipe['nuclear-reactor'].ingredients = {
-        { type='item', name='concrete', amount=500 },
+        { type='item', name='concrete', amount=250 },
         { type='item', name='uranium-238', amount=100 },
         { type='item', name='advanced-circuit', amount=500 },
         { type='item', name='steel-plate', amount=250 },
@@ -320,18 +306,7 @@ function malltech.nuclear_machines()
         { type='item', name='speed-module', amount=5 },
         { type='item', name='steel-plate', amount=50 },
         { type='item', name='iron-gear-wheel', amount=100 },
-        { type='item', name='concrete', amount=100 },
     }
-
-    if enabled('tweaks.concrete') then
-        table.find_matching(recipe['nuclear-reactor'].ingredients,
-            table.matches{ name = 'concrete', type = 'item' }
-        ).name = 'refined-hazard-concrete'
-
-        table.find_matching(recipe['centrifuge'].ingredients,
-            table.matches{ name = 'concrete', type = 'item' }
-        ).name = 'hazard-concrete'
-    end
 end
 
 function malltech.robotics()
@@ -344,12 +319,6 @@ function malltech.robotics()
 
     if enabled('extras.radars') then
         data.raw.recipe['roboport'].ingredients[4] = {  type='item', name=fns 'small-radar', amount=2 }
-    end
-
-    if enabled('tweaks.concrete') then
-        table.insert(data.raw.recipe['roboport'].ingredients,
-            {  type='item', name='hazard-concrete', amount=20 }
-        )
     end
 
     if enabled('extras.roboports') then
@@ -380,7 +349,6 @@ function malltech.energy()
         { type='item', name='big-electric-pole', amount=1 },
         { type='item', name='accumulator', amount=1 },
         { type='item', name='advanced-circuit', amount=5 },
-        { type='item', name='hazard-concrete', amount=10 }
     }
 
     table.insert(
@@ -395,12 +363,6 @@ function malltech.energy()
             { type='item', name='iron-gear-wheel', amount=5 },
             { type='item', name='steel-plate', amount=5 },
         }
-        if enabled('tweaks.concrete') then
-            table.insert(
-                data.raw.recipe['power-switch'].ingredients,
-                { type='item', name='hazard-concrete', amount=5 }
-            )
-        end
 
         table.insert(data.raw.technology['electric-energy-distribution-2'].effects,
             table.remove_matching( data.raw.technology['circuit-network'].effects, { recipe = 'power-switch' } )

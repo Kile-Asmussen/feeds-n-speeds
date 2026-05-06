@@ -51,50 +51,77 @@ function concrete.data2()
     table.insert(tech['oil-processing'].prerequisites, 'concrete')
     table.insert(tech['advanced-material-processing-2'].prerequisites, 'concrete')
 
+end
+
+function concrete.data_updates()
     concrete.adjust_tiles()
     concrete.flooring()
 end
 
 local tier1 = fns('basic_pavement', '_')
 local tier2 = fns('sturdy_pavement', '_')
+local tier2h = fns('sturdy_pavement_hazard', '_')
 local tier3 = fns('foundation_pavement', '_')
-local haz = fns('hazard_markings', '_')
+local tier3h = fns('foundation_pavement_hazard', '_')
+
+local strings = {
+    [tier1] = "stone-brick",
+    [tier2] = "concrete",
+    [tier2h] = "hazard-concrete",
+    [tier3] = "refined-concrete",
+    [tier3h] = "refined-hazard-concrete",
+}
 
 function concrete.adjust_tiles()
-    local tile = data.raw.tile
 
     for _, tile in pairs(data.raw.tile) do
 
         if tile.name:match('stone%-path') then
             tile.walking_speed_modifier = 1.3
-            tile.collision_mask[tier1] = true
+            tile.collision_mask.layers[tier1] = true
+            tile.localised_description = {fns_locale_key("item-description", "pavement"), {fns_locale_key("item-description", "basic-pavement")}}
         end
 
         if tile.name:match('concrete') then
             tile.walking_speed_modifier = 1.5
-            tile.collision_mask[tier1] = true
-            tile.collision_mask[tier2] = true
+            tile.collision_mask.layers[tier1] = true
+            tile.collision_mask.layers[tier2] = true
+            tile.collision_mask.layers[tier2h] = tile.name:match('hazard') and true or nil
+
+            tile.localised_description = {fns_locale_key("item-description", "pavement"), {fns_locale_key("item-description", "sturdy-pavement")}}
+
+            if tile.name:match('hazard') then
+                tile.walking_speed_modifier = 1.0
+                tile.localised_description[2] = {fns_locale_key("item-description", "sturdy-pavement-hazard")}
+            end
 
             if tile.name:match('refined') then
                 tile.walking_speed_modifier = 2.0
-                tile.collision_mask[tier3] = true
-            end
-        end
+                tile.collision_mask.layers[tier3] = true
+                tile.collision_mask.layers[tier3h] = tile.name:match('hazard') and true or nil
+                tile.localised_description[2] = {fns_locale_key("item-description", "foundation-pavement")}
 
-        if tile.name:match('hazard') then
-            tile.walking_speed_modifier = 1
-            tile.collision_mask[haz] = true
+
+                if tile.name:match('hazard') then
+                    tile.walking_speed_modifier = 1.0
+                    tile.localised_description[2] = {fns_locale_key("item-description", "foundation-pavement-hazard")}
+                end
+
+            end
+
+
         end
     end
 
-    tile['space-platform-foundation'].collision_mask.layers = {
+    data.raw.tile['space-platform-foundation'].collision_mask.layers = {
         [tier1] = true,
         [tier2] = true,
         [tier3] = true,
-        [haz] = true,
+        [tier2h] = true,
+        [tier3h] = true,
         ground_tile = true,
     }
-    tile['foundation'].collision_mask.lauers = {
+    data.raw.tile['foundation'].collision_mask.layers = {
         [tier1] = true,
         [tier2] = true,
         ground_tile = true,
@@ -120,34 +147,34 @@ end
 concrete.needs_paving = {
     ['assembling-machine'] = {
         ['assembling-machine-2'] = { tier1 },
-        ['assembling-machine-3'] = { tier2, haz, r=plus(1) },
+        ['assembling-machine-3'] = { tier2h, r=plus(1) },
         ['chemical-plant'] = { tier1 },
         ['oil-refinery'] = { tier2, r=plus(1) },
-        ['biochamber'] = { r=plus(2), no = { tier1, tier2, tier3, haz } },
-        ['centrifuge'] = { tier2, haz, r=plus(2) },
+        ['biochamber'] = { r=plus(2), no = true },
+        ['centrifuge'] = { tier2h, r=plus(2) },
         ['cryogenic-plant'] = { tier3, r=plus(2) },
         ['electromagnetic-plant'] = { tier3, r=plus(2) },
         ['foundry'] = { tier2, r=plus(2) },
-        ['captive-biter-spawner'] = { no = { tier1, tier2, tier3, haz }, r=plus(2) }
+        ['captive-biter-spawner'] = { no = true, r=plus(2) }
     },
 
     ['mining-drill'] = {
-        ['burner-mining-drill'] = { no = { tier1, tier2, tier3, haz }, r=search_radius },
-        [fns 'burner-mining-drill-fluid'] = { no = { tier1, tier2, tier3, haz }, r=search_radius },
-        ['electric-mining-drill'] = { no = { tier1, tier2, tier3, haz }, r=search_radius },
-        [fns 'electric-mining-drill-fluid'] = { no = { tier1, tier2, tier3, haz, r=search_radius } },
-        ['big-mining-drill'] = { no = { tier1, tier2, tier3, haz }, r=search_radius },
-        ['pumpjack'] = { no = { tier1, tier2, tier3, haz }, r=search_radius }
+        ['burner-mining-drill'] = { no = true, r=search_radius },
+        [fns 'burner-mining-drill-fluid'] = { no = true, r=search_radius },
+        ['electric-mining-drill'] = { no = true, r=search_radius },
+        [fns 'electric-mining-drill-fluid'] = { no = true, r=search_radius },
+        ['big-mining-drill'] = { no = true, r=search_radius },
+        ['pumpjack'] = { no = true, r=search_radius }
     },
 
     ['lab'] = {
         ['lab'] = { tier1 },
-        ['biolab'] = { r=plus(1), no = { tier1, tier2, tier3, haz } },
+        ['biolab'] = { r=plus(1), no = true },
     },
 
     ['agricultural-tower'] = {
         ['agricultural-tower'] = {
-            no = { tier1, tier2, tier3, haz },
+            no = true,
             r=function(ent)
                 local radius = ent.radius * math.ceil(math.abs(ent.collision_box[1][1]*2))
                 return plus(radius)(ent)
@@ -158,24 +185,24 @@ concrete.needs_paving = {
     ['furnace'] = {
         ['steel-furnace'] = { tier1 },
         ['electric-furnace'] = { tier2 },
-        ['recycler'] = { tier2, haz, r=plus(1) },
+        ['recycler'] = { tier2h, r=plus(1) },
     },
 
     ['boiler'] = {
         [fns 'electroboiler'] = { tier1 },
-        ['heat-exchanger'] = { tier2, haz, r=plus(1) },
+        ['heat-exchanger'] = { tier2h, r=plus(1) },
     },
 
     ['reactor'] = {
-        ['nuclear-reactor'] = { tier3, haz, r=plus(2) },
+        ['nuclear-reactor'] = { tier3h, r=plus(2) },
     },
 
     ['fusion-reactor'] = {
-        ['fusion-reactor'] = { tier3, haz, r=plus(2) }
+        ['fusion-reactor'] = { tier3h, r=plus(2) }
     },
 
     ['fusion-generator'] = {
-        ['fusion-generator'] = { tier3, haz, r=plus(2) }
+        ['fusion-generator'] = { tier3h, r=plus(2) }
     },
 
     ['generator'] = {
@@ -186,11 +213,11 @@ concrete.needs_paving = {
         ['long-handed-inserter'] = { tier1 },
         ['fast-inserter'] = { tier1 },
         ['bulk-inserter'] = { tier2 },
-        ['stack-inserter'] = { tier2, haz },
+        ['stack-inserter'] = { tier2h },
     },
 
     ['electric-pole'] = {
-        ['substation'] = { tier2, haz }
+        ['substation'] = { tier2h }
     },
 
     ['container'] = {
@@ -204,20 +231,20 @@ concrete.needs_paving = {
     ['logistic-container'] = {
         ['storage-chest'] = { tier1 },
         ['passive-provider-chest'] = { tier1 },
-        ['active-provider-chest'] = { tier2, haz },
+        ['active-provider-chest'] = { tier2h },
         ['requester-chest'] = { tier2 },
         ['buffer-chest'] = { tier2 },
     },
 
     ['roboport'] = {
         ['roboport'] = { tier2, r=plus(1) },
-        [fns 'logistics-roboport'] = { tier3, haz, r=plus(1) },
+        [fns 'logistics-roboport'] = { tier3h, r=plus(1) },
         [fns 'sleeper-roboport'] = { tier2, r=plus(1) },
         [fns 'construction-roboport'] = { tier1 },
     },
 
     ['accumulator'] = {
-        ['accumulator'] = { tier2, haz },
+        ['accumulator'] = { tier2h },
     },
 
     ['arithmetic-combinator'] = {
@@ -233,37 +260,45 @@ concrete.needs_paving = {
     },
 
     ['lightning-attractor'] = {
-        ['lightning-collector'] = { tier2, haz },
+        ['lightning-collector'] = { tier2h },
     },
 
     ['rocket-silo'] = {
-        ['rocket-silo'] = { tier3, haz, r=plus(3) }
+        ['rocket-silo'] = { tier3h, r=plus(3) }
     },
 
     ['cargo-landing-pad'] = {
-        ['cargo-landing-pad'] = { tier3, haz, r=plus(3) }
+        ['cargo-landing-pad'] = { tier3h, r=plus(3) }
     },
 
     ['cargo-bay'] = {
         ['cargo-bay'] = { tier3, r=plus(1) }
     },
+
+    ['beacon'] = {
+        ['beacon'] = { tier2h, r=plus(1) }
+    }
 }
 
 function concrete.flooring()
+
     for proto, entities in pairs(concrete.needs_paving) do
         for ent, val in pairs(entities) do
+            val = table.clone(val)
             local entity = data.raw[proto][ent]
             assert(entity, "no such entity data.raw." .. proto .. "." .. ent)
-            table.insert(val, 'ground_tile')
+
+            if #val == 0 then
+                table.insert(val, 'ground_tile')
+            end
+
             entity.tile_buildability_rules = {
                 {
                     area = (val.r or radius)(entity),
                     required_tiles = {
                         layers = table.set(val)
                     },
-                    colliding_tiles = val.no and {
-                        layers = table.set(val.no)
-                    } or nil
+                    colliding_tiles = { layers = val.no and { [tier1] = true } or {} }
                 }
             }
         end
