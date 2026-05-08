@@ -141,7 +141,12 @@ function military.turrets()
                 { type='item', name='stone-brick', amount=10 },
             }
             data.raw['ammo-turret'][fns 'shotgun-turret'].max_health = 900
+
+            recipes[fns'cannon-turret'].ingredients = {
+                { type='item', name='' }
+            }
         end
+
 
         recipes['flamethrower-turret'].ingredients = {
             { type='item', name='pump', amount=5 },
@@ -316,23 +321,25 @@ function military.ammo()
 
     recipes['defender-capsule'].ingredients = {
         { type = 'item', name = 'solid-fuel', amount = 1 },
-        { type = 'item', name = 'iron-gear-wheel', amount = 3 },
-        { type = 'item', name = 'piercing-rounds-magazine', amount = 3 },
-        { type = 'item', name = 'electronic-circuit', amount = 3 },
+        { type = 'item', name = 'engine-unit', amount = 1 },
+        { type = 'item', name = 'piercing-rounds-magazine', amount = 1 },
+        { type = 'item', name = 'iron-gear-wheel', amount = 2 },
+        { type = 'item', name = 'electronic-circuit', amount = 2 },
     }
 
     recipes['distractor-capsule'].ingredients = {
         { type = 'item', name = 'solid-fuel', amount = 3 },
-        { type = 'item', name = 'iron-gear-wheel', amount = 3 },
-        { type = 'item', name = 'advanced-circuit', amount = 1 },
-        { type = 'item', name = 'battery', amount = 5 },
+        { type = 'item', name = 'engine-unit', amount = 3 },
+        { type = 'item', name = 'advanced-circuit', amount = 3 },
+        { type = 'item', name = 'lamp', amount = 6 },
+        { type = 'item', name = 'battery', amount = 6 },
     }
 
     recipes['destroyer-capsule'].ingredients = {
-        { type = 'item', name = 'rocket-fuel', amount = 1 },
-        { type = 'item', name = 'iron-gear-wheel', amount = 5 },
+        { type = 'item', name = 'rocket-fuel', amount = 5 },
+        { type = 'item', name = 'engine-unit', amount = 5 },
         { type = 'item', name = 'advanced-circuit', amount = 5 },
-        { type = 'item', name = 'copper-cable', amount = 10 },
+        { type = 'item', name = 'copper-cable', amount = 20 },
         { type = 'item', name = 'battery', amount = 10 },
     }
 
@@ -376,6 +383,8 @@ function military.projectiles()
     local nest_eff = nest.action.action_delivery.target_effects
 
     table.find_matching(nest_eff, table.matches{type='damage'}).damage.amount = 250
+
+    -- TODO: make slowdown capsules better
 end
 
 function military.technologies()

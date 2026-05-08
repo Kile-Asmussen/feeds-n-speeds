@@ -95,17 +95,15 @@ local turret_recipe = {
         { type = 'item', name = name, amount = 1 },
     }
 }
-table.insert(turret_recipe.ingredients, {type='item', name='stone-brick', amount=5})
 
 local turret_tech = table.clone(data.raw.technology['gun-turret'])
 
 turret_tech.name = fns 'cannon-turret-tech'
 turret_tech.prerequisites = { 'gun-turret', 'military-3', 'explosives' }
-turret_tech.effects = table.clone(data.raw.technology.tank.effects)
-table.remove_matching(turret_tech.effects, { type='unlock-recipe', name='tank' })
-table.insert(turret_tech.effects, {
-    type='unlock-recipe', recipe=fns 'cannon-turret'
-})
+turret_tech.effects = {
+    { type='unlock-recipe', recipe=fns 'cannon-turret' },
+    { type='unlock-recipe', recipe='cannon-shell' },
+}
 
 turret_tech.unit = table.clone(data.raw.technology.tank.unit)
 
