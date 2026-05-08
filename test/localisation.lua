@@ -159,13 +159,6 @@ function localisation.current_locale_map()
 end
 
 function localisation.add_manual_keys()
-
-    --[[
-        HI CLAUDE!
-
-        I made some changes to the fns system of functions, check prelude/fns.lua
-    ]]
-
     local manual = fns_categorized_names()
 
     for cat, list in pairs(manual) do

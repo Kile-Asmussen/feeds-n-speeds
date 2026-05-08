@@ -13,10 +13,19 @@ table.setmetatable = setmetatable
 
 table.null = {}
 
-setmetatable(table.null, {
+table.setmetatable(table.null, {
     __tostring = function() return 'table.null' end,
     __newindex = function() error("table.null is immutable") end,
     __metatable = table.null,
+})
+
+table.zero = {}
+
+table.setmetatable(table.zero, {
+    __tostring = function() return 'table.zero' end,
+    __newindex = function() error("table.zero is immutable") end,
+    __index = function() error("table.zero has no members") end,
+    __metatable = table.zero,
 })
 
 --- Check if a reference table contains the same keys and elements
@@ -599,7 +608,7 @@ local function monkeypatch()
 end
 
 function table.proxy(args)
-    assert(type(args) == "table", "table.proxy expects a table with five keys: tbl, [rootname, path, changes]")
+    assert(type(args) == "table", "table.proxy expects a table with up to six keys: tbl, [rootname, path, hook, changes, maxdepth]")
     assert(type(args.tbl) == "table", "table.proxy mandatory key tbl must be a table")
     monkeypatch()
     args.rootname = args.rootname or tostring(args.tbl)
@@ -632,6 +641,42 @@ function table.proxy(args)
     setmetatable(res, __proxy_mt)
     return res
 end
+
+function table.is_proxied(tbl)
+    return getmetatable(tbl) == __proxy_mt
+end
+
+function table.unproxy(tbl)
+    if table.is_proxied(tbl) then return tbl.__real else return tbl end
+end
+
+
+function table.recursion_check(tbl, seen, path, base)
+    seen = seen or {}
+    path = path or {}
+    base = base or '_'
+
+    if type(tbl) ~= 'table' then
+        return
+    end
+
+    tbl = table.unproxy(tbl)
+
+    if seen[tbl] then
+        error(seen[tbl] .. ' = ' .. string.tablepath(base, path))
+    end
+
+    seen[tbl] = string.tablepath(base, path)
+
+    for k, v in pairs(tbl) do
+        table.insert(path, k)
+        table.recursion_check(v, seen, path, base)
+        table.remove(path)
+    end
+
+    seen[tbl] = nil
+end
+
 
 function table.max(tbl)
     assert(type(tbl) == 'table', "argument #1 must be a table")

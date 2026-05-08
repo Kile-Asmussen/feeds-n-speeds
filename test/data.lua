@@ -6,10 +6,15 @@ local rawdata = require 'test.rawdata'
 
 local data = namespace 'test.data'
 
-_G.modlist = {}
+_G.modlist = table.null
 _G.mods = table.null
 
 data.raw = table.null
+_G.settings = {}
+setmetatable(_G.settings, {
+    __index = function() error("_G.settings is not available at this time") end,
+    __newindex = function() error("_G.settings is not available at this time") end,
+})
 
 local proxied = false
 local function log_change(new, cutpath, fullpath, value)
@@ -40,7 +45,6 @@ function data.extend(self, protos)
     local simple = {}
     local bad = false
     for _, proto in ipairs(protos) do
-
 
         assert(is_fns_name(proto.name), "not an fns-based name: " .. proto.name)
 
@@ -73,4 +77,5 @@ function data.extend(self, protos)
     end
 end
 
-_G.data = seal_namespace(data)
+
+_G.data = seal_namespace(data)  

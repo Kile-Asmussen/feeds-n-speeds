@@ -34,6 +34,8 @@ require('data-updates')
 log("\nDATA-FINAL-FIXES")
 require('data-final-fixes')
 
+table.recursion_check(data.raw)
+
 log("\nCONTROL")
 _G.storage = {}
 require('control')

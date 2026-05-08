@@ -6,8 +6,6 @@ local concrete = namespace 'tweaks.concrete'
 concrete.enabled = true
 
 function concrete.data()
-    if not concrete.enabled then return end
-
     data:extend{
         require 'tweaks.concrete.simple-concrete',
     }
@@ -16,9 +14,18 @@ function concrete.data()
     )
 end
 
+local function update_description(item, key)
+    data.raw.item[item].localised_description =
+        {"", {"item-description." .. item}, {fns_locale_key("item-description", key)}}
+end
+
 function concrete.data2()
 
-    if not concrete.enabled then return end
+    update_description('stone-brick', 'simple-machinery')
+    update_description('concrete', 'machinery')
+    update_description('hazard-concrete', 'dangerous-machinery')
+    update_description('refined-concrete', 'heavy-machinery')
+    update_description('refined-hazard-concrete', 'dangerous-heavy-machinery')
 
     local recipes = data.raw.recipe
     local tech = data.raw.technology
@@ -302,6 +309,7 @@ function concrete.flooring()
             end
         end
     end
+
 end
 
 return seal_namespace(concrete)
