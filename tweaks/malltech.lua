@@ -124,13 +124,16 @@ function malltech.mining_drills()
         { type='item', name='electronic-circuit', amount=3 },
         { type='item', name='iron-gear-wheel', amount=5 },
         { type='item', name='iron-plate', amount=5 },
-        { type='item', name='steel-plate', amount=1 },
     }
 
-    table.insert(
-        data.raw.technology['electric-mining-drill'].prerequisites,
-        'steel-processing'
-    )
+    recipe['big-mining-drill'].ingredients = {
+        { type='item', name='processing-unit', amount=1 },
+        { type='item', name='productivity-module-1', amount=2 },
+        { type='item', name='electric-engine-unit', amount=10 },
+        { type='item', name='tungsten-carbide', amount=20 },
+        { type='fluid', name='molten-iron', amount=100 },
+        { type='fluid', name='molten-copper', amount=100 },
+    }
 
     recipe['boiler'].ingredients = {
         { type='item', name='stone-brick', amount=8 },
@@ -153,6 +156,8 @@ function malltech.mining_drills()
     if enabled('tweaks.earlygame') then
         recipe['burner-mining-drill'].ingredients[3]  = { type='item', name='steel-plate', amount=1 }
         recipe['electric-mining-drill'].ingredients[4]  = { type='item', name='steel-plate', amount=2 }
+
+        table.insert(data.raw.technology['electric-mining-drill'].prerequisites, 'steel-processing')
 
         table.insert(
             recipe['steam-engine'].ingredients,
@@ -312,6 +317,12 @@ function malltech.nuclear_machines()
         { type='item', name='speed-module', amount=5 },
         { type='item', name='steel-plate', amount=50 },
         { type='item', name='iron-gear-wheel', amount=100 },
+    }
+
+    recipe['heating-tower'].ingredients = {
+        { type='item', name='heat-pipe', amount=5 },
+        { type='item', name='steel-furnace', amount=2 },
+        { type='item', name='concrete', amount=20 },
     }
 end
 
