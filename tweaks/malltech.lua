@@ -81,6 +81,13 @@ function malltech.misc()
         { type='item', name='copper-cable', amount=5 },
     }
 
+    recipe['electric-furnace'].ingredients = {
+        { type='item', name='advanced-circuit', amount=5 },
+        { type='item', name='engine-unit', amount=2 },
+        { type='item', name='steel-furnace', amount=2 },
+        { type='item', name='copper-plate', amount=10 },
+    }
+
 
     if not enabled('tweaks.military') then
         recipe['gun-turret'].ingredients = {

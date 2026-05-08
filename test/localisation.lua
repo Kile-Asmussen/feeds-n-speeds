@@ -97,17 +97,9 @@ function localisation.key_category(proto)
 end
 
 function localisation.register(proto)
-
-    --[[
-        HI CLAUDE!
-
-        This function is probably okay.
-    ]]
-
-    if proto.hidden then
-        --[[ I think this means what the hidden flag is for, but I might be wrong ]]
-        return
-    end
+    -- if proto.hidden then
+        -- return
+    -- end
 
     local proto_name = proto.name
 

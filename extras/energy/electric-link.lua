@@ -4,7 +4,7 @@ local link = table.clone(data.raw.accumulator.accumulator)
 local switch = data.raw['power-switch']['power-switch']
 
 link.name = fns 'electric-link'
-link.localised_description = {""}
+-- link.localised_description = {""}
 
 local list = {}
 setmetatable(list, { __index = table.insert })

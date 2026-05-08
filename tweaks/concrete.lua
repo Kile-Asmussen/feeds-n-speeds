@@ -14,18 +14,7 @@ function concrete.data()
     )
 end
 
-local function update_description(item, key)
-    data.raw.item[item].localised_description =
-        {"", {"item-description." .. item}, {fns_locale_key("item-description", key)}}
-end
-
 function concrete.data2()
-
-    update_description('stone-brick', 'simple-machinery')
-    update_description('concrete', 'machinery')
-    update_description('hazard-concrete', 'dangerous-machinery')
-    update_description('refined-concrete', 'heavy-machinery')
-    update_description('refined-hazard-concrete', 'dangerous-heavy-machinery')
 
     local recipes = data.raw.recipe
     local tech = data.raw.technology
@@ -71,15 +60,12 @@ local tier2h = fns('sturdy_pavement_hazard', '_')
 local tier3 = fns('foundation_pavement', '_')
 local tier3h = fns('foundation_pavement_hazard', '_')
 
-local strings = {
-    [tier1] = 'simple-machinery',
-    [tier2] = 'machinery',
-    [tier2h] = 'dangerous-machinery',
-    [tier3] = 'heavy-machinery',
-    [tier3h] = 'dangerous-heavy-machinery',
-}
 
 function concrete.adjust_tiles()
+
+    for _, item in ipairs{'stone-brick', 'concrete', 'hazard-concrete', 'refined-concrete', 'refined-hazard-concrete'} do
+        data.raw.item[item].localised_description = {fns_locale_key("item-description", item)}
+    end
 
     for _, tile in pairs(data.raw.tile) do
 
@@ -153,10 +139,10 @@ concrete.needs_paving = {
         ['chemical-plant'] = { tier1 },
         ['oil-refinery'] = { tier2, r=plus(1) },
         ['biochamber'] = { tier1 },
-        ['centrifuge'] = { tier2h, r=plus(2) },
+        ['centrifuge'] = { tier2h, r=plus(1) },
         ['cryogenic-plant'] = { tier3, r=plus(2) },
-        ['electromagnetic-plant'] = { tier3, r=plus(2) },
-        ['foundry'] = { tier2, r=plus(2) },
+        ['electromagnetic-plant'] = { tier3, r=plus(1) },
+        ['foundry'] = { tier2, r=plus(1) },
         ['captive-biter-spawner'] = { no = true }
     },
 
@@ -278,6 +264,16 @@ concrete.needs_paving = {
     }
 }
 
+
+local strings = {
+    ground_tile = 'bare-ground-machinery',
+    [tier1] = 'simple-machinery',
+    [tier2] = 'machinery',
+    [tier2h] = 'dangerous-machinery',
+    [tier3] = 'heavy-machinery',
+    [tier3h] = 'dangerous-heavy-machinery',
+}
+
 function concrete.flooring()
 
     for proto, entities in pairs(concrete.needs_paving) do
@@ -302,14 +298,13 @@ function concrete.flooring()
             }
 
             if strings[val[1]] then
-                entity.localised_name
-                    = {fns_locale_key('item-name', strings[val[1]]),
-                        entity.localised_name or {"entity-name."..entity.name}
-                    }
+                entity.localised_description = {"", 
+                    {"?", {"", {"entity-description." .. entity.name}, " "}, ""},
+                    {fns_locale_key("entity-description", strings[val[1]])},
+                }
             end
         end
     end
-
 end
 
 return seal_namespace(concrete)

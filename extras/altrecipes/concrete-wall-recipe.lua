@@ -5,7 +5,7 @@ return {
     name = fns 'concrete-wall',
     enabled = false,
     order = 'a[stone-wall]-b[concrete]',
-    localised_description = {""},
+    -- localised_description = {""},
     icons = {
         {
             icon = '__base__/graphics/icons/wall.png',

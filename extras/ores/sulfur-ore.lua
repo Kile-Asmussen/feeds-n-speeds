@@ -1,7 +1,7 @@
 require 'prelude'
 
 return {
-    localised_description = {""},
+    -- localised_description = {""},
     type = 'resource',
     name = fns 'sulfur-ore',
     icon = '__base__/graphics/icons/sulfur.png',

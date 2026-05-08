@@ -5,7 +5,6 @@ local heavy_weapons = namespace 'extras.heavy'
 heavy_weapons.enabled = true
 
 function heavy_weapons.data()
-    if not heavy_weapons.enabled then return end
 
     data:extend( require 'extras.heavy.turret' )
 
@@ -15,12 +14,14 @@ function heavy_weapons.data()
 end
 
 function heavy_weapons.data2()
-    if not heavy_weapons.enabled then return end
 
     if enabled('tweaks.military') then
         table.insert(data.raw.technology['uranium-ammo'].effects,
         {type='unlock-recipe', recipe=fns 'uranium-shotgun-shell'})
     end
+
+    data.raw.recipe['flamethrower-ammo'].category = 'crafting-with-fluid'
+
 
     fns_locale_key('modifier-description', 'shotgun-turret-attack-bonus')
 

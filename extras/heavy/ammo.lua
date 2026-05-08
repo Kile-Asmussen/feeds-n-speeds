@@ -75,12 +75,13 @@ napalm_ammo.icons = {
         icon=napalm_ammo.icon,
         icon_size = 64,
         scale = 0.5,
-        tint = { 1, 0.8, 0.8 }
+        tint = { 1, 0.5, 0.5 }
     }
 }
 
 local napalm_ammo_recipe = table.clone(data.raw.recipe['flamethrower-ammo'])
 napalm_ammo_recipe.name = fns 'flamethrower-ammo'
+napalm_ammo_recipe.category = 'crafting-with-fluid'
 napalm_ammo_recipe.results = {
     { type='item', name= fns 'flamethrower-ammo', amount=1}
 }
