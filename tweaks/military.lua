@@ -143,25 +143,29 @@ function military.turrets()
             data.raw['ammo-turret'][fns 'shotgun-turret'].max_health = 900
 
             recipes[fns'cannon-turret'].ingredients = {
-                { type='item', name='' }
+                { type='item', name='advanced-circuit', amount=2 },
+                { type='item', name='arithmetic-combinator', amount=5 },
+                { type='item', name='engine-unit', amount=5 },
+                { type='item', name='iron-gear-wheel', amount=20 },
+                { type='item', name='steel-plate', amount=20 },
+                { type='item', name='hazard-concrete', amount=20 },
             }
         end
 
-
         recipes['flamethrower-turret'].ingredients = {
             { type='item', name='pump', amount=5 },
-            { type='item', name='pipe', amount=10 },
-            { type='item', name='flamethrower', amount=1 },
-            { type='item', name='steel-plate', amount=20 },
-            { type='item', name='iron-gear-wheel', amount=20 },
-            { type='item', name='electronic-circuit', amount=30 },
+            { type='item', name='pipe', amount=20 },
+            { type='item', name='steel-plate', amount=10 },
+            { type='item', name='iron-gear-wheel', amount=10 },
+            { type='item', name='advanced-circuit', amount=2 },
             { type='item', name='hazard-concrete', amount=10 },
         }
 
         recipes['laser-turret'].ingredients = {
             { type='item', name='steel-plate', amount=10 },
-            { type='item', name='battery', amount=10 },
+            { type='item', name='accumulator', amount=1 },
             { type='item', name='advanced-circuit', amount=5 },
+            { type='item', name='arithmetic-combinator', amount=5 },
             { type='item', name='electric-engine-unit', amount=2 },
             { type='item', name='small-lamp', amount=10 },
         }
