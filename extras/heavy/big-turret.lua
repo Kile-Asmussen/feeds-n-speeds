@@ -12,24 +12,51 @@ turret.attack_parameters = table.clone(data.raw.gun['tank-cannon'].attack_parame
 turret.fast_replaceable_group = 'ammo-turret'
 turret.max_health = 1000
 
-turret.collision_box = { { -1.2, -1.2 }, { 1.2, 1.2 } }
-turret.selection_box = { { -1.5, -1.5 }, { 1.5, 1.5 } }
+turret.automated_ammo_count = 30
+turret.inventory_size = 2
+turret.attack_parameters.min_range = 5
+turret.attack_parameters.range = 25
+turret.attack_parameters.cooldown = 50
 
-for _, layers in ipairs{
+turret.attack_parameters.projectile_creation_distance = 
+    turret.attack_parameters.projectile_creation_distance * 2
+
+turret.rotation_speed = 0.01
+turret.preparing_speed = 0.06
+turret.folding_speed = 0.06
+turret.attacking_speed = 0.3
+
+
+local turret_remnants = table.clone(data.raw.corpse['gun-turret-remnants'])
+turret_remnants.name = fns 'cannon-turret-remnants'
+turret_remnants.selection_box = { { -2, -2 }, { 2, 2 } }
+turret_remnants.tile_width = 4
+turret_remnants.tile_height = 4
+
+turret.corpse = turret_remnants.name
+turret.collision_box = { { -1.8, -1.8 }, { 1.8, 1.8 } }
+turret.selection_box = { { -2, -2 }, { 2, 2 } }
+
+local layers_list = {
     turret.graphics_set.base_visualisation.animation.layers,
     turret.preparing_animation.layers,
     turret.prepared_animation.layers,
+    turret.attacking_animation.layers,
     turret.folded_animation.layers,
     turret.folding_animation.layers,
-} do
+}
+table.append(layers_list, table.icollect(turret_remnants.animation, table.at('layers')))
+
+for _, layers in ipairs(layers_list) do
     for _, layer in ipairs(layers) do
         if not layer.draw_as_shadow then
-            layer.tint = { 0.5, 0.5, 0.5 }
+            layer.tint = { 0.3, 0.3, 0.3 }
         end
-        layer.scale = layer.scale * 1.5
+        layer.scale = layer.scale * 2
+        table.vecmul(layer.shift, 2)
     end
 end
-turret.water_reflection.pictures.scale = 7.5
+turret.water_reflection.pictures.scale = 10
 
 table.traverse(turret.circuit_connector, function(v)
     if type(v) ~= 'table' then return end
@@ -61,7 +88,7 @@ local turret_recipe = {
     ingredients = {
         { type='item', name='advanced-circuit', amount=10 },
         { type='item', name='steel-plate', amount=30 },
-        { type='item', name='iron-gear', amount=50 },
+        { type='item', name='iron-gear-wheel', amount=50 },
         { type='item', name='concrete', amount=30 },
     },
     results = {
@@ -75,7 +102,7 @@ local turret_tech = table.clone(data.raw.technology['gun-turret'])
 turret_tech.name = fns 'cannon-turret-tech'
 turret_tech.prerequisites = { 'gun-turret', 'military-3', 'explosives' }
 turret_tech.effects = table.clone(data.raw.technology.tank.effects)
-table.remove_matching(turret_tech.effects, { name='tank' })
+table.remove_matching(turret_tech.effects, { type='unlock-recipe', name='tank' })
 table.insert(turret_tech.effects, {
     type='unlock-recipe', recipe=fns 'cannon-turret'
 })
@@ -86,7 +113,7 @@ turret_tech.icons = {
     { 
         icon = turret_tech.icon,
         icon_size = 256,
-        tint = { 0.8, 0.8, 0.8 },
+        tint = { 0.5, 0.5, 0.5 },
         scale = 0.5
     },
     { 
@@ -94,12 +121,14 @@ turret_tech.icons = {
         icon_size = 256,
         float = true,
         scale = 0.25,
-        shift = { -30, 30 }
+        shift = { 30, 30 }
     },
 }
 
+
 return {
     turret,
+    turret_remnants,
     turret_item,
     turret_recipe,
     turret_tech

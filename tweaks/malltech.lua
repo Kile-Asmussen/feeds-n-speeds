@@ -12,6 +12,10 @@ function malltech.data2()
 
     malltech.misc()
 
+    malltech.belts()
+
+    malltech.steam()
+
     malltech.nuclear_machines()
 
     malltech.robotics()
@@ -60,6 +64,81 @@ function malltech.inserters()
         { type='item', name='efficiency-module', amount=1 },
         { type='item', name='electric-engine-unit', amount=4 },
         { type='item', name='bulk-inserter', amount=2 },
+    }
+end
+
+function malltech.belts()
+    local recipe = data.raw.recipe
+
+    recipe['splitter'].ingredients = {
+        { type='item', name='transport-belt', amount=4 },
+        { type='item', name='electronic-circuit', amount=5 },
+    }
+    recipe['underground-belt'].ingredients = {
+        { type='item', name='iron-plate', amount=10 },
+        { type='item', name='transport-belt', amount=6 },
+    }
+
+    data.raw.technology['logistics-2'].prerequisites = { 'circuit-network', 'engine' }
+
+    recipe['fast-transport-belt'].ingredients = {
+        { type='item', name='copper-plate', amount=4 },
+        { type='item', name='engine-unit', amount=2 },
+        { type='item', name='iron-gear-wheel', amount=6 },
+    }
+    recipe['fast-transport-belt'].results[1].amount = 2
+
+    recipe['fast-underground-belt'].ingredients = {
+        { type='item', name='fast-transport-belt', amount=8 },
+        { type='item', name='steel-plate', amount=5 },
+        { type='item', name='copper-plate', amount=10 },
+    }
+    recipe['fast-splitter'].ingredients = {
+        { type='item', name='fast-transport-belt', amount=4 },
+        { type='item', name='decider-combinator', amount=2 },
+    }
+
+    data.raw.technology['logistics-3'].prerequisites = { 'production-science-pack', 'speed-module', 'electric-engine', 'nuclear-power' }
+    
+    recipe['express-transport-belt'].results[1].amount = 2
+    recipe['express-transport-belt'].ingredients = {
+        { type='item', name='steel-plate', amount=2 },
+        { type='item', name='iron-gear-wheel', amount=10 },
+        { type='item', name='electric-engine-unit', amount=4 },
+        { type='fluid', name='lubricant', amount=20 },
+    }
+    recipe['express-underground-belt'].ingredients = {
+        { type='item', name='express-transport-belt', amount=10 },
+        { type='item', name='heat-pipe', amount=2 },
+        { type='item', name='concrete', amount=20 },
+    }
+    recipe['express-splitter'].ingredients = {
+        { type='item', name='express-transport-belt', amount=4 },
+        { type='item', name='speed-module', amount=2 },
+        { type='item', name='hazard-concrete', amount=10 },
+    }
+
+    recipe['turbo-transport-belt'].surface_conditions = nil
+    recipe['turbo-splitter'].surface_conditions = nil
+    recipe['turbo-underground-belt'].surface_conditions = nil
+
+    recipe['turbo-transport-belt'].results[1].amount = 2
+    recipe['turbo-transport-belt'].ingredients = {
+        { type='item', name='tungsten-plate', amount=4 },
+        { type='item', name='iron-gear-wheel', amount=20 },
+        { type='item', name='electric-engine-unit', amount=10 },
+        { type='fluid', name='lubricant', amount=100 },
+    }
+    recipe['turbo-underground-belt'].ingredients = {
+        { type='item', name='turbo-transport-belt', amount=12 },
+        { type='item', name='heat-pipe', amount=4 },
+        { type='item', name='low-density-structure', amount=5 },
+        { type='item', name='refined-concrete', amount=20 },
+    }
+    recipe['turbo-splitter'].ingredients = {
+        { type='item', name='turbo-transport-belt', amount=4 },
+        { type='item', name='speed-module', amount=2 },
+        { type='item', name='refined-hazard-concrete', amount=10 },
     }
 end
 
@@ -128,12 +207,25 @@ function malltech.mining_drills()
 
     recipe['big-mining-drill'].ingredients = {
         { type='item', name='processing-unit', amount=1 },
-        { type='item', name='productivity-module-1', amount=2 },
+        { type='item', name='productivity-module', amount=2 },
         { type='item', name='electric-engine-unit', amount=10 },
         { type='item', name='tungsten-carbide', amount=20 },
         { type='fluid', name='molten-iron', amount=100 },
         { type='fluid', name='molten-copper', amount=100 },
     }
+
+
+    if enabled('tweaks.earlygame') then
+        recipe['burner-mining-drill'].ingredients[3]  = { type='item', name='steel-plate', amount=1 }
+        recipe['electric-mining-drill'].ingredients[4]  = { type='item', name='steel-plate', amount=2 }
+
+        table.insert(data.raw.technology['electric-mining-drill'].prerequisites, 'steel-processing')
+
+    end
+end
+
+function malltech.steam()
+    local recipe = data.raw.recipe
 
     recipe['boiler'].ingredients = {
         { type='item', name='stone-brick', amount=8 },
@@ -154,10 +246,6 @@ function malltech.mining_drills()
     }
 
     if enabled('tweaks.earlygame') then
-        recipe['burner-mining-drill'].ingredients[3]  = { type='item', name='steel-plate', amount=1 }
-        recipe['electric-mining-drill'].ingredients[4]  = { type='item', name='steel-plate', amount=2 }
-
-        table.insert(data.raw.technology['electric-mining-drill'].prerequisites, 'steel-processing')
 
         table.insert(
             recipe['steam-engine'].ingredients,
@@ -241,7 +329,7 @@ end
 function malltech.rail()
     local recipe = data.raw.recipe
 
-    table.insert(data.raw.technology.railway.prerequisites, 'circuit-network')
+    data.raw.technology.railway.prerequisites = { 'circuit-network', 'engine', 'radar' }
 
     recipe.locomotive.ingredients = {
         { type='item', name='radar', amount=1 },

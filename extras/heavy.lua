@@ -24,7 +24,7 @@ function heavy_weapons.data2()
     table.insert(data.raw.technology.automobilism.prerequisites, 'gun-turret')
 
     table.remove_matching(data.raw.technology.tank.effects, { name=("shell$"):pattern() })
-    data.raw.technology.tank.prerequisites = { fns 'big-turret', 'automobilism', 'flammables' }
+    data.raw.technology.tank.prerequisites = { fns 'cannon-turret-tech', 'automobilism', 'flammables' }
 
     data.raw.recipe['flamethrower-ammo'].category = 'crafting-with-fluid'
 

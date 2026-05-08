@@ -241,6 +241,10 @@ function table.icollect(tbl, func)
     return res
 end
 
+function table.at(ix)
+    return function(tbl) return tbl[ix] end
+end
+
 function table.collect(tbl, func)
     assert(type(tbl) == "table", "argument #1 must be a table")
     assert(type(func) == "function", "argument #2 must be a function")

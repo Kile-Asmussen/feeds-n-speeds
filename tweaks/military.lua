@@ -175,7 +175,7 @@ function military.turrets()
             { type='item', name='tungsten-plate', amount = 30 },
         }
         table.append(data.raw.technology['artillery'].prerequisites,
-            {'rail', 'quality-module-2'})
+            {'railway', 'quality-module-2'})
 
         recipes['rocket-turret'].ingredients = {
             { type='item', name='hazard-concrete', amount = 10 },
@@ -206,6 +206,7 @@ function military.turrets()
     data.raw['ammo-turret']['rocket-turret'].attack_parameters.cooldown = 40
     data.raw['ammo-turret']['rocket-turret'].attack_parameters.min_range = 15
     data.raw['ammo-turret']['rocket-turret'].attack_parameters.range = 40
+    data.raw['ammo-turret']['rocket-turret'].automated_ammo_count = 20
     data.raw['ammo-turret']['railgun-turret'].attack_parameters.range = 50
     
     data.raw['ammo-turret']['railgun-turret'].max_health = 800
@@ -405,10 +406,10 @@ function military.technologies()
         'military-science-pack'
     }
     tech['rocketry'].unit.ingredients = {
-        { 'automation-science-pack', 1 }
-        { 'logistic-science-pack', 1 }
-        { 'chemical-science-pack', 1 }
-        { 'military-science-pack', 1 }
+        { 'automation-science-pack', 1 },
+        { 'logistic-science-pack', 1 },
+        { 'chemical-science-pack', 1 },
+        { 'military-science-pack', 1 },
     }
 
     table.insert(tech['rocket-silo'].prerequisites, 'rocketry')
