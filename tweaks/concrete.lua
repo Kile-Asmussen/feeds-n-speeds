@@ -4,15 +4,11 @@ local utilities = require 'extras.utilities'
 local concrete = namespace 'tweaks.concrete'
 
 concrete.enabled = true
-concrete.dependencies = table.set{ 'extras.barelling' }
+concrete.dependencies = table.set{ 'tweaks.water' }
 
 function concrete.data()
     data:extend(
-        require 'tweaks.concrete.simple-concrete'
-    )
-
-    data:extend(
-        require 'tweaks.concrete.collision-layers'
+        require 'tweaks.concrete.stuff'
     )
 end
 
@@ -20,6 +16,8 @@ function concrete.data2()
 
     local recipes = data.raw.recipe
     local tech = data.raw.technology
+
+    table.insert(tech.concrete.effects, { type = 'unlock-recipe', recipe = fns 'simple-concrete' })
 
     recipes['hazard-concrete'].category = 'advanced-crafting'
     recipes.concrete.ingredients = {
@@ -35,20 +33,23 @@ function concrete.data2()
         { type = 'fluid', name = 'water', amount = 100 },
     }
     
-    utilities.remove_unlock 'chemical-plant'
-    recipes.concrete.category = 'chemistry'
-    recipes['refined-concrete'].category = 'chemistry'
+    if not enabled('tweaks.water') then
 
-    table.append(tech.concrete.effects, {
-        { type = 'unlock-recipe', recipe = 'chemical-plant' },
-        { type = 'unlock-recipe', recipe = fns 'simple-concrete' },
-    })
+        recipes.concrete.category = 'chemistry'
+        recipes['refined-concrete'].category = 'chemistry'
+
+        utilities.remove_unlock 'chemical-plant'
+
+        table.insert(tech.concrete.effects, { type = 'unlock-recipe', recipe = 'chemical-plant' })
+        
+    end
+
+    table.insert(tech['oil-processing'].prerequisites, 'concrete')
+    table.insert(tech['advanced-material-processing-2'].prerequisites, 'concrete')
 
     tech.concrete.prerequisites = { 'fluid-handling', 'advanced-material-processing' }
 
     
-    table.insert(tech['oil-processing'].prerequisites, 'concrete')
-    table.insert(tech['advanced-material-processing-2'].prerequisites, 'concrete')
 
 end
 
@@ -134,12 +135,23 @@ local function radius(ent)
     return table.clone(ent.collision_box)
 end
 
+local function choose(on, off, ...)
+    local args = table.pack(...)
+    return function()
+        if enabled(table.unpack(args)) then
+            return on
+        else
+            return off
+        end
+    end
+end
+
 concrete.needs_paving = {
     ['assembling-machine'] = {
         ['assembling-machine-1'] = { tier1 },
         ['assembling-machine-2'] = { tier2 },
         ['assembling-machine-3'] = { tier2h, r=plus(1) },
-        ['chemical-plant'] = { tier1 },
+        ['chemical-plant'] = { choose(tier2, tier1, 'extras.barelling') },
         ['oil-refinery'] = { tier2, r=plus(1) },
         ['biochamber'] = { tier1 },
         ['centrifuge'] = { tier2h, r=plus(1) },
@@ -287,6 +299,10 @@ function concrete.flooring()
 
             if #val == 0 then
                 table.insert(val, 'ground_tile')
+            end
+
+            if type(val[1]) == 'function' then
+                val[1] = val[1]()
             end
 
             entity.tile_buildability_rules = {

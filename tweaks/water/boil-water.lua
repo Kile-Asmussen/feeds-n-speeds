@@ -1,6 +1,6 @@
 require 'prelude'
 
-return {
+return {{
     type='recipe',
     name=fns 'boil-water',
     enabled=false,
@@ -18,6 +18,6 @@ return {
         { type='fluid', amount=10, name='water' }
     },
     results = {
-        { type='fluid', amount=100, name='steam', temperature=100 }
+        { type='fluid', amount=100, name='steam' }
     },
-}   
+}}

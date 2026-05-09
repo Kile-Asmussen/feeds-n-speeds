@@ -7,12 +7,6 @@ function barelling.data()
     data:extend(
         require 'extras.barelling.tap'
     )
-
-    for _, asm in pairs(data.raw['assembling-machine']) do
-        if table.index_of(asm.crafting_categories, 'crafting-with-fluid') then
-            table.insert(asm.crafting_categories, fns 'barelling')
-        end
-    end
 end
 
 function barelling.data2()
@@ -23,7 +17,15 @@ end
 
 function barelling.data_updates()
     for _, fl in pairs(data.raw.fluid) do
-        data.raw.recipe[fl .. '-barrel'].category = fns 'barelling'
-        data.raw.recipe['empty-' .. fl .. '-barrel'].category = fns 'barelling'
+        local barrel = fl.name .. '-barrel'
+        local empty = 'empty-' .. fl.name .. '-barrel'
+        barrel = data.raw.recipe[barrel]
+        empty = data.raw.recipe[empty]
+        if barrel and empty then
+            barrel.category = fns'barelling'
+            empty.category = fns'barelling'
+        end
     end
 end
+
+return seal_namespace(barelling)

@@ -23,24 +23,29 @@ function water.data2()
     steam.gas_temperature = 100
     steam.max_temperature = 1500
 
-    local plant = data.raw['asssembling-machine']['chemical-plant']
+    local plant = data.raw['assembling-machine']['chemical-plant']
 
     local heat_cap = utilities.joules_or_watts(steam.heat_capacity)
-
     local power = utilities.joules_or_watts(plant.energy_usage)
+    local boil_water = data.raw.recipe[fns 'boil-water']
 
     local zero = steam.default_temperature
     local boil = steam.gas_temperature
     local diff = boil - zero
-    local energy = heat_cap * diff
+    local energy_1 = heat_cap * diff
+    local energy = energy_1 * boil_water.results[1].amount
     local proper_time = energy / power
     local time = proper_time / plant.crafting_speed
 
-    data.raw.recipe[fns 'boil-water'].energy_required = time
+    boil_water.results[1].temperature = boil
+    boil_water.energy_required = math.ceil(time)
 
     utilities.remove_unlock('chemical-plant')
 
-    table.insert(data.raw.technology['fluid-handling'], 'chemical-plant', 1)
+    table.append(data.raw.technology['fluid-handling'].effects, {
+        { type='unlock-recipe', recipe='chemical-plant' },
+        { type='unlock-recipe', recipe='chemical-plant' },
+    })
 end
 
 
