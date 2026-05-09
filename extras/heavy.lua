@@ -10,7 +10,8 @@ function heavy_weapons.data()
     data:extend( require 'extras.heavy.big-turret' )
 
     if enabled('tweaks.military') then
-        data:extend( require 'extras.heavy.ammo' )
+        data:extend( require 'extras.heavy.uranium-buckshot' )
+        data:extend( require 'extras.heavy.napalm' )
     end
 end
 

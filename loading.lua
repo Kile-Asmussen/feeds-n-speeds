@@ -35,6 +35,7 @@ function loading.create_toggle(domain)
         data:extend{{
             type = 'bool-setting',
             name = fns(tostring(domain) .. '-enable'),
+            order = 'b',
             setting_type = 'startup',
             default_value = domain.enabled,
         }}

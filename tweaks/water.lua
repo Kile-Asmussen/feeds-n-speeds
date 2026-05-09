@@ -44,7 +44,7 @@ function water.data2()
 
     table.append(data.raw.technology['fluid-handling'].effects, {
         { type='unlock-recipe', recipe='chemical-plant' },
-        { type='unlock-recipe', recipe='chemical-plant' },
+        { type='unlock-recipe', recipe=fns 'boil-water' },
     })
 end
 

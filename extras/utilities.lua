@@ -32,6 +32,7 @@ function utilities.settings()
     data:extend{{
         type = 'bool-setting',
         name = fns 'restart-toggle',
+        order='a',
         setting_type = 'startup',
         default_value = true,
     }}
