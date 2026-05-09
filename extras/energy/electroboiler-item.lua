@@ -15,8 +15,9 @@ return {
             icon = '__base__/graphics/icons/signal/signal-lightning.png',
             floating = true,
             icon_size = 64,
-            scale = 0.5,
-            tint = { r = 0.5, g = 0.5, b = 1 },
+            scale = 0.33,
+            shift = { -6, 6 },
+            tint = { r = 0, g = 1, b = 0 },
         }
     },
     subgroup = 'energy',

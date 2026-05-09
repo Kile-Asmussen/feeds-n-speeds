@@ -165,7 +165,6 @@ function military.turrets()
             { type='item', name='steel-plate', amount=10 },
             { type='item', name='accumulator', amount=1 },
             { type='item', name='advanced-circuit', amount=5 },
-            { type='item', name='arithmetic-combinator', amount=5 },
             { type='item', name='electric-engine-unit', amount=2 },
             { type='item', name='small-lamp', amount=10 },
         }
@@ -321,29 +320,29 @@ function military.ammo()
         { type = 'item', name = 'iron-stick', amount = 5 },
         { type = 'fluid', name = 'sulfuric-acid', amount = 50 },
         { type = 'item', name = 'grenade', amount = 1 },
-    }   
+    }
 
     recipes['defender-capsule'].ingredients = {
         { type = 'item', name = 'solid-fuel', amount = 1 },
         { type = 'item', name = 'engine-unit', amount = 1 },
-        { type = 'item', name = 'piercing-rounds-magazine', amount = 1 },
+        { type = 'item', name = 'advanced-circuit', amount = 1 },
         { type = 'item', name = 'iron-gear-wheel', amount = 2 },
-        { type = 'item', name = 'electronic-circuit', amount = 2 },
+        { type = 'item', name = 'piercing-rounds-magazine', amount = 1 },
     }
 
     recipes['distractor-capsule'].ingredients = {
         { type = 'item', name = 'solid-fuel', amount = 3 },
         { type = 'item', name = 'engine-unit', amount = 3 },
         { type = 'item', name = 'advanced-circuit', amount = 3 },
-        { type = 'item', name = 'lamp', amount = 6 },
-        { type = 'item', name = 'battery', amount = 6 },
+        { type = 'item', name = 'small-lamp', amount = 3 },
+        { type = 'item', name = 'battery', amount = 3 },
     }
 
     recipes['destroyer-capsule'].ingredients = {
-        { type = 'item', name = 'rocket-fuel', amount = 5 },
+        { type = 'item', name = 'solid-fuel', amount = 5 },
         { type = 'item', name = 'engine-unit', amount = 5 },
         { type = 'item', name = 'advanced-circuit', amount = 5 },
-        { type = 'item', name = 'copper-cable', amount = 20 },
+        { type = 'item', name = 'copper-cable', amount = 10 },
         { type = 'item', name = 'battery', amount = 10 },
     }
 

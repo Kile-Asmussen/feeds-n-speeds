@@ -72,7 +72,8 @@ function malltech.belts()
 
     recipe['splitter'].ingredients = {
         { type='item', name='transport-belt', amount=4 },
-        { type='item', name='electronic-circuit', amount=5 },
+        { type='item', name='electronic-circuit', amount=4 },
+        { type='item', name='iron-plate', amount=2 },
     }
     recipe['underground-belt'].ingredients = {
         { type='item', name='iron-plate', amount=10 },
@@ -96,9 +97,10 @@ function malltech.belts()
     recipe['fast-splitter'].ingredients = {
         { type='item', name='fast-transport-belt', amount=4 },
         { type='item', name='decider-combinator', amount=2 },
+        { type='item', name='steel-plate', amount=2 },
     }
 
-    data.raw.technology['logistics-3'].prerequisites = { 'production-science-pack', 'speed-module', 'electric-engine', 'nuclear-power' }
+    data.raw.technology['logistics-3'].prerequisites = { 'production-science-pack', 'electric-engine', 'nuclear-power', 'advanced-combinators' }
     
     recipe['express-transport-belt'].results[1].amount = 2
     recipe['express-transport-belt'].ingredients = {
@@ -109,13 +111,14 @@ function malltech.belts()
     }
     recipe['express-underground-belt'].ingredients = {
         { type='item', name='express-transport-belt', amount=10 },
-        { type='item', name='heat-pipe', amount=2 },
         { type='item', name='concrete', amount=20 },
+        { type='item', name='pump', amount=1 },
+        { type='fluid', name='water', amount=200 },
     }
     recipe['express-splitter'].ingredients = {
         { type='item', name='express-transport-belt', amount=4 },
-        { type='item', name='speed-module', amount=2 },
-        { type='item', name='hazard-concrete', amount=10 },
+        { type='item', name='selector-combinator', amount=2 },
+        { type='item', name='steel-plate', amount=5 },
     }
 
     recipe['turbo-transport-belt'].surface_conditions = nil
@@ -132,13 +135,14 @@ function malltech.belts()
     recipe['turbo-underground-belt'].ingredients = {
         { type='item', name='turbo-transport-belt', amount=12 },
         { type='item', name='heat-pipe', amount=4 },
-        { type='item', name='low-density-structure', amount=5 },
-        { type='item', name='refined-concrete', amount=20 },
+        { type='item', name='refined-concrete', amount=50 },
+        { type='fluid', name='lubricant', amount=500 },
     }
     recipe['turbo-splitter'].ingredients = {
         { type='item', name='turbo-transport-belt', amount=4 },
-        { type='item', name='speed-module', amount=2 },
-        { type='item', name='refined-hazard-concrete', amount=10 },
+        { type='item', name='speed-module', amount=4 },
+        { type='item', name='processing-unit', amount=1 },
+        { type='item', name='low-density-structure', amount=10 },
     }
 end
 

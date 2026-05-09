@@ -31,22 +31,38 @@ link.default_output_signal = {
     type = 'virtual',
 }
 
-local link_item = {
-    type='item',
-    icons = {
-        {
-            icon = switch.icon,
-            icon_size = 64,
-            scale = 0.5
-        },
-        {
-            icon = data.raw['signal-rightwards-leftwards-arrow'].icon,
-            floating = true,
-            icon_size = 64,
-            tint = { 0, 1, 0 }
-            scale = 0.33,
-            shift = { 6, -6 }
-        },
-    }
-    placeable_result=fns 'electric-link',
+local link_item = table.clone(data.raw.item['power-switch'])
+
+link_item.name = fns 'electric-link'
+
+link_item.icons = {
+    {
+        icon = switch.icon,
+        icon_size = 64,
+        scale = 0.5
+    },
+    {
+        icon = data.raw['signal-rightwards-leftwards-arrow'].icon,
+        floating = true,
+        icon_size = 64,
+        tint = { 0, 1, 0 }
+        scale = 0.33,
+        shift = { 6, -6 }
+    },
+}
+
+link_item.placeable_result=fns 'electric-link',
+
+local link_recipe = table.clone(data.raw.recipe['accumulator'])
+
+link_recipe.category = 'electronics-with-fluid'
+
+link_recipe.ingredients = {
+    { type='item', amount=1, name='power-switch' }
+    { type='item', amount=20, name='copper-cable' }
+    { type='fluid', amount=50, name='light-oil' }
+}
+
+link_recipe.results = {
+    { type='item', amount=1, name=fns 'electric-link' },
 }
