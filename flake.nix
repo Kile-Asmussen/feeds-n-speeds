@@ -32,7 +32,7 @@
           mkShell {
             nativeBuildInputs = [
               bashInteractive
-              (rust-bin.nightly."2026-02-27".default.override {
+              (rust-bin.nightly."2026-04-16".default.override {
                 extensions = [ "rust-src" ];
                 targets = [
                   "x86_64-unknown-linux-gnu"

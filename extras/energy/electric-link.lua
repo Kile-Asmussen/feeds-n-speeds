@@ -66,3 +66,9 @@ link_recipe.ingredients = {
 link_recipe.results = {
     { type='item', amount=1, name=fns 'electric-link' },
 }
+
+return {
+    link,
+    link_recipe,
+    link_item,
+}

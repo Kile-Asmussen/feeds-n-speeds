@@ -1,5 +1,10 @@
 {
     "words": [
+        "cdylib",
+        "dyn",
+        "env",
+        "factoripedia",
+        "fmt",
         "fn",
         "fns",
         "fnsidentifiers",
@@ -9,7 +14,10 @@
         "isvec",
         "localised",
         "mlua",
+        "serde",
+        "sz",
         "tbl",
+        "Vec",
         "vecadd",
         "vecmul"
     ],

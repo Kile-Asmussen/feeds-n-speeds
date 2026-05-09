@@ -1,10 +1,13 @@
 use mlua::prelude::*;
 use serde::de::Error;
+use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 use std::env::home_dir;
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
 use std::{process, sync::Arc};
+
+mod prototypes;
 
 const DUMP_POLL_INTERVAL: Duration = Duration::from_secs(2);
 const DUMP_TIMEOUT: Duration = Duration::from_secs(120);
@@ -18,13 +21,13 @@ const DEFINES_SCENARIO: &str = "dump-defines/dump-defines";
 const DEFINES_OUTPUT: &str = ".factorio/script-output/defines.json";
 const DEFINES_CACHE: &str = ".factorio/script-output/rawdata-cache/defines.json";
 
-#[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, Eq, Debug, Hash)]
+#[derive(Serialize, Deserialize, Clone, PartialEq, Eq, Debug, Hash)]
 struct Mod {
     name: String,
     enabled: bool,
 }
 
-#[derive(serde::Serialize, serde::Deserialize)]
+#[derive(Serialize, Deserialize)]
 struct ModListFile {
     mods: Vec<Mod>,
 }
@@ -75,7 +78,11 @@ fn cache_key(mod_names: &[String]) -> String {
     if extra.is_empty() {
         "base".to_string()
     } else {
-        extra.iter().map(|s| s.as_str()).collect::<Vec<_>>().join("+")
+        extra
+            .iter()
+            .map(|s| s.as_str())
+            .collect::<Vec<_>>()
+            .join("+")
     }
 }
 
@@ -188,9 +195,12 @@ fn factorio_dump_defines(mod_src: &std::path::Path) -> LuaResult<()> {
 
     let mut steam = process::Command::new("steam")
         .args([
-            "-applaunch", "427520",
-            "--start-server-load-scenario", DEFINES_SCENARIO,
-            "--map-gen-settings", map_gen.to_str().unwrap(),
+            "-applaunch",
+            "427520",
+            "--start-server-load-scenario",
+            DEFINES_SCENARIO,
+            "--map-gen-settings",
+            map_gen.to_str().unwrap(),
         ])
         .spawn()
         .map_err(lua_error)?;

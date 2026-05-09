@@ -11,6 +11,8 @@ function energy.data()
         require 'extras.energy.electroboiler-item',
         require 'extras.energy.electroboiler-recipe',
     }
+
+    data:extend(require 'extras.energy.electric-link')
 end
 
 function energy.data2()
@@ -18,6 +20,11 @@ function energy.data2()
     table.insert(data.raw.technology['fluid-handling'].effects, {
         type = 'unlock-recipe',
         recipe = fns 'electroboiler',
+    })
+
+    table.insert(data.raw.technology['energy-distribution-2'].effects, {
+        type = 'unlock-recipe',
+        recipe = fns 'electric-link'
     })
 end
 

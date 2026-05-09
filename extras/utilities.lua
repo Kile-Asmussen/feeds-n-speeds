@@ -136,4 +136,10 @@ function utilities.highest_unlock(name)
     return highest_unlock[name]
 end
 
+function utilities.remove_unlock(name)
+    assert(data.raw.recipe[name] , "no such recipe: " .. name)
+
+    
+end
+
 return seal_namespace(utilities)
