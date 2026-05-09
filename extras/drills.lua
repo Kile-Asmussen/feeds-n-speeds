@@ -14,6 +14,9 @@ function drills.data()
     data:extend(
         require 'extras.drills.electric-mining-drill-fluid'
     )
+    data:extend(
+        require 'extras.drills.wet-drilling'
+    )
     -- Unlock electric drill with fluid alongside regular electric drill
     table.insert(data.raw.technology['electric-mining-drill'].effects, {
         type = 'unlock-recipe',

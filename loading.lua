@@ -25,7 +25,6 @@ function loading.execute(superdomain, operation)
     )
 
     for _, domain in ipairs(domains) do
-        __log(tostring(domain))
         operation(domain)
     end
 end

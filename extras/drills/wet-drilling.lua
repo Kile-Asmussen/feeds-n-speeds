@@ -1,6 +1,6 @@
 require 'prelude'
 
-return {
+return {{
     type = 'technology',
     name = fns 'wet-drilling',
     order = 'a-b-b',  -- after steam-power (a-b-a)
@@ -30,4 +30,4 @@ return {
         item = 'offshore-pump',
         amount = 1,
     },
-}
+}}
