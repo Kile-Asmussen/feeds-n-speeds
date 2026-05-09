@@ -4,17 +4,23 @@ require 'prelude'
 -- Assembly machine craftable (crafting-with-fluid)
 -- No refined concrete equivalent in this recipe chain
 
-return {
+return {{
     type = 'recipe',
     name = fns 'simple-concrete',
-    category = 'crafting-with-fluid',
+    category = 'crafting',
     -- localised_description = {""},
     enabled = false,
     energy_required = 10,
+    allow_speed = false,
+    allow_pollution = false,
+    allow_productivity = false,
+    allow_quality = false,
+    allow_consumption = false,
+    auto_recycle = false,
     ingredients = {
-        { type = 'item', name = 'stone-brick', amount = 5 },
-        { type = 'item', name = 'iron-stick', amount = 2 },
-        { type = 'fluid', name = 'water', amount = 100 },
+        { type = 'item', name = 'iron-ore', amount = 1 },
+        { type = 'item', name = 'stone-brick', amount = 2 },
+        { type = 'item', name = 'water-barrel', amount = 1 },
     },
     icons = {
         {
@@ -22,14 +28,16 @@ return {
             icon_size = 64,
         },
         {
-            icon = '__base__/graphics/icons/stone.png',
+            icon = '__base__/graphics/icons/barrel.png',
             icon_size = 64,
             scale = 0.25,
             shift = {-8, -8},
         },
     },
+    main_product = 'concrete',
     results = {
-        { type = 'item', name = 'concrete', amount = 5 },
+        { type = 'item', name = 'concrete', amount = 1 },
+        { type = 'item', name = 'barrel', amount = 1 },
     },
     order = 'b[concrete]-a[simple]',
-}
+}}

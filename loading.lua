@@ -19,10 +19,13 @@ function loading.execute(superdomain, operation)
     end
 
     table.sort(domains,
-        function(d1, d2) return (d1/'priority' or 0) > (d2/'priority' or 0) end 
+        function(d1, d2)
+            return (d2/'dependencies' or table.null)[tostring(d1)]
+        end 
     )
 
     for _, domain in ipairs(domains) do
+        __log(tostring(domain))
         operation(domain)
     end
 end

@@ -467,11 +467,14 @@ function malltech.energy()
 
     if enabled('tweaks.electric') then
         data.raw.recipe['power-switch'].ingredients = {
-            { type='item', name='advanced-circuit', amount=2 },
+            { type='item', name='advanced-circuit', amount=1 },
             { type='item', name='copper-cable', amount=10 },
             { type='item', name='iron-gear-wheel', amount=5 },
             { type='item', name='steel-plate', amount=5 },
         }
+
+        data.raw.item['power-switch'].subgroup = data.raw.item.substation.subgroup
+        data.raw.item['power-switch'].order = data.raw.item.substation.order .. '-a[switch]'
 
         table.insert(data.raw.technology['electric-energy-distribution-2'].effects,
             table.remove_matching( data.raw.technology['circuit-network'].effects, { recipe = 'power-switch' } )

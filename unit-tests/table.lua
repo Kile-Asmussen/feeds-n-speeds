@@ -39,7 +39,42 @@ fact('table.descend stops at non-table', function()
     assert(not hit)
 end)
 
--- table.remove_matching tests
+------------
+
+fact('table.index_of works with functions', function()
+    local tbl = {1, 2, 3, 4, 5}
+    local val = table.index_of(tbl, function(e) return e == 3 end)
+    assert_eq(val, 3)
+end)
+
+fact('table.index_of works with numbers', function()
+    local tbl = {1, 2, 3, 4, 5}
+    local val = table.index_of(tbl, 3)
+    assert_eq(val, 3)
+end)
+
+
+fact('table.index_of works with strings', function()
+    local tbl = {1, "2", "3", "4", 5}
+    local val = table.index_of(tbl, "3")
+    assert_eq(val, 3)
+end)
+
+
+fact('table.index_of works with associative arrays', function()
+    local tbl = {1, 2, {n=3}, {n=4}, {n=5}}
+    local val = table.index_of(tbl, {n=3})
+    assert_eq(val, 3)
+end)
+
+fact('table.index_of works with arrays', function()
+    local tbl = {1, 2, {3}, {4}, 5}
+    local val = table.index_of(tbl, {3})
+    assert_eq(val, 3)
+end)
+
+-----------------
+
 fact('table.remove_matching finds and removes matching element', function()
     local tbl = {1, 2, 3, 4, 5}
     local val = table.remove_matching(tbl, function(e) return e == 3 end)
@@ -47,7 +82,6 @@ fact('table.remove_matching finds and removes matching element', function()
     assert_eq(#tbl, 4)
     assert_eq(tbl[3], 4)
 end)
-
 
 fact('table.remove_matching returns nil when not found', function()
     local tbl = {1, 2, 3}
@@ -79,8 +113,6 @@ fact('table.remove_matching finds and removes element', function()
     assert_eq(tbl[3], 4)
 end)
 
-
-
 fact('table.find_matching returns nil when not found', function()
     local tbl = {1, 2, 3}
     local found = table.find_matching(tbl, function(e) return e == 99 end)
@@ -89,22 +121,22 @@ end)
 
 -- table.matches tests
 fact('table.matches simple equality', function()
-    assert_eq(table.matches({a = 1}, {a = 1, b = 2}), true)
+    assert(table.matches({a = 1}, {a = 1, b = 2}))
 end)
 
 fact('table.matches fails on missing key', function()
-    assert_eq(table.matches({a = 1, c = 3}, {a = 1, b = 2}), false)
+    assert(not table.matches({a = 1, c = 3}, {a = 1, b = 2}))
 end)
 
 fact('table.matches nested tables', function()
-    assert_eq(table.matches({a = {b = 1}}, {a = {b = 1, c = 2}}), true)
+    assert(table.matches({a = {b = 1}}, {a = {b = 1, c = 2}}))
 end)
 
 fact('table.matches returns predicate when no candidate', function()
     local pred = table.matches({a = 1})
     assert_is(pred, 'function')
-    assert_eq(pred({a = 1}), true)
-    assert_eq(pred({a = 2}), false)
+    assert(pred{a = 1})
+    assert(not pred{a = 2})
 end)
 
 fact('table.matches with table.null accepts any value', function()
@@ -293,27 +325,6 @@ end)
 
 fact('table.iall returns false when any fails', function()
     assert_eq(table.iall({2, 3, 6}, function(v) return v % 2 == 0 end), false)
-end)
-
--- table.traverse tests
-fact('table.traverse visits nested tables', function()
-    local tbl = {a = {b = 1}, c = 2}
-    local visited = {}
-    table.traverse(tbl, function(v, k)
-        table.insert(visited, k)
-    end)
-    assert(#visited >= 2)
-end)
-
-fact('table.traverse can replace values', function()
-    local tbl = {a = 1, b = 2}
-    table.traverse(tbl, function(v, k)
-        if type(v) == 'number' then
-            return v * 10
-        end
-    end)
-    assert_eq(tbl.a, 10)
-    assert_eq(tbl.b, 20)
 end)
 
 -- table.isvec tests

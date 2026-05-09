@@ -80,6 +80,8 @@ local turret_item = {
 utilities.iconify(turret_item, data.raw.ammo['cannon-shell'].icon)
 turret_item.icons[1].tint = { 0.8, 0.8, 0.8 }
 
+turret.icons = table.clone(turret_item.icons)
+
 local turret_recipe = {
     type = 'recipe',
     energy_required = 8,

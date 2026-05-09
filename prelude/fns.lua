@@ -32,7 +32,9 @@ function _G.fns_locale_key(category, name)
 end
 
 function _G.is_fns_name(name)
-    return table.index_of(mod_prefixes, function(pref) return name:sub(1, #pref) == pref end) and true or false
+    return table.index_of(mod_prefixes,
+        function(pref) return name:sub(1, #pref) == pref end)
+        and true or false
 end
 
 function _G.fns_categorized_names()

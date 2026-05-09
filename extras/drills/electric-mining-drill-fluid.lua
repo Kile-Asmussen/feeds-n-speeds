@@ -1,6 +1,16 @@
 require 'prelude'
 
-return {
+-- Copy electric mining drill (keeps the fluid input)
+local base = data.raw['mining-drill']['electric-mining-drill']
+
+local drill = table.clone(base)
+
+drill.name = fns 'electric-mining-drill-fluid'
+drill.minable.result = fns 'electric-mining-drill-fluid'
+
+-- input_fluid_box is inherited from the clone
+
+local drill_item = {
     type = 'item',
     name = fns 'electric-mining-drill-fluid',
     icons = {
@@ -35,3 +45,22 @@ return {
         volume = 0.8,
     },
 }
+
+drill.icons = table.clone(drill_item.icons)
+
+local drill_recipe = {
+    type = 'recipe',
+    name = fns 'electric-mining-drill-fluid',
+    enabled = false,
+    energy_required = 1,
+    ingredients = {
+        { type = 'item', name = 'electric-mining-drill', amount = 1 },
+        { type = 'item', name = 'pipe', amount = 3 },
+    },
+    results = {
+        { type = 'item', name = fns 'electric-mining-drill-fluid', amount = 1 },
+    },
+}
+
+
+return { drill, drill_item, drill_recipe }

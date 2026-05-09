@@ -1,21 +1,34 @@
 require 'prelude'
 
+local utilities = require 'extras.utilities'
 local nuclear = namespace 'tweaks.nuclear'
+
+nuclear.dependencies = table.set{ "tweaks.water" }
 
 nuclear.enabled = true
 
 function nuclear.data2()
 
-    local ambient_temperature = 15
-    local high_temperature = 500 + ambient_temperature
-    local max_temperature = 1000 + ambient_temperature
-
-    data.raw.fluid.steam.max_temperature = max_temperature
+    local steam = data.raw.fluid.steam
 
     local nuclear_reactor = data.raw.reactor['nuclear-reactor']
     local heating_tower = data.raw.reactor['heating-tower']
     local steam_turbine = data.raw.generator['steam-turbine']
     local heat_exchanger = data.raw.boiler['heat-exchanger']
+
+    local ambient_temperature = steam.default_temperature
+    local steam_heat_cap = utilities.joules_or_watts( data.raw.fluid.steam.heat_capacity)
+    local high_temperature = 500 + ambient_temperature
+    local max_temperature = 1000 + ambient_temperature
+
+    steam_turbine.maximum_temperature = high_temperature
+    local turbine_output =
+        steam_turbine.fluid_usage_per_tick * 60
+            * steam_heat_cap * high_temperature
+
+    nuclear_reactor.consumption = utilities.to_watts(10*turbine_output)
+    heating_tower.consumption = utilities.to_watts(5*turbine_output)
+    heat_exchanger.energy_consumption = utilities.to_watts(2*turbine_output)
 
     nuclear_reactor.heat_buffer.max_temperature = max_temperature
     heating_tower.heat_buffer.max_temperature = max_temperature
@@ -34,20 +47,18 @@ function nuclear.data2()
     nuclear_reactor.scale_energy_usage = true
     nuclear_reactor.localised_description = {"", {fns_locale_key('entity-description', 'tweaked-nuclear-reactor')}}
 
-    nuclear_reactor.consumption = '60MW'
-    heating_tower.consumption = '30MW'
-    heat_exchanger.energy_consumption = '12MW'
-
     nuclear_reactor.neighbour_bonus = 0.5
 
     data.raw.technology['heating-tower'].localised_description = {"", {fns_locale_key('technology-description', 'tweaked-heating-tower')}}
+
+    data.raw.recipe['acid-neutralisation'].results[1].temperature = high_temperature
 
     if enabled('tweaks.concrete') and not enabled('tweaks.malltech') then
 
         local recipe = data.raw.recipe
 
         table.find_matching(recipe['nuclear-reactor'].ingredients,
-            table.matches{ name = 'concrete', type = 'item' }
+            { name = 'concrete', type = 'item' }
         ).name = 'refined-concrete'
 
         table.insert(recipe['heat-exchanger'].ingredients,

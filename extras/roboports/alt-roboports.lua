@@ -58,6 +58,7 @@ sleeper_item.icons = {
 sleeper_item.name = sleeper.name
 sleeper_item.place_result = sleeper_item.name
 sleeper_item.ordering = 'c[signal]-a[roboport]-b[sleeper]'
+sleeper.icons = table.clone(sleeper_item.icons)
 
 log_item.icon = nil
 log_item.icons = {
@@ -67,6 +68,8 @@ log_item.icons = {
 log_item.name = log_only.name
 log_item.place_result = log_item.name
 log_item.ordering = 'c[signal]-a[roboport]-c[logistic]'
+log_only.icons = table.clone(log_item.icons)
+
 
 cons_item.icon = nil
 cons_item.icons = {
@@ -76,6 +79,8 @@ cons_item.icons = {
 cons_item.name = cons_only.name
 cons_item.place_result = cons_item.name
 cons_item.ordering = 'c[signal]-a[roboport]-d[construction]'
+cons_only.icons = table.clone(cons_item.icons)
+
 
 local base_recipe = data.raw.recipe.roboport
 

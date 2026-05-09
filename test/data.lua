@@ -44,7 +44,10 @@ local settings = namespace 'test.settings'
 function data.extend(self, protos)
     local simple = {}
     local bad = false
-    for _, proto in ipairs(protos) do
+    assert(table.is_array(protos), "data:extend called with non-array")
+    for i, proto in ipairs(protos) do
+
+        assert(table.is_assoc(proto), "data:extend argument entry #" .. i .. " is not an associative array")
 
         assert(is_fns_name(proto.name), "not an fns-based name: " .. proto.name)
 

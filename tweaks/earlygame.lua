@@ -1,5 +1,7 @@
 require 'prelude'
 
+local utilities = require 'extras.utilities'
+
 local earlygame = namespace 'tweaks.earlygame'
 earlygame.enabled = true
 
@@ -14,10 +16,13 @@ function earlygame.data2()
 
     earlygame.tweak_technologies()
     earlygame.tweak_recipes()
+
 end
 
 function earlygame.tweak_technologies()
     data.raw.recipe['iron-chest'].enabled = false
+
+    utilities.remove_unlock('iron-stick')
 
     local tech = data.raw.technology
 
@@ -77,6 +82,9 @@ function earlygame.tweak_technologies()
         { type = 'unlock-recipe', recipe = 'burner-mining-drill' }
     )
 
+    data.raw.recipe['burner-mining-drill'].enabled = false
+
+
     if enabled('extras.altrecipes') then
         tech[fns 'basic-materials-processing'].research_trigger = {
             type = 'craft-item',
@@ -102,20 +110,6 @@ function earlygame.tweak_recipes()
     recipe['burner-inserter'].hidden = true
     recipe['transport-belt'].enabled = false
     recipe['iron-gear-wheel'].enabled = false
-end
-
-function earlygame.data_final_fixes()
-
-    for name, tech in pairs(data.raw.technology) do
-        if name ~= 'steel-processing' then
-            if tech.effects then
-                table.remove_matching(tech.effects,
-                    table.matches{ recipe = 'iron-stick', type = 'unlock-recipe'}
-                )
-            end
-        end
-    end
-
 end
 
 return seal_namespace(earlygame)

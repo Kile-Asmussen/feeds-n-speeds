@@ -53,5 +53,6 @@ extras.energy = require('extras.energy')
 extras.utilities = require('extras.utilities')
 extras.roboports = require('extras.roboports')
 extras.heavy = require('extras.heavy')
+extras.barelling = require('extras.barelling')
 
 return seal_namespace(extras)

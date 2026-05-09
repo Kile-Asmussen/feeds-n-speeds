@@ -139,7 +139,54 @@ end
 function utilities.remove_unlock(name)
     assert(data.raw.recipe[name] , "no such recipe: " .. name)
 
-    
+    for _, tech in pairs(data.raw.technology) do
+        if tech.effects then
+            table.remove_matching(tech.effects, { type='unlock-recipe', name=name })
+        end
+    end
+end
+
+utilities.si_prefixes = {
+    'k', 'M', 'G', 'T',
+    k = 1000,
+    M = 1000 * 1000,
+    G = 1000 * 1000 * 1000,
+    T = 1000 * 1000 * 1000 * 1000,
+}
+
+function utilities.to_si(energy)
+    local si = utilities.si_prefixes 
+    local i = 1
+    for i = 1, #si do
+
+        energy = energy / 1000
+
+        if energy < 1000 then
+            break
+        end
+    end
+    energy = tostring(energy)
+    local num = energy:match('%d+%.%d%d?%d?') or energy:match('%d+')
+    return num .. si[i]
+end
+
+function utilities.to_joules(energy)
+    return utilities.to_si(energy) .. 'J'
+end
+
+function utilities.to_watts(energy)
+    return utilities.to_si(energy) .. 'W'
+end
+
+function utilities.joules_or_watts(energy)
+    assert(type(energy) == 'string', "argument #1 must be a string")
+    local unit = energy:sub(#energy)
+    assert(unit == 'J' or unit == 'W', "argument #1 must end in J or W not: " .. unit)
+    local si = energy:sub(#energy - 1, #energy - 1)
+    assert(utilities.si_prefixes[si], "argument #1 must have an SI-prefix")
+    local num = tonumber(energy:sub(1, #energy - 2)) 
+    assert(type(num) == 'number', "argument #1 must have a numeric part")
+    return num * utilities.si_prefixes[si]
 end
 
 return seal_namespace(utilities)

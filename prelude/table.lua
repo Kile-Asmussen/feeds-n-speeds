@@ -457,17 +457,27 @@ end
 function table.traverse(tbl, func)
     for k, v in pairs(tbl) do
         if type(v) == 'table' then
-            local stop = func(v, k)
-            if not stop then
+            local stop, replace = func(v, k)
+            if replace then
+                tbl[k] = stop
+            elseif not stop then
                 table.traverse(v, func)
             end
         else
-            local replace = func(v, k)
+            local value, replace = func(v, k)
             if replace then
-                tbl[k] = replace
+                tbl[k] = value
             end
         end
     end
+end
+
+function table.replace(tbl, a, b)
+  table.traverse(tbl, function(v)
+    if a == v then
+      return b, true
+    end
+  end)
 end
 
 function table.isvec(tbl)

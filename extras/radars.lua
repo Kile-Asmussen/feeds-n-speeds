@@ -7,25 +7,17 @@ radars.enabled = true
 function radars.data()
     if not radars.enabled then return end
 
-    data:extend{
-        require('extras.radars.small-radar-building'),
-        require('extras.radars.small-radar-item'),
-        require('extras.radars.small-radar-recipe'),
-        require('extras.radars.small-radar-remnants'),
-        require('extras.radars.small-radar-explosion'),
-    }
-
+    data:extend(require('extras.radars.small-radar'))
 
     table.insert(data.raw.technology.radar.effects, {
         type = 'unlock-recipe',
         recipe = fns 'small-radar',
     })
-
 end
 
 function radars.data2()
     local ingredient = table.find_matching(data.raw.recipe['artillery-shell'].ingredients,
-        table.matches{ type='item', name = 'radar'}
+        { type='item', name = 'radar'}
     )
     assert(ingredient, "artillery-shell recipe has no radar ingredient -- was it already substituted?")
     ingredient.name = fns 'small-radar'

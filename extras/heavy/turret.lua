@@ -28,6 +28,8 @@ local turret_item = {
 }
 utilities.iconify(turret_item, data.raw.ammo['shotgun-shell'].icon)
 
+turret.icons = table.clone(turret_item.icons)
+
 local turret_recipe = {
     type = 'recipe',
     energy_required = 8,

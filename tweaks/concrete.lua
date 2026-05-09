@@ -4,11 +4,13 @@ local utilities = require 'extras.utilities'
 local concrete = namespace 'tweaks.concrete'
 
 concrete.enabled = true
+concrete.dependencies = table.set{ 'extras.barelling' }
 
 function concrete.data()
-    data:extend{
-        require 'tweaks.concrete.simple-concrete',
-    }
+    data:extend(
+        require 'tweaks.concrete.simple-concrete'
+    )
+
     data:extend(
         require 'tweaks.concrete.collision-layers'
     )
@@ -19,19 +21,23 @@ function concrete.data2()
     local recipes = data.raw.recipe
     local tech = data.raw.technology
 
-    recipes.concrete.category = 'chemistry'
+    recipes['hazard-concrete'].category = 'advanced-crafting'
     recipes.concrete.ingredients = {
         { type = 'item', name = 'stone-brick', amount = 5 },
         { type = 'item', name = 'iron-stick', amount = 2 },
         { type = 'fluid', name = 'water', amount = 100 },
     }
-
-    recipes['refined-concrete'].category = 'chemistry'
+    
+    recipes['refined-hazard-concrete'].category = 'advanced-crafting'
     recipes['refined-concrete'].ingredients = {
         { type = 'item', name = 'concrete', amount = 20 },
         { type = 'item', name = 'steel-plate', amount = 1 },
         { type = 'fluid', name = 'water', amount = 100 },
     }
+    
+    utilities.remove_unlock 'chemical-plant'
+    recipes.concrete.category = 'chemistry'
+    recipes['refined-concrete'].category = 'chemistry'
 
     table.append(tech.concrete.effects, {
         { type = 'unlock-recipe', recipe = 'chemical-plant' },
@@ -39,10 +45,7 @@ function concrete.data2()
     })
 
     tech.concrete.prerequisites = { 'fluid-handling', 'advanced-material-processing' }
-    
-    table.remove_matching(tech['oil-processing'].effects,
-        table.matches{ type = 'unlock-recipe', recipe = 'chemical-plant'}
-    )
+
     
     table.insert(tech['oil-processing'].prerequisites, 'concrete')
     table.insert(tech['advanced-material-processing-2'].prerequisites, 'concrete')

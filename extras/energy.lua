@@ -6,11 +6,7 @@ energy.enabled = true
 
 function energy.data()
 
-    data:extend{
-        require 'extras.energy.electroboiler-building',
-        require 'extras.energy.electroboiler-item',
-        require 'extras.energy.electroboiler-recipe',
-    }
+    data:extend(require 'extras.energy.electroboiler')
 
     data:extend(require 'extras.energy.electric-link')
 end
@@ -22,7 +18,7 @@ function energy.data2()
         recipe = fns 'electroboiler',
     })
 
-    table.insert(data.raw.technology['energy-distribution-2'].effects, {
+    table.insert(data.raw.technology['electric-energy-distribution-2'].effects, {
         type = 'unlock-recipe',
         recipe = fns 'electric-link'
     })

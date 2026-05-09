@@ -8,15 +8,12 @@ drills.enabled = true
 function drills.data()
     if not drills.enabled then return end
 
-    data:extend{
-        require 'extras.drills.burner-mining-drill-fluid-building',
-        require 'extras.drills.burner-mining-drill-fluid-item',
-        require 'extras.drills.burner-mining-drill-fluid-recipe',
-        require 'extras.drills.electric-mining-drill-fluid-building',
-        require 'extras.drills.electric-mining-drill-fluid-item',
-        require 'extras.drills.electric-mining-drill-fluid-recipe',
-        require 'extras.drills.wet-drilling-technology',
-    }
+    data:extend(
+        require 'extras.drills.burner-mining-drill-fluid'
+    )
+    data:extend(
+        require 'extras.drills.electric-mining-drill-fluid'
+    )
     -- Unlock electric drill with fluid alongside regular electric drill
     table.insert(data.raw.technology['electric-mining-drill'].effects, {
         type = 'unlock-recipe',
