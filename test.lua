@@ -13,10 +13,6 @@ _G.VERBOSE = os.getenv("VERBOSE") and true or false
 local debuglib = require 'debuglib'
 debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 2
 
-setmetatable(_G, {
-    __index = function(_, name) error('global ' .. name .. ' not found') end
-})
-
 local stub_libs = {
     ['resource-autoplace'] = 'test.resource-autoplace'
 }
@@ -87,7 +83,17 @@ local function __lock_mt(name)
     }
 end
 
+local function __global_index(_, name)
+    error('global ' .. name .. ' not found')
+end
+
+_G.assoc = table.assoc
+_G.array = table.array
+
 setmetatable(_G.table, __lock_mt('table'))
 setmetatable(_G.functions, __lock_mt('functions'))
-
 setmetatable(_G.string, __lock_mt('string'))
+
+setmetatable(_G, {
+    __index = __global_index
+})

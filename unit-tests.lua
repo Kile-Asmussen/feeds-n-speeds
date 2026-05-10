@@ -2,10 +2,7 @@
 require 'prelude'
 local debuglib = require 'debuglib'
 
--- implementation:
-
-local args = table.pack(...)
-args.n = nil
+local modules = { 'debuglib', 'prelude', 'string', 'table' }
 
 local __tests = {}
 
@@ -40,35 +37,6 @@ function assert_is(val, expected_type, msg)
     end
 end
 
-if #args == 1 and args[1] == 'all' then
-    local find = io.popen("find ./unit-tests/ -type f -name '*.lua'")
-    table.remove(args)
-    for path in find:lines() do
-        local name = path:match('/[%w]+%.lua$')
-        if name then
-            name = name:sub(2, #name - 4)
-            table.insert(args, name)
-        end
-    end
-end
-
-if table.remove_matching(args, 'trusted') then
-    require 'unit-tests-trusted'
-end
-
-for _, arg in ipairs(args) do
-    if arg:match('[^%w_-]') then
-        print('invalid module name: ' .. arg)
-        os.exit(2)
-    end
-
-    local fn = './unit-tests/' .. arg .. '.lua'
-    if not os.rename(fn, fn) then
-        print('invalid module name: ' .. arg)
-        os.exit(2)
-    end
-end
-
 local allowed_namespaces = table.set{
     'debuglib'
 }
@@ -80,6 +48,7 @@ function import(path)
     end
     return __import(path)
 end
+
 
 local __namespace = namespace
 function namespace(path)
@@ -122,8 +91,8 @@ _G.collectgarbage = nil
 
 --- Load test modules
 
-for _, arg in ipairs(args) do
-    __require('unit-tests.' .. arg)
+for _, mod in ipairs(modules) do
+    __require('unit-tests.' .. mod)
 end
 
 --- Run all tests

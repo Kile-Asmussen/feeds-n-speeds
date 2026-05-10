@@ -10,6 +10,6 @@ begin_data_stage()
 
 local debuglib = require 'debuglib'
 
-local fn = loadstring('return ' .. args[1])
+local fn = loadstring('return ' .. tostring(args[1]))
 
 __log(debuglib.pp(fn()))

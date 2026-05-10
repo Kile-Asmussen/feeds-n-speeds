@@ -19,7 +19,8 @@
         "tbl",
         "Vec",
         "vecadd",
-        "vecmul"
+        "vecmul",
+        "zet"
     ],
     "flagWords": [
         "localization"

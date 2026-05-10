@@ -28,8 +28,9 @@
 
 ## Potential spinoffs
 
-- [ ] Extract big steel chest + hoppers into a standalone mod — self-contained enough to be useful without the rest of FeedsNSpeeds.
-- [ ] Extract tweaks.military into self-contained mod
+- Extract big steel chest + hoppers into a standalone mod — self-contained enough to be useful without the rest of FeedsNSpeeds.
+- Extract tweaks.military into self-contained mod
+- Extract tweaks.water and tweaks.nuclear
 
 ## Necessary tasks
 
@@ -37,18 +38,37 @@
 - [ ] In-game changelog display
 - [ ] In-game documentation (tips and tricks, custom GUI, or factoriopedia integration)
 
-## Overarching tasks
-
-- [ ] Expand alt-recipes module (`extras/altrecipes/`)
-- [ ] Expand malltech module
-- [ ] Add per-planet surface condition variants for entities
-- [ ] Add migration scripts for settings changes
-
 # FeedsNSpeeds Development Ergonomics TODO
 
-## Localization stub generator improvements
+## Major refactor
 
-- [ ] Skip recipe stubs when the recipe has a single result item (Factorio inherits the item's name/description automatically). Check for `results` with one entry, or a `main_product` field set on the prototype.
+Unify tweaks and extras
+
+- fix dependency chaining sorting algorithm of modules
+- loading system for prototype files
+- loading system for update scripts
+- get rid of toggles
+- recipe unlocks in the data_update stage?
+- Recipe dependency graph + tech dependency graph comparison
+
+Concrete:
+
+- Better naming
+- Add to the dependency graph
+
+Expand utilities to include way more useful things.
+
+Split:
+
+
+- **LOGISTICS** tweaks.robotics, extras.roboports, extras.chests, tweaks.electric, extras.energy, tweaks.nuclear, tweaks.chests, tweaks.concrete tile speed
+- **PRODUCTION** tweaks.malltech, tweaks.timewaster.ADVANCED,  extras.altrecipes.castings, tweaks.technologies, tweaks.ores
+- **CONSTRUCTION** extras.altrecipes.concrete*, extras.concrete.data2, extras.concrete.data/data_updates, tweaks.timewaster.*, tweaks.machines, extras.barreling
+- **BOOTSTRAP** extras.altrecipes.stone-furnace, tweaks.earlygame, parts of tweaks.technologies, tweaks.earlygame, tweaks.start
+- **MILITARY** extras.ore, tweaks.sulfur-processing, extras.drills, extras.heavy, tweaks.military, extras.altrecipes.ammo, extras.radar, tweaks.cliffsplosives
+
+
+
 
 ## Enhanced Out-of-Game Testing Pipeline
 
