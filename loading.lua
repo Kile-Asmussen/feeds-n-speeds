@@ -22,11 +22,7 @@ function loading.execute(superdomain, operation)
     log(debuglib.pp(table.collect(domains, tostring)))
 
     table.simple_sort(domains,
-        function(d1, d2)
-            return ((d2/'dependencies' or table.null)[tostring(d1)]
-                and not (d1/'dependencies' or table.null)[tostring(d2)])
-                or true
-        end 
+        loading.compare_dependencies
     )
     log(debuglib.pp(table.collect(domains, tostring)))
 
@@ -37,6 +33,36 @@ function loading.execute(superdomain, operation)
     if tostring(superdomain) == 'tweaks' then
         error()
     end
+end
+
+function loading.compare_dependencies(d1, d2)
+
+    if (d1/'dependencies') and not (d2/'dependencies') then
+        if d1.dependencies[tostring(d2)] then
+            return false
+        else
+            return true
+        end
+    elseif not (d1/'dependencies') and (d2/'dependencies') then
+        if d2.dependencies[tostring(d1)] then
+            return true
+        else
+            return false
+        end
+    elseif (d1/'dependencies') and (d2/'dependencies') then
+        if d1.dependencies[tostring(d2)] and d2.dependencies[tostring(d1)] then
+            error("Cyclic dependency found: " .. tostring(d1) .. ' ' .. tostring(d2))
+        elseif d1.dependencies[tostring(d2)] then
+            return false
+        elseif d2.dependencies[tostring(d1)] then
+            return true
+        else
+            return true
+        end
+    else
+        return true
+    end
+
 end
 
 function loading.create_toggle(domain)
