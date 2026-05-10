@@ -10,8 +10,10 @@ function _G.fns(name, sep, ...)
     assert(type(sep) == 'string', "invalid separator: " .. tostring(sep))
     assert(type(name) == 'string', "invalid name: " .. tostring(name))
 
-    prefix = table.concat({'feeds', 'n', 'speeds'}, sep)
+    local prefix = table.concat({'feeds', 'n', 'speeds'}, sep)
     name = prefix .. sep .. string.gsub(name, '[^a-zA-Z0-9]', sep)
+
+
     table.insert(mod_prefixes, prefix)
     mod_identifiers[name] = true
 
@@ -21,9 +23,10 @@ end
 function _G.fns_locale_key(category, name)
     assert(type(category) == 'string', "invalid category: " .. tostring(category))
     
+    name = fns(name)
+    
     category = string.gsub(category, '[^a-zA-Z0-9]', '-')
 
-    name = fns(name)
 
     mod_identifier_categories[category] = mod_identifier_categories[category] or {}
     mod_identifier_categories[category][name] = true
@@ -54,3 +57,9 @@ function _G.fns_control_stage()
     end
 end
 
+function _G.prototype(...)
+    local tbl = table.pack(...)
+    tbl.n = nil
+    table.each(tbl, table.purgemetatable)
+    data:extend(tbl)
+end

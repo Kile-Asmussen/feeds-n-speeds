@@ -38,7 +38,7 @@ local function __ns_lookup(self, name)
 end
 
 local function __ns_not_found(self, name)
-    assert(type(name) == 'string', 'namespace keys can only be strings')
+    assert(type(name) == 'string', 'namespace keys can only be strings not ' .. tostring(name))
     assert(tostring(self) .. '.' .. name .. ' not found')
 end
 
@@ -72,7 +72,7 @@ end
 local function require_namespace(self, modname)
     assert(type(modname) == 'string', "argument #1 must be a string")
         
-    name = modname:gsub('[^a-zA-Z0-9]', '_')
+    local name = modname:gsub('[^a-zA-Z0-9]', '_')
 
     self[name] = require(tostring(self) .. '.' .. modname)
 end

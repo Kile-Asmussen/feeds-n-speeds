@@ -1,13 +1,13 @@
 require 'prelude'
 
-local utilities = namespace 'modules.utilities'
+local utilities = namespace 'utilities'
 
 utilities.settings = asset{
     'setting.restart-toggle'
 }
 
 utilities.control = asset{
-    'reset-tech'
+    'simple-chat-commands'
 }
 
-return seal_namespace(utilities)
+return utilities:seal()

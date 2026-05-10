@@ -2,7 +2,6 @@
 -- Placeholder registered in data stage; rebuilt with correct indices in data_updates
 require 'prelude'
 
-local utilities = require 'extras.utilities'
 local tools = require 'tools'
 
 local noise = assoc{

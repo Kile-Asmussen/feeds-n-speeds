@@ -96,7 +96,7 @@ end
 --- Recurse into a table containing other tables
 --- using a list of keys
 function table.descend(tbl, ...)
-    keys = table.pack(...)
+    local keys = table.pack(...)
     
     for _, key in ipairs(keys) do
         if type(tbl) ~= 'table' then
@@ -114,7 +114,7 @@ function table.descend(tbl, ...)
 end
 
 function table.access(tbl, ...)
-    keys = table.pack(...)
+    local keys = table.pack(...)
     
     for _, key in ipairs(keys) do
         if type(tbl) ~= 'table' then
@@ -504,13 +504,13 @@ function table.sum(tbl, res)
     return res
 end
 
-local function __all(iter, pred, kv)
+local function __all(iter, tbl, pred, kv)
     if kv then
-        for k, v in iter do
+        for k, v in iter(tbl) do
             if not pred(k, v) then return false end
         end
     else
-        for k, v in iter do
+        for k, v in iter(tbl) do
             if not pred(v, k) then return false end
         end
     end
@@ -919,3 +919,17 @@ function table.purgemetatable(tbl)
         end
     end)
 end
+
+local function ordered_pairs_iter(state, x)
+    state.i = state.i + 1
+    local key = state.keys[state.i]
+    if key then 
+        return key, state.tbl[key]
+    end
+end
+
+function table.ordered_pairs(tbl)
+    return ordered_pairs_iter, { i=0, keys=table.sorted_keys(tbl), tbl=tbl }, nil
+end
+
+_G.opairs = table.ordered_pairs

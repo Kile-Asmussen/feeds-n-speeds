@@ -2,25 +2,25 @@ require 'prelude'
 
 local bootstrap = namespace 'modules.bootstrap'
 
-bootstrap['data-prototypes'] = asset{
+bootstrap.data = asset{
     'recipes.stone-furnace-alt',
-    'tech.basic-materials-processing',
+
+    'entities.enrich-rocks',
+    'entities.burner-miner',
+    'entities.electric-miner',
+
+    'tech.earlygame-tech-tree',
     'tech.wet-drilling',
-    'tech.lab-tech',
-    'entities.burner-mining-drill-fluid',
-    'entities.electric-mining-drill-fluid',
+    'tech.lab-tech',    
 
     'worldgen.sulfur-ore',
     'worldgen.sulfur-ore-noise-expressions',
-}
-
-bootstrap['data-edits'] = asset{
-    'entities.defluid-electric-mining-drill',
-    'entities.enrich-rocks',
-    'tech.earlygame-tech-tree',
-
-    'worldgen.fix-ore-config',
     'worldgen.sulfur-item-variations',
+
+    ['worldgen.fix-ore-config'] = asset{
+        'worldgen.sulfur-ore',
+        'worldgen.sulfur-ore-noise-expressions',
+    }
 }
 
 bootstrap.control = asset{

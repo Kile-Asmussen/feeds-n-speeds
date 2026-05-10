@@ -1,6 +1,24 @@
 require 'prelude'
 
-return assoc{
+local tech = data.raw.technology
+
+tech['uranium-mining'] = nil
+
+local uranium = tech['uranium-processing']
+
+uranium.prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack' }
+uranium.research_trigger = nil
+uranium.unit = {
+    count = 100,
+    time = 30,
+    ingredients = {
+        { 'automation-science-pack', 1 },
+        { 'logistic-science-pack', 1 },
+        { 'chemical-science-pack', 1 },
+    },
+}
+
+local wet = assoc{
     type = 'technology',
     name = fns 'wet-drilling',
     order = 'a-b-b',  -- after steam-power (a-b-a)
@@ -31,3 +49,5 @@ return assoc{
         amount = 1,
     },
 }
+
+prototype(wet)

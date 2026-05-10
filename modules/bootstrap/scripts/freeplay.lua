@@ -31,6 +31,4 @@ local function inventory()
 
 end
 
-return function()
-    script.on_init(start.inventory)
-end
+script.on_init(inventory)

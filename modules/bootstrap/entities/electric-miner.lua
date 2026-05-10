@@ -1,5 +1,6 @@
 require 'prelude'
 
+
 local drill = table.clone(data.raw['mining-drill']['electric-mining-drill'])
 
 drill.name = fns 'electric-mining-drill-fluid'
@@ -31,7 +32,7 @@ local drill_recipe = assoc{
     type = 'recipe',
     name = drill.name,
     enabled = false,
-    energy_required = 1,
+    energy_required = 2.0,
     ingredients = array{
         assoc{ type = 'item', name = 'electric-mining-drill', amount = 1 },
         assoc{ type = 'item', name = 'pipe', amount = 3 },
@@ -41,4 +42,7 @@ local drill_recipe = assoc{
     },
 }
 
-return array{ drill, drill_item, drill_recipe }
+
+prototype( drill, drill_item, drill_recipe )
+
+data.raw['mining-drill']['electric-mining-drill'].input_fluid_box = nil

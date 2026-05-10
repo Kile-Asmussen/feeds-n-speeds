@@ -91,16 +91,16 @@ function tools.icons(icon, icon2)
     icon2 = assoc(icon)
 
     if not icon.shift then
-        icon.shift = tool.icon_placements[icon.placement]
+        icon.shift = tools.icon_placements[icon.placement]
         if icon.shift then
-            table.vecmul(icon.shift, tool.icons_shifts[icon.placement])
+            table.vecmul(icon.shift, tools.icons_shifts[icon.placement])
         end
     end
 
     if not icon2.shift then
-        icon2.shift = tool.icon_placements[icon2.placement]
+        icon2.shift = tools.icon_placements[icon2.placement]
         if icon2.shift then
-            table.vecmul(icon2.shift, tool.icons_shifts[icon2.placement])
+            table.vecmul(icon2.shift, tools.icons_shifts[icon2.placement])
         end
     end
 

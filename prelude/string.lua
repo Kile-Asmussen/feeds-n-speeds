@@ -121,3 +121,7 @@ function string.lines(str)
         return line
     end
 end
+
+function string.prepend(str)
+    return function(s) return str .. s end
+end

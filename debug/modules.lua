@@ -30,7 +30,7 @@ table.recursion_check(data.raw)
 
 log("\nCONTROL")
 _G.storage = {}
-require('control')
+modules.load_stage 'control'
 
 localisation.finalize()
 

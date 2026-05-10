@@ -47,7 +47,7 @@ local drill_recipe = assoc{
     type = 'recipe',
     name = drill_item.name,
     enabled = false,
-    energy_required = 1,
+    energy_required = 2.0,
     ingredients = array{
         assoc{ type = 'item', name = 'burner-mining-drill', amount = 1 },
         assoc{ type = 'item', name = 'pipe', amount = 1 },

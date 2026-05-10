@@ -1,6 +1,13 @@
 require 'prelude'
 
-return assoc{
+local tools = require 'tools'
+
+tools.remove_unlock('inserter')
+tools.remove_unlock('lab')
+
+data.raw.recipe['transport-belt'].enabled = false
+
+local tech = assoc{
     type = 'technology',
     name = fns 'lab-tech',
     order = 'a-a-z',
@@ -31,3 +38,5 @@ return assoc{
         amount = 2
     },
 }
+
+prototype(tech)

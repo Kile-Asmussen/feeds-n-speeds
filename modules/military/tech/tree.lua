@@ -1,0 +1,134 @@
+require 'prelude'
+
+local tech = data.raw.technology
+
+table.insert(tech['gun-turret'].prerequisites, 'military')
+
+-- Other turrets depend on gun turret
+table.insert(tech['laser-turret'].prerequisites, 'gun-turret')
+table.insert(tech['flamethrower'].prerequisites, 'gun-turret')
+table.insert(tech['artillery'].prerequisites, 'gun-turret')
+table.insert(tech['rocket-turret'].prerequisites, 'gun-turret')
+table.insert(tech['railgun'].prerequisites, 'gun-turret')
+table.insert(tech['tesla-weapons'].prerequisites, 'gun-turret')
+
+table.insert(tech['laser-turret'].prerequisites, 'electric-engine')
+
+tech['military'].effects = {
+    { type='unlock-recipe', recipe='submachine-gun' },
+    { type='unlock-recipe', recipe='combat-shotgun' },
+}
+
+tech['rocketry'].prerequisites = {
+    'rocket-fuel',
+    'explosives',
+    'military-science-pack'
+}
+tech['rocketry'].unit.ingredients = {
+    { 'automation-science-pack', 1 },
+    { 'logistic-science-pack', 1 },
+    { 'chemical-science-pack', 1 },
+    { 'military-science-pack', 1 },
+}
+
+table.insert(tech['rocket-silo'].prerequisites, 'rocketry')
+
+
+
+
+tech['flammables'].effects = {
+    { type='unlock-recipe', recipe='flamethrower' },
+    { type='unlock-recipe', recipe='flamethrower-ammo' }
+}
+tech['flammables'].localised_description = {"", { fns 'technology-description', 'flammables' }}
+
+tech['flamethrower'].effects = {
+    { type='unlock-recipe', recipe='flamethrower-turret' },
+    { type='unlock-recipe', recipe=fns 'napalm' },
+    { type='unlock-recipe', recipe=fns 'flamethrower-ammo' },
+}
+tech['flamethrower'].localised_name = {"", { fns 'technology-description', 'flamethrower' }}
+tech['flamethrower'].localised_description = {"", { fns 'technology-description', 'flamethrower' }}
+
+tech['flamethrower'].prerequisites = {
+    'flammables', 'advanced-oil-processing', 'military-science-pack'
+}
+tech['flamethrower'].unit = {
+    count = 50,
+    ingredients = {
+        {'automation-science-pack', 1},
+        {'logistic-science-pack', 1},
+        {'chemical-science-pack', 1},
+        {'military-science-pack', 1},
+    },
+    time = 30
+}
+
+tech['refined-flammables-1'].prerequisites = { 'flammables' }
+
+
+
+tech['military-2'].effects = {
+    { type='unlock-recipe', recipe='piercing-shotgun-shell' },
+    { type='unlock-recipe', recipe='piercing-rounds-magazine' },
+    { type='unlock-recipe', recipe='grenade' },
+}
+
+tech['defender'].prerequisites = {
+    'military-science-pack', 'robotics'
+}
+
+tech['military-3'].prerequisites = { 'explosives', 'plastics', 'military-science-pack' }
+
+tech['military-3'].effects = {
+    { type='unlock-recipe', recipe='cluster-grenade' },
+    { type='unlock-recipe', recipe='slowdown-capsule' },
+    { type='unlock-recipe', recipe='poison-capsule' },
+    { type='unlock-recipe', recipe=fns'submachine-gun-plastic-stock' },
+    { type='unlock-recipe', recipe=fns'combat-shotgun-plastic-stock' },
+}
+
+tech['military-4'].prerequisites = { 'utility-science-pack', 'military-3' }
+tech['military-4'].localised_description = {fns_locale_key('technology-description', 'military-4-mass-production')}
+
+tech['military-4'].effects = {
+    fns 'firearms-magazine-mass-production',
+    fns 'piercing-rounds-magazine-mass-production',
+    fns 'shotgun-shell-mass-production',
+    fns 'piercing-shotgun-shell-mass-production',
+    fns 'grenade-mass-production',
+}
+
+tech['discharge-defense-equipment'].prerequisites = {
+    'military-3', 'solar-panel-equipment', 'power-armor', 'energy-shield-equipment'
+}
+
+tech['railgun'].prerequisites = {
+    'metallurgic-science-pack', 
+    'electromagnetic-science-pack', 
+    'carbon-fiber', 
+}
+
+tech['railgun'].unit.ingredients = table.icollect(
+    { 'automation', 'logistic', 'chemical', 'production', 'utility', 'agricultural', 'metallurgic', 'electromagnetic' },
+    function(s) return { s..'-science-pack', 1 } end
+)
+
+tech['railgun-shooting-speed-1'].unit.ingredients = table.clone(tech['railgun'].unit.ingredients)
+tech['railgun-damage-1'].unit.ingredients = table.clone(tech['railgun'].unit.ingredients)
+
+fns_locale_key("modifier-description", "rocket-turret-attack-bonus")
+
+table.insert(tech['stronger-explosives-5'].effects,
+    { type='turret-attack', modifier = 0.4, turret_id = 'rocket-turret' }
+)
+
+table.insert(tech['stronger-explosives-6'].prerequisites, 'planet-discovery-gleba')
+
+table.insert(tech['stronger-explosives-6'].effects,
+    { type='turret-attack', modifier = 0.5, turret_id = 'rocket-turret' }
+)
+
+table.insert(tech['stronger-explosives-7'].effects,
+    { type='turret-attack', modifier = 0.5, turret_id = 'rocket-turret' }
+)

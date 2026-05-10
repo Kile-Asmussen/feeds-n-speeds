@@ -87,6 +87,11 @@ local function __global_index(_, name)
     error('global ' .. name .. ' not found')
 end
 
+local function __global_newindex(_, name, val)
+    log('_G.' .. name .. ' = ' .. tostring(val))
+    rawset(_G, name, val)
+end
+
 _G.assoc = table.assoc
 _G.array = table.array
 
@@ -95,5 +100,6 @@ setmetatable(_G.functions, __lock_mt('functions'))
 setmetatable(_G.string, __lock_mt('string'))
 
 setmetatable(_G, {
-    __index = __global_index
+    __index = __global_index,
+    __newindex = __global_newindex,
 })
