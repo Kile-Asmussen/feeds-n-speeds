@@ -7,6 +7,7 @@ altrecipes.enabled = true
 function altrecipes.data()
     if not altrecipes.enabled then return end
 
+    altrecipes.metallurgy()
     altrecipes.rails()
     altrecipes.stone_furnace()
     altrecipes.concrete_wall()
@@ -18,6 +19,10 @@ function altrecipes.data2()
 
     altrecipes.stone_furnace_update()
     altrecipes.rail_update()
+end
+
+function altrecipes.metallurgy()
+    data:extend(require 'extras.altrecipes.castings')
 end
 
 function altrecipes.rails()

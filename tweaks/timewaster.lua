@@ -279,23 +279,62 @@ timewaster.CRAFTING_TIMES = {
 }
 
 timewaster.ADVANCED = {
-    [press] = {
-        'engine-unit'
+    electronics = {
+        'decider-combinator',
+        'selector-combinator',
+        'arithmetic-combinator',
+        'constant-combinator',
+        'small-lamp',
+        'display-panel',
     },
     [adv] = {
+        fns 'big-steel-chest',
+        fns 'big-hopper',
+        'activeprovider-chest',
+        'requester-chest',
+        'buffer-chest',
+        'cliff-explosives',
 
+        'assembling-machine-2',
+        'steel-furnace',
+        'electric-furnace',
+        'recycler',
+
+        'electric-mining-drill',
+        'pumpjack',
+        'chemical-plant',
+        'oil-refinery',
+        'centrifuge',
+        'heating-tower',
+    },
+    [press] = {
+        'heat-pipe'
     },
     [cryo] = {
-
+        'cryogenic-plant'
     },
     [org] = {
 
     },
     [elec] = {
+        'electromagnetic-plant',
+        'assembling-machine-3',
+
         'bulk-inserter',
         'stack-inserter',
+
         'electric-engine',
         'flying-robot-frame',
+        'logistic-robot',
+        'construction-robot',
+        'power-switch',
+        fns 'electric-link',
+        'accumulator',
+        'solar-panel',
+
+        'medium-electric-pole',
+        'big-electric-pole',
+        'substation',
     }
     'pipe-to-ground',
     'fast-transport-belt',

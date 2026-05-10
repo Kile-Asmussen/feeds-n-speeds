@@ -426,6 +426,24 @@ function malltech.robotics()
         { type='item', name='radar', amount=1 },
     }
 
+    data.raw.recipe['active-provider-chest'] = {
+        { type='item', name='steel-chest', amount=1 },
+        { type='item', name='advanced-circuit', amount=3 },
+        { type='item', name='electronic-circuit', amount=10 },
+    }
+
+    data.raw.recipe['requester-chest'] = {
+        { type='item', name='steel-chest', amount=1 },
+        { type='item', name='advanced-circuit', amount=3 },
+        { type='item', name='electronic-circuit', amount=10 },
+    }
+
+    data.raw.recipe['buffere-chest'] = {
+        { type='item', name='steel-chest', amount=1 },
+        { type='item', name='advanced-circuit', amount=3 },
+        { type='item', name='electronic-circuit', amount=10 },
+    }
+
     if enabled('extras.radars') then
         data.raw.recipe['roboport'].ingredients[4] = {  type='item', name=fns 'small-radar', amount=2 }
     end
