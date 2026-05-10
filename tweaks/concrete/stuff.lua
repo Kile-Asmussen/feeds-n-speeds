@@ -13,10 +13,8 @@ return {
     {
         type = 'recipe',
         name = fns 'simple-concrete',
-        category = 'advanced-crafting',
         -- localised_description = {""},
         enabled = false,
-        hidden = enabled('extras.barreling'),
         energy_required = 10,
         allow_speed = false,
         allow_pollution = false,
@@ -43,8 +41,39 @@ return {
         },
         main_product = 'concrete',
         results = {
-            { type = 'item', name = 'concrete', amount = 1 },
+            { type = 'item', name = 'concrete', amount = 3 },
             { type = 'item', name = 'barrel', amount = 1 },
+        },
+        order = 'b[concrete]-a[simple]',
+    },
+    {
+        type = 'recipe',
+        name = fns 'mechanical-concrete',
+        category = 'crafting-with-fluid',
+        -- localised_description = {""},
+        enabled = false,
+        energy_required = 10,
+        auto_recycle = false,
+        ingredients = {
+            { type = 'item', name = 'iron-stick', amount = 2 },
+            { type = 'item', name = 'stone-brick', amount = 5 },
+            { type = 'fluid', name = 'water', amount = 100 },
+        },
+        icons = {
+            {
+                icon = data.raw.item['concrete'].icon,
+                icon_size = 64,
+            },
+            {
+                icon = data.raw.item['stone'].icon,
+                icon_size = 64,
+                scale = 0.25,
+                shift = {-8, -8},
+            },
+        },
+        main_product = 'concrete',
+        results = {
+            { type = 'item', name = 'concrete', amount = 8 },
         },
         order = 'b[concrete]-a[simple]',
     }

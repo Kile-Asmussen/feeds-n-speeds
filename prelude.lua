@@ -2,6 +2,7 @@ require 'prelude.table'
 require 'prelude.string'
 require 'prelude.fns'
 require 'prelude.namespaces'
+require 'prelude.functions'
 
 _G.TESTING = false
 

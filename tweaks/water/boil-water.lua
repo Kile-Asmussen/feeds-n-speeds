@@ -20,19 +20,19 @@ return {{
             icon = data.raw.fluid.steam.icon,
             float = true,
             scale = 0.7,
-            shift = { 2, 0 }
+            shift = { 4, 0 }
         },
         {
             icon = data.raw.fluid.water.icon,
             float = true,
             scale = 0.33,
-            shift = { 2, -6 }
+            shift = { 4, -6 }
         },
         {
             icon = data.raw['virtual-signal']['signal-thermometer-red'].icon,
             float = true,
             scale = 0.7,
-            shift = { -6, 0 }
+            shift = { -6, 4 }
         },
     },
 

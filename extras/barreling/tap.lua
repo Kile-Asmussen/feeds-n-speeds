@@ -4,7 +4,7 @@ local iron_chest =  data.raw.container['iron-chest']
 local tap = table.clone(data.raw.furnace['stone-furnace'])
 
 tap.name=fns 'barrel-tapper'
-tap.crafting_categories = { fns 'barelling' }
+tap.crafting_categories = { fns 'barreling' }
 tap.circuit_connector = nil
 tap.collision_box = {
     { -0.5, -0.5 }, 
@@ -114,7 +114,7 @@ local tap_recipe = {
 
 
 return {
-    { type='recipe-category', name=fns 'barelling' },
+    { type='recipe-category', name=fns 'barreling' },
     tap,
     tap_item,
     tap_recipe

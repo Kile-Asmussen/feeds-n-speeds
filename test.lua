@@ -87,6 +87,7 @@ local function __lock_mt(name)
     }
 end
 
-setmetatable(table, __lock_mt('table'))
+setmetatable(_G.table, __lock_mt('table'))
+setmetatable(_G.functions, __lock_mt('functions'))
 
-setmetatable(string, __lock_mt('string'))
+setmetatable(_G.string, __lock_mt('string'))

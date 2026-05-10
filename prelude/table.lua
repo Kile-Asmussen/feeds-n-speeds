@@ -31,16 +31,16 @@ table.setmetatable(table.zero, {
 --- Check if a reference table contains the same keys and elements
 --- as a candidate table. If candidate is not given, returns a predicate function instead.
 function table.matches(reference, ...)
-    local args = table.pack(...)
-    assert(args.n <= 1, "Too many arguments, expected 0 or 1")
+    local n = select('#', ...)
+    assert(n <= 1, "Too many arguments, expected 0 or 1")
 
-    if args.n == 0 then
+    if n == 0 then
         return function(candidate)
             return table.matches(reference, candidate)
         end
     end
 
-    local candidate = args[1]
+    local candidate = ...
 
     if type(reference) == 'function' then
         return reference(candidate)
@@ -49,26 +49,26 @@ function table.matches(reference, ...)
     end
 
 
-    if type(candidate) ~= "table" then return false end
+    if type(candidate) ~= "table" then return nil end
 
     for key, ref in pairs(reference) do
 
         local test = candidate[key]
 
-        if test == nil then return false end
+        if test == nil then return nil end
 
         if ref == table.null then return true end
 
         if type(ref) == 'function' and ref(test) then return true end
 
-        if type(ref) ~= type(test) then return false end
+        if type(ref) ~= type(test) then return nil end
 
         if type(test) == "table" then
             if not table.matches(ref, test) then
-                return false
+                return nil
             end
         elseif ref ~= test then
-            return false            
+            return nil            
         end
     end
 
@@ -231,12 +231,33 @@ function table.map(tbl, func)
     return tbl
 end
 
+function table.merge(tbl, ...)
+    local n = select('#', ...)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    assert(n >= 1, "too few arguments")
+
+    for i = 1, n do
+        local tbl2 = select(i, ...)
+        assert(type(tbl2) == "table", "argument #" .. (i+1) .. " must be a table")
+
+        for k, v in pairs(tbl2) do
+            tbl[k] = v
+        end
+    end
+
+    return tbl
+end
+
 function table.icollect(tbl, func)
     assert(type(tbl) == "table", "argument #1 must be a table")
+    if type(func) == 'table' then func = table.index(func) end
     assert(type(func) == "function", "argument #2 must be a function")
     local res = {}
     for i, v in ipairs(tbl) do
-        res[i] = func(v, i)
+        local v2 = func(v, i)
+        if v2 ~= nil then
+            table.insert(res, v2)
+        end
     end
     return res
 end
@@ -245,9 +266,14 @@ function table.at(ix)
     return function(tbl) return tbl[ix] end
 end
 
+function table.index(tbl)
+    return function(ix) return tbl[ix] end
+end
+
 function table.collect(tbl, func)
     assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(func) == "function", "argument #2 must be a function")
+    if type(func) == 'table' then func = table.index(func) end
+    assert(type(func) == "function", "argument #2 must be a function or table")
     local res = {}
     for k, v in pairs(tbl) do
         res[k] = func(v, k)
@@ -363,11 +389,15 @@ function table.set(tbl)
     return res
 end
 
-function table.append(tbl1, tbl2)
+function table.append(tbl1, ...)
+    local n = select('#', ...)
     assert(type(tbl1) == 'table', "argument #1 must be a table")
-    assert(type(tbl2) == 'table', "argument #2 must be a table")
-    for _, entry in ipairs(tbl2) do
-        table.insert(tbl1, entry)
+    for i = 1, n do
+        local tbl2 = select(i, ...)
+        assert(type(tbl2) == 'table', "argument #" .. (i+1) .. " must be a table")
+        for _, entry in ipairs(tbl2) do
+            table.insert(tbl1, entry)
+        end
     end
     return tbl1
 end

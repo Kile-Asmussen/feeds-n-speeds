@@ -5,6 +5,7 @@ local utilities = require 'extras.utilities'
 
 local water = namespace 'tweaks.water'
 water.enabled = true
+water.dependencies = table.set{'tweaks.sulfur-processing'}
 
 function water.data()
     data:extend(require 'tweaks.water.boil-water')
@@ -46,6 +47,19 @@ function water.data2()
         { type='unlock-recipe', recipe='chemical-plant' },
         { type='unlock-recipe', recipe=fns 'boil-water' },
     })
+
+    for _, rec in ipairs{
+        fns 'purifying-heavy-oil-cracking-processing',
+        fns 'purifying-advanced-oil-processing',
+        'heavy-oil-cracking',
+        'light-oil-cracking',
+        'advanced-oil-processing',
+    } do
+        rec = data.raw.recipe[rec]
+        if rec then
+            table.find_matching(rec.ingredients, {type='fluid',name='water'}).name='steam'
+        end
+    end
 end
 
 

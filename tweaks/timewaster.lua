@@ -4,6 +4,36 @@ local timewaster = namespace 'tweaks.timewaster'
 
 timewaster.enabled = true
 
+local cryo = fns'advanced-crafting-cryogenics'
+local org = fns'advanced-crafting-organic'
+local press = fns'advanced-pressing'
+local elec = fns'advanced-electronics'
+local adv = 'advanced-crafting'
+
+function timewaster.data()
+    
+    local cats = require'tweaks.timewaster.categories'
+    data:extend(cats)
+
+    local assmacs = data.raw['assembling-machines']
+
+    for i = 1,3 do
+        table.append(assmac['assembling-machine-' .. i].crafting_categories, {
+            cryo, org, press, elec
+        })
+    end
+    table.insert(assmac['electromagnetic-plant'].crafting_categories, elec)
+    table.insert(assmac['cryogenic-plant'].crafting_categories, cryo)
+    table.insert(assmac['foundry'].crafting_categories, press)
+    table.insert(assmac['biochamber'].crafting_categories, org)
+end
+
+local function check(on, off, ...)
+    local args = table.pack(...)
+    return function() return enabled(table.unpack(args)) and on or off end
+end
+
+
 -- Mining times scaled by approximate entity size/complexity
 -- Format: [entity_type][entity_name] = mining_time
 timewaster.mining_times = {
@@ -16,7 +46,7 @@ timewaster.mining_times = {
         ['heat-exchanger'] = 1.5,
     },
     ['reactor'] = {
-        ['nuclear-reactor'] = 5.0,   -- 5x5, very complex
+        ['nuclear-reactor'] = 8.0,   -- 5x5, very complex
         ['heating-tower'] = 2.0,
     },
     ['assembling-machine'] = {
@@ -94,79 +124,7 @@ timewaster.mining_times = {
     },
 }
 
--- Returns longer, shorter tile dimensions of an entity's selection_box, rounded up.
-local function footprint(prototype_type, entity_name)
-    local entity = data.raw[prototype_type] and data.raw[prototype_type][entity_name]
-    assert(entity, 'footprint: no such entity ' .. prototype_type .. '/' .. entity_name)
-    local box = entity.selection_box
-    assert(box, 'footprint: ' .. entity_name .. ' has no selection_box')
 
-    local w = math.ceil(box[2][1] - box[1][1])
-    local h = math.ceil(box[2][2] - box[1][2])
-
-    local long = math.max(w, h)
-    local short = math.min(w, h)
-
-    if entity.fluid_box and entity.fluid_box.pipe_connections then
-        local underground = table.find_matching(entity.fluid_box.pipe_connections,
-            table.matches{ connection_type='underground' }
-        )
-        if underground then
-            long = long + underground.max_underground_distance
-        end
-    end
-
-    if entity.type == 'underground-belt' then
-        long = long + entity.max_distance
-    end
-end
-
-local function weight(item_name)
-    local item = data.raw.item[item_name]
-    local recipe = data.raw.recipe[item_name]
-    if not recipe then return 1 end
-
-    local sum = 0
-
-    for _, ingredient in ipairs(recipe.ingredients) do
-        
-        if ingredient.type == 'item' and data.raw.item[ingredient.name].place_result then
-            sum = sum + weight(ingredient.name)
-        elseif ingredient.type == 'fluid' then
-            sum = sum + math.ceil(ingredient.amount / 10)
-        elseif ingredient.type == 'item' then
-            sum = sum + ingredient.amount
-        end
-    end
-
-    sum = sum / table.find_matching(recipe.results, table.matches{name=item_name}).amount
-end
-
-local footprint_stack_sizes = {
-    { lo=1, hi=1, stack=100 }, -- walls, power poles, chests, inserters
-    { lo=2, hi=2, stack=50 }, -- offshore pump, combinators
-    { lo=4, hi=4, stack=40 }, -- turrets, power switch, rail, big power poles
-    { lo=6, hi=10, stack=20 }, -- 
-    { lo=20, hi=49, stack=10 },
-    { lo=50, hi=99, stack=5 },
-    { lo=100, hi=1000, stack=1 },
-}
-
-local function check_footprint(prototype_type, entity_name)
-    penalty = footprint_penalties[entity_name] or 0
-    local long, short = footprint(prototype_type, entity_name)
-    local area = long * short + weight(entity_name) / 15
-    return function()
-        for _, class in ipairs(footprint_stack_sizes) do
-            if class.lo <= area and area <= class.hi then
-                return class.stack
-            end 
-        end
-    end
-end
-
--- Stack sizes for placeable buildings, tiered by footprint
--- Tiers: 1 (9x9+), 5 (5x5), 10 (3x4–4x5), 20 (2x3–3x3), 50 (1x1–2x2)
 timewaster.STACK_SIZES = {
     ['stone-wall']           = 100,
     ['gate']                 = 50,
@@ -258,13 +216,7 @@ timewaster.STACK_SIZES = {
     ['landing-pad']          = 1,
 }
 
-local function check(on, off, ...)
-    local args = table.pack(...)
-    return function() return enabled(table.unpack(args)) and on or off end
-end
 
--- Crafting times (energy_required) for recipes
--- Format: [recipe_name] = energy_required
 timewaster.CRAFTING_TIMES = {
     -- Power generation
     ['steam-engine'] = 5.0,
@@ -287,11 +239,12 @@ timewaster.CRAFTING_TIMES = {
     ['steel-furnace'] = 3.0,
     ['electric-furnace'] = 5.0,
 
-    -- Mining
-    ['electric-mining-drill'] = 3.0,
+    ['burner-mining-drill'] = 3.0,
+    [fns 'burner-mining-drill-fluid'] = 2.0,
+    ['electric-mining-drill'] = 4.0,
+    [fns 'electric-mining-drill-fluid'] = 2.0,
     ['pumpjack'] = 5.0,
 
-    -- Logistics
     ['roboport'] = 10.0,
     [fns 'sleeper-roboport'] = check(1.0, 10.0, 'tweaks.malltech'),
     [fns 'construction-roboport'] = check(1.0, 10.0, 'tweaks.malltech'),
@@ -303,30 +256,69 @@ timewaster.CRAFTING_TIMES = {
     ['substation'] = 3.0,
     ['storage-tank'] = 5.0,
 
-    -- Chests
     ['wooden-chest'] = 1,
     ['iron-chest'] = 1.5,
     ['steel-chest'] = 1.5,
     [fns 'big-steel-chest'] = 2.5,
     [fns 'big-steel-hopper'] = 2.0,
 
-    -- Science
     ['lab'] = 5.0,
 
-    -- Endgame
     ['rocket-silo'] = 60.0,
+    ['nuclear-reactor'] = 60.0,
 
-    -- Space Age (only where vanilla times are too short)
     ['recycler'] = 5.0,
 
     ['locomotive'] = 10.0,
     ['cargo-wagon'] = 8.0,
     ['fluid-wagon'] = 8.0,
     ['artillery-wagon'] = 8.0,
-    -- also set mining time
 
     ['engine-unit'] = 5.0,
     ['electric-engine-unit'] = 5.0,
+}
+
+timewaster.ADVANCED = {
+    [press] = {
+        'engine-unit'
+    },
+    [adv] = {
+
+    },
+    [cryo] = {
+
+    },
+    [org] = {
+
+    },
+    [elec] = {
+        'bulk-inserter',
+        'stack-inserter',
+        'electric-engine',
+        'flying-robot-frame',
+    }
+    'pipe-to-ground',
+    'fast-transport-belt',
+    'fast-splitter',
+    'fast-underground-belt',
+
+    ['beacon']
+
+    'solar-panel',
+    'accumulator',
+
+    'chemical-plant',
+    'oil-refinery',
+    'electric-furnace',
+    'steel-furnace',
+    'assembling-machine-2',
+    'assembling-machine-3',
+
+
+    fns'electric-mining-drill-fluid',
+    'electric-mining-drill',
+
+    'advanced-circuit',
 }
 
 function timewaster.data2()
@@ -372,6 +364,98 @@ function timewaster.data2()
             elseif type(energy_required) == 'number' then
                 recipe.energy_required = energy_required
             end
+        end
+    end
+
+    if enabled('tweaks.malltech') then
+
+        for name_or_i, category_or_name in pairs(timewaster.ADVANCED) do
+            local name = ""
+            local category = "advanced-crafting"
+            if type(name_or_i) == 'number' then
+                name = category_or_name
+            else
+                name = name_or_i
+                category = category_or_name
+            end
+
+            if data.raw.recipe[name] then
+                data.raw.recipe[name].category = category
+            end
+        end
+
+
+    end
+end
+
+
+-- Returns longer, shorter tile dimensions of an entity's selection_box, rounded up.
+function timewaster.footprint(prototype_type, entity_name)
+    local entity = data.raw[prototype_type] and data.raw[prototype_type][entity_name]
+    assert(entity, 'footprint: no such entity ' .. prototype_type .. '/' .. entity_name)
+    local box = entity.selection_box
+    assert(box, 'footprint: ' .. entity_name .. ' has no selection_box')
+
+    local w = math.ceil(box[2][1] - box[1][1])
+    local h = math.ceil(box[2][2] - box[1][2])
+
+    local long = math.max(w, h)
+    local short = math.min(w, h)
+
+    if entity.fluid_box and entity.fluid_box.pipe_connections then
+        local underground = table.find_matching(entity.fluid_box.pipe_connections,
+            table.matches{ connection_type='underground' }
+        )
+        if underground then
+            long = long + underground.max_underground_distance
+        end
+    end
+
+    if entity.type == 'underground-belt' then
+        long = long + entity.max_distance
+    end
+end
+
+function timewaster.weight(item_name)
+    local item = data.raw.item[item_name]
+    local recipe = data.raw.recipe[item_name]
+    if not recipe then return 1 end
+
+    local sum = 0
+
+    for _, ingredient in ipairs(recipe.ingredients) do
+        
+        if ingredient.type == 'item' and data.raw.item[ingredient.name].place_result then
+            sum = sum + weight(ingredient.name)
+        elseif ingredient.type == 'fluid' then
+            sum = sum + math.ceil(ingredient.amount / 10)
+        elseif ingredient.type == 'item' then
+            sum = sum + ingredient.amount
+        end
+    end
+
+    sum = sum / table.find_matching(recipe.results, table.matches{name=item_name}).amount
+end
+
+timewaster.footprint_stack_sizes = {
+    { lo=1, hi=1, stack=100 }, -- walls, power poles, chests, inserters
+    { lo=2, hi=2, stack=50 }, -- offshore pump, combinators
+    { lo=4, hi=4, stack=40 }, -- turrets, power switch, rail, big power poles
+    { lo=6, hi=10, stack=20 }, -- 
+    { lo=20, hi=49, stack=10 },
+    { lo=50, hi=99, stack=5 },
+    { lo=100, hi=1000, stack=1 },
+}
+
+function timewaster.check_footprint(prototype_type, entity_name)
+    penalty = footprint_penalties[entity_name] or 0
+    local long, short = footprint(prototype_type, entity_name)
+    local area = long * short + weight(entity_name) / 15
+    return function()
+        for _, class in ipairs(footprint_stack_sizes) do
+            if class.lo <= area and area <= class.hi then
+                return class.stack
+            end 
         end
     end
 end

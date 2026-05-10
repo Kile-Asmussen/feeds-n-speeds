@@ -12,7 +12,7 @@ boiler.minable.result = name
 -- Replace burner energy source with electric
 boiler.energy_source = {
     type = 'electric',
-    usage_priority = 'secondary-input',
+    usage_priority = 'tertiary',
     emissions_per_minute = { pollution = 0 },
     drain = '18kW'
 }

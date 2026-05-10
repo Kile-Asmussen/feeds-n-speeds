@@ -13,7 +13,15 @@ function technologies.data_updates()
 
     local tech = data.raw.technology
 
-    table.insert(tech['logistic-science-pack'].prerequisites, 'logistics')
+    table.append(tech['logistic-science-pack'].prerequisites, {'logistics', 'automation',  'lamp'})
+    table.append(tech['chemical-science-pack'].prerequisites, { 'automation-2' })
+    table.append(tech['military-science-pack'].prerequisites, { 'automation-2', 'oil-gathering' })
+    table.append(tech['utility-science-pack'].prerequisites, { 'automation-2' })
+    table.append(tech['production-science-pack'].prerequisites, { 'automation-2', 'electric-energy-distribution-2' })
+    table.remove_matching(tech['production-science-pack'].prerequisites,
+        'advanced-material-processing-2'
+    )
+
     table.insert(tech['uranium-mining'].prerequisites, 'electric-mining-drill')
 
     if enabled('tweaks.earlygame') then
@@ -65,8 +73,6 @@ function technologies.tweak_science_packs()
         { type = 'item', name = 'small-lamp', amount = 1 },
     }
 
-    table.insert(data.raw.technology['logistic-science-pack'].prerequisites, 'lamp')
-
     recipes['chemical-science-pack'].category = 'crafting-with-fluid'
     recipes['chemical-science-pack'].ingredients = {
         { type = 'item', name = 'engine-unit', amount = 2 },
@@ -83,10 +89,6 @@ function technologies.tweak_science_packs()
         { type = 'fluid', name = 'crude-oil', amount = 10 },
     }
 
-    table.append(data.raw.technology['military-science-pack'].prerequisites, 
-        { 'automation-2', 'oil-gathering' }
-    )
-
     recipes['production-science-pack'].category = 'crafting-with-fluid'
     recipes['production-science-pack'].ingredients = {
         { type = 'item', name = 'rail', amount = 40 },
@@ -95,16 +97,6 @@ function technologies.tweak_science_packs()
         { type = 'fluid', name = 'steam', amount = 200 },
     }
 
-
-    local tech = data.raw.technology
-    
-    table.insert(tech['production-science-pack'].prerequisites,
-        'electric-energy-distribution-2'
-    )
-
-    table.remove_matching(tech['production-science-pack'].prerequisites,
-        function(v) return v == 'advanced-material-processing-2' end
-    )
 
     recipes['utility-science-pack'].emissions_multiplier = 1.5
     recipes['utility-science-pack'].category = 'crafting-with-fluid'

@@ -39,7 +39,7 @@ function sulfur_processing.data2()
     sulfur.ingredients = {
         { type = 'fluid', name = 'petroleum-gas', amount = 30 },
         { type = 'item', name = 'coal', amount = 5 },
-        { type = 'fluid', name = 'steam', amount = 50 },
+        { type = 'fluid', name = 'water', amount = 50 },
     }
 
     sulfur.results = {
