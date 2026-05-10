@@ -320,11 +320,11 @@ end)
 
 -- table.iall tests
 fact('table.iall returns true when all match', function()
-    assert_eq(table.iall({2, 4, 6}, function(v) return v % 2 == 0 end), true)
+    assert_eq(table.all({2, 4, 6}, function(v) return v % 2 == 0 end), true)
 end)
 
 fact('table.iall returns false when any fails', function()
-    assert_eq(table.iall({2, 3, 6}, function(v) return v % 2 == 0 end), false)
+    assert_eq(table.all({2, 3, 6}, function(v) return v % 2 == 0 end), false)
 end)
 
 -- table.isvec tests

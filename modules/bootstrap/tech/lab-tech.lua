@@ -1,17 +1,17 @@
 require 'prelude'
 
-return {
+return assoc{
     type = 'technology',
     name = fns 'lab-tech',
     order = 'a-a-z',
-    icons = {
-        {
+    icons = array{
+        assoc{
             icon = '__base__/graphics/technology/research-speed.png',
             icon_size = 256
         },
     },
-    prerequisites = { 'steam-power' },
-    effects = {
+    prerequisites = array{ 'steam-power' },
+    effects = array{
         {
             type = 'unlock-recipe',
             recipe = 'lab',
@@ -25,7 +25,7 @@ return {
             recipe = 'inserter',
         },
     },
-    research_trigger = {
+    research_trigger = assoc{
         type = 'craft-item',
         item = 'steam-engine',
         amount = 2

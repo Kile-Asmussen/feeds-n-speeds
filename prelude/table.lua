@@ -103,7 +103,7 @@ function table.descend(tbl, ...)
             return tbl, false
         end
 
-        if tbl[key] then
+        if tbl[key] ~= nil then
             tbl = tbl[key]
         else
             return tbl, false
@@ -111,6 +111,24 @@ function table.descend(tbl, ...)
     end
     
     return tbl, true
+end
+
+function table.access(tbl, ...)
+    keys = table.pack(...)
+    
+    for _, key in ipairs(keys) do
+        if type(tbl) ~= 'table' then
+            return nil
+        end
+
+        if tbl[key] ~= nil then
+            tbl = tbl[key]
+        else
+            return nil
+        end
+    end
+    
+    return tbl
 end
 
 function table.index_of(array, thing)
@@ -233,22 +251,6 @@ function table.map(tbl, func)
     return tbl
 end
 
-function table.merge(tbl, ...)
-    local n = select('#', ...)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(n >= 1, "too few arguments")
-
-    for i = 1, n do
-        local tbl2 = select(i, ...)
-        assert(type(tbl2) == "table", "argument #" .. (i+1) .. " must be a table")
-
-        for k, v in pairs(tbl2) do
-            tbl[k] = v
-        end
-    end
-
-    return tbl
-end
 
 function table.icollect(tbl, func)
     assert(type(tbl) == "table", "argument #1 must be a table")
@@ -264,12 +266,13 @@ function table.icollect(tbl, func)
     return res
 end
 
-function table.at(ix)
-    return function(tbl) return tbl[ix] end
+function table.at(...)
+    local args = table.pack(...)
+    return function(tbl) return table.access(tbl, table.unpack(args)) end
 end
 
 function table.index(tbl)
-    return function(ix) return tbl[ix] end
+    return function(...) return table.access(tbl, ...) end
 end
 
 function table.collect(tbl, func)
@@ -303,24 +306,6 @@ function table.any(tbl, func)
     return false
 end
 
-function table.iall(tbl, func)
-    func = func or function(x) return x end
-    for i, v in ipairs(tbl) do
-        if not func(v, i) then return false end
-    end
-    return true
-end
-
-function table.all(tbl, func)
-    if type(func) ~= 'function' then
-        log(require('debuglib').pp(func))
-    end
-    func = func or function(x) return x end
-    for k, v in pairs(tbl) do
-        if not func(v, k) then return false end
-    end
-    return true
-end
 
 function table.dup(tbl)
     if type(tbl) ~= 'table' then return tbl end
@@ -424,83 +409,73 @@ function table.append(tbl1, ...)
     return tbl1
 end
 
-function table.vecsum(tbl, tbl2)
+function table.merge(tbl, ...)
+    local n = select('#', ...)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    assert(n >= 1, "too few arguments")
+
+    for i = 1, n do
+        local tbl2 = select(i, ...)
+        assert(type(tbl2) == "table", "argument #" .. (i+1) .. " must be a table")
+
+        for k, v in pairs(tbl2) do
+            tbl[k] = v
+        end
+    end
+
+    return tbl
+end
+
+-- Vector operations
+
+
+function table.vecsum(tbl, tbl2, res)
     assert(type(tbl) == 'table' and type(tbl2) == 'table', "cannot take vector sum of non-tables")
     assert(#tbl == #tbl2, "cannot take vector sum of vectors of different dimensions")
-    local res = {}
+    res = res and {} or tbl
     for i = 1,#tbl do
-        table.insert(res, tbl[i] + tbl2[i])
+        res[i] = tbl[i] * k
     end
     return res
 end
 
-function table.vecadd(tbl, tbl2)
-    assert(type(tbl) == 'table' and type(tbl2) == 'table', "cannot take vector sum of non-tables")
-    assert(#tbl == #tbl2, "cannot take vector sum of vectors of different dimensions")
-    for i = 1,#tbl do
-        tbl[i] = tbl[i] + tbl2[i]
-    end
-    return tbl
-end
-
-function table.vecscale(tbl, k)
+function table.vecmul(tbl, k, res)
     assert(type(tbl) == 'table', "cannot scale a non-vector")
     assert(type(k) == 'number', "cannot scale by a non-number scalar")
-    local res = {}
+    res = res and {} or tbl
     for i = 1,#tbl do
-        table.insert(res, k * tbl[i])
+        res[i] = tbl[i] * k
     end
     return res
 end
 
-function table.vecmul(tbl, k)
-    assert(type(tbl) == 'table', "cannot scale a non-vector")
-    assert(type(k) == 'number', "cannot scale by a non-number scalar")
-    for i = 1,#tbl do
-        tbl[i] = tbl[i] * k
-    end
-    return tbl
-end
-
-function table.sum(tbl, res, map)
+function table.sum(tbl, res)
     assert(type(tbl) == 'table', "argument #1 must be a table")
-
-    if type(res) == 'function' and map == nil then
-        map = res
-        res = nil
-    end
-
     res = res or 0
     assert(type(res) == 'number', "argument #2 must be a number")
 
-    local err =  "argument #1 must only contain numbers"
-    if map then
-        err =  "argument #1 must have all its elements map to numbers"
-    end
-    
-    map = map or function(n) return n end
-    assert(type(map) == 'function', "argument #3 must be a function")
-
     for _, n in ipairs(tbl) do
         n = map(n)
-        assert(type(n) == 'number', err)
+        assert(type(n) == 'number', "argument #1 must only contain numbers")
         res = res + n
     end
 
     return res
 end
 
-function table.iall(tbl, pred)
+function table.all(tbl, pred)
     assert(type(tbl) == 'table', "argument #1 must be a table")
     local res = true
     
     if pred == nil then
-        function pred(v) return v and true or false end
-    end
-    assert(type(pred) == 'function', "argument #2 must be a function")
-
-    for i, v in ipairs(tbl) do
-        res = res and pred(v)
+        for i, v in ipairs(tbl) do
+            res = res and v
+        end
+    else
+        assert(type(pred) == 'function', "argument #2 must be a function")
+        for i, v in ipairs(tbl) do
+            res = res and pred(v, i)
+        end
     end
 
     return res

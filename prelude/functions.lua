@@ -3,22 +3,47 @@ _G.functions = {}
 
 functions.type = type
 
-function functions.as(val, as)
-    if as == nil then
-        as = val
-        assert(type(as) == 'string', "argument #1 must be a string")
+functions.__types = {
+    string = true,
+    number = true,
+    ['function'] = true,
+    userdata = true,
+    coroutine = true,
+    table = true
+}
 
-        return function(val)
-            if functions.type(val) == as then return val else return nil end
+function functions.as(...)
+    local n = select('#', ...)
+
+    if n == 1 then
+        local as = ...
+        if type(as) == 'function' then
+            return function(val)
+                if as(val) then return val end
+            end
+        elseif functions.__types[as] then
+            return function(val)
+                if type(val) == as then return val end
+            end
+        else
+            error('argument #1 must be a predicate or a type name')
         end
+    elseif n == 2 then
+        local val, as = ...
+        if type(as) == 'function' then
+            if as(val) then return val end
+        elseif functions.__types[as] then
+            if type(val) == as then return val end
+        else
+            error('argument #2 must be a predicate or a type name')
+        end
+    else
+        error('too many arguments, expected 2')
     end
-
-    assert(type(as) == 'string', "argument #2 must be a string")
-    if functions.type(val) == as then return val else return nil end
 end
 
-function functions.id(val)
-    return val
+function functions.id(...)
+    return ...
 end
 
 function functions.curry(f, ...)

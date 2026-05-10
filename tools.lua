@@ -28,7 +28,7 @@ function tools.resource_autoplace_all_patches(tbl)
 
 end
 
-function tools.settings()
+function tools.restart_toggle()
     data:extend{{
         type = 'bool-setting',
         name = fns 'restart-toggle',
@@ -44,31 +44,61 @@ tools.icon_sizes = {
     item = 64,
 }
 
-tools.placements = {
-    upleft = { -8, 8 },
-    loleft = { -8, 8 },
-    upright = { 8, -8 },
-    loright = { 8, 8 },
+tool.icon_scales = {
+    tiny = 0.25
+    small = 0.33
+    medium = 0.5
+    big = 0.7
+    huge = 1.0
 }
 
-function tools.iconify(thing, other_icon, placement)
-    placement = placement or 'loleft'
+tools.icon_placements = {
+    upleft = { -1, 1 },
+    loleft = { -1, 1 },
+    upright = { 1, -1 },
+    loright = { 1, 1 },
+}
 
-    thing.icons = {
-        {
-            icon = thing.icon,
-            scale = 0.5,
-            icon_size = tools.icon_sizes[thing.type] or error("unrecognized icon-having thing: "..thing.type)
-        },
-        {
-            icon = other_icon,
-            icon_size = 64,
-            floating = true,
-            scale = 0.25,
-            shift = table.dup(tools.placements[placement]) or error("unknown placement " .. placement),
-        }
+function tools.color(col)
+    assert(type(col) == 'table' or type(col) == 'string', "colors must be strings or tables")
+    if type(col) == 'string' then return tools.hexcolor(col) end
+    assert(#col == 3 or #col = 4, "colors must have 3 or 4 components")
+    assert(table.all(col, functions.as('number')), "colors must have 3 or 4 components")
+end
+
+function tools.hexcolor(hex)
+    assert(type(hex) == 'string', "argument #1 must be a string")
+    local color = hex:match('#(%X%X%X%X%X%X%X%X)') or hex:match('#(%X%X%X%X%X%X)')
+    assert(color, "invalid color format, must be 6 or 8 hex digits")
+    local res = array{}
+    for i = 1,#color,2 do
+        table.insert(res, tonumber(color:sub(i, i+1), 16) / 255)
+    end
+    return res
+end
+
+function tools.icons(icon, icon2)
+    icon = assoc(icon)
+    icon2 = assoc(icon)
+
+    icon2.placement = icon2.placement or 'loleft'
+    icon2.shift = icon2.shift or tool.icon_placements[icon2.placement]
+
+    icon.type = icon.type or 'item'
+    icon2.type = icon2.type or 'item'
+
+    icon.icon_size = tools.icon_sizes[icon.type]
+    icon2.icon_size = tools.icon_sizes[icon2.type]
+
+    if 
+
+    icon.float = true
+    icon2.float = true
+
+    return array{
+        icon,
+        icon2
     }
-    thing.icon = nil
 end
 
 tools.science_pack_tier = {

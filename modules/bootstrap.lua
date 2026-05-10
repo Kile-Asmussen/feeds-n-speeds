@@ -8,9 +8,7 @@ bootstrap.prototypes = asset{
 }
 
 bootstrap.data_edits = asset{
-
+    'edit.rocks'
 }
 
-bootstrap.data_updates = array{
-
-}
+return seal_namespace(bootstrap)
