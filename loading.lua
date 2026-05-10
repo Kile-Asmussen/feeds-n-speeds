@@ -19,19 +19,12 @@ function loading.execute(superdomain, operation)
         end
     end
 
-    log(debuglib.pp(table.collect(domains, tostring)))
-
     table.simple_sort(domains,
         loading.compare_dependencies
     )
-    log(debuglib.pp(table.collect(domains, tostring)))
 
     for _, domain in ipairs(domains) do
         operation(domain)
-    end
-
-    if tostring(superdomain) == 'tweaks' then
-        error()
     end
 end
 

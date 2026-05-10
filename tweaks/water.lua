@@ -13,8 +13,6 @@ end
 
 function water.data2()
 
-    log("WATER")
-
     local fluids = data.raw.fluid
     local water = fluids.water
     local steam = fluids.steam

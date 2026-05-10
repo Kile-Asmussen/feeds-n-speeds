@@ -12,6 +12,26 @@ functions.__types = {
     table = true
 }
 
+function functions.fail(...)
+    local msg = table.pack(...)
+    return function(...)
+        for i,v in ipairs(msg) do
+            if type(v) == 'number' then
+                msg[i] = tostring(select(v, ...))
+            else
+                msg[i] = tostring(v)
+            end
+        end
+        error(table.concat(msg))
+    end
+end
+
+function functions.assertion(pred, msg)
+    return function(...)
+        assert(pred(...), msg)
+    end
+end
+
 function functions.as(...)
     local n = select('#', ...)
 
@@ -46,6 +66,12 @@ function functions.id(...)
     return ...
 end
 
+function functions.drop1st(f)
+    f = functions.as(f, "function")
+    assert(f, "argument #1 must be a function")
+    return function(_, ...) return f(...) end
+end
+
 function functions.curry(f, ...)
     f = functions.as(f, "function")
     assert(f, "argument #1 must be a function")
@@ -65,17 +91,12 @@ function functions.with(...)
     end
 end
 
-function functions.comp(f, ...)
-    if select('#', ...) == 0 then
-        return f
-    end
-    local rest = functions.pipe(...)
-    return function(...)
-        return f(rest(...))
-    end
-end
-
 function functions.pipe(f, ...)
+    if f == nil then return functions.id end
+
+    f = functions.as(f, "function")
+    assert(f, "argument #1 must be a function")
+
     if select('#', ...) == 0 then
         return f
     end

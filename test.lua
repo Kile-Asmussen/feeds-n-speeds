@@ -1,3 +1,7 @@
+_G.TESTING = true
+_G.QUIET = os.getenv("QUIET") and true or false
+_G.VERBOSE = os.getenv("VERBOSE") and true or false
+
 require 'prelude'
 
 require 'test.data'
@@ -5,10 +9,6 @@ require 'test.defines'
 require 'test.utils'
 require 'test.script'
 require 'test.localisation'
-
-_G.TESTING = true
-_G.QUIET = os.getenv("QUIET") and true or false
-_G.VERBOSE = os.getenv("VERBOSE") and true or false
 
 local debuglib = require 'debuglib'
 debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 2
@@ -48,7 +48,7 @@ function _G.log(str)
     local lineno = ''
     for l in traceback do
         l = l:gsub('^%s+', '')
-        if not table.iany(skip, l:match_function()) then
+        if not table.any(skip, l:match_function()) then
             lineno = l:match(':%d+:')
             filename = l:sub(1, (lineno and l:find(lineno) or #l + 1) - 1)
             break

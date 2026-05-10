@@ -251,6 +251,49 @@ function table.map(tbl, func)
     return tbl
 end
 
+function table.map_pairs(tbl, func)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    assert(type(func) == "function", "argument #2 must be a function")
+    for k, v in pairs(tbl) do
+        tbl[k] = func(k, v)
+    end
+    return tbl
+end
+
+function table.at(...)
+    local args = table.pack(...)
+    return function(tbl) return table.access(tbl, table.unpack(args)) end
+end
+
+function table.indexN(tbl)
+    return function(...) return table.access(tbl, ...) end
+end
+
+function table.index(tbl)
+    return function(i) return table[i] end
+end
+
+function table.collect(tbl, func)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    if type(func) == 'table' then func = table.index(func) end
+    assert(type(func) == "function", "argument #2 must be a function or table")
+    local res = {}
+    for k, v in pairs(tbl) do
+        res[k] = func(v, k)
+    end
+    return res
+end
+
+function table.collect_pairs(tbl, func)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    if type(func) == 'table' then func = table.index(func) end
+    assert(type(func) == "function", "argument #2 must be a function or table")
+    local res = {}
+    for k, v in pairs(tbl) do
+        res[k] = func(k, v)
+    end
+    return res
+end
 
 function table.icollect(tbl, func)
     assert(type(tbl) == "table", "argument #1 must be a table")
@@ -266,69 +309,48 @@ function table.icollect(tbl, func)
     return res
 end
 
-function table.at(...)
-    local args = table.pack(...)
-    return function(tbl) return table.access(tbl, table.unpack(args)) end
-end
-
-function table.index(tbl)
-    return function(...) return table.access(tbl, ...) end
-end
-
-function table.collect(tbl, func)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    if type(func) == 'table' then func = table.index(func) end
-    assert(type(func) == "function", "argument #2 must be a function or table")
-    local res = {}
-    for k, v in pairs(tbl) do
-        res[k] = func(v, k)
-    end
-    return res
-end
-
-function table.iany(tbl, func)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    func = func or function(x) return x end
-    assert(type(func) == "function", "argument #2 must be a function")
-    for i, v in ipairs(tbl) do
-        if func(v, i) then return true end
-    end
-    return false
-end
-
-function table.any(tbl, func)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    func = func or function(x) return x end
-    assert(type(func) == "function", "argument #2 must be a function")
-    for k, v in pairs(tbl) do
-        if func(v, k) then return true end
-    end
-    return false
-end
-
-
 function table.dup(tbl)
     if type(tbl) ~= 'table' then return tbl end
-    return table.collect(tbl, function(x) return x end)
+    return table.collect(tbl, functions.id)
 end
 
-local function clone_with(seen)
-    local function clone(tbl)
-        if type(tbl) == 'table' then
-            if not seen[tbl] then
-                seen[tbl] = table.collect(tbl, clone)
+local function clone_with(seen, setmeta)
+    if setmeta then
+        local function clone(tbl)
+            if type(tbl) == 'table' then
+                if not seen[tbl] then
+                    seen[tbl] = table.collect(tbl, clone)
+                    setmetatable(seen[tbl], getmetatable(tbl))
+                    return seen[tbl]
+                else
+                    return tbl
+                end
+            else
+                return tbl
             end
-            return seen[tbl]
-        else
-            return tbl
         end
+        return clone
+    else
+        local function clone(tbl)
+            if type(tbl) == 'table' then
+                if not seen[tbl] then
+                    seen[tbl] = table.collect(tbl, clone)
+                    return seen[tbl]
+                else
+                    return tbl
+                end
+            else
+                return tbl
+            end
+        end
+        return clone
     end
-    return clone
 end
 
-function table.clone(tbl)
+function table.clone(tbl, setmeta)
+    setmeta = setmeta and true or false
     if type(tbl) ~= 'table' then return tbl end
-    return clone_with({})(tbl)
+    return clone_with({}, setmeta)(tbl)
 end
 
 function table.unsorted_keys(tbl)
@@ -371,7 +393,7 @@ function table.set(tbl)
     assert(type(tbl) == 'table', 'sets can only be created from tables')
     local res = {}
     for _, entry in ipairs(tbl) do
-        res[entry] = value
+        res[entry] = true
     end
     return res
 end
@@ -426,15 +448,34 @@ function table.merge(tbl, ...)
     return tbl
 end
 
--- Vector operations
+function table.soft_merge(conflict, tbl, ...)
+    local n = select('#', ...)
+    assert(type(conflict) == "function", "argument #1 must be a function")
+    assert(type(tbl) == "table", "argument #2 must be a table")
+    assert(n >= 1, "too few arguments")
 
+    for i = 1, n do
+        local tbl2 = select(i, ...)
+        assert(type(tbl2) == "table", "argument #" .. (i+1) .. " must be a table")
+
+        for k, v in pairs(tbl2) do
+            if tbl[k] then
+                tbl[k] = conflict(tbk[k], v, k)
+            else
+                tbl[k] = v
+            end
+        end
+    end
+
+    return tbl
+end
 
 function table.vecsum(tbl, tbl2, res)
     assert(type(tbl) == 'table' and type(tbl2) == 'table', "cannot take vector sum of non-tables")
     assert(#tbl == #tbl2, "cannot take vector sum of vectors of different dimensions")
     res = res and {} or tbl
     for i = 1,#tbl do
-        res[i] = tbl[i] * k
+        res[i] = tbl[i] + tbl2[i]
     end
     return res
 end
@@ -463,23 +504,72 @@ function table.sum(tbl, res)
     return res
 end
 
-function table.all(tbl, pred)
-    assert(type(tbl) == 'table', "argument #1 must be a table")
-    local res = true
-    
-    if pred == nil then
-        for i, v in ipairs(tbl) do
-            res = res and v
+local function __all(iter, pred, kv)
+    if kv then
+        for k, v in iter do
+            if not pred(k, v) then return false end
         end
     else
-        assert(type(pred) == 'function', "argument #2 must be a function")
-        for i, v in ipairs(tbl) do
-            res = res and pred(v, i)
+        for k, v in iter do
+            if not pred(v, k) then return false end
         end
     end
-
-    return res
+    return true
 end
+
+local function __any(iter, tbl, pred, kv)
+    if kv then
+        for k, v in iter(tbl) do
+            if not pred(k, v) then return true end
+        end
+    else
+        for k, v in iter(tbl) do
+            if not pred(v, k) then return true end
+        end
+    end
+    return false
+end
+
+function table.all(tbl, pred)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+    pred = pred or functions.id
+    assert(type(pred) == 'function', "argument #2 must be a function if present")
+    return __all(ipairs, tbl, pred)
+end
+
+function table.all_values(tbl, pred)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    assert(type(pred) == "function", "argument #2 must be a function")
+    return __any(pairs, tbl, pred)
+end
+
+
+function table.all_pairs(tbl, pred)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+    swap = pred and true or false
+    pred = pred or functions.id
+    assert(type(pred) == 'function', "argument #2 must be a function if present")
+    return __all(pairs, tbl, pred, swap)
+end
+
+function table.any(tbl, pred)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    assert(type(pred) == "function", "argument #2 must be a function")
+    return __any(ipairs, tbl, pred)
+end
+
+function table.any_values(tbl, pred)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    assert(type(pred) == "function", "argument #2 must be a function")
+    return __any(pairs, tbl, pred)
+end
+
+function table.any_pairs(tbl, pred)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    assert(type(pred) == "function", "argument #2 must be a function")
+    return __any(pairs, tbl, pred, true)
+end
+
 
 function table.traverse(tbl, func)
     for k, v in pairs(tbl) do
@@ -548,25 +638,24 @@ local function __proxy_mt_index(tbl, name)
     end
 end
 
+local function __proxy_next(tbl, k)
+    local k = next(tbl.__real, k)
+    return k, tbl[k]
+end
+
 local function __proxy_mt_pairs(tbl)
-    local k = nil
-    return function()
-        k = next(tbl.__real, k)
-        if k then
-            return k, tbl[k]
-        end
+    return __proxy_next, tbl, nil
+end
+
+local function __proxy_incr(tbl, i)
+    if i <= #tbl.__real then
+        i = i + 1
+        return i, tbl[i]
     end
 end
 
 local function __proxy_mt_ipairs(tbl)
-    local i = 0
-    local n = #tbl
-    return function()
-        i = i + 1
-        if i <= n then
-            return i, tbl[i]
-        end
-    end
+    return __proxy_incr, tbl, 0
 end
 
 local function __proxy_mt_len(tbl)
@@ -647,6 +736,7 @@ local function monkeypatch()
     end
     monkeypatch = function() end
 end
+
 
 function table.proxy(args)
     assert(type(args) == "table", "table.proxy expects a table with up to six keys: tbl, [rootname, path, hook, changes, maxdepth]")
@@ -788,17 +878,44 @@ table.__assoc_mt = {
     __ipairs = __assoc_ipairs,
 }
 
-function table.array(tbl)
-    tbl = tbl or {}
-    assert(table.is_array(tbl), "non-array table passed to table.array")
-    setmetatable(tbl, table.__array_mt)
-    return tbl
+if _G.TESTING then
+
+    function table.array(tbl)
+        tbl = tbl or {}
+        assert(table.is_array(tbl), "non-array table passed to table.array")
+        assert(not getmetatable(tbl), "already has a metatable")
+        setmetatable(tbl, table.__array_mt)
+        return tbl
+    end
+
+    function table.assoc(tbl)
+        tbl = tbl or {}
+        assert(table.is_assoc(tbl), "non-associative table passed to table.assoc")
+        assert(not getmetatable(tbl), "already has a metatable")
+        setmetatable(tbl, table.__array_mt)
+        return tbl
+    end
+
+else
+
+    function table.array(tbl)
+        tbl = tbl or {}
+        assert(table.is_array(tbl), "non-array table passed to table.array")
+        return tbl
+    end
+
+    function table.assoc(tbl)
+        tbl = tbl or {}
+        assert(table.is_assoc(tbl), "non-associative table passed to table.assoc")
+        return tbl
+    end
+
 end
 
-
-function table.assoc(tbl)
-    tbl = tbl or {}
-    assert(table.is_assoc(tbl), "non-associative table passed to table.assoc")
-    setmetatable(tbl, table.__array_mt)
-    return tbl
+function table.purgemetatable(tbl)
+    table.traverse(tbl, function(t)
+        if type(t) == 'table' then
+            setmetatable(t, nil)
+        end
+    end)
 end

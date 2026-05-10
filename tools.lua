@@ -44,12 +44,20 @@ tools.icon_sizes = {
     item = 64,
 }
 
-tool.icon_scales = {
-    tiny = 0.25
-    small = 0.33
-    medium = 0.5
-    big = 0.7
-    huge = 1.0
+tools.icon_scales = {
+    tiny = 0.25,
+    small = 0.33,
+    medium = 0.5,
+    big = 0.7,
+    huge = 1.0,
+}
+
+tools.icons_shifts = {
+    tiny = 8,
+    small = 6,
+    medium = 5,
+    big = 3,
+    huge = 0,
 }
 
 tools.icon_placements = {
@@ -57,12 +65,13 @@ tools.icon_placements = {
     loleft = { -1, 1 },
     upright = { 1, -1 },
     loright = { 1, 1 },
+    center = { 0, 0 }
 }
 
 function tools.color(col)
     assert(type(col) == 'table' or type(col) == 'string', "colors must be strings or tables")
     if type(col) == 'string' then return tools.hexcolor(col) end
-    assert(#col == 3 or #col = 4, "colors must have 3 or 4 components")
+    assert(#col == 3 or #col == 4, "colors must have 3 or 4 components")
     assert(table.all(col, functions.as('number')), "colors must have 3 or 4 components")
 end
 
@@ -81,16 +90,40 @@ function tools.icons(icon, icon2)
     icon = assoc(icon)
     icon2 = assoc(icon)
 
-    icon2.placement = icon2.placement or 'loleft'
-    icon2.shift = icon2.shift or tool.icon_placements[icon2.placement]
+    if not icon.shift then
+        icon.shift = tool.icon_placements[icon.placement]
+        if icon.shift then
+            table.vecmul(icon.shift, tool.icons_shifts[icon.placement])
+        end
+    end
+
+    if not icon2.shift then
+        icon2.shift = tool.icon_placements[icon2.placement]
+        if icon2.shift then
+            table.vecmul(icon2.shift, tool.icons_shifts[icon2.placement])
+        end
+    end
+
+    icon.placement = nil
+    icon2.placement = nil
 
     icon.type = icon.type or 'item'
     icon2.type = icon2.type or 'item'
 
+    icon.icon = icon.icon or data.raw[icon.type][icon.name].icon
+    icon2.icon = icon2.icon or data.raw[icon2.type][icon2.name].icon
+
+    icon.name = nil
+    icon2.name = nil
+
     icon.icon_size = tools.icon_sizes[icon.type]
     icon2.icon_size = tools.icon_sizes[icon2.type]
 
-    if 
+    icon.tint = icon.tint and tools.color(icon.tint)
+    icon2.tint = icon2.tint and tools.color(icon2.tint)
+
+    icon.scale = tools.icon_scales[icon.scale] or icon.scale
+    icon2.scale = tools.icon_scales[icon2.scale] or icon2.scale
 
     icon.float = true
     icon2.float = true

@@ -12,15 +12,15 @@ return assoc{
     },
     prerequisites = array{ 'steam-power' },
     effects = array{
-        {
+        assoc{
             type = 'unlock-recipe',
             recipe = 'lab',
         },
-        {
+        assoc{
             type = 'unlock-recipe',
             recipe = 'transport-belt',
         },
-        {
+        assoc{
             type = 'unlock-recipe',
             recipe = 'inserter',
         },

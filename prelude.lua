@@ -1,10 +1,10 @@
+
 require 'prelude.table'
 require 'prelude.string'
 require 'prelude.fns'
 require 'prelude.namespaces'
 require 'prelude.functions'
 
-_G.TESTING = false
 
 function _G.enabled(...)
 
@@ -17,17 +17,7 @@ function _G.enabled(...)
     return res
 end
 
-function _G.array(tbl)
-    tbl = tbl or {}
-    assert(type(tbl) == 'table' and table.is_array(tbl), "non-array table passed to array")
-    return tbl
-end
-
-function _G.assoc(tbl)
-    tbl = tbl or {}
-    assert(type(tbl) == 'table' and table.is_assoc(tbl), "non-assoc table passed to array")
-    return tbl
-end
-
-_G.asset = asset
+_G.array = table.array
+_G.assoc = table.assoc
+_G.asset = table.asset
 _G.module = nil

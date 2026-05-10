@@ -10,7 +10,7 @@ return function()
     )
 
     table.insert(
-        data.raw['simple-entity']['big-sandy-rock'].minable.results,
+        data.raw['simple-entity']['big-sand-rock'].minable.results,
         {
             type = 'item', name = 'copper-ore',
             amount_min = 5, amount_max = 8,
