@@ -743,3 +743,20 @@ function table.max_by(tbl, func)
     end
     return max, argmax
 end
+
+function table.simple_sort(tbl, comp)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+    assert(type(comp) == 'function', "argument #2 must be a function")
+
+    local i = 2
+
+    while i <= #tbl do
+        if i == 2 or comp(tbl[i-1], tbl[i]) then
+            i = i + 1
+        else
+            tbl[i], tbl[i-1] = tbl[i-1], tbl[i]
+        end
+    end
+
+    return tbl
+end

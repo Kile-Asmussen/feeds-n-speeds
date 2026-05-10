@@ -156,19 +156,20 @@ utilities.si_prefixes = {
 }
 
 function utilities.to_si(energy)
-    local si = utilities.si_prefixes 
-    local i = 1
-    for i = 1, #si do
+    local si = ''
+
+    for i = 1, #utilities.si_prefixes do
 
         energy = energy / 1000
 
         if energy < 1000 then
+            si = utilities.si_prefixes[i]
             break
         end
     end
     energy = tostring(energy)
     local num = energy:match('%d+%.%d%d?%d?') or energy:match('%d+')
-    return num .. si[i]
+    return num .. si
 end
 
 function utilities.to_joules(energy)

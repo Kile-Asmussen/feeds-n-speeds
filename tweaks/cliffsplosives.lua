@@ -21,7 +21,7 @@ function cliffsplosives.data2()
 
     cliffs.prerequisites = { 'military-4' }
 
-    local splodes = data.raw.reicpe['cliff-explosives']
+    local splodes = data.raw.recipe['cliff-explosives']
 
     splodes.ingredients = {
         { type='item', name='explosives', amount=20 },
@@ -29,3 +29,5 @@ function cliffsplosives.data2()
         { type='item', name='cluster-grenade', amount=1 },
     }
 end
+
+return seal_namespace(cliffsplosives)

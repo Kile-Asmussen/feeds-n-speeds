@@ -1,5 +1,6 @@
 require 'prelude'
 
+local debuglib = require 'debuglib'
 local loading = namespace 'loading'
 
 function loading.execute(superdomain, operation)
@@ -18,14 +19,23 @@ function loading.execute(superdomain, operation)
         end
     end
 
-    table.sort(domains,
+    log(debuglib.pp(table.collect(domains, tostring)))
+
+    table.simple_sort(domains,
         function(d1, d2)
-            return (d2/'dependencies' or table.null)[tostring(d1)]
+            return ((d2/'dependencies' or table.null)[tostring(d1)]
+                and not (d1/'dependencies' or table.null)[tostring(d2)])
+                or true
         end 
     )
+    log(debuglib.pp(table.collect(domains, tostring)))
 
     for _, domain in ipairs(domains) do
         operation(domain)
+    end
+
+    if tostring(superdomain) == 'tweaks' then
+        error()
     end
 end
 

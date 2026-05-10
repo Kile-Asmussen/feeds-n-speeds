@@ -278,7 +278,7 @@ timewaster.ADVANCED = {
     ['advanced-crafting'] = {
         fns 'big-steel-chest',
         fns 'big-hopper',
-        'activeprovider-chest',
+        'active-provider-chest',
         'requester-chest',
         'buffer-chest',
         'cliff-explosives',

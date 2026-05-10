@@ -9,7 +9,10 @@ nuclear.enabled = true
 
 function nuclear.data2()
 
+    log("NUCLEAR")
+
     local steam = data.raw.fluid.steam
+    local water = data.raw.fluid.water
 
     local nuclear_reactor = data.raw.reactor['nuclear-reactor']
     local heating_tower = data.raw.reactor['heating-tower']
@@ -30,8 +33,20 @@ function nuclear.data2()
     heating_tower.consumption = utilities.to_watts(5*turbine_output)
     heat_exchanger.energy_consumption = utilities.to_watts(2*turbine_output)
 
-    nuclear_reactor.heat_buffer.max_temperature = max_temperature
-    heating_tower.heat_buffer.max_temperature = max_temperature
+    log(table.concat{'\n',
+        "steam_heat_cap = ", steam_heat_cap, '\n',
+        "ambient = ", ambient_temperature, '\n',
+        'high temp = ', high_temperature, '\n',
+        "turbine = ", utilities.to_watts(turbine_output), '\n',
+        'reactor = ', nuclear_reactor.consumption, '\n',
+        'tower = ', heating_tower.consumption, '\n',
+        'hx = ', heat_exchanger.energy_consumption, '\n',
+    })
+
+    for _, reactor in ipairs {nuclear_reactor, heating_tower} do
+        reactor.heat_buffer.min_working_temperature = water.max_temperature
+        reactor.heat_buffer.max_temperature = max_temperature
+    end
 
     heat_exchanger.energy_source.max_temperature = max_temperature
     data.raw['heat-pipe']['heat-pipe'].heat_buffer.max_temperature = max_temperature

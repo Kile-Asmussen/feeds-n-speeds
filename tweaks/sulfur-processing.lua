@@ -15,6 +15,7 @@ function sulfur_processing.data()
 end
 
 function sulfur_processing.data2()
+    log("SULFUR")
     if not sulfur_processing.enabled then return end
 
     -- Modify sulfuric acid recipe: steel plate catalyst (80% return chance)
