@@ -7,7 +7,7 @@ return {
         enabled = false,
         icons = {
             {
-                icon=data.item['engine-unit'].icon,
+                icon=data.raw.item['engine-unit'].icon,
                 scale=0.5,
                 shift={-4, 4},
                 float=true
@@ -37,7 +37,7 @@ return {
         enabled = false,
         icons = {
             {
-                icon=data.item['heat-pipe'].icon,
+                icon=data.raw.item['heat-pipe'].icon,
                 scale=0.5,
                 shift={-4, 4},
                 float=true

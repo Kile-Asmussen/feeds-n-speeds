@@ -303,7 +303,8 @@ function malltech.chemical()
     local recipe = data.raw.recipe
 
     recipe['storage-tank'].ingredients = {
-        { type='item', name='steel-plate', amount=10 }
+        { type='item', name='steel-plate', amount=10 },
+        { type='item', name='pipe', amount=4 },
     }
 
     recipe['chemical-plant'].ingredients = {
@@ -426,19 +427,19 @@ function malltech.robotics()
         { type='item', name='radar', amount=1 },
     }
 
-    data.raw.recipe['active-provider-chest'] = {
+    data.raw.recipe['active-provider-chest'].ingredients = {
         { type='item', name='steel-chest', amount=1 },
         { type='item', name='advanced-circuit', amount=3 },
         { type='item', name='electronic-circuit', amount=10 },
     }
 
-    data.raw.recipe['requester-chest'] = {
+    data.raw.recipe['requester-chest'].ingredients = {
         { type='item', name='steel-chest', amount=1 },
         { type='item', name='advanced-circuit', amount=3 },
         { type='item', name='electronic-circuit', amount=10 },
     }
 
-    data.raw.recipe['buffere-chest'] = {
+    data.raw.recipe['buffer-chest'].ingredients = {
         { type='item', name='steel-chest', amount=1 },
         { type='item', name='advanced-circuit', amount=3 },
         { type='item', name='electronic-circuit', amount=10 },

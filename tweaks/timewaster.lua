@@ -4,28 +4,24 @@ local timewaster = namespace 'tweaks.timewaster'
 
 timewaster.enabled = true
 
-local cryo = fns'advanced-crafting-cryogenics'
-local org = fns'advanced-crafting-organic'
-local press = fns'advanced-pressing'
-local elec = fns'advanced-electronics'
-local adv = 'advanced-crafting'
 
 function timewaster.data()
     
-    local cats = require'tweaks.timewaster.categories'
-    data:extend(cats)
+    data:extend(require'tweaks.timewaster.categories')
 
-    local assmacs = data.raw['assembling-machines']
+    local assmacs = data.raw['assembling-machine']
 
     for i = 1,3 do
-        table.append(assmac['assembling-machine-' .. i].crafting_categories, {
-            cryo, org, press, elec
+        table.append(assmacs['assembling-machine-' .. i].crafting_categories, {
+            fns'advanced-crafting-cryogenics', fns'advanced-crafting-organic',
+            fns'advanced-pressing', fns'advanced-electronics'
         })
     end
-    table.insert(assmac['electromagnetic-plant'].crafting_categories, elec)
-    table.insert(assmac['cryogenic-plant'].crafting_categories, cryo)
-    table.insert(assmac['foundry'].crafting_categories, press)
-    table.insert(assmac['biochamber'].crafting_categories, org)
+    table.insert(assmacs['assembling-machine-3'].crafting_categories, fns'tier-3-crafting')
+    table.insert(assmacs['electromagnetic-plant'].crafting_categories, fns'advanced-electronics')
+    table.insert(assmacs['cryogenic-plant'].crafting_categories,  fns'advanced-crafting-cryogenics')
+    table.insert(assmacs['foundry'].crafting_categories, fns'advanced-pressing')
+    table.insert(assmacs['biochamber'].crafting_categories, fns'advanced-crafting-organic')
 end
 
 local function check(on, off, ...)
@@ -279,15 +275,7 @@ timewaster.CRAFTING_TIMES = {
 }
 
 timewaster.ADVANCED = {
-    electronics = {
-        'decider-combinator',
-        'selector-combinator',
-        'arithmetic-combinator',
-        'constant-combinator',
-        'small-lamp',
-        'display-panel',
-    },
-    [adv] = {
+    ['advanced-crafting'] = {
         fns 'big-steel-chest',
         fns 'big-hopper',
         'activeprovider-chest',
@@ -301,22 +289,146 @@ timewaster.ADVANCED = {
         'recycler',
 
         'electric-mining-drill',
+        fns 'electric-mining-drill-fluid',
         'pumpjack',
+
         'chemical-plant',
         'oil-refinery',
         'centrifuge',
         'heating-tower',
-    },
-    [press] = {
-        'heat-pipe'
-    },
-    [cryo] = {
-        'cryogenic-plant'
-    },
-    [org] = {
 
+        'agricultural-tower',
+        'nuclear-reactor',
+        'steam-turbine',
+        'heat-exchanger',
+
+        'flamethrower-turret',
+
+        'pipe-to-ground',
+
+
+        'roboport',
+        fns 'construction-roboport',
+        fns 'sleeper-roboport',
+        fns 'logistics-roboport',
+
+        'low-density-structure',
+
+        'asteroid-collector',
+        'cruster',
+        'thruster',
+        'space-platform-foundation',
+
+        'locomotive',
+
+        'space-science-pack',
+
+        'nuclear-reactor',
+        'rocket-silo',
+        'cargo-landing-pad',
+        'cargo-bay',
+        'space-platform-starter-pack',
+
+        'heat-pipe',
+
+        'car',
+        'tank',
+
+        'rail',
+        fns'rail-1',
+        fns'rail-2',
+        fns'rail-3',
+
+        'rail-ramp',
+        'rail-support',
+
+        'pump',
     },
-    [elec] = {
+    [fns 'tier-3-crafting'] = {
+        'rocket-turret',
+        'artillery-turret',
+        'artillery-wagon',
+        'railgun-turret',
+        'spidertron',
+
+        'biolab',
+    },
+    electronics = {
+        'decider-combinator',
+        'selector-combinator',
+        'arithmetic-combinator',
+        'constant-combinator',
+        'small-lamp',
+        'display-panel',
+        'programmable-speaker',
+
+        'inserter',
+        'fast-inserter',
+        'long-handed-inserter',
+        fns 'small-radar',
+        'rail-signal',
+        'rail-chain-signal',
+        'rocket',
+        'explosive-rocket',
+        'defender-capsule',
+        
+        'modular-armor',
+    },
+    pressing = {
+        'iron-chest',
+        'steel-chest',
+        fns 'barrel-tapper',
+
+        'firearms-magazine',
+        'piercing-rounds-magazine',
+
+        'shotgun-shell',
+        'piercing-shotgun-shell',
+        'land-mine',
+        'heavy-armor',
+        'barrel',
+    },
+    ['organic-or-assembling'] = {
+        'slowdown-capsule',
+        'poison-capsule',
+    },
+    ['metallurgy-or-assembling'] = {
+        fns'firearms-magazine-mass-production',
+        fns'piercing-rounds-magazine-mass-production',
+        fns'shotgun-shell-mass-production',
+        fns'piercing-shotgun-shell-magazine-mass-production',
+    },
+    [fns'advanced-pressing'] = {
+        'cargo-wagon',
+        'fluid-wagon',
+        fns 'big-steel-chest',
+        fns 'big-steel-hopper',
+        'storage-tank',
+
+        'cannon-shell',
+        'explosive-cannon-shell',
+        'artillery-shell',
+        'railgun-ammo',
+
+        'gun-turret',
+        fns 'shotgun-turret',
+        fns 'cannon-turret',
+    },
+    [fns'advanced-crafting-cryogenics'] = {
+        'cryogenic-plant',
+        'atomic-bomb',
+    },
+    [fns"advanced-crafting-organic"] = {
+        'biochamber'
+    },
+    [fns'advanced-electronics'] = {
+        'advanced-circuit',
+        'processing-unit',
+
+        'laser-turret',
+        'beacon',
+
+        'radar',
         'electromagnetic-plant',
         'assembling-machine-3',
 
@@ -335,29 +447,20 @@ timewaster.ADVANCED = {
         'medium-electric-pole',
         'big-electric-pole',
         'substation',
+
+        'personal-laser-defense',
+        'energy-shield-mk2',
+        'energy-shield-mk1',
+        'exoskeleton',
+
+        'distractor-capsule',
+        'destroyer-capsule',
+
+
+        'power-armor-mk-1',
+        'power-armor-mk-2',
+        'mech-armor',
     }
-    'pipe-to-ground',
-    'fast-transport-belt',
-    'fast-splitter',
-    'fast-underground-belt',
-
-    ['beacon']
-
-    'solar-panel',
-    'accumulator',
-
-    'chemical-plant',
-    'oil-refinery',
-    'electric-furnace',
-    'steel-furnace',
-    'assembling-machine-2',
-    'assembling-machine-3',
-
-
-    fns'electric-mining-drill-fluid',
-    'electric-mining-drill',
-
-    'advanced-circuit',
 }
 
 function timewaster.data2()
@@ -408,21 +511,15 @@ function timewaster.data2()
 
     if enabled('tweaks.malltech') then
 
-        for name_or_i, category_or_name in pairs(timewaster.ADVANCED) do
-            local name = ""
-            local category = "advanced-crafting"
-            if type(name_or_i) == 'number' then
-                name = category_or_name
-            else
-                name = name_or_i
-                category = category_or_name
-            end
-
-            if data.raw.recipe[name] then
-                data.raw.recipe[name].category = category
+        for category, names in pairs(timewaster.ADVANCED) do
+            for _, name in ipairs(names) do
+                if data.raw.recipe[name] then
+                    data.raw.recipe[name].category = category
+                end
             end
         end
 
+        table.insert(data.raw.technology.biolab.prerequisites, 'automation-3')
 
     end
 end

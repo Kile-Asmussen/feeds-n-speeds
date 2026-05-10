@@ -20,6 +20,10 @@ rail1.localised_name = {"item-name.rail"}
 rail2.localised_name = {"item-name.rail"}
 rail3.localised_name = {"item-name.rail"}
 
+rail1.hidden = not enabled('tweaks.concrete')
+rail2.hidden = not enabled('tweaks.concrete')
+rail3.hidden = not enabled('tweaks.concrete')
+
 rail1.ingredients = {
     { amount = 4, name = 'stone-brick', type = 'item' },
     { amount = 2, name = 'iron-stick', type = 'item' },
@@ -69,8 +73,8 @@ local tech = {
     },
     research_trigger = {
         type = 'craft-item',
-        item = 'refined-concrete',
-        count = 100,
+        item = 'rail',
+        count = 1000,
     },
 }
 

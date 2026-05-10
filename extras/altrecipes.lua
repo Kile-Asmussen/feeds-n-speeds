@@ -19,17 +19,23 @@ function altrecipes.data2()
 
     altrecipes.stone_furnace_update()
     altrecipes.rail_update()
+    altrecipes.foundry_update()
 end
 
 function altrecipes.metallurgy()
     data:extend(require 'extras.altrecipes.castings')
 end
 
+function altrecipes.foundry_update()
+    table.append(data.raw.technology['foundry'].effects, {
+        {type='unlock-recipe', recipe=fns 'cast-engine'},
+        {type='unlock-recipe', recipe=fns 'cast-heat-pipe'},
+    })
+end
+
 function altrecipes.rails()
     -- Concrete rail recipes only with concrete tweaks
-    if enabled('tweaks.concrete') then
-        data:extend(require 'extras.altrecipes.concrete-rails')
-    end
+    data:extend(require 'extras.altrecipes.concrete-rails')
 end
 
 function altrecipes.rail_update()
@@ -40,6 +46,9 @@ function altrecipes.rail_update()
             { amount = 1, name = 'steel-plate', type = 'item' }
         }
         data.raw.recipe.rail.icons = altrecipes.rail_icons('stone')
+        table.insert(data.raw.technology['railway'].effects, {
+            type='unlock-recipe', recipe=fns 'rail-1'
+        })
     end
 end
 

@@ -18,7 +18,8 @@ function chests.data2()
     }
 
     local debuglib = import('debuglib')
-    for name, chest in pairs(data.raw['logistic-container']) do
+    for _, name in pairs(table.sorted_keys(data.raw['logistic-container'])) do
+        local chest = data.raw['logistic-container'][name]
         local recipe = data.raw.recipe[name]
 
         if recipe then

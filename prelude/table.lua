@@ -152,7 +152,7 @@ function table.find_matching(array, thing)
     if type(thing) ~= 'function' then
         thing = table.matches(thing)
     end
-    assert(type(array) == 'table', "argument #1 must be a table")
+    assert(type(array) == 'table', "argument #1 must be a table, not " .. tostring(array))
 
     local ix = table.index_of(array, thing)
     if ix then 
