@@ -142,7 +142,7 @@ function utilities.remove_unlock(name)
 
     for _, tech in pairs(data.raw.technology) do
         if tech.effects then
-            table.remove_matching(tech.effects, { type='unlock-recipe', name=name })
+            table.remove_matching(tech.effects, { type='unlock-recipe', recipe=name })
         end
     end
 end

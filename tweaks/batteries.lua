@@ -1,8 +1,9 @@
 require 'prelude'
 
-local plastics = namespace 'tweaks.batteries'
+local batteries = namespace 'tweaks.batteries'
+batteries.enabled = true 
 
-function plastics.data2()
+function batteries.data2()
 
     data.raw.recipe['battery'].ingredients = {
         { type='item', name='iron-plate', amount=1 },
@@ -32,4 +33,4 @@ function plastics.data2()
 
 end
 
-return seal_namespace(plastics)
+return seal_namespace(batteries)

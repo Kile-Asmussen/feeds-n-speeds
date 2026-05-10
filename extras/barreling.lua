@@ -1,31 +1,31 @@
 require 'prelude'
 
-local barelling = namespace 'extras.barelling'
-barelling.enabled = true
+local barreling = namespace 'extras.barreling'
+barreling.enabled = true
 
-function barelling.data()
+function barreling.data()
     data:extend(
-        require 'extras.barelling.tap'
+        require 'extras.barreling.tap'
     )
 end
 
-function barelling.data2()
+function barreling.data2()
     table.insert(data.raw.technology['fluid-handling'].effects, {
         type='unlock-recipe', recipe=fns 'barrel-tapper'
     })
 end
 
-function barelling.data_updates()
+function barreling.data_updates()
     for _, fl in pairs(data.raw.fluid) do
         local barrel = fl.name .. '-barrel'
         local empty = 'empty-' .. fl.name .. '-barrel'
         barrel = data.raw.recipe[barrel]
         empty = data.raw.recipe[empty]
         if barrel and empty then
-            barrel.category = fns'barelling'
-            empty.category = fns'barelling'
+            barrel.category = fns'barreling'
+            empty.category = fns'barreling'
         end
     end
 end
 
-return seal_namespace(barelling)
+return seal_namespace(barreling)

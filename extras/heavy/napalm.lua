@@ -104,3 +104,5 @@ local res = {
 }
 
 for _, x in ipairs(res) do x.hidden = hidden end
+
+return res

@@ -16,6 +16,7 @@ return {
         category = 'advanced-crafting',
         -- localised_description = {""},
         enabled = false,
+        hidden = enabled('extras.barreling'),
         energy_required = 10,
         allow_speed = false,
         allow_pollution = false,

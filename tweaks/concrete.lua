@@ -17,7 +17,10 @@ function concrete.data2()
     local recipes = data.raw.recipe
     local tech = data.raw.technology
 
-    table.insert(tech.concrete.effects, { type = 'unlock-recipe', recipe = fns 'simple-concrete' })
+    tech['concrete'].unit.count = 40
+    tech['automation-2'].unit.count = 75
+    tech['fluid-handling'].prerequisites = { 'enginess', }
+    tech['automation-2'].prerequisites = { 'concrete', 'fast-inserter' }
 
     recipes['hazard-concrete'].category = 'advanced-crafting'
     recipes.concrete.ingredients = {
@@ -25,6 +28,7 @@ function concrete.data2()
         { type = 'item', name = 'iron-stick', amount = 2 },
         { type = 'fluid', name = 'water', amount = 100 },
     }
+    recipes.concrete.category = 'chemistry'
     
     recipes['refined-hazard-concrete'].category = 'advanced-crafting'
     recipes['refined-concrete'].ingredients = {
@@ -32,11 +36,9 @@ function concrete.data2()
         { type = 'item', name = 'steel-plate', amount = 1 },
         { type = 'fluid', name = 'water', amount = 100 },
     }
-    
-    if not enabled('tweaks.water') then
+    recipes['refined-concrete'].category = 'chemistry'
 
-        recipes.concrete.category = 'chemistry'
-        recipes['refined-concrete'].category = 'chemistry'
+    if not enabled('tweaks.water') then
 
         utilities.remove_unlock 'chemical-plant'
 
@@ -44,18 +46,36 @@ function concrete.data2()
         
     end
 
+    if enabled('extras.barreling') then
+        table.append(tech['automation-2'].effects, {
+            { type='unlock-recipe', recipe='barrel' },
+            { type='unlock-recipe', recipe=fns 'barrel-tap' },
+            { type='unlock-recipe', recipe=fns 'simple-concrete' },
+        })
+    else
+
+        table.insert(tech.concrete.effects, { type = 'unlock-recipe', recipe = fns 'simple-concrete' })
+    end
+
     table.insert(tech['oil-processing'].prerequisites, 'concrete')
     table.insert(tech['advanced-material-processing-2'].prerequisites, 'concrete')
 
     tech.concrete.prerequisites = { 'fluid-handling', 'advanced-material-processing' }
-
-    
-
 end
 
 function concrete.data_updates()
     concrete.adjust_tiles()
     concrete.flooring()
+
+    if enabled('extras.barreling') then
+        utilities.remove_unlock('water-barrel')
+        utilities.remove_unlock('empty-water-barrel')
+
+        table.append(data.raw.technology['automation-2'].effects, {
+            { type='unlock-recipe', recipe='water-barrel' },
+            { type='unlock-recipe', recipe='empty-water-barrel' },
+        })
+    end
 end
 
 local tier1 = fns('basic_pavement', '_')
@@ -151,7 +171,7 @@ concrete.needs_paving = {
         ['assembling-machine-1'] = { tier1 },
         ['assembling-machine-2'] = { tier2 },
         ['assembling-machine-3'] = { tier2h, r=plus(1) },
-        ['chemical-plant'] = { choose(tier2, tier1, 'extras.barelling') },
+        ['chemical-plant'] = { choose(tier2, tier1, 'extras.barreling') },
         ['oil-refinery'] = { tier2, r=plus(1) },
         ['biochamber'] = { tier1 },
         ['centrifuge'] = { tier2h, r=plus(1) },
