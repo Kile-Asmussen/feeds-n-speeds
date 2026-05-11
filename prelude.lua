@@ -5,7 +5,6 @@ require 'prelude.fns'
 require 'prelude.namespaces'
 require 'prelude.functions'
 
-
 function _G.enabled(...)
 
     local res = true
@@ -21,3 +20,4 @@ _G.array = table.array
 _G.assoc = table.assoc
 _G.asset = table.asset
 _G.module = nil
+_G.TESTING = false

@@ -149,7 +149,7 @@ end
 local function plus(n)
     return function(ent)
         local aabb = ent.collision_box
-        return { table.vecsum(aabb[1], { -n, -n }), table.vecsum(aabb[2], { n, n }) }
+        return { table.vecsum(aabb[1], { -n, -n }, {}), table.vecsum(aabb[2], { n, n }, {}) }
     end
 end
 

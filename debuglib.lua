@@ -1,10 +1,6 @@
 require 'prelude'
 
-local setmetatable = _G.setmetatable
-local getmetatable = _G.getmetatable
-
 local debuglib = namespace 'debuglib'
-assert(isnamespace(debuglib), "what the fuck")
 
 debuglib.io = _G.io and { open = _G.io.open } or {}
 
@@ -37,7 +33,7 @@ function debuglib.new_buffer(root, rec_limit)
         seen_tables = { [_G] = '_G', [table.null] = 'table.null' },
         path = {},
     }
-    setmetatable(res, debuglib.__buffer_mt)
+    table.setmetatable(res, debuglib.__buffer_mt)
     return res
 end
 

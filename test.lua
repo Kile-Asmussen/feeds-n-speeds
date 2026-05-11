@@ -4,6 +4,8 @@ _G.VERBOSE = os.getenv("VERBOSE") and true or false
 
 require 'prelude'
 
+_G.TESTING = true
+
 require 'test.data'
 require 'test.defines'
 require 'test.utils'
@@ -83,21 +85,18 @@ local function __lock_mt(name)
     }
 end
 
+setmetatable(_G.table, __lock_mt('table'))
+setmetatable(_G.functions, __lock_mt('functions'))
+setmetatable(_G.string, __lock_mt('string'))
+
 local function __global_index(_, name)
     error('global ' .. name .. ' not found')
 end
 
 local function __global_newindex(_, name, val)
-    log('_G.' .. name .. ' = ' .. tostring(val))
+    __log('_G.' .. name .. ' defined')
     rawset(_G, name, val)
 end
-
-_G.assoc = table.assoc
-_G.array = table.array
-
-setmetatable(_G.table, __lock_mt('table'))
-setmetatable(_G.functions, __lock_mt('functions'))
-setmetatable(_G.string, __lock_mt('string'))
 
 setmetatable(_G, {
     __index = __global_index,

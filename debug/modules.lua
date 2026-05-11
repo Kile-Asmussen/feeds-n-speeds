@@ -29,7 +29,6 @@ modules.load_stage 'data-updates'
 table.recursion_check(data.raw)
 
 log("\nCONTROL")
-_G.storage = {}
 modules.load_stage 'control'
 
 localisation.finalize()

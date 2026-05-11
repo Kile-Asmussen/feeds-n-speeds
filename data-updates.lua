@@ -1,9 +1,12 @@
 require 'prelude'
-local tweaks =  require 'tweaks'
-local extras =  require 'extras'
+-- local tweaks =  require 'tweaks'
+-- local extras =  require 'extras'
 
-extras.read_toggles()
-tweaks.read_toggles()
+-- extras.read_toggles()
+-- tweaks.read_toggles()
 
-extras.data_updates()
-tweaks.data_updates()
+-- extras.data_updates()
+-- tweaks.data_updates()
+
+require('modules')
+    .load_stage 'data-updates'

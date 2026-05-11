@@ -473,7 +473,8 @@ end
 function table.vecsum(tbl, tbl2, res)
     assert(type(tbl) == 'table' and type(tbl2) == 'table', "cannot take vector sum of non-tables")
     assert(#tbl == #tbl2, "cannot take vector sum of vectors of different dimensions")
-    res = res and {} or tbl
+    res = res or tbl
+    assert(type(res) == 'table', "cannot store a vector sum into a non-table")
     for i = 1,#tbl do
         res[i] = tbl[i] + tbl2[i]
     end
@@ -484,6 +485,7 @@ function table.vecmul(tbl, k, res)
     assert(type(tbl) == 'table', "cannot scale a non-vector")
     assert(type(k) == 'number', "cannot scale by a non-number scalar")
     res = res and {} or tbl
+    assert(type(res) == 'table', "cannot store a scaled vector into a non-table")
     for i = 1,#tbl do
         res[i] = tbl[i] * k
     end
@@ -496,7 +498,6 @@ function table.sum(tbl, res)
     assert(type(res) == 'number', "argument #2 must be a number")
 
     for _, n in ipairs(tbl) do
-        n = map(n)
         assert(type(n) == 'number', "argument #1 must only contain numbers")
         res = res + n
     end
@@ -504,72 +505,80 @@ function table.sum(tbl, res)
     return res
 end
 
-local function __all(iter, tbl, pred, kv)
-    if kv then
-        for k, v in iter(tbl) do
-            if not pred(k, v) then return false end
-        end
-    else
-        for k, v in iter(tbl) do
-            if not pred(v, k) then return false end
-        end
-    end
-    return true
-end
+function table.check(op, iter, tbl, kv, pred)
 
-local function __any(iter, tbl, pred, kv)
-    if kv then
-        for k, v in iter(tbl) do
-            if not pred(k, v) then return true end
+    assert(type(iter) == 'function', "argument #2 must be a function")
+    assert(type(tbl) == 'table', "argument #3 must be a table")
+
+    local it = table.pack(iter(tbl))
+
+    assert(type(it[1]) == 'function', "argument #2 must be an iterator")
+
+    if op == 'any' then
+
+        if kv == 'kv' then
+            for k, v in table.unpack(it) do
+                if pred(k, v) then return true end
+            end
+        elseif kv == 'vk' then
+            for k, v in table.unpack(it) do
+                if pred(v, k) then return true end
+            end
+        elseif kv == 'v' then
+            for _, v in table.unpack(it) do
+                if pred(v) then return true end
+            end
+        elseif kv == 'k' then
+            for k, _ in table.unpack(it) do
+                if pred(k) then return true end
+            end
+        else
+            error('argument #4 must be one of "kv", "vk", "v", "k"')
         end
+
+        return false
+    
+    elseif op == 'all' then
+
+        if kv == 'kv' then
+            for k, v in table.unpack(it) do
+                if not pred(k, v) then return false end
+            end
+        elseif kv == 'vk' then
+            for k, v in table.unpack(it) do
+                if not pred(v, k) then return false end
+            end
+        elseif kv == 'v' then
+            for _, v in table.unpack(it) do
+                if not pred(v) then return false end
+            end
+        elseif kv == 'k' then
+            for k, _ in table.unpack(it) do
+                if not pred(k) then return false end
+            end
+        else
+            error('argument #4 must be one of "kv", "vk", "v", "k"')
+        end
+
+        return true
+
     else
-        for k, v in iter(tbl) do
-            if not pred(v, k) then return true end
-        end
+        error('argument #1 must be either "any" or "all"')
     end
-    return false
 end
 
 function table.all(tbl, pred)
     assert(type(tbl) == 'table', "argument #1 must be a table")
     pred = pred or functions.id
     assert(type(pred) == 'function', "argument #2 must be a function if present")
-    return __all(ipairs, tbl, pred)
-end
-
-function table.all_values(tbl, pred)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(pred) == "function", "argument #2 must be a function")
-    return __any(pairs, tbl, pred)
-end
-
-
-function table.all_pairs(tbl, pred)
-    assert(type(tbl) == 'table', "argument #1 must be a table")
-    swap = pred and true or false
-    pred = pred or functions.id
-    assert(type(pred) == 'function', "argument #2 must be a function if present")
-    return __all(pairs, tbl, pred, swap)
+    return table.check('all', ipairs, tbl, 'v', pred)
 end
 
 function table.any(tbl, pred)
     assert(type(tbl) == "table", "argument #1 must be a table")
     assert(type(pred) == "function", "argument #2 must be a function")
-    return __any(ipairs, tbl, pred)
+    return table.check('any', ipairs, tbl, 'v', pred)
 end
-
-function table.any_values(tbl, pred)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(pred) == "function", "argument #2 must be a function")
-    return __any(pairs, tbl, pred)
-end
-
-function table.any_pairs(tbl, pred)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(pred) == "function", "argument #2 must be a function")
-    return __any(pairs, tbl, pred, true)
-end
-
 
 function table.traverse(tbl, func)
     for k, v in pairs(tbl) do
@@ -911,6 +920,9 @@ else
     end
 
 end
+
+_G.assoc = table.assoc
+_G.array = table.array
 
 function table.purgemetatable(tbl)
     table.traverse(tbl, function(t)

@@ -1,11 +1,14 @@
 require 'prelude'
 fns_control_stage()
 
-local tweaks = require 'tweaks'
-local extras = require 'extras'
+-- local tweaks = require 'tweaks'
+-- local extras = require 'extras'
 
-tweaks.read_toggles()
-extras.read_toggles()
+-- tweaks.read_toggles()
+-- extras.read_toggles()
 
-extras.control()
-tweaks.control()
+-- extras.control()
+-- tweaks.control()
+
+require('modules')
+    .load_stage 'control'
