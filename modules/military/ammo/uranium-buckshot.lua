@@ -29,14 +29,11 @@ else
     ushell.ammo_type.action[2].action_delivery.projectile = ushell_proj.name
 end
 
-local hidden = not enabled('tweaks.military')
+table.insert(data.raw.technology['uranium-ammo'].effects,
+    {type='unlock-recipe', recipe=fns 'uranium-shotgun-shell'})
 
-local res = {
+prototype(
     ushell,
     ushell_proj,
     ushell_recipe,
-}
-
-for _, x in ipairs(res) do x.hidden = hidden end
-
-return res
+)

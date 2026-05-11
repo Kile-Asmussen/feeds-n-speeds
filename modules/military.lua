@@ -3,7 +3,7 @@ require 'prelude'
 local military = namespace 'military'
 
 military.data = asset{
-    '.ammo.misc-tweaks',
+    '.ammo.tweak-recipes',
     '.ammo.mass-production',
 
     '.projectiles.rockets',
@@ -13,7 +13,8 @@ military.data = asset{
     '.turrets.shotgun',
     '.turrets.misc-tweaks',
 
-    '.guns.misc-tweaks',
+    '.guns.tweak-attacks',
+    '.guns.tweak-recipes',
 
     ['.guns.plastics'] = asset{ '.guns.misc-tweaks' },
 }

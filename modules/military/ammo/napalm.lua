@@ -1,6 +1,5 @@
 require 'prelude'
 
-
 local napalm = table.clone(data.raw.fluid['light-oil'])
 napalm.name = fns 'napalm'
 napalm.base_color = { 0.77, 0.33, 0 }
@@ -22,6 +21,7 @@ napalm.icons = {
     },
 }
 napalm.icon = nil
+
 
 local napalm_recipe = {
     type = 'recipe',
@@ -50,9 +50,9 @@ napalm_ammo.icons = {
     }
 }
 
+data.raw.recipe['flamethrower-ammo'].category = 'crafting-with-fluid'
 local napalm_ammo_recipe = table.clone(data.raw.recipe['flamethrower-ammo'])
 napalm_ammo_recipe.name = fns 'flamethrower-ammo'
-napalm_ammo_recipe.category = 'crafting-with-fluid'
 napalm_ammo_recipe.results = {
     { type='item', name= fns 'flamethrower-ammo', amount=1}
 }
@@ -92,17 +92,12 @@ else
     napalm_ammo.ammo_type[2].action.action_delivery.stream = napalm_steam.name
 end
 
-local hidden = not enabled('tweaks.military')
 
-local res = {
+prototype(
     napalm,
     napalm_recipe,
     napalm_ammo,
     napalm_steam,
     napalm_ammo_recipe,
     tank_napalm_steam
-}
-
-for _, x in ipairs(res) do x.hidden = hidden end
-
-return res
+)

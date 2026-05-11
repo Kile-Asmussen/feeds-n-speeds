@@ -132,6 +132,12 @@ turret_tech.icons = {
     },
 }
 
+data.raw.technology.tank.effects = {
+    { type='unlock-recipe', recipe='tank' },
+    { type='unlock-recipe', recipe='explosive-cannon-shell' },
+}
+data.raw.technology.tank.prerequisites = { fns 'cannon-turret-tech', 'automobilism', 'flammables' }
+
 prototype(
     turret,
     turret_remnants,

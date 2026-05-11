@@ -4,7 +4,6 @@ local tech = data.raw.technology
 
 table.insert(tech['gun-turret'].prerequisites, 'military')
 
--- Other turrets depend on gun turret
 table.insert(tech['laser-turret'].prerequisites, 'gun-turret')
 table.insert(tech['flamethrower'].prerequisites, 'gun-turret')
 table.insert(tech['artillery'].prerequisites, 'gun-turret')
@@ -13,6 +12,8 @@ table.insert(tech['railgun'].prerequisites, 'gun-turret')
 table.insert(tech['tesla-weapons'].prerequisites, 'gun-turret')
 
 table.insert(tech['laser-turret'].prerequisites, 'electric-engine')
+
+table.insert(data.raw.technology.automobilism.prerequisites, 'gun-turret')
 
 tech['military'].effects = {
     { type='unlock-recipe', recipe='submachine-gun' },
@@ -32,9 +33,6 @@ tech['rocketry'].unit.ingredients = {
 }
 
 table.insert(tech['rocket-silo'].prerequisites, 'rocketry')
-
-
-
 
 tech['flammables'].effects = {
     { type='unlock-recipe', recipe='flamethrower' },
