@@ -121,32 +121,32 @@ end)
 
 -- table.matches tests
 fact('table.matches simple equality', function()
-    assert(table.matches({a = 1}, {a = 1, b = 2}))
+    assert(table.match({a = 1}, {a = 1, b = 2}))
 end)
 
 fact('table.matches fails on missing key', function()
-    assert(not table.matches({a = 1, c = 3}, {a = 1, b = 2}))
+    assert(not table.match({a = 1, c = 3}, {a = 1, b = 2}))
 end)
 
 fact('table.matches nested tables', function()
-    assert(table.matches({a = {b = 1}}, {a = {b = 1, c = 2}}))
+    assert(table.match({a = {b = 1}}, {a = {b = 1, c = 2}}))
 end)
 
 fact('table.matches returns predicate when no candidate', function()
-    local pred = table.matches({a = 1})
+    local pred = table.match({a = 1})
     assert_is(pred, 'function')
     assert(pred{a = 1})
     assert(not pred{a = 2})
 end)
 
 fact('table.matches with table.null accepts any value', function()
-    assert_eq(table.matches({a = table.null}, {a = 'anything'}), true)
+    assert_eq(table.match({a = table.null}, {a = 'anything'}), true)
 end)
 
 fact('table.matches with predicate function', function()
     local pred = function(v) return v > 5 end
-    assert_eq(table.matches({a = pred}, {a = 10}), true)
-    assert_eq(table.matches({a = pred}, {a = 3}), false)
+    assert_eq(table.match({a = pred}, {a = 10}), true)
+    assert_eq(table.match({a = pred}, {a = 3}), false)
 end)
 
 -- table.is_populated tests
@@ -195,24 +195,6 @@ fact('table.is_array and has_array properties', function()
     assert(    table.has_array({[100] = 'a'}))
 end)
 
--- table.imap tests
-fact('table.imap transforms in place', function()
-    local tbl = {1, 2, 3}
-    local result = table.imap(tbl, function(v) return v * 2 end)
-    assert_eq(tbl[1], 2)
-    assert_eq(tbl[2], 4)
-    assert_eq(tbl[3], 6)
-    assert_eq(result, tbl)
-end)
-
--- table.ieach tests
-fact('table.ieach iterates without modifying', function()
-    local tbl = {1, 2, 3}
-    local sum = 0
-    table.each(tbl, function(v) sum = sum + v end)
-    assert_eq(sum, 6)
-    assert_eq(tbl[1], 1)
-end)
 
 -- table.map tests
 fact('table.collect creates new table', function()

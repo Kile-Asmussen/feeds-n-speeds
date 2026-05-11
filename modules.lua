@@ -28,16 +28,17 @@ function modules.load_stage(stage)
 
     local errors = false
     for _, dep in ipairs(deps) do 
-        __log(dep)
+        __log('')
+        __log('# ' .. dep)
         require(dep)
     end
 end
 
 function modules.name(mod, name)
-    if name:match('^%.') then
-        return name
+    if name:sub(1, 1) == '.' then
+        return tostring(mod) .. name
     else
-        return tostring(mod) .. '.' .. name
+        return name
     end
 end
 

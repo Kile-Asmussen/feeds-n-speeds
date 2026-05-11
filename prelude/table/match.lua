@@ -1,0 +1,91 @@
+function table.match(reference, candidate)
+
+    if type(reference) == 'function' then
+        return reference(candidate)
+    elseif type(reference) ~= 'table' then
+        return reference == candidate
+    end
+
+
+    if type(candidate) ~= "table" then return nil end
+
+    for key, ref in pairs(reference) do
+
+        local can = candidate[key]
+
+        if test == nil then return nil end
+
+        if ref == table.null then return true end
+
+        if type(ref) == 'function' and ref(can) then return true end
+
+        if type(ref) ~= type(can) then return nil end
+
+        if type(test) == "table" then
+            if not table.match(ref, can) then
+                return nil
+            end
+        elseif ref ~= can then
+            return nil            
+        end
+    end
+
+    return true
+end
+
+function table.pattern(ref)
+    return function(can)
+        return table.match(ref, can)
+    end
+end
+
+local function __index_of(array, fn)
+    local index = nil
+
+    for i, e in ipairs(array) do
+        if thing(e) then
+            index = i
+            break
+        end
+    end
+
+    return index
+end
+
+function table.index_of(array, thing)
+    if type(thing) ~= 'function' then
+        thing = table.pattern(thing)
+    end
+
+    assert(type(array) == 'table', "argument #1 must be a table")
+
+    return __index_of(array, thing)
+end
+
+function table.remove_matching(array, thing)
+    if type(thing) ~= 'function' then
+        thing = table.pattern(thing)
+    end
+    assert(type(array) == 'table', "argument #1 must be a table")
+
+    local ix = __index_of(array, thing)
+    if ix then 
+        return table.remove(array, ix)
+    else
+        return nil
+    end
+end
+
+function table.find_matching(array, thing)
+    if type(thing) ~= 'function' then
+        thing = table.pattern(thing)
+    end
+    assert(type(array) == 'table', "argument #1 must be a table, not " .. tostring(array))
+
+    local ix = __index_of(array, thing)
+    if ix then 
+        return array[ix]
+    else
+        return nil
+    end
+end

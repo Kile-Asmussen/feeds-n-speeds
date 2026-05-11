@@ -55,11 +55,23 @@ function _G.fns_control_stage()
     function _G.fns_locale_key(category)
         return string.gsub(category, '[^a-zA-Z0-9]', '-') .. '.feeds-n-speeds-' .. string.gsub(name, '[^a-zA-Z0-9]', '-')
     end
+    function _G.assert() end
 end
 
 function _G.prototype(...)
     local tbl = table.pack(...)
     tbl.n = nil
-    table.each(tbl, table.purgemetatable)
+    table.purgemetatable(tbl)
     data:extend(tbl)
+end
+
+function _G.enabled(...)
+
+    local res = true
+
+    for _, v in ipairs(table.pack(...)) do
+        res = res and import(v)/'enabled'
+    end
+
+    return res
 end

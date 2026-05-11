@@ -7,7 +7,7 @@ _G.modlist = {"textplates", "even-more-text-plates"}
 begin_data_stage()
 
 local args = table.pack( ... )
-table.imap(args, function(s) return tonumber(s) or s end)
+args = table.icollect(args, function(s) return tonumber(s) or s end)
 
 local ix = string.tablepath('data.raw', args)
 local result, found = table.descend(data.raw, table.unpack(args))

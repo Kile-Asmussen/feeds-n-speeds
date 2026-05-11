@@ -31,7 +31,8 @@ local function worker_robots_battery_tech(level, modifier, count, formula, time,
         unit = {
             count = count,
             count_formula = formula,
-            ingredients = table.imap(cost, function(s) return { s .. '-science-pack', 1 } end),
+            ingredients = table.collect(cost,
+                function(s) return { s .. '-science-pack', 1 } end),
             time = time
         },
         max_level = level == 7 and 'infinite' or nil

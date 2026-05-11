@@ -19,7 +19,9 @@ function script.__reset()
 end
 
 script.__reset() 
-local function func(f) return debuglib.function_signature(f, 'short') end
+local function func(f)
+    return debuglib.function_signature(f)
+end
 
 function script.on_init(handler)
     assert(type(handler) == 'function', "argument #1 must be a function")

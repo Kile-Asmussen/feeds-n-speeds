@@ -18,20 +18,18 @@ setmetatable(_G.settings, {
 
 local proxied = false
 local function log_change(new, cutpath, fullpath, value)
-    if new then
-        __log('changed ' .. cutpath:sub(#'data.raw.'+1))
-    end
+    __log('changed ' .. cutpath:sub(#'data.raw.'+1))
 end
 
 function begin_data_stage(proxy)
     if proxy then
         proxied = true
-        data.raw = table.proxy({
+        data.raw = table.proxy{
             tbl=rawdata.load(_G.modlist),
             rootname='data.raw',
             hook=log_change,
             maxdepth=2,
-        })
+        }
     else
         data.raw = rawdata.load(_G.modlist)
     end
