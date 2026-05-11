@@ -39,7 +39,7 @@ end
 
 function table.traverse(tbl, func)
     assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(pred) == "function", "argument #2 must be a function")
+    assert(type(func) == "function", "argument #2 must be a function")
     __traverse(tbl, func)
 end
 

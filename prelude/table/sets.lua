@@ -93,7 +93,7 @@ function table.asset(tbl)
     assert(type(tbl) == 'table', "argument #1 must be a table")
     while #tbl > 0 do
         local key = table.remove(tbl)
-        tbl[key] = value
+        tbl[key] = true
     end
     return table.assoc(tbl)
 end
@@ -112,4 +112,4 @@ function table.opairs(tbl)
     return __opairs_iter, { i=0, keys=table.sorted_keys(tbl), tbl=tbl }, nil
 end
 
-_G.opairs = table.ordered_pairs
+_G.opairs = table.opairs

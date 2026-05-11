@@ -42,8 +42,16 @@ require('control')
 
 localisation.finalize()
 
+local keys
+
 log('\nNEEDED LOCALISATION')
-log(localisation.list_missing_locale_keys())
+keys = localisation.list_missing_locale_keys()
+if #keys > 0 then
+    log(keys)
+end
 
 log('\nSUPERFLUOUS LOCALISATION')
-log(localisation.list_superfluous_locale_keys())
+keys = localisation.list_superfluous_locale_keys()
+if #keys > 0 then
+    log(keys)
+end

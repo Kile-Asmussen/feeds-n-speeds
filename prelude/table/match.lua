@@ -13,15 +13,13 @@ function table.match(reference, candidate)
 
         local can = candidate[key]
 
-        if test == nil then return nil end
-
-        if ref == table.null then return true end
+        if can == nil then return nil end
 
         if type(ref) == 'function' and ref(can) then return true end
 
         if type(ref) ~= type(can) then return nil end
 
-        if type(test) == "table" then
+        if type(can) == "table" then
             if not table.match(ref, can) then
                 return nil
             end
@@ -43,7 +41,7 @@ local function __index_of(array, fn)
     local index = nil
 
     for i, e in ipairs(array) do
-        if thing(e) then
+        if fn(e) then
             index = i
             break
         end
