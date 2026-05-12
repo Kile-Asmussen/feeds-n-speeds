@@ -13,7 +13,7 @@ end
 local function __proxy_mt_index(tbl, name)
     local val = tbl.__real[name]
     if type(val) == 'table' then
-        newpath = {}
+        local newpath = {}
         table.append(newpath, tbl.__path)
         table.insert(newpath, name)
         return table.proxy{
@@ -102,9 +102,9 @@ local function monkeypatch()
     local maxn = table.maxn
     function table.maxn(tbl, ...)
         if getmetatable(tbl) == __proxy_mt then
-            maxn(tbl.__real, ...)
+            return maxn(tbl.__real, ...)
         else
-            maxn(tbl, ...) 
+            return maxn(tbl, ...) 
         end
     end
 

@@ -27,7 +27,7 @@ require('settings-updates')
 print("\nSETTINGS-FINAL-FIXES")
 require('settings-final-fixes')
 
-begin_data_stage()
+begin_data_stage(_G.VERBOSE)
 
 print("\nDATA")
 require('data')

@@ -12,13 +12,13 @@ _G.mods = table.null
 data.raw = table.null
 _G.settings = {}
 setmetatable(_G.settings, {
-    __index = function() error("_G.settings is not available at this time") end,
-    __newindex = function() error("_G.settings is not available at this time") end,
+    __index = function() die("_G.settings is not available at this time") end,
+    __newindex = function() die("_G.settings is not available at this time") end,
 })
 
 local proxied = false
 local function log_change(new, cutpath, fullpath, value)
-    __log('changed ' .. cutpath:sub(#'data.raw.'+1))
+    if new then __log('changed ' .. cutpath) end
 end
 
 function begin_data_stage(proxy)
@@ -44,18 +44,17 @@ end
 local settings = namespace 'test.settings'
 
 function data.extend(self, protos)
-    local simple = {}
-    local bad = false
     assert(table.is_array(protos), "data:extend called with non-array")
+
     for i, proto in ipairs(protos) do
 
         assert(table.is_assoc(proto), "data:extend argument entry #" .. i .. " is not an associative array")
 
         assert(is_fns_name(proto.name), "not an fns-based name: " .. proto.name)
 
-        __log(proto.type .. ' ' .. proto.name:gsub('feeds%-n%-speeds%-', "fns-"))
+        __log(proto.type .. ' ' .. proto.name:replace_prefix('feeds-n-speeds-', "fns-"))
 
-        if proto.type:match('%-setting$') then
+        if proto.type:endswith('-setting') then
             settings[proto.setting_type] = settings/proto.setting_type or {}
 
             assert(not settings[proto.setting_type][proto.name], proto.name .. " already declared!")
@@ -78,7 +77,6 @@ function data.extend(self, protos)
         end
 
         localisation.register(proto)
-
     end
 end
 

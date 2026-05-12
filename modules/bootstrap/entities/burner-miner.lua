@@ -3,6 +3,8 @@ require 'prelude'
 -- Copy burner mining drill and add fluid input on south side (opposite output)
 local base = data.raw['mining-drill']['burner-mining-drill']
 
+base.minable.mining_time = 1.0
+
 local drill = table.clone(base)
 
 drill.name = fns 'burner-mining-drill-fluid'
@@ -57,8 +59,8 @@ local drill_recipe = assoc{
     },
 }
 
-return array{
+prototype(
     drill,
     drill_item,
     drill_recipe
-}
+)

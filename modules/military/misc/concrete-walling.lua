@@ -1,6 +1,6 @@
 require 'prelude'
 
-return {
+prototype(
     {
         type = 'recipe',
         name = fns 'concrete-wall',
@@ -53,4 +53,4 @@ return {
             count = 100,
         },
     }
-}
+)

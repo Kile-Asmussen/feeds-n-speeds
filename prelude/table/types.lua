@@ -16,7 +16,8 @@ end
 
 function table.has_array(tbl)
     assert(type(tbl) == "table", "argument #1 must be a table")
-    return table.maxn(tbl) ~= 0
+    local n = table.maxn(tbl)
+    return type(n) == 'number' and n ~= 0 
 end
 
 function table.is_assoc(tbl)

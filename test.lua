@@ -80,6 +80,7 @@ _G.debug = {
     getinfo = debug.getinfo,
     traceback = debug.traceback,
     getline = debug.getline,
+    debug = debug.debug,
 }
 
 local function __lock_mt(name)

@@ -31,6 +31,8 @@ function modules.load_stage(stage)
         local ok, val = pcall(require, dep)
         if not ok then
             die(val)
+        elseif type(val) == 'table' or type(val) == 'function' then
+            die('loading module ' .. dep .. ' returned a value of type ' .. type(val) .. ' which is probably unintentional')
         end
     end
 end
