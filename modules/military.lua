@@ -17,7 +17,8 @@ military.data = asset{
     '.guns.tweak-attacks',
     '.guns.tweak-recipes',
 
-    '.entities.small-radar',
+    '.misc.small-radar',
+    '.misc.concrete-walling',
 
     ['.guns.plastics'] = asset{ '.guns.misc-tweaks' },
 }

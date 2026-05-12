@@ -17,6 +17,11 @@ old_recipe.icons = array{
 }
 
 
+old_recipe.ingredients = {
+    { amount = 20, name = 'stone', type = 'item' }
+}
+
+
 local new_recipe = assoc{
     type = 'recipe',
     name = fns 'stone-furnace',

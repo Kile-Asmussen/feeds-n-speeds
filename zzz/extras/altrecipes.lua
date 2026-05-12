@@ -71,23 +71,6 @@ function altrecipes.stone_furnace()
     end
 end
 
-function altrecipes.stone_furnace_update()
-
-    if enabled('tweaks.earlygame') then
-
-        data.raw.recipe['stone-furnace'].ingredients = {
-            { amount = 20, name = 'stone', type = 'item' }
-        }
-
-    else
-
-        data.raw.recipe['stone-furnace'].ingredients = {
-            { amount = 10, name = 'stone', type = 'item' }
-        }
-
-    end
-
-end
 
 function altrecipes.concrete_wall()
 
