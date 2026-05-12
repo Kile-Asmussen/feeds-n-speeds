@@ -1,12 +1,12 @@
 require 'prelude'
 
-local print = _G.print
+local print = _ENV.print
 
 require 'test'
 
 local debuglib = require 'debuglib'
 
-_G.modlist = {"textplates", "even-more-text-plates"}
+_ENV.modlist = {"textplates", "even-more-text-plates"}
 begin_data_stage()
 
 local args = table.pack( ... )

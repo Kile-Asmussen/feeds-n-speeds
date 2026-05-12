@@ -60,34 +60,34 @@ end
 local __print = print
 local __exit = os.exit
 local __require = require
-local __getinfo = debug.getinfo
+local __ENVetinfo = debug.getinfo
 
 -- sandboxing
 -- Critical: filesystem, OS, module loading, sandbox escape                               
-_G.require = nil
-_G.io = nil
-_G.os = nil
-_G.package = nil
-_G.debug = nil
-_G.loadfile = nil
-_G.dofile = nil
-_G.load = nil
-_G.loadstring = nil
-_G.getfenv = nil
-_G.setfenv = nil
-_G.newproxy = nil
-_G.print = nil
-_G.rawget = nil
-_G.table.rawget = nil
-_G.rawset = nil
-_G.table.rawset = nil
-_G.getmetatable = nil
-_G.table.getmetatable = nil
-_G.setmetatable = nil
-_G.table.setmetatable = nil
-_G.coroutine = nil
-_G.string.dump = nil
-_G.collectgarbage = nil
+_ENV.require = nil
+_ENV.io = nil
+_ENV.os = nil
+_ENV.package = nil
+_ENV.debug = nil
+_ENV.loadfile = nil
+_ENV.dofile = nil
+_ENV.load = nil
+_ENV.loadstring = nil
+_ENV.getfenv = nil
+_ENV.setfenv = nil
+_ENV.newproxy = nil
+_ENV.print = nil
+_ENV.rawget = nil
+_ENV.table.rawget = nil
+_ENV.rawset = nil
+_ENV.table.rawset = nil
+_ENV.getmetatable = nil
+_ENV.table.getmetatable = nil
+_ENV.setmetatable = nil
+_ENV.table.setmetatable = nil
+_ENV.coroutine = nil
+_ENV.string.dump = nil
+_ENV.collectgarbage = nil
 
 --- Load test modules
 
@@ -103,7 +103,7 @@ for _, test in ipairs(__tests) do
 
     local success, err = pcall(test.test_func)
     
-    local info = __getinfo(test.test_func)
+    local info = __ENVetinfo(test.test_func)
     local loc = info and tostring(info.short_src) .. ':' .. tostring(info.linedefined)
     loc = loc and ' (' .. loc .. ')' or ''
 

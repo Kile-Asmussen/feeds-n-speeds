@@ -75,7 +75,7 @@ table.__assoc_mt = {
     __ipairs = __assoc_ipairs,
 }
 
-if _G.TESTING then
+if _ENV.TESTING then
 
     function table.array(tbl)
         tbl = tbl or {}
@@ -109,5 +109,5 @@ else
 
 end
 
-_G.assoc = table.assoc
-_G.array = table.array
+_ENV.assoc = table.assoc
+_ENV.array = table.array

@@ -59,7 +59,7 @@ return {
         y = 138
       },
       led_blue = {
-        draw_as_glow = true,
+        draw_as_ENVlow = true,
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04e-blue-LED-on-sequence.png',
         height = 60,
         priority = 'low',
@@ -85,8 +85,8 @@ return {
         x = 92,
         y = 132
       },
-      led_green = {
-        draw_as_glow = true,
+      led_ENVreen = {
+        draw_as_ENVlow = true,
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04h-green-LED-sequence.png',
         height = 46,
         priority = 'low',
@@ -104,7 +104,7 @@ return {
         size = 0.9
       },
       led_red = {
-        draw_as_glow = true,
+        draw_as_ENVlow = true,
         filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04i-red-LED-sequence.png',
         height = 46,
         priority = 'low',
@@ -117,7 +117,7 @@ return {
         x = 96,
         y = 138
       },
-      red_green_led_light_offset = {
+      red_ENVreen_led_light_offset = {
         0.09375,
         0.359375
       },
@@ -189,7 +189,7 @@ return {
     type = 'create-entity'
   },
   dying_explosion = fns 'big-steel-chest-explosion',
-  fast_replaceable_group = 'container',
+  fast_replaceable_ENVroup = 'container',
   flags = {
     'placeable-neutral',
     'player-creation',

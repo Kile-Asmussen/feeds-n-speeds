@@ -98,7 +98,7 @@ function table.asset(tbl)
     return table.assoc(tbl)
 end
 
-_G.asset = table.asset
+_ENV.asset = table.asset
 
 local function __opairs_iter(state, x)
     state.i = state.i + 1
@@ -112,4 +112,4 @@ function table.opairs(tbl)
     return __opairs_iter, { i=0, keys=table.sorted_keys(tbl), tbl=tbl }, nil
 end
 
-_G.opairs = table.opairs
+_ENV.opairs = table.opairs

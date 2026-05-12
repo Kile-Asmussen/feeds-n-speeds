@@ -2,15 +2,15 @@ require 'prelude'
 
 local times = {
     ['generator'] = {
-        ['steam-engine'] = 1.5,      -- 3x5 entity
-        ['steam-turbine'] = 2.0,     -- larger, more complex
+        ['steam-engine'] = 1.5,
+        ['steam-turbine'] = 2.0,
     },
     ['boiler'] = {
-        ['boiler'] = 1.0,            -- 2x3 entity
+        ['boiler'] = 1.0,
         ['heat-exchanger'] = 1.5,
     },
     ['reactor'] = {
-        ['nuclear-reactor'] = 8.0,   -- 5x5, very complex
+        ['nuclear-reactor'] = 8.0,
         ['heating-tower'] = 2.0,
     },
     ['assembling-machine'] = {
@@ -18,61 +18,56 @@ local times = {
         ['assembling-machine-2'] = 0.8,
         ['assembling-machine-3'] = 1.0,
         ['chemical-plant'] = 1.2,
-        ['oil-refinery'] = 2.0,      -- 5x5 entity
+        ['oil-refinery'] = 2.0,
         ['centrifuge'] = 1.5,
-        -- Space Age
-        ['electromagnetic-plant'] = 2.0,  -- 5x5, Fulgora
-        ['cryogenic-plant'] = 2.0,        -- 5x5, Aquilo
-        ['biochamber'] = 1.5,             -- 4x4, Gleba
-        ['foundry'] = 2.5,                -- 4x5, Vulcanus
-        ['crusher'] = 1.0,                -- 3x3, Vulcanus
+
+        ['electromagnetic-plant'] = 2.0,
+        ['cryogenic-plant'] = 2.0,
+        ['biochamber'] = 1.5,
+        ['foundry'] = 2.5,
+        ['crusher'] = 1.0,
     },
     ['furnace'] = {
-        ['stone-furnace'] = 0.5,
-        ['steel-furnace'] = 0.8,
-        ['electric-furnace'] = 1.0,  -- 3x3 entity
-        -- Space Age
-        ['recycler'] = 1.0,               -- 3x3, Fulgora
+        ['stone-furnace'] = 0.8,
+        ['steel-furnace'] = 1.0,
+        ['electric-furnace'] = 1.2, 
+        ['recycler'] = 1.5,
     },
     ['mining-drill'] = {
         ['burner-mining-drill'] = 1,
-        -- [fns 'burner-mining-drill-fluid'] = 1,
         ['electric-mining-drill'] = 1.5,
-        -- [fns 'electric-mining-drill-fluid'] = 1.5,
-        ['pumpjack'] = 1.0,
-        -- Space Age
-        ['big-mining-drill'] = 3.0,       -- 5x5, Vulcanus
+        ['pumpjack'] = 1.5,
+        ['big-mining-drill'] = 3.0,
     },
     ['lab'] = {
-        ['lab'] = 1.0,               -- 3x3 entity
+        ['lab'] = 1.0,
     },
     ['roboport'] = {
-        ['roboport'] = 2.0,          -- 4x4 entity
+        ['roboport'] = 2.0,
     },
     ['radar'] = {
-        ['radar'] = 1.0,             -- 3x3 entity
+        ['radar'] = 1.0,
     },
     ['electric-pole'] = {
         ['small-electric-pole'] = 0.2,
         ['medium-electric-pole'] = 0.3,
-        ['big-electric-pole'] = 0.5,      -- 2x2
-        ['substation'] = 0.8,             -- 2x2, complex
+        ['big-electric-pole'] = 0.5,
+        ['substation'] = 0.8,
     },
     ['rocket-silo'] = {
-        ['rocket-silo'] = 10.0,      -- 9x9 entity, most complex
+        ['rocket-silo'] = 10.0,
     },
-    -- Space Age entity types
     ['agricultural-tower'] = {
-        ['agricultural-tower'] = 1.0,     -- 3x3, Gleba
+        ['agricultural-tower'] = 1.0,
     },
     ['asteroid-collector'] = {
-        ['asteroid-collector'] = 1.5,     -- Space platform
+        ['asteroid-collector'] = 1.5,
     },
     ['lightning-attractor'] = {
-        ['lightning-collector'] = 1.0,    -- 2x2, Fulgora
+        ['lightning-collector'] = 1.0,
     },
     ['thruster'] = {
-        ['thruster'] = 1.0,               -- Space platform
+        ['thruster'] = 1.0,
     },
     ['locomotive'] = {
         ['locomotive'] = 5.0,

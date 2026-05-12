@@ -1,10 +1,10 @@
-_G.TESTING = true
-_G.QUIET = os.getenv("QUIET") and true or false
-_G.VERBOSE = os.getenv("VERBOSE") and true or false
+_ENV.TESTING = true
+_ENV.QUIET = os.getenv("QUIET") and true or false
+_ENV.VERBOSE = os.getenv("VERBOSE") and true or false
 
 require 'prelude'
 
-_G.TESTING = true
+_ENV.TESTING = true
 
 require 'test.data'
 require 'test.defines'
@@ -19,7 +19,7 @@ local stub_libs = {
     ['resource-autoplace'] = 'test.resource-autoplace'
 }
 local __require = require
-function _G.require(name)
+function _ENV.require(name)
     name = stub_libs[name] or name
     local ok, val = pcall(__require, name)
     if not ok then
@@ -33,15 +33,15 @@ function _G.require(name)
     end
 end
 
-local __print = _G.print
-local __exit = _G.os.exit
+local __print = _ENV.print
+local __exit = _ENV.os.exit
 
-function _G.__log(str)
+function _ENV.__log(str)
     assert(type(str) == 'string', "argument #1 must be a string not " .. type(str))
     __print(str)
 end
 
-function _G.die(message, n)
+function _ENV.die(message, n)
     n = n or 2
     __print(message)
     __print(debug.traceback(nil, n))
@@ -52,31 +52,31 @@ function debug.getline(n, msg)
     return debug.traceback(nil, n + 1):replace_prefix("stack traceback:\n\t"):before(': ', msg and true) .. (msg or '')
 end
 
-function _G.log(str)
+function _ENV.log(str)
     assert(type(str) == 'string', "argument #1 must be a string not " .. type(str))
 
     __print(debug.getline(2, str))
 end
 
-local function __global_index(_, name)
-    die('_G.' .. name .. ' undefined', 3)
+local function __ENVlobal_index(_, name)
+    die('_ENV.' .. name .. ' undefined', 3)
 end
 
-local function __global_newindex(_, name, val)
-    die('_G.' .. name .. ' = ' .. tostring(val), 3)
+local function __ENVlobal_newindex(_, name, val)
+    die('_ENV.' .. name .. ' = ' .. tostring(val), 3)
 end
 
 
-_G.io = nil
-_G.os = nil
-_G.coroutine = nil
-_G.loadfile = nil
-_G.dofile = nil
-_G.package = nil
-_G.math.randomseed = nil
-_G.print = nil
+_ENV.io = nil
+_ENV.os = nil
+_ENV.coroutine = nil
+_ENV.loadfile = nil
+_ENV.dofile = nil
+_ENV.package = nil
+_ENV.math.randomseed = nil
+_ENV.print = nil
 
-_G.debug = {
+_ENV.debug = {
     getinfo = debug.getinfo,
     traceback = debug.traceback,
     getline = debug.getline,
@@ -94,12 +94,12 @@ local function __lock_mt(name)
     }
 end
 
-setmetatable(_G.table, __lock_mt('table'))
-setmetatable(_G.functions, __lock_mt('functions'))
-setmetatable(_G.string, __lock_mt('string'))
-setmetatable(_G.debug, __lock_mt('debug'))
+setmetatable(_ENV.table, __lock_mt('table'))
+setmetatable(_ENV.functions, __lock_mt('functions'))
+setmetatable(_ENV.string, __lock_mt('string'))
+setmetatable(_ENV.debug, __lock_mt('debug'))
 
-setmetatable(_G, {
-    __index = __global_index,
-    __newindex = __global_newindex,
+setmetatable(_ENV, {
+    __index = __ENVlobal_index,
+    __newindex = __ENVlobal_newindex,
 })

@@ -23,11 +23,11 @@ end
 -- Wire connection IDs
 defines.wire_connector_id = {
     circuit_red = 0,
-    circuit_green = 1,
+    circuit_ENVreen = 1,
     combinator_input_red = 2,
-    combinator_input_green = 3,
+    combinator_input_ENVreen = 3,
     combinator_output_red = 4,
-    combinator_output_green = 5,
+    combinator_output_ENVreen = 5,
 }
 
 -- Inventory types
@@ -39,7 +39,7 @@ defines.inventory = {
     furnace_result = 5,
     furnace_modules = 6,
     character_main = 7,
-    character_guns = 8,
+    character_ENVuns = 8,
     character_ammo = 9,
     character_armor = 10,
     character_vehicle = 11,
@@ -64,21 +64,21 @@ defines.events = {
 
     -- Player actions
     on_player_created = 10,
-    on_player_joined_game = 11,
-    on_player_left_game = 12,
+    on_player_joined_ENVame = 11,
+    on_player_left_ENVame = 12,
     on_player_changed_position = 13,
     on_player_rotated_entity = 14,
     on_player_selected_area = 15,
     on_player_alt_selected_area = 16,
 
     -- GUI
-    on_gui_click = 20,
-    on_gui_opened = 21,
-    on_gui_closed = 22,
-    on_gui_text_changed = 23,
-    on_gui_checked_state_changed = 24,
-    on_gui_selection_state_changed = 25,
-    on_gui_elem_changed = 26,
+    on_ENVui_click = 20,
+    on_ENVui_opened = 21,
+    on_ENVui_closed = 22,
+    on_ENVui_text_changed = 23,
+    on_ENVui_checked_state_changed = 24,
+    on_ENVui_selection_state_changed = 25,
+    on_ENVui_elem_changed = 26,
 
     -- Research
     on_research_started = 30,
@@ -98,7 +98,7 @@ defines.events = {
     -- Surface
     on_surface_created = 60,
     on_surface_deleted = 61,
-    on_chunk_generated = 62,
+    on_chunk_ENVenerated = 62,
     
     -- Misc
     on_tick = 100,
@@ -116,4 +116,4 @@ for k, v in pairs(defines.events) do
     defines.event_names[v] = k
 end
 
-_G.defines = seal_namespace(defines)
+_ENV.defines = seal_namespace(defines)

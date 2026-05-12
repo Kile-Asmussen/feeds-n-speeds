@@ -4,8 +4,8 @@ local paths = {}
 local sealed = {}
 local parents = {}
 
-local getmetatable = _G.getmetatable
-local setmetatable = _G.setmetatable
+local getmetatable = _ENV.getmetatable
+local setmetatable = _ENV.setmetatable
 
 local rawset = rawset
 local rawget = rawget
@@ -57,8 +57,8 @@ local function namespace(path)
     assert(not namespaces[path], 'namespace collision: '.. path)
 
     local res = {
-        require = _G.require_namespace,
-        seal = _G.seal_namespace,
+        require = _ENV.require_namespace,
+        seal = _ENV.seal_namespace,
     }
     
     paths[res] = path
@@ -119,9 +119,9 @@ local function list_namespaces()
     return table.sorted_keys(namespaces)
 end
 
-_G.namespace = namespace
-_G.isnamespace = isnamespace
-_G.seal_namespace = seal_namespace
-_G.import = import
-_G.require_namespace = require_namespace
-_G.containing_namespace = containing_namespace
+_ENV.namespace = namespace
+_ENV.isnamespace = isnamespace
+_ENV.seal_namespace = seal_namespace
+_ENV.import = import
+_ENV.require_namespace = require_namespace
+_ENV.containing_namespace = containing_namespace

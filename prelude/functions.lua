@@ -1,5 +1,5 @@
 
-_G.functions = {}
+_ENV.functions = {}
 
 functions.type = type
 

@@ -2,7 +2,7 @@ require 'prelude'
 
 local debuglib = namespace 'debuglib'
 
-debuglib.io = _G.io and { open = _G.io.open } or {}
+debuglib.io = _ENV.io and { open = _ENV.io.open } or {}
 
 function debuglib.pp(data, root, rec)
     if not rec and type(root) == 'number' then
@@ -10,9 +10,9 @@ function debuglib.pp(data, root, rec)
         root = nil
     end
 
-    if data == _G then
-        data = table.dup(_G)
-        root = root or '_G'
+    if data == _ENV then
+        data = table.dup(_ENV)
+        root = root or '_ENV'
     else
         root = root or '_'
     end
@@ -30,7 +30,7 @@ function debuglib.new_buffer(root, rec_limit)
         indent = 0,
         root = root,
         max_indent = rec_limit,
-        seen_tables = { [_G] = '_G', [table.null] = 'table.null' },
+        seen_tables = { [_ENV] = '_ENV', [table.null] = 'table.null' },
         path = {},
     }
     table.setmetatable(res, debuglib.__buffer_mt)
@@ -116,8 +116,8 @@ function debuglib.function_signature(func, short)
             scope = 'local function '
         elseif not name:find('%.') then
             scope = 'global function '
-        elseif name:match('_G%.') then
-            name = name:gsub('_G%.', '')
+        elseif name:match('_ENV%.') then
+            name = name:gsub('_ENV%.', '')
             scope = 'global function '
         else
             scope = 'function '

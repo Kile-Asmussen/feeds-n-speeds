@@ -73,4 +73,4 @@ function script.on_nth_tick(tick, handler)
     table.insert(script.__handlers.ticks[tick], handler)
 end
 
-_G.script = seal_namespace(script)
+_ENV.script = seal_namespace(script)

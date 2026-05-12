@@ -1,11 +1,11 @@
 require 'prelude'
 require 'test'
 
-local __log = _G.__log
-function _G.log() end
-function _G.__log() end
+local __log = _ENV.__log
+function _ENV.log() end
+function _ENV.__log() end
 
-_G.modlist = {"textplates", "even-more-text-plates"}
+_ENV.modlist = {"textplates", "even-more-text-plates"}
 
 require('settings')
 require('settings-updates')

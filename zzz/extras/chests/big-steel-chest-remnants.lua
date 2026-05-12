@@ -25,7 +25,7 @@ return {
   name = fns 'big-steel-chest-remnants',
   order = 'a-c-a',
   remove_on_tile_placement = false,
-  selectable_in_game = false,
+  selectable_in_ENVame = false,
   selection_box = {
     { -1, -1 },
     { 1, 1 }

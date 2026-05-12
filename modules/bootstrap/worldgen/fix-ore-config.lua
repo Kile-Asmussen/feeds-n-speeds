@@ -15,5 +15,5 @@ local starting_counts = noise_expressions.default_starting_resource_patch_set_co
 noise_expressions[fns 'sulfur-ore-starting-index'].expression = starting_counts.expression
 starting_counts.expression = starting_counts.expression + 1
 
-data.raw.planet.nauvis.map_gen_settings.autoplace_controls[fns 'sulfur-ore'] = {}
-data.raw.planet.nauvis.map_gen_settings.autoplace_settings.entity.settings[fns 'sulfur-ore'] = {}
+data.raw.planet.nauvis.map_ENVen_settings.autoplace_controls[fns 'sulfur-ore'] = {}
+data.raw.planet.nauvis.map_ENVen_settings.autoplace_settings.entity.settings[fns 'sulfur-ore'] = {}

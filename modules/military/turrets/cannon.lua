@@ -9,7 +9,7 @@ turret.name = name
 turret.icon = '__base__/graphics/icons/gun-turret.png'
 turret.minable = { mining_time = 0.5, result = name }
 turret.attack_parameters = table.clone(data.raw.gun['tank-cannon'].attack_parameters)
-turret.fast_replaceable_group = 'ammo-turret'
+turret.fast_replaceable_ENVroup = 'ammo-turret'
 turret.max_health = 1000
 
 turret.automated_ammo_count = 30

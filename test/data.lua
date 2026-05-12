@@ -6,14 +6,14 @@ local rawdata = require 'test.rawdata'
 
 local data = namespace 'test.data'
 
-_G.modlist = table.null
-_G.mods = table.null
+_ENV.modlist = table.null
+_ENV.mods = table.null
 
 data.raw = table.null
-_G.settings = {}
-setmetatable(_G.settings, {
-    __index = function() die("_G.settings is not available at this time") end,
-    __newindex = function() die("_G.settings is not available at this time") end,
+_ENV.settings = {}
+setmetatable(_ENV.settings, {
+    __index = function() die("_ENV.settings is not available at this time") end,
+    __newindex = function() die("_ENV.settings is not available at this time") end,
 })
 
 local proxied = false
@@ -25,20 +25,20 @@ function begin_data_stage(proxy)
     if proxy then
         proxied = true
         data.raw = table.proxy{
-            tbl=rawdata.load(_G.modlist),
+            tbl=rawdata.load(_ENV.modlist),
             rootname='data.raw',
             hook=log_change,
             maxdepth=2,
         }
     else
-        data.raw = rawdata.load(_G.modlist)
+        data.raw = rawdata.load(_ENV.modlist)
     end
-    rawset(_G, 'settings', import('test.settings'):seal())
-    rawset(_G, 'mods', table.collect(table.set(_G.modlist), function() return 'X.X.X' end))
+    rawset(_ENV, 'settings', import('test.settings'):seal())
+    rawset(_ENV, 'mods', table.collect(table.set(_ENV.modlist), function() return 'X.X.X' end))
 end
 
 function begin_control_stage()
-    rawset(_G, 'storage', {})
+    rawset(_ENV, 'storage', {})
 end
 
 local settings = namespace 'test.settings'
@@ -81,4 +81,4 @@ function data.extend(self, protos)
 end
 
 
-_G.data = seal_namespace(data)  
+_ENV.data = seal_namespace(data)  

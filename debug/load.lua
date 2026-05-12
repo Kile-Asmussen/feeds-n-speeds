@@ -1,6 +1,6 @@
 require 'prelude'
 
-local print = _G.print
+local print = _ENV.print
 
 require 'test'
 
@@ -8,15 +8,15 @@ local localisation = require 'test.localisation'
 local debuglib = require 'debuglib'
 local tools = require 'tools'
 
-local log = _G.__log
-if not _G.VERBOSE then
-    _G.__log = function() end
+local log = _ENV.__log
+if not _ENV.VERBOSE then
+    _ENV.__log = function() end
 end
-if _G.QUIET then
-    _G.log = function() end
+if _ENV.QUIET then
+    _ENV.log = function() end
 end
 
-_G.modlist = {"textplates", "even-more-text-plates"}
+_ENV.modlist = {"textplates", "even-more-text-plates"}
 
 print("\nSETTINGS")
 require('settings')
@@ -27,7 +27,7 @@ require('settings-updates')
 print("\nSETTINGS-FINAL-FIXES")
 require('settings-final-fixes')
 
-begin_data_stage(_G.VERBOSE)
+begin_data_stage(_ENV.VERBOSE)
 
 print("\nDATA")
 require('data')

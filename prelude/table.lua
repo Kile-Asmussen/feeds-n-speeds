@@ -1,7 +1,7 @@
 --! Utility functions for tables
 
-local setmetatable = _G.setmetatable
-local getmetatable = _G.getmetatable
+local setmetatable = _ENV.setmetatable
+local getmetatable = _ENV.getmetatable
 
 -- Extra methods for the metatable
 table.rawget = rawget
