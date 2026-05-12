@@ -4,7 +4,6 @@ require 'prelude'
 
 local recipes = data.raw.recipe
 
-
 turrets['gun-turret'].max_health = 800
 
 turrets['rocket-turret'].max_health = 1000

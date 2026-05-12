@@ -1,6 +1,6 @@
 require 'prelude'
 
-return {
+prototype({
     type = 'resource',
     name = fns 'sulfur-ore',
     icon = '__base__/graphics/icons/sulfur.png',
@@ -45,4 +45,4 @@ return {
             "max((1000+distance)/2600,1))"
         }
     }
-}
+})

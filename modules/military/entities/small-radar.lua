@@ -66,10 +66,19 @@ table.replace({ remnants.localised_description, explosion.localised_description 
 small.explosion = explosion.name
 small.corpse = remnants.name
 
-return {
+table.insert(data.raw.technology.radar.effects, {
+    type = 'unlock-recipe',
+    recipe = fns 'small-radar',
+})
+
+table.find_matching(data.raw.recipe['artillery-shell'].ingredients,
+    { type='item', name = 'radar'}
+).name = fns 'small-radar'
+
+prototype(
   small,
   item,
   recipe,
   explosion,
   remnants
-}
+)
