@@ -50,4 +50,11 @@ local wet = assoc{
     },
 }
 
+table.insert(data.raw.technology['electric-mining-drill'].effects, {
+    type = 'unlock-recipe',
+    recipe = fns 'electric-mining-drill-fluid',
+})
+
+table.insert(data.raw.technology['electric-mining-drill'].prerequisites, fns 'wet-drilling')
+
 prototype(wet)

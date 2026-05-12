@@ -51,34 +51,6 @@ function altrecipes.rail_update()
         })
     end
 end
-
-function altrecipes.ammo()
-    if enabled('tweaks.military') then
-        data:extend(require 'extras.altrecipes.ammo')
-    end
-end
-
-function altrecipes.stone_furnace()
-
-    local recipe = require 'extras.altrecipes.stone-furnace-recipe'
-
-    recipe.enabled = not enabled('tweaks.earlygame')
-
-    data:extend{ recipe }
-
-    if not recipe.enabled then
-       data:extend{ require 'extras.altrecipes.basic-materials-processing-technology',}
-    end
-end
-
-
-function altrecipes.concrete_wall()
-
-    if enabled('tweaks.concrete') then
-        data:extend(
-            require 'extras.altrecipes.concrete-walling'
-        )
-    end
 end
 
 function altrecipes.rail_icons(name)
