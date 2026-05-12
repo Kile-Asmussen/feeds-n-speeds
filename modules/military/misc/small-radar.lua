@@ -51,6 +51,7 @@ recipe.ingredients = {
   { type='item', amount=4, name='iron-gear-wheel' },
   { type='item', amount=5, name='electronic-circuit' },
 }
+recipe.energy_required = 3.0
 
 local remnants = table.clone(data.raw.corpse['radar-remnants'])
 remnants.name = fns 'small-radar-remnants'

@@ -52,7 +52,7 @@ local function __array_newindex(tbl, i, v)
 end
 
 local function __assoc_pairs()
-    error("cannot iterate pairs over table.assoc")
+    error("cannot iterate pairs over table.assoc", 2)
 end
 
 table.__array_mt = {
@@ -66,7 +66,7 @@ local function __assoc_newindex(tbl, k, v)
 end
 
 local function __assoc_ipairs()
-    error("cannot iterate ipairs over table.assoc")
+    error("cannot iterate ipairs over table.assoc", 2)
 end
 
 table.__assoc_mt = {

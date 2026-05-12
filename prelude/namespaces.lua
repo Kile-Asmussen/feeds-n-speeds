@@ -22,7 +22,7 @@ local function __ns_new_key(self, name, val)
         if oldpath:sub(1, #parent) ~= parent then
             local newpath = tostring(self) .. '.' .. oldpath
             if namespaces[newpath] then
-                error('namespace collission: ' .. newpath)
+                error('namespace collission: ' .. newpath, 2)
             end
             namespaces[newpath], namespaces[oldpath] = namespaces[oldpath], nil
             paths[val] = newpath

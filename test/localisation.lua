@@ -29,7 +29,6 @@ function localisation.add_key(cat, key, content)
                 'redeclared as: ', debuglib.pp(content)
             }
         )
-        log(__traceback())
     end
 end
 

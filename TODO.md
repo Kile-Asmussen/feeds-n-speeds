@@ -9,6 +9,8 @@
 
 ## Fun tasks
 
+- [ ] One-way valves
+
 - [ ] Solar power/accumulator extras
     - [ ] Accumulators should probably be more expensive (when the plastics/battery tweak is enabled) but hold more power
         - [ ] Find a nice ratio

@@ -1,6 +1,6 @@
 require 'prelude'
 
-local turrets = data.raw['ammo-turret']
+local recipes = data.raw.recipe
 
 recipes['gun-turret'].ingredients = {
     { type='item', name='electronic-circuit', amount=8 },

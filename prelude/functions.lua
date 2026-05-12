@@ -22,7 +22,7 @@ function functions.fail(...)
                 msg[i] = tostring(v)
             end
         end
-        error(table.concat(msg))
+        error(table.concat(msg), 2)
     end
 end
 
@@ -46,7 +46,7 @@ function functions.as(...)
                 if type(val) == as then return val end
             end
         else
-            error('argument #1 must be a predicate or a type name')
+            error('argument #1 must be a predicate or a type name', 2)
         end
     elseif n == 2 then
         local val, as = ...
@@ -55,10 +55,10 @@ function functions.as(...)
         elseif functions.__types[as] then
             if type(val) == as then return val end
         else
-            error('argument #2 must be a predicate or a type name')
+            error('argument #2 must be a predicate or a type name', 2)
         end
     else
-        error('too many arguments, expected 2')
+        error('too many arguments, expected 2', 2)
     end
 end
 

@@ -25,11 +25,10 @@ local times = {
     ['pumpjack'] = 5.0,
 
     ['roboport'] = 10.0,
-    [fns 'sleeper-roboport'] = 1.0
-    [fns 'construction-roboport'] = 1.0,
-    [fns 'logistics-roboport'] = 1.0,
+    -- [fns 'sleeper-roboport'] = 1.0,
+    -- [fns 'construction-roboport'] = 1.0,
+    -- [fns 'logistics-roboport'] = 1.0,
     ['radar'] = 5.0,
-    [fns 'small-radar'] = 3.0,
     ['medium-electric-pole'] = 1.0,
     ['big-electric-pole'] = 2.0,
     ['substation'] = 3.0,
@@ -38,8 +37,8 @@ local times = {
     ['wooden-chest'] = 1,
     ['iron-chest'] = 1.5,
     ['steel-chest'] = 1.5,
-    [fns 'big-steel-chest'] = 2.5,
-    [fns 'big-steel-hopper'] = 2.0,
+    -- [fns 'big-steel-chest'] = 2.5,
+    -- [fns 'big-steel-hopper'] = 2.0,
 
     ['lab'] = 5.0,
 
@@ -61,5 +60,7 @@ for recipe_name, energy_required in pairs(times) do
     local recipe = data.raw.recipe[recipe_name]
     if recipe then
         recipe.energy_required = energy_required
+    else
+        die("no such recipe: " .. recipe_name)
     end
 end

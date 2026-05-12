@@ -17,7 +17,7 @@ function debuglib.pp(data, root, rec)
         root = root or '_'
     end
 
-    buffer = debuglib.new_buffer(root, rec)
+    local buffer = debuglib.new_buffer(root, rec)
     buffer:print_any(data)
     return tostring(buffer)
 end
@@ -217,7 +217,7 @@ function debuglib.print_keyval_pairs(buffer, data)
 
   for i, k in ipairs(keys) do
 
-    v = data[k]
+    local v = data[k]
 
     if not first then
       buffer:print(',\n')

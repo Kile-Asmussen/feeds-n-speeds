@@ -33,8 +33,12 @@ function begin_data_stage(proxy)
     else
         data.raw = rawdata.load(_G.modlist)
     end
-    _G.settings = seal_namespace(import('test.settings'))
-    _G.mods = table.collect(table.set(_G.modlist), function() return 'X.X.X' end)
+    rawset(_G, 'settings', import('test.settings'):seal())
+    rawset(_G, 'mods', table.collect(table.set(_G.modlist), function() return 'X.X.X' end))
+end
+
+function begin_control_stage()
+    rawset(_G, 'storage', {})
 end
 
 local settings = namespace 'test.settings'

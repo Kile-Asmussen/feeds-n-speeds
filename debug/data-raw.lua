@@ -1,4 +1,7 @@
 require 'prelude'
+
+local print = _G.print
+
 require 'test'
 
 local debuglib = require 'debuglib'
@@ -12,15 +15,15 @@ args = table.icollect(args, function(s) return tonumber(s) or s end)
 local ix = string.tablepath('data.raw', args)
 local result, found = table.descend(data.raw, table.unpack(args))
 
-if args.n < 2 then
+if (args.n or 0) < 2 then
     debuglib.recursion_limit = 1
 end
 
 if found then
-    log(ix .. ' = ' .. debuglib.pp(result, 'data.raw'))
+    print(ix .. ' = ' .. debuglib.pp(result, 'data.raw'))
 else
-    log('Path not found: ' .. ix)
+    print('Path not found: ' .. ix)
     if result ~= nil then
-        log('Stopped at value of type: ' .. type(result))
+        print('Stopped at value of type: ' .. type(result))
     end
 end

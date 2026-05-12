@@ -254,4 +254,42 @@ function tools.joules_or_watts(energy)
     return num * tools.si_prefixes[si]
 end
 
-return seal_namespace(tools)
+function tools.main_product(recipe)
+    if type(recipe) == 'string' then
+        assert(data.raw.recipe[recipe], "no such recipe: " .. recipe)
+        recipe = data.raw.recipe[recipe]
+    end
+
+    assert(type(recipe) == 'table' and recipe.type == 'recipe', "not a recipe: " .. tostring(table.name))
+
+    if recipe.main_product then return recipe.main_product end
+    if #recipe.results == 1 then return recipe.results[1].name end
+    error("recipe " .. recipe .. ' has no main product', 2)
+end
+
+function tools.recursion_check(tbl, seen, path)
+    seen = seen or {}
+    path = path or {}
+
+    if type(tbl) ~= 'table' then
+        return
+    end
+
+    tbl = table.unproxy(tbl)
+
+    if seen[tbl] then
+        error(seen[tbl] .. ' = ' .. string.tablepath("data.raw", path), 2)
+    end
+
+    seen[tbl] = string.tablepath("data.raw", path)
+
+    for k, v in pairs(tbl) do
+        table.insert(path, k)
+        tools.recursion_check(v, seen, path)
+        table.remove(path)
+    end
+
+    seen[tbl] = nil
+end
+
+return tools:seal()

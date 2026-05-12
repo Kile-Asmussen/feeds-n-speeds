@@ -1,7 +1,5 @@
 require 'prelude'
 
-
-
 return {
     { type='recipe-category', name=fns 'advanced-organic' },
     { type='recipe-category', name=fns 'advanced-pressing' },

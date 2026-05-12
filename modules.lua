@@ -1,6 +1,5 @@
 require 'prelude'
 
-
 local modules = namespace 'modules'
 
 modules.stages = asset{
@@ -26,11 +25,13 @@ function modules.load_stage(stage)
     
     deps = modules.order_dependencies(deps)
 
-    local errors = false
     for _, dep in ipairs(deps) do 
         __log('')
         __log('# ' .. dep)
-        require(dep)
+        local ok, val = pcall(require, dep)
+        if not ok then
+            die(val)
+        end
     end
 end
 
@@ -79,7 +80,8 @@ function modules.order_dependencies(dependencies)
     for k, dep in opairs(dependencies) do
         if type(dep) == 'table' then
             for x, _ in opairs(dep) do
-                assert(dependencies[x] or x == k, "unsatisfiable dependency: " .. k .. " -> " .. x)
+                if not dependencies[x] then die('dependency ' .. k .. ' -> ' .. x .. ' does not exist') end
+                if x == k then die('module ' .. k .. ' depends on itself') end
             end
         end
     end

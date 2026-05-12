@@ -2,7 +2,7 @@ require 'prelude'
 
 -- TODO: split
 
-local recipes = data.raw.recipe
+local turrets = data.raw['ammo-turret']
 
 turrets['gun-turret'].max_health = 800
 

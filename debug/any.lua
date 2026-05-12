@@ -7,7 +7,6 @@ require 'test'
 
 begin_data_stage()
 
-
 local debuglib = require 'debuglib'
 
 local fn, err = loadstring('return ' .. tostring(args[1]))

@@ -11,8 +11,8 @@ military.data = asset{
 
     '.turrets.cannon',
     '.turrets.shotgun',
-    '.turrets.tweaks-attacks',
-    '.turrets.tweaks-recipes',
+    '.turrets.tweak-attacks',
+    '.turrets.tweak-recipes',
 
     '.guns.tweak-attacks',
     '.guns.tweak-recipes',
@@ -20,7 +20,7 @@ military.data = asset{
     '.misc.small-radar',
     '.misc.concrete-walling',
 
-    ['.guns.plastics'] = asset{ '.guns.misc-tweaks' },
+    ['.guns.plastics'] = asset{ '.guns.tweak-recipes' },
 }
 
 return military:seal()

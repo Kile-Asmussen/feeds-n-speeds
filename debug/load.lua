@@ -1,8 +1,12 @@
 require 'prelude'
+
+local print = _G.print
+
 require 'test'
 
 local localisation = require 'test.localisation'
 local debuglib = require 'debuglib'
+local tools = require 'tools'
 
 local log = _G.__log
 if not _G.VERBOSE then
@@ -14,44 +18,47 @@ end
 
 _G.modlist = {"textplates", "even-more-text-plates"}
 
-log("\nSETTINGS")
+print("\nSETTINGS")
 require('settings')
 
-log("\nSETTINGS-UPDATES")
+print("\nSETTINGS-UPDATES")
 require('settings-updates')
 
-log("\nSETTINGS-FINAL-FIXES")
+print("\nSETTINGS-FINAL-FIXES")
 require('settings-final-fixes')
 
 begin_data_stage()
 
-log("\nDATA")
+print("\nDATA")
 require('data')
 
-log("\nDATA-UPDATES")
+print("\nDATA-UPDATES")
 require('data-updates')
 
-log("\nDATA-FINAL-FIXES")
+print("\nDATA-FINAL-FIXES")
 require('data-final-fixes')
 
-table.recursion_check(data.raw)
+tools.recursion_check(data.raw)
 
-log("\nCONTROL")
-_G.storage = {}
+begin_control_stage()
+
+print("\nCONTROL")
 require('control')
 
 localisation.finalize()
 
 local keys
 
-log('\nNEEDED LOCALISATION')
+print('\nNEEDED LOCALISATION')
 keys = localisation.list_missing_locale_keys()
 if #keys > 0 then
-    log(keys)
+    print(keys)
 end
 
-log('\nSUPERFLUOUS LOCALISATION')
+print('\nSUPERFLUOUS LOCALISATION')
 keys = localisation.list_superfluous_locale_keys()
 if #keys > 0 then
-    log(keys)
+    print(keys)
 end
+
+print()

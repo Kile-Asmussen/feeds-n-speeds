@@ -18,51 +18,54 @@ debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 2
 local stub_libs = {
     ['resource-autoplace'] = 'test.resource-autoplace'
 }
-local real_require = require
-
-function require(name)
-    if stub_libs[name] then
-        return real_require(stub_libs[name])
+local __require = require
+function _G.require(name)
+    name = stub_libs[name] or name
+    local ok, val = pcall(__require, name)
+    if not ok then
+        if val:startswith('module') and val:find('not found', 1, true) then
+            error(val:before(':\n'), 2)
+        elseif val:startswith('error loading module') then
+            error(val:after(':\n\t'), 2)
+        end
     else
-        return real_require(name)
+        return val
     end
 end
 
-local print = _G.print
-_G.__traceback = debug.traceback
+local __print = _G.print
+local __exit = _G.os.exit
+
 function _G.__log(str)
     assert(type(str) == 'string', "argument #1 must be a string not " .. type(str))
-    print(str)
+    __print(str)
 end
 
-local skip = {
-    "stack traceback:",
-    "debug/.*%.lua",
-    "test%.lua",
-    "%[C%]"
-}
+function _G.die(message, n)
+    n = n or 2
+    __print(message)
+    __print(debug.traceback(nil, n))
+    __exit(1)
+end
+
+function debug.getline(n, msg)
+    return debug.traceback(nil, n + 1):replace_prefix("stack traceback:\n\t"):before(': ', msg and true) .. (msg or '')
+end
 
 function _G.log(str)
     assert(type(str) == 'string', "argument #1 must be a string not " .. type(str))
 
-    local traceback = string.lines(debug.traceback())
-    local filename = ''
-    local lineno = ''
-    for l in traceback do
-        l = l:gsub('^%s+', '')
-        if not table.any(skip, l:match_function()) then
-            lineno = l:match(':%d+:')
-            filename = l:sub(1, (lineno and l:find(lineno) or #l + 1) - 1)
-            break
-        end
-    end
-    local where = filename .. tostring(lineno)
-    if #where > 0 then
-        print(where .. ' ' .. str)
-    else
-        print(str)
-    end
+    __print(debug.getline(2, str))
 end
+
+local function __global_index(_, name)
+    die('_G.' .. name .. ' undefined', 3)
+end
+
+local function __global_newindex(_, name, val)
+    die('_G.' .. name .. ' = ' .. tostring(val), 3)
+end
+
 
 _G.io = nil
 _G.os = nil
@@ -75,28 +78,25 @@ _G.print = nil
 
 _G.debug = {
     getinfo = debug.getinfo,
-    traceback = debug.traceback
+    traceback = debug.traceback,
+    getline = debug.getline,
 }
 
 local function __lock_mt(name)
     return {
-        __index = function(_, key) error(name .. '.' .. key .. ' not found') end,
-        __newindex = function(_, key) error('creating ' .. name .. '.' .. key .. ' at this point is probably a bad idea') end,
+        __index = function(_, key)
+            die(name .. '.' .. key .. ' not found')
+        end,
+        __newindex = function(_, key)
+            die(name .. '.' .. key .. ' cannot be defined at this point')
+        end,
     }
 end
 
 setmetatable(_G.table, __lock_mt('table'))
 setmetatable(_G.functions, __lock_mt('functions'))
 setmetatable(_G.string, __lock_mt('string'))
-
-local function __global_index(_, name)
-    error('global ' .. name .. ' not found')
-end
-
-local function __global_newindex(_, name, val)
-    __log('_G.' .. name .. ' defined')
-    rawset(_G, name, val)
-end
+setmetatable(_G.debug, __lock_mt('debug'))
 
 setmetatable(_G, {
     __index = __global_index,

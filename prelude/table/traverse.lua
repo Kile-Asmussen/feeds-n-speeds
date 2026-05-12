@@ -4,7 +4,7 @@ local function __search(tbl, fn)
     if type(tbl) ~= 'table' then return nil end
 
     for k, v in pairs(tbl) do
-        local found = __search(v, thing)
+        local found = __search(v, fn)
         if found then return found end
     end
 

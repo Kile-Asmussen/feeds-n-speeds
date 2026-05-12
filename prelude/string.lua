@@ -3,10 +3,10 @@ function string.lpad(self, length, char)
         char = ' '
     end
     if type(char) ~= 'string' then
-        error("cannot pad with non-string")
+        error("cannot pad with non-string", 2)
     end
     if #char ~= 1 then
-        error("cannot pad with string of length other than 1")
+        error("cannot pad with string of length other than 1", 2)
     end
 
     if #self >= length then
@@ -21,11 +21,11 @@ function string.rpad(self, length, char)
         char = ' '
     end
     if type(char) ~= 'string' then
-        error("cannot pad with non-string")
+        error("cannot pad with non-string", 2)
     end
 
     if #char ~= 1 then
-        error("cannot pad with string of length other than 1")
+        error("cannot pad with string of length other than 1", 2)
     end
 
     if #self >= length then
@@ -93,7 +93,7 @@ end
 
 function string.repr(str)
     if type(str) ~= 'string' then
-        error("argument #1 to string.repr must be a string, was " .. type(str))
+        error("argument #1 to string.repr must be a string, was " .. type(str), 2)
     end
 
     local sq = str:match("'")
@@ -112,14 +112,76 @@ function string.repr(str)
     end
 end
 
-function string.lines(str)
-    return function()
-        if str == '' then return nil end
-        local ix = (str:find('\n') or #str)
-        local line = str:sub(1, ix) 
-        str = str:sub(ix+1)
-        return line
+function string.startswith(str, sample)
+    assert(type(sample) == 'string', "argument #2 must be a string")
+    if sample == '' then return true end
+    if #sample == #str then return sample == str end
+    if #sample > #str then return false end
+    return str:sub(1, #sample) == sample
+end
+
+function string.replace_prefix(str, sample, rep)
+    if str:startswith(sample) then
+        if rep then
+            return rep .. str:sub(#sample+1)
+        else
+            return str:sub(#sample+1)
+        end
+    else
+        return str
     end
+end
+
+
+function string.endswith(str, sample)
+    assert(type(sample) == 'string', "argument #2 must be a string")
+    if sample == '' then return true end
+    if #sample == #str then return sample == str end
+    if #sample > #str then return false end
+    return str:sub(#str - #sample - 1,  #str) == sample
+end
+
+
+function string.before(str, pat, include)
+    assert(type(pat) == 'string', "argument #2 must be a string")
+    local ix, ix2 = str:find(pat, 1, true)
+    if not ix then
+        return str, false
+    else
+        if include then ix = ix2 + 1 end
+        return str:sub(1, ix - 1), true
+    end
+end
+
+function string.after(str, pat, include)
+    assert(type(pat) == 'string', "argument #2 must be a string")
+    local ix, ix2 = str:find(pat, 1, true)
+    if not ix then
+        return nil
+    else
+        if include then ix2 = ix - 1 end
+        return str:sub(ix2 + 1)
+    end
+end
+
+local function string_lines_iter(state, lastline)
+    local str, index = state[1], state[2]
+    if str == nil then return nil end
+
+    local next_index = str:find('\n', index + 1, true)
+
+    if not next_index then
+        state[1] = nil
+        return str:sub(index + 1)
+    else
+        state[2] = next_index
+        return str:sub(index + 1, next_index - 1)
+    end
+end
+
+function string.lines(str)
+    assert(type(str) == 'string', "argument #1 must be a string")
+    return string_lines_iter, {str, 0}, nil
 end
 
 function string.prepend(str)
