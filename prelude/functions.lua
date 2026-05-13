@@ -3,7 +3,7 @@ _ENV.functions = {}
 
 functions.type = type
 
-functions.__types = {
+local __types = {
     string = true,
     number = true,
     ['function'] = true,
@@ -13,7 +13,7 @@ functions.__types = {
 }
 
 function functions.fail(...)
-    local msg = table.pack(...)
+    local msg = { ... }
     return function(...)
         for i,v in ipairs(msg) do
             if type(v) == 'number' then
@@ -32,61 +32,42 @@ function functions.assertion(pred, msg)
     end
 end
 
-function functions.as(...)
-    local n = select('#', ...)
+function functions.as(tp)
+    assert(__types[tp], "argument #1 must be the name of a type")
+    return function(x) if type(x) == tp then return x else return nil end end
+end
 
-    if n == 1 then
-        local as = ...
-        if type(as) == 'function' then
-            return function(val)
-                if as(val) then return val end
-            end
-        elseif functions.__types[as] then
-            return function(val)
-                if type(val) == as then return val end
-            end
-        else
-            error('argument #1 must be a predicate or a type name', 2)
-        end
-    elseif n == 2 then
-        local val, as = ...
-        if type(as) == 'function' then
-            if as(val) then return val end
-        elseif functions.__types[as] then
-            if type(val) == as then return val end
-        else
-            error('argument #2 must be a predicate or a type name', 2)
-        end
-    else
-        error('too many arguments, expected 2', 2)
-    end
+function functions.is(tp)
+    assert(__types[tp], "argument #1 must be the name of a type")
+    return function(x) return type(x) == tp end
 end
 
 function functions.id(...)
     return ...
 end
 
-function functions.drop1st(f)
-    f = functions.as(f, "function")
-    assert(f, "argument #1 must be a function")
-    return function(_, ...) return f(...) end
+function functions.drop(f, n)
+    assert(type(f) == 'function', "argument #1 must be a function")
+    assert(type(n) == 'function', "argument #2 must be a number")
+    return function(...) return f(select(n, ...)) end
 end
 
 function functions.curry(f, ...)
     f = functions.as(f, "function")
     assert(f, "argument #1 must be a function")
-    local args = table.pack(...)
+    local outer_args = { ... }
     return function(...)
-        table.append(args, table.pack(...))
+        local args = {}
+        table.append(args, outer_args)
+        table.append(args, { ... })
         return f(table.unpack(args))
     end
 end
 
 function functions.with(...)
-    local args = table.pack(...)
+    local args = { ... }
     return function(f)
-        f = functions.as(f, "function")
-        assert(f, "argument #1 must be a function")
+        assert(type(f) == 'function', "argument #1 must be a function")
         return f(table.unpack(args))
     end
 end
@@ -105,3 +86,5 @@ function functions.pipe(f, ...)
         return rest(f(...))
     end
 end
+
+function functions.null(...) return nil end

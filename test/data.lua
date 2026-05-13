@@ -18,7 +18,7 @@ setmetatable(_ENV.settings, {
 
 local proxied = false
 local function log_change(new, cutpath, fullpath, value)
-    if new then __log('changed ' .. cutpath) end
+    if new then __log(cutpath:replace_prefix('data.raw'):replace_prefix('.') .. ' = ...') end
 end
 
 function begin_data_stage(proxy)
@@ -52,7 +52,7 @@ function data.extend(self, protos)
 
         assert(is_fns_name(proto.name), "not an fns-based name: " .. proto.name)
 
-        __log(proto.type .. ' ' .. proto.name:replace_prefix('feeds-n-speeds-', "fns-"))
+        __log("prototype{ type = '" .. proto.type .. "', name = fns '" .. proto.name:replace_prefix('feeds-n-speeds-') .. "' }")
 
         if proto.type:endswith('-setting') then
             settings[proto.setting_type] = settings/proto.setting_type or {}

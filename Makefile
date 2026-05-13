@@ -18,7 +18,7 @@ export MODS_DIR := $(HOME)/.factorio/mods
 export MOD_LIST := mod-list.json
 export OUTPUT_DIR := ./target
 
-.PHONY: all build clean rawdata lualib load
+.PHONY: all build clean rawdata lualib load textplates
 .PHONY: install uninstall clean-reinstall nuke
 
 build: # $(OUTPUT_DIR)/$(ZIPFILE)
@@ -56,4 +56,5 @@ load:
 lualib:
 	@cp -r $(FACTORIO_DIR)/data/core/lualib ./lualib
 
-
+textplates:
+	./build-scripts/textplates.sh

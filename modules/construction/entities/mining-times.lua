@@ -36,6 +36,7 @@ local times = {
     ['mining-drill'] = {
         ['burner-mining-drill'] = 1,
         ['electric-mining-drill'] = 1.5,
+        -- ['']
         ['pumpjack'] = 1.5,
         ['big-mining-drill'] = 3.0,
     },
@@ -88,17 +89,17 @@ data.raw.technology['steel-axe'] = nil
 
 -- Update mining times
 for entity_type, entities in pairs(times) do
-    local category = data.raw[entity_type]
-    if category then
-        for entity_name, mining_time in pairs(entities) do
-            local entity = category[entity_name]
-            if entity and entity.minable then
-                entity.minable.mining_time = mining_time
-            else
-                die("no such entity: " .. entity_name)
-            end
+    for entity_name, mining_time in pairs(entities) do
+        if not (data.raw[entity_type] and data.raw[entity_type][entity_name]) then
+            die("no such prototype: " .. string.tablepath('data.raw', { entity_type, entity_name }))
         end
-    else
-        die("no such prototype: " .. entity_type)
+
+        local entity = data.raw[entity_type][entity_name]
+
+        if entity.minable then
+            entity.minable.mining_time = mining_time
+        else
+            die("not minable: " .. string.tablepath('data.raw', { entity_type, entity_name }))
+        end
     end
 end

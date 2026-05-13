@@ -2,7 +2,7 @@ require 'prelude'
 
 local old_recipe = data.raw.recipe['stone-furnace']
 
-old_recipe.energy_required = 5.0
+old_recipe.energy_required = 6.0
 old_recipe.icons = array{
     assoc{
         icon = '__base__/graphics/icons/stone-furnace.png',
@@ -16,9 +16,8 @@ old_recipe.icons = array{
     },
 }
 
-
 old_recipe.ingredients = {
-    { amount = 20, name = 'stone', type = 'item' }
+    { amount = 10, name = 'stone', type = 'item' }
 }
 
 
@@ -46,6 +45,7 @@ local new_recipe = assoc{
     results = array{
         assoc{ amount = 1, name = 'stone-furnace', type = 'item' }
     },
+    allow_auto_recycle = false
 }
 
 

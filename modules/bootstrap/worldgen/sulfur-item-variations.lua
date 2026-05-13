@@ -1,6 +1,6 @@
 require 'prelude'
 
-data.raw.item.sulfur.pictures = table.map(
+data.raw.item.sulfur.pictures = table.imap(
     {
         '__base__/graphics/icons/sulfur.png',
         '__FeedsNSpeeds__/graphics/item/sulfur-1.png',

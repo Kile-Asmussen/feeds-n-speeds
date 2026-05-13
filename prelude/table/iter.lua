@@ -1,6 +1,6 @@
 
 
-function table.map(tbl, func)
+function table.imap(tbl, func)
     assert(type(tbl) == "table", "argument #1 must be a table")
     assert(type(func) == "function", "argument #2 must be a function")
     for k, v in ipairs(tbl) do

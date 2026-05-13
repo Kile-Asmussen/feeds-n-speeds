@@ -47,21 +47,31 @@ local __quantify = {
 }
 
 function table.quantify(op, iter, tbl, kv, pred)
-    assert(type(iter) == 'function', "argument #2 must be a function")
-    assert(type(tbl) == 'table', "argument #3 must be a table")
     local quant = __quantify[op]
     assert(quant, 'argument #1 must be either "any" or "all"')
+    assert(type(tbl) == 'table', "argument #3 must be a table")
+    assert(type(iter) == 'function', "argument #2 must be a function")
     local loop = q[kv]
     assert(loop, 'argument #4 must be one of "kv", "vk", "v", "k"')
+    assert(type(pred) == 'function', "argument #5 must be a function")
 
     return loop(iter, tbl, pred)
 end
 
-function table.all(tbl, pred)
+function table.iall(tbl, pred)
     assert(type(tbl) == 'table', "argument #1 must be a table")
+    if type(pred) == 'table' then pred = table.index(pred) end
     pred = pred or functions.id
     assert(type(pred) == 'function', "argument #2 must be a function if present")
     return __quantify.all.v(ipairs, tbl, pred)
+end
+
+function table.pall(tbl, pred)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+    if type(pred) == 'table' then pred = table.index(pred) end
+    pred = pred or functions.id
+    assert(type(pred) == 'function', "argument #2 must be a function if present")
+    return __quantify.all.kv(pairs, tbl, pred)
 end
 
 function table.any(tbl, pred)
@@ -73,8 +83,16 @@ end
 function table.sorted_keys(tbl)
     assert(type(tbl) == 'table', "argument #1 must be a table")
     local res = {}
-    for k, _ in pairs(tbl) do
-        table.insert(res, k)
+    if table.has_array(tbl) then
+        for k, _ in pairs(tbl) do
+            if type(k) == 'number' and 1 <= k and k <= #tbl then else
+                table.insert(res, k)
+            end
+        end
+    else
+        for k, _ in pairs(tbl) do
+            table.insert(res, k)
+        end
     end
     table.sort(res)
     return res

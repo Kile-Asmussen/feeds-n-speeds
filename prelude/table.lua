@@ -100,6 +100,17 @@ function table.append(tbl1, tbl2)
     return tbl1
 end
 
+function table.appending(tbl2)
+    assert(type(tbl2) == 'table', "argument #1 must be a table")
+    return function(tbl1)
+        assert(type(tbl1) == 'table', "argument #1 must be a table")
+        for i = 1, #tbl2 do
+            table.insert(tbl1, tbl2[i])
+        end
+        return tbl1
+    end
+end
+
 function table.cut(tbl, n)
     assert(type(tbl) == 'table', "argument #1 must be a table")
     assert(type(n) == 'number', "argument #2 must be a number")
@@ -108,12 +119,38 @@ function table.cut(tbl, n)
     end
 end
 
-function table.merge(tbl1, tbl2)
+function table.overwrite(tbl1, tbl2)
     assert(type(tbl1) == "table", "argument #1 must be a table")
     assert(type(tbl2) == "table", "argument #2 must be a table")
 
     for k, v in pairs(tbl2) do
         tbl1[k] = v
+    end
+
+    return tbl1
+end
+
+function table.replace(tbl1, tbl2)
+    assert(type(tbl1) == "table", "argument #1 must be a table")
+    assert(type(tbl2) == "table", "argument #2 must be a table")
+
+    for k, _ in pairs(tbl1) do
+        if tbl2[k] ~= nil then
+            tbl1[k] = tbl2[k]
+        end
+    end
+
+    return tbl1
+end
+
+function table.include(tbl1, tbl2)
+    assert(type(tbl1) == "table", "argument #1 must be a table")
+    assert(type(tbl2) == "table", "argument #2 must be a table")
+
+    for k, v in pairs(tbl2) do
+        if tbl1[k] == nil then
+            tbl1[k] = v
+        end
     end
 
     return tbl1

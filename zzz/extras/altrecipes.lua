@@ -22,17 +22,6 @@ function altrecipes.data2()
     altrecipes.foundry_update()
 end
 
-function altrecipes.metallurgy()
-    data:extend(require 'extras.altrecipes.castings')
-end
-
-function altrecipes.foundry_update()
-    table.append(data.raw.technology['foundry'].effects, {
-        {type='unlock-recipe', recipe=fns 'cast-engine'},
-        {type='unlock-recipe', recipe=fns 'cast-heat-pipe'},
-    })
-end
-
 function altrecipes.rails()
     -- Concrete rail recipes only with concrete tweaks
     data:extend(require 'extras.altrecipes.concrete-rails')

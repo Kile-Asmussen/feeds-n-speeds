@@ -4,11 +4,11 @@ require 'prelude'
 local tier1 = fns('basic_pavement', '_')
 local tier2 = fns('sturdy_pavement', '_')
 local tier2h = fns('sturdy_pavement_hazard', '_')
-local tier2 = fns('foundation_pavement', '_')
-local tier2h = fns('foundation_pavement_hazard', '_')
+local tier3 = fns('foundation_pavement', '_')
+local tier3h = fns('foundation_pavement_hazard', '_')
 local none = 'ground_tile'
 
-local strings = {
+local locale_keys = {
     [none] = 'bare-ground-machinery',
     [tier1] = 'simple-machinery',
     [tier2] = 'machinery',
@@ -159,29 +159,33 @@ local function radius(ent)
     end
 end
 
-for proto, entities in pairs(concrete.needs_paving) do
+for proto, entities in pairs(needs_paving) do
     for ent, val in pairs(entities) do
         val = table.clone(val)
+        if not data.raw[proto] or not data.raw[proto][name] then die("no such prototype: "
+            ..string.tablepath('data.raw', { proto, ent }) end
+
         local entity = data.raw[proto][ent]
-        assert(entity, "no such entity data.raw." .. proto .. "." .. ent)
 
         local colliding_tiles = {}
         if val == none then colliding_tiles = { layers = { [tier1] = true } } end
 
-        entity.tile_buildability_rules = {
-            {
-                area = radius(entity),
-                required_tiles = {
-                    layers = { [val] = true }
-                },
-                colliding_tiles = colliding_tiles,
-                remove_on_collision = true,
+        table.merge(entity, {
+            tile_buildability_rules = {
+                {
+                    area = radius(entity),
+                    required_tiles = {
+                        layers = { [val] = true }
+                    },
+                    colliding_tiles = colliding_tiles,
+                    remove_on_collision = true,
+                }
+            },
+            localised_description = {"", 
+                {"?", {"", {"entity-description." .. entity.name}, " "}, ""},
+                {fns_locale_key("entity-description", locale_keys[val])},
             }
-        }
+        })
 
-        entity.localised_description = {"", 
-            {"?", {"", {"entity-description." .. entity.name}, " "}, ""},
-            {fns_locale_key("entity-description", strings[val[1]])},
-        }
     end
 end

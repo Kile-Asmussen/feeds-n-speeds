@@ -5,7 +5,7 @@ local __log = _ENV.__log
 function _ENV.log() end
 function _ENV.__log() end
 
-_ENV.modlist = {"textplates", "even-more-text-plates"}
+_ENV.modlist = {}
 
 require('settings')
 require('settings-updates')
@@ -17,7 +17,7 @@ require('data-final-fixes')
 
 local debuglib = require 'debuglib'
 
-local args = table.pack(...)
+local args = { ... }
 table.icollect(args, function(s) return tonumber(s) or s end)
 
 local ix =  string.tablepath('data.raw', args)

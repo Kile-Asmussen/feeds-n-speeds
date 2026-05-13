@@ -25,7 +25,7 @@ function timewaster.data()
 end
 
 local function check(on, off, ...)
-    local args = table.pack(...)
+    local args = { ... }
     return function() return enabled(table.unpack(args)) and on or off end
 end
 

@@ -16,7 +16,7 @@ if _ENV.QUIET then
     _ENV.log = function() end
 end
 
-_ENV.modlist = {"textplates", "even-more-text-plates"}
+_ENV.modlist = {}
 
 print("\nSETTINGS")
 require('settings')

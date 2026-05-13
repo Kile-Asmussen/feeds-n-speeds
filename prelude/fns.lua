@@ -59,8 +59,7 @@ function _ENV.fns_control_stage()
 end
 
 function _ENV.prototype(...)
-    local tbl = table.pack(...)
-    tbl.n = nil
+    local tbl = { ... }
     table.purgemetatable(tbl)
     data:extend(tbl)
 end
@@ -69,7 +68,7 @@ function _ENV.enabled(...)
 
     local res = true
 
-    for _, v in ipairs(table.pack(...)) do
+    for _, v in ipairs{ ... } do
         res = res and import(v)/'enabled'
     end
 

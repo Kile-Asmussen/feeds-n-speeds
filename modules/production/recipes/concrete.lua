@@ -8,20 +8,42 @@ table.insert(tech['advanced-material-processing-2'].prerequisites, 'concrete')
 
 tech.concrete.prerequisites = { 'fluid-handling', 'advanced-material-processing' }
 
-recipes.concrete.ingredients = {
-    { type = 'item', name = 'stone-brick', amount = 5 },
-    { type = 'item', name = 'iron-stick', amount = 2 },
-    { type = 'fluid', name = 'water', amount = 100 },
-}
-recipes.concrete.category = 'chemistry'
+table.merge(recipes.concrete, {
+    ingredients = {
+        { type = 'item', name = 'stone-brick', amount = 5 },
+        { type = 'item', name = 'iron-stick', amount = 2 },
+        { type = 'fluid', name = 'water', amount = 100 },
+    },
+    category = 'chemistry',
+    auto_recycle = false
+})
 
-recipes['refined-concrete'].ingredients = {
-    { type = 'item', name = 'concrete', amount = 20 },
-    { type = 'item', name = 'steel-plate', amount = 1 },
-    { type = 'fluid', name = 'water', amount = 100 },
-}
-recipes['refined-concrete'].category = 'chemistry'
+table.merge(recipes['refined-concrete'], {
+    ingredients = {
+        { type = 'item', name = 'concrete', amount = 20 },
+        { type = 'item', name = 'steel-plate', amount = 1 },
+        { type = 'fluid', name = 'water', amount = 100 },
+    },
+    category = 'chemistry',
+    auto_recycle = false
+})
 
+
+-- recipes.concrete.ingredients = {
+--     { type = 'item', name = 'stone-brick', amount = 5 },
+--     { type = 'item', name = 'iron-stick', amount = 2 },
+--     { type = 'fluid', name = 'water', amount = 100 },
+-- }
+-- recipes.concrete.category = 'chemistry'
+
+-- recipes['refined-concrete'].ingredients = {
+--     { type = 'item', name = 'concrete', amount = 20 },
+--     { type = 'item', name = 'steel-plate', amount = 1 },
+--     { type = 'fluid', name = 'water', amount = 100 },
+-- }
+-- recipes['refined-concrete'].category = 'chemistry'
+
+recipes['concrete-from-molten-iron'] = nil
 
 table.append(tech['automation-2'].effects, {
     { type='unlock-recipe', recipe=fns 'simple-concrete' },
@@ -30,10 +52,14 @@ table.append(tech['automation-2'].effects, {
     { type='unlock-recipe', recipe=fns 'barrel-tapper' },
 })
 
+-- recipes.concrete.auto_recycle = false
+-- recipes.refined_concrete.auto_recycle = false
+
 prototype{
     type = 'recipe',
     name = fns 'simple-concrete',
     enabled = false,
+    allow_auto_recycle = false,
     energy_required = 10,
     allow_speed = false,
     allow_pollution = false,
@@ -71,6 +97,7 @@ prototype{
     name = fns 'mechanical-concrete',
     category = 'crafting-with-fluid',
     enabled = false,
+    allow_auto_recycle = false,
     energy_required = 10,
     auto_recycle = false,
     ingredients = {

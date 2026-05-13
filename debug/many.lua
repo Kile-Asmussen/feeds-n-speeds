@@ -1,6 +1,6 @@
 require 'prelude'
 
-local args = table.pack(...)
+local args = { ... }
 local loadstring = loadstring
 
 require 'test'

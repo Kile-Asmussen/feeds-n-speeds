@@ -2,20 +2,21 @@ require 'prelude'
 
 local print = _ENV.print
 
-require 'test'
-
 local debuglib = require 'debuglib'
 
+debuglib.recursion_limit = tonumber(os.getenv("DEPTH")) or 2
+
+require 'test'
 _ENV.modlist = {"textplates", "even-more-text-plates"}
 begin_data_stage()
 
-local args = table.pack( ... )
+local args = { ... }
 args = table.icollect(args, function(s) return tonumber(s) or s end)
 
 local ix = string.tablepath('data.raw', args)
 local result, found = table.descend(data.raw, table.unpack(args))
 
-if (args.n or 0) < 2 then
+if #args < 2 then
     debuglib.recursion_limit = 1
 end
 

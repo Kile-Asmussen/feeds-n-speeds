@@ -53,10 +53,12 @@
 
             packages = with pkgs; [
               (python314.withPackages (ps: [ ]))
+              (google-fonts.override { fonts = [ "Bungee" ]; })
               nix-claude-code.packages.x86_64-linux."2.1.112"
               wget
               lua
               jq
+              typst
               gnumake
               ripgrep
             ];

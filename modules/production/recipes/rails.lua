@@ -78,9 +78,9 @@ local tech = {
     },
 }
 
-return {
+prototype(
     rail1,
     rail2,
     rail3,
     tech
-}
+)

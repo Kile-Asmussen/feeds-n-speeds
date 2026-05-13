@@ -72,7 +72,7 @@ function tools.color(col)
     assert(type(col) == 'table' or type(col) == 'string', "colors must be strings or tables")
     if type(col) == 'string' then return tools.hexcolor(col) end
     assert(#col == 3 or #col == 4, "colors must have 3 or 4 components")
-    assert(table.all(col, functions.as('number')), "colors must have 3 or 4 components")
+    assert(table.iall(col, functions.as('number')), "colors must have 3 or 4 components")
 end
 
 function tools.hexcolor(hex)
@@ -200,12 +200,17 @@ function tools.highest_unlock(name)
     return highest_unlock[name]
 end
 
-function tools.remove_unlock(name)
-    assert(data.raw.recipe[name] , "no such recipe: " .. name)
+function tools.remove_unlock(names)
+
+    if type(names) == 'string' then
+        names = { [names = true }
+    end
+
+    assert(type(names) == 'table', "argument #1 must be either a string or a table.set of strings")
 
     for _, tech in pairs(data.raw.technology) do
         if tech.effects then
-            table.remove_matching(tech.effects, { type='unlock-recipe', recipe=name })
+            table.remove_matching(tech.effects, { type='unlock-recipe', recipe=table.index(names) }, true)
         end
     end
 end

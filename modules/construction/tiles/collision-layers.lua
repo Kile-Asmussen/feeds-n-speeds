@@ -11,7 +11,7 @@ prototype(
     { type = 'collision-layer', name = tier2 },
     { type = 'collision-layer', name = tier2h },
     { type = 'collision-layer', name = tier3 },
-    { type = 'collision-layer', name = tier3h },
+    { type = 'collision-layer', name = tier3h }
 )
 
 for _, item in ipairs{'stone-brick', 'concrete', 'hazard-concrete', 'refined-concrete', 'refined-hazard-concrete'} do

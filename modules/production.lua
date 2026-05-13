@@ -3,11 +3,15 @@ require 'prelude'
 local production = namespace 'production'
 
 production.data = asset{
-    '.fluids.boil-water',
-    ['.fluids.water'] = asset{ '.fluids.boil-water' },
+    '.fluids.water',
     '.fluids.oil-processing',
+    ['.fluids.boil-water'] = asset{ '.fluids.water' },
+
     '.entities.barrel-tapper',
     '.recipes.concrete',
+    '.recipes.rails',
+    '.recipes.casting',
+
     ['.entities.nuclear-energy'] = asset{ '.fluids.water' }
 }
 

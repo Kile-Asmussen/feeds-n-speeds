@@ -36,7 +36,7 @@ function string.rpad(self, length, char)
 end
 
 function string.sprint(...)
-    return table.concat(table.icollect(table.pack(...), tostring), '\t')
+    return table.concat(table.icollect({ ... }, tostring), '\t')
 end
 
 function string.chomp(str)

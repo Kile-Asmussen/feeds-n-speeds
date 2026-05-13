@@ -3,13 +3,15 @@ require 'prelude'
 local tools = require 'tools'
 
 for _, fl in pairs(data.raw.fluid) do
-    local barrel = fl.name .. '-barrel'
-    local empty = 'empty-' .. fl.name .. '-barrel'
-    barrel = data.raw.recipe[barrel]
-    empty = data.raw.recipe[empty]
-    if barrel and empty then
-        barrel.category = fns'barrelling'
-        empty.category = fns'barrelling'
+    if fl.auto_barrel then
+        local barrel = fl.name .. '-barrel'
+        local empty = 'empty-' .. fl.name .. '-barrel'
+        barrel = data.raw.recipe[barrel]
+        empty = data.raw.recipe[empty]
+        if barrel and empty then
+            barrel.category = fns'barrelling'
+            empty.category = fns'barrelling'
+        end
     end
 end
 

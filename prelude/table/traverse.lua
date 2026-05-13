@@ -52,7 +52,8 @@ function table.replace(tbl, a, b)
 end
 
 function table.descend(tbl, ...)
-    local keys = table.pack(...)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    local keys = { ... }
     
     for _, key in ipairs(keys) do
         if type(tbl) ~= 'table' then
@@ -70,7 +71,9 @@ function table.descend(tbl, ...)
 end
 
 function table.access(tbl, ...)
-    local keys = table.pack(...)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+
+    local keys = { ... }
     
     for _, key in ipairs(keys) do
         if type(tbl) ~= 'table' then
@@ -87,11 +90,77 @@ function table.access(tbl, ...)
     return tbl
 end
 
+function table.assign(tbl, value, ...)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+
+    local keys = { ... }
+    assert(#keys >= 1, "expected at least 3 arguments")
+
+    local last = table.remove(keys)
+
+    local down = tbl
+    
+    for _, key in ipairs(keys) do
+        if down[key] == nil then down[key] = {} end
+
+        if type(down[key]) ~= 'table' then
+            down[key] = { __assign  = down[key] }
+        end
+
+        down = down[key]
+    end
+    
+    down[last] = value
+
+    return tbl
+end
+
 function table.at(...)
-    local args = table.pack(...)
+    local args = { ... }
     return function(tbl) return table.access(tbl, table.unpack(args)) end
 end
 
-function table.index(tbl)
+function table.into(tbl)
     return function(...) return table.access(tbl, ...) end
+end
+
+function table.writing(value, ...)
+    local args = { ... }
+    return function(tbl) return table.assign(tbl, value, table.unpack(args)) end
+end
+
+function table.index(tbl)
+    return function(k) return tbl[k] end
+end
+
+function table.newindex(tbl)
+    return function(k, v) tbl[k] = v return tbl end
+end
+
+local function __merge(tbl1, tbl2)
+    for k, v in pairs(tbl2) do
+        if type(tbl1[k]) == 'table' and type(v) == 'function' then
+            tbl1[k] = v(tbl1[k])
+        else
+            tbl1[k] = v
+        end
+    end
+    return tbl1
+end
+
+function table.merge(tbl, extra) 
+    assert(type(tbl1) == "table", "argument #1 must be a table")
+
+    if extra == nil then
+        extra = tbl
+        return function(tbl)
+            assert(type(tbl) == "table", "argument #1 must be a table")
+            return __merge(tbl, extra)
+        end
+    else
+        assert(type(extra) == "table", "argument #2 must be a table")
+
+        return __merge(tbl, extra)
+    end
+
 end

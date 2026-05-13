@@ -1,9 +1,11 @@
 require 'prelude'
 
-local args = table.pack(...)
+local args = { ... }
 local loadstring = loadstring
 
 require 'test'
+
+_ENV.modlist = {}
 
 begin_data_stage()
 

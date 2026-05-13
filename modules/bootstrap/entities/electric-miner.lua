@@ -1,7 +1,6 @@
 require 'prelude'
 
 local base = data.raw['mining-drill']['electric-mining-drill']
-base.minable.mining_time = 1.5
 
 local drill = table.clone(data.raw['mining-drill']['electric-mining-drill'])
 

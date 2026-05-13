@@ -1,5 +1,7 @@
 require 'prelude'
 
+local tools = require 'tools'
+
 local boil_water = assoc{
     type='recipe',
     name=fns 'boil-water',
@@ -46,6 +48,9 @@ local boil_water = assoc{
         assoc{ type='fluid', amount=100, name='steam' }
     },
 }
+
+local steam = data.raw.fluid.steam
+local water = data.raw.fluid.water
 
 local plant = data.raw['assembling-machine']['chemical-plant']
 

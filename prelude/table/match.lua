@@ -60,17 +60,27 @@ function table.index_of(array, thing)
     return __index_of(array, thing)
 end
 
-function table.remove_matching(array, thing)
+function table.remove_matching(array, thing, all)
     if type(thing) ~= 'function' then
         thing = table.pattern(thing)
     end
     assert(type(array) == 'table', "argument #1 must be a table")
 
-    local ix = __index_of(array, thing)
-    if ix then 
-        return table.remove(array, ix)
+    if all then
+        local res = {}
+        local ix = __index_of(array, thing)
+        while ix do
+            table.insert(res, table.remove(array, ix))
+            ix = __index_of(array, thing)
+        end
+        return res
     else
-        return nil
+        local ix = __index_of(array, thing)
+        if ix then 
+            return table.remove(array, ix)
+        else
+            return nil
+        end
     end
 end
 
