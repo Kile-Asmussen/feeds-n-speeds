@@ -45,9 +45,9 @@ local function rail_icons(name)
     }
 end
 
-rail1.icons = altrecipes.rail_icons('stone-brick')
-rail2.icons = altrecipes.rail_icons('concrete')
-rail3.icons = altrecipes.rail_icons('refined-concrete')
+rail1.icons = rail_icons('stone-brick')
+rail2.icons = rail_icons('concrete')
+rail3.icons = rail_icons('refined-concrete')
 
 
 local tech = {
