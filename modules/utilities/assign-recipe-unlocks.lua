@@ -1,8 +1,9 @@
 require 'prelude'
 
+local tools = require 'tools'
+local debuglib = require 'debuglib'
 local remove = assoc{}
 local unlocks = array{}
-local debuglib = require 'debuglib'
 
 for _, recipe in opairs(data.raw.recipe) do
     if recipe.unlocked_by == nil then goto continue end
@@ -11,7 +12,7 @@ for _, recipe in opairs(data.raw.recipe) do
 
     remove[recipe.name] = true
 
-    if recipe.hidden goto continue end
+    if recipe.hidden then goto continue end
 
     if
         type(recipe.unlocked_by) == 'table' and
@@ -20,7 +21,7 @@ for _, recipe in opairs(data.raw.recipe) do
     then
         unlock = table.set(recipe.unlocked_by)
     elseif type(recipe.unlocked_by) == 'string' then
-        unlock = { [recipes.unlocked_by] = true }
+        unlock = { [recipe.unlocked_by] = true }
     else
         die("recipe " .. recipe.name .. " can't be unlocked by " .. tostring(recipe.unlocked_by))
     end
@@ -41,13 +42,10 @@ tools.remove_unlock(remove)
 
 for recipe, unlock in opairs(unlocks) do
     for tech, _ in opairs(unlock) do
-        if tech == '__recipe' then goto continue end
         if not data.raw.technology[tech] then
             die('no such technology: ' .. tech)
         end
 
-        table.insert(tech.effects, { type='unlock-recipe', recipe=unlock.__recipe })
-
-        ::continue::
+        table.insert(data.raw.technology[tech].effects, { type='unlock-recipe', recipe=unlock.__recipe })
     end
 end

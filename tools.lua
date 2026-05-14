@@ -203,7 +203,7 @@ end
 function tools.remove_unlock(names)
 
     if type(names) == 'string' then
-        names = { [names = true }
+        names = { [names] = true }
     end
 
     assert(type(names) == 'table', "argument #1 must be either a string or a table.set of strings")

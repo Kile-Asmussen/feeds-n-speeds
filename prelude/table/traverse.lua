@@ -149,7 +149,7 @@ local function __merge(tbl1, tbl2)
 end
 
 function table.merge(tbl, extra) 
-    assert(type(tbl1) == "table", "argument #1 must be a table")
+    assert(type(tbl) == "table", "argument #1 must be a table")
 
     if extra == nil then
         extra = tbl

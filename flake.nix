@@ -61,6 +61,7 @@
               typst
               gnumake
               ripgrep
+              imagemagick
             ];
           };
       }

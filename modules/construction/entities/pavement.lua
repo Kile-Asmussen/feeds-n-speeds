@@ -162,8 +162,8 @@ end
 for proto, entities in pairs(needs_paving) do
     for ent, val in pairs(entities) do
         val = table.clone(val)
-        if not data.raw[proto] or not data.raw[proto][name] then die("no such prototype: "
-            ..string.tablepath('data.raw', { proto, ent }) end
+        if not data.raw[proto] or not data.raw[proto][ent] then die("no such prototype: "
+            ..string.tablepath('data.raw', { proto, ent })) end
 
         local entity = data.raw[proto][ent]
 

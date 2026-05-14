@@ -11,7 +11,7 @@ utilities.control = asset{
 }
 
 utilities['data-updates'] = asset{
-    ['.assign-recipe-unlock'] = asset{ 'modules.production.recipes.update-barrels' }
+    ['.assign-recipe-unlocks'] = asset{ 'modules.production.recipes.update-barrels' }
 }
 
 return utilities:seal()

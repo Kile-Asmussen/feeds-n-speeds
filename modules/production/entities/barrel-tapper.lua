@@ -103,7 +103,7 @@ local tap_recipe = {
     type = 'recipe',
     name = tap.name,
     enabled = false,
-    unlocked_by = 'automation-2'
+    unlocked_by = 'automation-2',
     ingredients = {
         {type='item', name=iron_chest.name, amount=1},
         {type='item', name='engine-unit', amount=1},
