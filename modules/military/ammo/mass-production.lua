@@ -8,6 +8,7 @@ local function make_new_ammo_recipe(name, amount, ingredients)
     ammo.localised_name = { "item-name." .. name }
     ammo.localised_description = { fns_locale_key('recipe-description', 'weapon-mass-production') }
     ammo.category = 'crafting-with-fluid'
+    ammo.unlocked_by = 'military-4'
     ammo.energy_required = 2
     ammo.enabled = false
     ammo.ingredients = ingredients

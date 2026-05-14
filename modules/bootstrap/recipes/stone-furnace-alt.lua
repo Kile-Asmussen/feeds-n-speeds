@@ -24,6 +24,7 @@ old_recipe.ingredients = {
 local new_recipe = assoc{
     type = 'recipe',
     name = fns 'stone-furnace',
+    unlocked_by = fns 'basic-materials-processing',
     localised_name = array{"entity-name.stone-furnace"},
     order = 'a[stone-furnace]-b[stone-brick]',
     energy_required = 3.0,

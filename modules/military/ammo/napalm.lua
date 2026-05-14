@@ -30,6 +30,7 @@ local napalm_recipe = {
     subgroup = 'ammo',
     energy_required = 1,
     enabled = false,
+    unlocked_by = 'flamethrower',
     ingredients = {
         { type='fluid', name='light-oil', amount=50 },
         { type='item', name='plastic-bar', amount=2 },

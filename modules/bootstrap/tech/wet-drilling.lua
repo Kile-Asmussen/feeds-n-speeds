@@ -52,10 +52,10 @@ local wet = assoc{
             type = 'mining-with-fluid',
             modifier = true,
         },
-        assoc{
-            type = 'unlock-recipe',
-            recipe = fns 'burner-mining-drill-fluid',
-        },
+        -- assoc{
+        --     type = 'unlock-recipe',
+        --     recipe = fns 'burner-mining-drill-fluid',
+        -- },
     },
     research_trigger = assoc{
         type = 'craft-item',
@@ -66,8 +66,8 @@ local wet = assoc{
 
 table.merge(data.raw.technology['electric-mining-drill'], {
     effects = array{
-        assoc{ type = 'unlock-recipe', recipe = 'electric-mining-drill' },
-        assoc{ type = 'unlock-recipe', recipe = fns 'electric-mining-drill-fluid' },
+        -- assoc{ type = 'unlock-recipe', recipe = 'electric-mining-drill' },
+        -- assoc{ type = 'unlock-recipe', recipe = fns 'electric-mining-drill-fluid' },
     },
     prerequisites = { 'automation-science-pack', fns 'wet-drilling' }
 })

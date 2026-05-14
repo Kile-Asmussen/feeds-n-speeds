@@ -29,8 +29,7 @@ else
     ushell.ammo_type.action[2].action_delivery.projectile = ushell_proj.name
 end
 
-table.insert(data.raw.technology['uranium-ammo'].effects,
-    {type='unlock-recipe', recipe=fns 'uranium-shotgun-shell'})
+ushell.unlocked_by = 'uranium-ammo'
 
 prototype(
     ushell,

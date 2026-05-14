@@ -16,6 +16,7 @@ local boil_water = assoc{
     allowed_module_categories = {},
     subgroup = 'fluid-recipes',
     order = 'd[other-chemistry]-d[boiling]',
+    unlocked_by = 'fluid-handling',
     show_amount_in_title = false,
     icons = array{
         assoc{
@@ -70,6 +71,8 @@ boil_water.results[1].temperature = boil
 boil_water.energy_required = math.ceil(time)
 
 tools.remove_unlock('chemical-plant')
+
+data.raw.recipe['chemical-plant'].unlocked_by = 'fluid-handling'
 
 table.append(data.raw.technology['fluid-handling'].effects, {
     { type='unlock-recipe', recipe='chemical-plant' },

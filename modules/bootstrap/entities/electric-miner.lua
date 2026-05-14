@@ -4,6 +4,8 @@ local base = data.raw['mining-drill']['electric-mining-drill']
 
 local drill = table.clone(data.raw['mining-drill']['electric-mining-drill'])
 
+data.raw['mining-drill']['electric-mining-drill'].input_fluid_box = nil
+
 drill.name = fns 'electric-mining-drill-fluid'
 drill.minable.result = fns 'electric-mining-drill-fluid'
 drill.icon = nil
@@ -32,6 +34,7 @@ drill_item.icons = table.clone(drill.icons)
 local drill_recipe = assoc{
     type = 'recipe',
     name = drill.name,
+    unlocked_by = 'electric-mining-drill'
     enabled = false,
     energy_required = 2.0,
     ingredients = array{
@@ -46,4 +49,3 @@ local drill_recipe = assoc{
 
 prototype( drill, drill_item, drill_recipe )
 
-data.raw['mining-drill']['electric-mining-drill'].input_fluid_box = nil

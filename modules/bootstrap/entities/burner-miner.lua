@@ -43,9 +43,12 @@ drill_item.icon = nil
 drill_item.order = 'a[items]-a[burner-mining-drill]-b[fluid]'
 drill_item.place_result = drill.name
 
+data.raw.recipe['burner-mining-drill'].unlocked_by = 'steam-power'
+
 local drill_recipe = assoc{
     type = 'recipe',
     name = drill_item.name,
+    unlocked_by = fns 'wet-drilling',
     enabled = false,
     energy_required = 2.0,
     ingredients = array{

@@ -4,6 +4,7 @@ local tools = require 'tools'
 
 
 local tech = data.raw.technology
+local recipe = data.raw.recipe
 
 tools.remove_unlock('iron-stick')
 
@@ -53,6 +54,8 @@ tech.automation.effects = array{
     assoc{ type = 'unlock-recipe', recipe = fns 'big-steel-hopper' },
 }
 
+
+
 table.merge(tech['steam-power'], {
     localised_description = { fns_locale_key('technology-description', 'tweaked-steam-power') },
     research_trigger = assoc{
@@ -65,11 +68,6 @@ table.merge(tech['steam-power'], {
         'electronics',
         fns 'basic-materials-processing',
     },
-    effects = table.appending{
-        { type = 'unlock-recipe', recipe = 'transport-belt' },
-        { type = 'unlock-recipe', recipe = 'burner-mining-drill' },
-    },
-
 })
 
 -- tech['steam-power'].localised_description = { fns_locale_key('technology-description', 'tweaked-steam-power') }

@@ -20,6 +20,10 @@ rail1.localised_name = {"item-name.rail"}
 rail2.localised_name = {"item-name.rail"}
 rail3.localised_name = {"item-name.rail"}
 
+rail1.unlocked_by = 'railway'
+rail2.unlocked_by = fns 'concrete-rail'
+rail3.unlocked_by = fns 'concrete-rail'
+
 rail1.ingredients = {
     { amount = 4, name = 'stone-brick', type = 'item' },
     { amount = 2, name = 'iron-stick', type = 'item' },
@@ -70,8 +74,8 @@ local tech = {
         'railway',
     },
     effects = {
-        { type = 'unlock-recipe', recipe = fns 'rail-2' },
-        { type = 'unlock-recipe', recipe = fns 'rail-3' },
+        -- { type = 'unlock-recipe', recipe = fns 'rail-2' },
+        -- { type = 'unlock-recipe', recipe = fns 'rail-3' },
     },
     research_trigger = {
         type = 'craft-item',
