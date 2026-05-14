@@ -20,10 +20,6 @@ rail1.localised_name = {"item-name.rail"}
 rail2.localised_name = {"item-name.rail"}
 rail3.localised_name = {"item-name.rail"}
 
-rail1.hidden = not enabled('tweaks.concrete')
-rail2.hidden = not enabled('tweaks.concrete')
-rail3.hidden = not enabled('tweaks.concrete')
-
 rail1.ingredients = {
     { amount = 4, name = 'stone-brick', type = 'item' },
     { amount = 2, name = 'iron-stick', type = 'item' },
@@ -42,7 +38,13 @@ rail3.ingredients = {
 }
 rail3.allow_productivity = true
 
-local altrecipes = import 'extras.altrecipes'
+local function rail_icons(name)
+    return {
+        { icon = data.raw['rail-planner'].rail.icon, icon_size = 64 },
+        { icon = data.raw.item[name].icon, icon_size = 64, scale = 0.25, shift = { -8, -8 } }
+    }
+end
+
 rail1.icons = altrecipes.rail_icons('stone-brick')
 rail2.icons = altrecipes.rail_icons('concrete')
 rail3.icons = altrecipes.rail_icons('refined-concrete')

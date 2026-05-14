@@ -9,7 +9,6 @@ production.data = asset{
 
     '.entities.barrel-tapper',
     '.recipes.concrete',
-    '.recipes.rails',
     '.recipes.casting',
 
     ['.entities.nuclear-energy'] = asset{ '.fluids.water' }
