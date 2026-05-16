@@ -79,7 +79,7 @@ if napalm_steam.action[area].action_delivery.target_effects[damage].type ~= 'dam
 end
 napalm_steam.action[area].action_delivery.target_effects[damage].damage.amount = 5
 
-napalm_steam.action[direct].action_delivery.target_effects[1].initial_ENVround_flame_count = 4
+napalm_steam.action[direct].action_delivery.target_effects[1].initial_ground_flame_count = 4
 
 local tank_napalm_steam = table.clone(data.raw.stream['tank-flamethrower-fire-stream'])
 tank_napalm_steam.name = fns(tank_napalm_steam.name)

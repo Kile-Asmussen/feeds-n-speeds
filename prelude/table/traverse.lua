@@ -139,7 +139,7 @@ end
 
 local function __merge(tbl1, tbl2)
     for k, v in pairs(tbl2) do
-        if type(tbl1[k]) == 'table' and type(v) == 'function' then
+        if type(v) == 'function' then
             tbl1[k] = v(tbl1[k])
         else
             tbl1[k] = v

@@ -18,6 +18,7 @@ modules:require 'military'
 modules:require 'logistics'
 modules:require 'utilities'
 
+
 function modules.load_stage(stage)
     assert(modules.stages[stage], "not a valid stage: " .. stage)
 

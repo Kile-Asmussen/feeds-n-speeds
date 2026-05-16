@@ -1,10 +1,9 @@
+require 'prelude'
+fns_instance()
+
 _ENV.TESTING = true
 _ENV.QUIET = os.getenv("QUIET") and true or false
 _ENV.VERBOSE = os.getenv("VERBOSE") and true or false
-
-require 'prelude'
-
-_ENV.TESTING = true
 
 require 'test.data'
 require 'test.defines'
@@ -58,11 +57,11 @@ function _ENV.log(str)
     __print(debug.getline(2, str))
 end
 
-local function __ENVlobal_index(_, name)
+local function __global_index(_, name)
     die('_ENV.' .. name .. ' undefined', 3)
 end
 
-local function __ENVlobal_newindex(_, name, val)
+local function __global_newindex(_, name, val)
     die('_ENV.' .. name .. ' = ' .. tostring(val), 3)
 end
 

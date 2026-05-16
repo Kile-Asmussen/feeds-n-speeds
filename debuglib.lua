@@ -3,12 +3,15 @@ require 'prelude'
 local debuglib = namespace 'debuglib'
 
 debuglib.recursion_limit = 2
+debuglib.serialize = false
+debuglib.seen_tables = { [_ENV] = '_ENV' }
 
 debuglib.io = _ENV.io and { open = _ENV.io.open } or {}
 
 function debuglib.pp(data, root)
     local settings = {
         depth_limit = debuglib.recursion_limit or 2,
+        func_names = debuglib.serialize,
         indent = '  ',
         separator = '\n',
         small = { size = 4, length = 50, indent = '', separator = ' ' },
@@ -32,6 +35,7 @@ function debuglib.p(data, root)
     local settings = {
         depth_limit = debuglib.recursion_limit or 2,
         indent = '',
+        func_names = debuglib.serialize,
         separator = ' ',
         small = nil,
         root = root,
@@ -78,15 +82,15 @@ debuglib.__buffer_mt.__metatable = debuglib.__buffer_mt.__metatable
 
 function debuglib.print_any(buffer, data, name)  
 
-     if name ~= nil then
-             table.insert(buffer.path, name)
-     end
+    if name ~= nil then
+        table.insert(buffer.path, name)
+    end
 
-     debuglib['print_' .. type(data)](buffer, data)
+    (debuglib['print_' .. type(data)] or print_tostring)(buffer, data)
 
-     if name ~= nil then
-             table.remove(buffer.path)
-     end
+    if name ~= nil then
+        table.remove(buffer.path)
+    end
 end
 
 function debuglib.print_string(buffer, data)
@@ -97,11 +101,6 @@ local function print_tostring(buffer, data)
      buffer:print(tostring(data))
 end
 
-debuglib.print_number = print_tostring
-debuglib.print_boolean = print_tostring
-debuglib.print_nil = print_tostring
-debuglib.print_userdata = print_tostring
-debuglib.print_coroutine = print_tostring
 debuglib.IDENTIFIER = '[a-zA-Z_][a-zA-Z0-9_.]*'
 
 local read_files = {}
@@ -173,7 +172,11 @@ function debuglib.function_signature(func, short)
 end
 
 function debuglib.print_function(buffer, data) 
-    buffer:print(debuglib.function_signature(data))
+    if buffer.serialize then
+        buffer:print("function() end")
+    else
+        buffer:print(debuglib.function_signature(data))
+    end
 end
 
 function debuglib.print_table(buffer, data)

@@ -9,7 +9,7 @@ turret.icon = nil
 turret.minable = { mining_time = 0.5, result = fns 'shotgun-turret' }
 turret.attack_parameters = table.clone(data.raw.gun['combat-shotgun'].attack_parameters)
 turret.attack_parameters.damage_modifier = nil
-turret.fast_replaceable_ENVroup = 'ammo-turret'
+turret.fast_replaceable_group = 'ammo-turret'
 turret.max_health = 900
 
 for _, layer in ipairs(turret.graphics_set.base_visualisation.animation.layers) do

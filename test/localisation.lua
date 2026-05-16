@@ -1,5 +1,6 @@
 require 'prelude'
 
+fns_instance()
 
 local localisation = namespace 'test.localisation'
 local debuglib = require 'debuglib'
@@ -15,6 +16,8 @@ localisation.skipped_keys = {
 localisation.dead_types = {
 
 }
+
+localisation.require_descriptions = false
 
 function localisation.add_key(cat, key, content)
     localisation.keys[cat] = localisation.keys[cat] or {}
@@ -122,6 +125,7 @@ end
 localisation.__current_locale_map = table.null
 
 local open_file = io.open
+
 function localisation.current_locale_map()
 
     --[[ This function works pretty much perfectly ]]

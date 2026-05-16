@@ -27,6 +27,7 @@ require('settings-updates')
 print("\nSETTINGS-FINAL-FIXES")
 require('settings-final-fixes')
 
+fns_instance()
 begin_data_stage(_ENV.VERBOSE)
 
 print("\nDATA")
@@ -38,6 +39,7 @@ require('data-updates')
 print("\nDATA-FINAL-FIXES")
 require('data-final-fixes')
 
+fns_instance()
 tools.recursion_check(data.raw)
 
 begin_control_stage()
@@ -45,6 +47,7 @@ begin_control_stage()
 print("\nCONTROL")
 require('control')
 
+fns_instance()
 localisation.finalize()
 
 local keys

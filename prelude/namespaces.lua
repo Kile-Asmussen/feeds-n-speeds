@@ -7,7 +7,6 @@ local parents = {}
 local getmetatable = _ENV.getmetatable
 local setmetatable = _ENV.setmetatable
 
-local rawset = rawset
 local rawget = rawget
 
 local function __ns_new_key(self, name, val)

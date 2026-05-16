@@ -75,38 +75,33 @@ table.__assoc_mt = {
     __ipairs = __assoc_ipairs,
 }
 
-if _ENV.TESTING then
+function table.array_mt(tbl)
+    tbl = tbl or {}
+    assert(table.is_array(tbl), "non-array table passed to table.array")
+    assert(not getmetatable(tbl), "already has a metatable")
+    setmetatable(tbl, table.__array_mt)
+    return tbl
+end
 
-    function table.array(tbl)
-        tbl = tbl or {}
-        assert(table.is_array(tbl), "non-array table passed to table.array")
-        assert(not getmetatable(tbl), "already has a metatable")
-        setmetatable(tbl, table.__array_mt)
-        return tbl
-    end
+function table.assoc_mt(tbl)
+    tbl = tbl or {}
+    assert(table.is_assoc(tbl), "non-associative table passed to table.assoc")
+    assert(not getmetatable(tbl), "already has a metatable")
+    setmetatable(tbl, table.__array_mt)
+    return tbl
+end
 
-    function table.assoc(tbl)
-        tbl = tbl or {}
-        assert(table.is_assoc(tbl), "non-associative table passed to table.assoc")
-        assert(not getmetatable(tbl), "already has a metatable")
-        setmetatable(tbl, table.__array_mt)
-        return tbl
-    end
 
-else
+function table.array(tbl)
+    tbl = tbl or {}
+    assert(table.is_array(tbl), "non-array table passed to table.array")
+    return tbl
+end
 
-    function table.array(tbl)
-        tbl = tbl or {}
-        assert(table.is_array(tbl), "non-array table passed to table.array")
-        return tbl
-    end
-
-    function table.assoc(tbl)
-        tbl = tbl or {}
-        assert(table.is_assoc(tbl), "non-associative table passed to table.assoc")
-        return tbl
-    end
-
+function table.assoc(tbl)
+    tbl = tbl or {}
+    assert(table.is_assoc(tbl), "non-associative table passed to table.assoc")
+    return tbl
 end
 
 _ENV.assoc = table.assoc

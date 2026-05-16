@@ -156,19 +156,3 @@ function table.include(tbl1, tbl2)
     return tbl1
 end
 
-function table.soft_merge(conflict, tbl1, tbl2)
-    assert(type(conflict) == "function", "argument #1 must be a function")
-    assert(type(tbl1) == "table", "argument #2 must be a table")
-    assert(type(tbl2) == "table", "argument #3 must be a table")
-
-    for k, v in pairs(tbl2) do
-        if tbl1[k] then
-            tbl1[k] = conflict(tbl1[k], v, k)
-        else
-            tbl1[k] = v
-        end
-    end
-
-    return tbl
-end
-

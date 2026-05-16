@@ -1,4 +1,4 @@
-require 'prelude'
+local restore = require 'prelude'
 fns_control_stage()
 
 -- local tweaks = require 'tweaks'
@@ -12,3 +12,5 @@ fns_control_stage()
 
 require('modules')
     .load_stage 'control'
+
+restore()

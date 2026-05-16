@@ -1,15 +1,8 @@
-require 'prelude'
--- local tweaks = require 'tweaks'
--- local extras = require 'extras'
+local instance, restore = require 'prelude'
 
--- extras.read_toggles()
--- tweaks.read_toggles()
-
--- extras.data()
--- tweaks.data()
-
--- extras.data2()
--- tweaks.data2()
+fns_instance()
 
 require('modules')
     .load_stage 'data'
+
+fns_restore()

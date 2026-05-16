@@ -1,4 +1,4 @@
-require 'prelude'
+-- require 'prelude'
 -- local tweaks = require 'tweaks'
 -- local extras = require 'extras'
 
@@ -8,5 +8,9 @@ require 'prelude'
 -- extras.settings()
 -- tweaks.settings()
 
+fns_instance()
+
 require('modules')
     .load_stage 'settings'
+
+fns_restore()
