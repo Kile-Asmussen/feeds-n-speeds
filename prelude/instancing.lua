@@ -1,10 +1,3 @@
-
-local __pairs = pairs
-local __type = type
-local __rawget = rawget
-local __rawset = rawset
-local __print = print
-
 -- because Factorio doesn't instance mods, we have to do it here
 
 local _FNS = {}
@@ -173,41 +166,37 @@ _FNS.package = package and {
 
 _ENV._G = nil
 
-local function replace_contents(dst, src, rec)
-  local ind = rec and "" or "  "
-
-  for k, replacement in __pairs(src) do 
-    if __type(__rawget(dst, k)) == 'table' and __type(replacement) == 'table' and rec then
-      replace_contents(dst[k], replacement, false)
-    else
-      __rawset(dst, k, replacement)
-    end
+local function replace_contents(dst, src)
+  for k, replacement in pairs(src) do 
+    rawset(dst, k, replacement)
   end
 
-  for k, _ in __pairs(dst) do
-    if __rawget(src, k) == nil then
-      __rawset(dst, k, nil)
+  for k, _ in pairs(dst) do
+    if rawget(src, k) == nil then
+      rawset(dst, k, nil)
     end
   end
 end
+
+local _FNS_STRING_MT = { __index = _FNS.string }
+local _FNS_STRING_BACKUP = nil
+
 
 local _FNS_BACKUP = {}
 local _FNS_IS_INSTANCED = false
 
-function _FNS.fns_instance()
+function _ENV.__feeds_n_speeds_instance()
   if _FNS_IS_INSTANCED then return end
-  replace_contents(_FNS_BACKUP, _ENV, true)
-  replace_contents(_ENV, _FNS, true)
-  _FNS_IS_INSTANCED = true
+  replace_contents(_FNS_BACKUP, _ENV)
+  replace_contents(_ENV, _FNS)
+  _FNS_STRING_BACKUP = getmetatable("")
+  setmetatable("", _FNS_STRING_MT)
 end
-
-_ENV.fns_instance = _FNS.fns_instance
 
 function _FNS.fns_restore()
   if not _FNS_IS_INSTANCED then return end
   replace_contents(_FNS, _ENV, true)
   replace_contents(_ENV, _FNS_BACKUP, true)
-  _FNS_IS_INSTANCED = false
+  _FNS_STRING_MT = getmetatable("")
+  setmetatable("", _FNS_STRING_BACKUP)
 end
-
-_ENV.fns_restore = _FNS.fns_restore
