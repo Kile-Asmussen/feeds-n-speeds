@@ -1,4 +1,3 @@
-require 'prelude'
 
 local gun = data.raw.gun
 

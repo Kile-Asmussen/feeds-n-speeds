@@ -1,4 +1,3 @@
-require 'prelude'
 
 local recipes = data.raw.recipe
 local tech = data.raw.technology

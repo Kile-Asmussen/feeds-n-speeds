@@ -1,4 +1,3 @@
-require 'prelude'
 
 local utilities = namespace 'utilities'
 
@@ -11,7 +10,10 @@ utilities.control = asset{
 }
 
 utilities['data-updates'] = asset{
-    ['.assign-recipe-unlocks'] = asset{ 'modules.production.recipes.update-barrels' }
+    ['.assign-recipe-unlocks'] = asset{
+        'modules.production.recipes.update-barrels'
+        'modules.integrations.textplates.unlocks'
+    }
 }
 
 return utilities:seal()

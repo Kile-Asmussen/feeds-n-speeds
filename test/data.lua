@@ -1,4 +1,3 @@
-require 'prelude'
 
 local localisation = require 'test.localisation'
 local debuglib = require 'debuglib'

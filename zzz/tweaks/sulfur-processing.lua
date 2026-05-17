@@ -1,4 +1,3 @@
-require 'prelude'
 
 local sulfur_processing = namespace 'tweaks.sulfur-processing'
 

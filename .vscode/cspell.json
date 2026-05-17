@@ -18,6 +18,7 @@
         "serde",
         "sz",
         "tbl",
+        "unobtainables",
         "Vec",
         "vecadd",
         "vecmul",

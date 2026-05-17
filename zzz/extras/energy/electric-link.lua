@@ -1,4 +1,3 @@
-require 'prelude'
 
 local link = table.clone(data.raw.accumulator.accumulator)
 local switch = data.raw['power-switch']['power-switch']

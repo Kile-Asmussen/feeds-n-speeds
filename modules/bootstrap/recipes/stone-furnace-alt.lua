@@ -1,4 +1,3 @@
-require 'prelude'
 
 local old_recipe = data.raw.recipe['stone-furnace']
 

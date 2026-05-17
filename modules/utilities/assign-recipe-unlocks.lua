@@ -1,4 +1,3 @@
-require 'prelude'
 
 local tools = require 'tools'
 local debuglib = require 'debuglib'

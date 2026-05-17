@@ -1,4 +1,5 @@
 require 'prelude'
+
 fns_instance()
 
 _ENV.TESTING = true
@@ -73,7 +74,6 @@ _ENV.loadfile = nil
 _ENV.dofile = nil
 _ENV.package = nil
 _ENV.math.randomseed = nil
-_ENV.print = nil
 
 _ENV.debug = {
     getinfo = debug.getinfo,
@@ -105,6 +105,6 @@ end))
 setmetatable(_ENV.debug, __lock_mt('debug'))
 
 setmetatable(_ENV, {
-    __index = __ENVlobal_index,
-    __newindex = __ENVlobal_newindex,
+    __index = __global_index,
+    __newindex = __global_newindex,
 })

@@ -1,4 +1,3 @@
-require 'prelude'
 
 local debuglib = namespace 'debuglib'
 
@@ -80,6 +79,11 @@ end
 debuglib.__buffer_mt = { __index = debuglib, __tostring = table.concat }
 debuglib.__buffer_mt.__metatable = debuglib.__buffer_mt.__metatable
 
+
+local function print_tostring(buffer, data)
+     buffer:print(tostring(data))
+end
+
 function debuglib.print_any(buffer, data, name)  
 
     if name ~= nil then
@@ -97,9 +101,6 @@ function debuglib.print_string(buffer, data)
      buffer:print(string.repr(data))
 end
 
-local function print_tostring(buffer, data)
-     buffer:print(tostring(data))
-end
 
 debuglib.IDENTIFIER = '[a-zA-Z_][a-zA-Z0-9_.]*'
 

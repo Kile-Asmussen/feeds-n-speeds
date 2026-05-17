@@ -1,4 +1,3 @@
-require 'prelude'
 
 local tech = data.raw.technology
 

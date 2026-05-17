@@ -1,4 +1,3 @@
-require 'prelude'
 
 -- Copy burner mining drill and add fluid input on south side (opposite output)
 local base = data.raw['mining-drill']['burner-mining-drill']

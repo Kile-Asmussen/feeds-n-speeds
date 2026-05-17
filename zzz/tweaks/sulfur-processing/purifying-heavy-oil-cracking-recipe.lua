@@ -1,4 +1,3 @@
-require 'prelude'
 
 -- Purifying variant of heavy oil cracking
 -- Slightly slower but higher yield, also extracts sulfur

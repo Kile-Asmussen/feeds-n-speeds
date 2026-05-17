@@ -1,4 +1,3 @@
-require 'prelude'
 
 local utilities = require 'extras.utilities'
 local concrete = namespace 'tweaks.concrete'

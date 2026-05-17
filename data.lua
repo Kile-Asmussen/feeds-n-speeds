@@ -1,4 +1,4 @@
-local instance, restore = require 'prelude'
+require 'prelude'
 
 fns_instance()
 

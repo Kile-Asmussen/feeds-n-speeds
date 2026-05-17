@@ -1,4 +1,3 @@
-require 'prelude'
 
 local chests = namespace 'extras.chests'
 chests.enabled = true

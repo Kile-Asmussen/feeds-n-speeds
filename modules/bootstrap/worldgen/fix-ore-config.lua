@@ -1,4 +1,3 @@
-require 'prelude'
 
 local name = fns 'sulfur-ore'
 

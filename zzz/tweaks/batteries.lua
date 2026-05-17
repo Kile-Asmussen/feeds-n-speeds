@@ -1,4 +1,3 @@
-require 'prelude'
 
 local batteries = namespace 'tweaks.batteries'
 batteries.enabled = true 

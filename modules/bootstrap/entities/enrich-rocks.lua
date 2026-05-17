@@ -1,4 +1,3 @@
-require 'prelude'
 
 table.append(
     data.raw['simple-entity']['huge-rock'].minable.results,

@@ -1,4 +1,3 @@
-require 'prelude'
 
 local ores = namespace 'tweaks.ores'
 

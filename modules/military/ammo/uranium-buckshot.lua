@@ -1,4 +1,3 @@
-require 'prelude'
 
 local ushell = table.clone(data.raw.ammo['piercing-shotgun-shell'])
 local ushell_proj = table.clone(data.raw.projectile['piercing-shotgun-pellet'])

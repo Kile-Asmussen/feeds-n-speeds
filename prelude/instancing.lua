@@ -178,25 +178,22 @@ local function replace_contents(dst, src)
   end
 end
 
-local _FNS_STRING_MT = { __index = _FNS.string }
-local _FNS_STRING_BACKUP = nil
-
 
 local _FNS_BACKUP = {}
 local _FNS_IS_INSTANCED = false
 
-function _ENV.__feeds_n_speeds_instance()
-  if _FNS_IS_INSTANCED then return end
+function _ENV.fns_instance()
   replace_contents(_FNS_BACKUP, _ENV)
   replace_contents(_ENV, _FNS)
-  _FNS_STRING_BACKUP = getmetatable("")
-  setmetatable("", _FNS_STRING_MT)
+  getmetatable("").__index = _FNS.string
 end
 
+function _FNS.fns_instance() end
+
 function _FNS.fns_restore()
-  if not _FNS_IS_INSTANCED then return end
   replace_contents(_FNS, _ENV, true)
   replace_contents(_ENV, _FNS_BACKUP, true)
-  _FNS_STRING_MT = getmetatable("")
-  setmetatable("", _FNS_STRING_BACKUP)
+  getmetatable("").__index = _FNS_BACKUP.string
 end
+
+function _ENV.fns_restore() end

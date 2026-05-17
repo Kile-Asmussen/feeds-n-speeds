@@ -1,4 +1,3 @@
-require 'prelude'
 
 local start = namespace 'tweaks.start'
 start.enabled = true

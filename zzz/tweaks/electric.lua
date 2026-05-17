@@ -1,4 +1,3 @@
-require 'prelude'
 
 local electric = namespace 'tweaks.electric'
 

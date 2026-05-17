@@ -1,4 +1,3 @@
-require 'prelude'
 
 local bootstrap = namespace 'modules.bootstrap'
 

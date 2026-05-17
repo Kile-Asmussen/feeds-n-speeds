@@ -1,5 +1,4 @@
-local restore = require 'prelude'
-fns_control_stage()
+local restore = fns_control_stage()
 
 -- local tweaks = require 'tweaks'
 -- local extras = require 'extras'

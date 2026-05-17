@@ -1,4 +1,3 @@
-require 'prelude'
 
 local machines = namespace 'tweaks.machines'
 machines.enabled = true

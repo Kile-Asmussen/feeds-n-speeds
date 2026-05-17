@@ -1,4 +1,3 @@
-require 'prelude'
 
 -- Simple concrete: same inputs as vanilla, lower output (5 vs 10)
 -- Assembly machine craftable (crafting-with-fluid)

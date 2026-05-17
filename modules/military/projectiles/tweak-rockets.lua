@@ -1,4 +1,3 @@
-require 'prelude'
 
 local rocket = data.raw.projectile.rocket 
 rocket.acceleration = 0.02

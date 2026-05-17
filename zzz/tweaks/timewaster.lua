@@ -1,4 +1,3 @@
-require 'prelude'
 
 local timewaster = namespace 'tweaks.timewaster'
 

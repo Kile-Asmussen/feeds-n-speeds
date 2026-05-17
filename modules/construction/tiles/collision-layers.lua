@@ -1,4 +1,3 @@
-require 'prelude'
 
 local tier1 = fns('basic_pavement', '_')
 local tier2 = fns('sturdy_pavement', '_')

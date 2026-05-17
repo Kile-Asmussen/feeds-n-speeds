@@ -1,4 +1,3 @@
-require 'prelude'
 
 local debuglib = require 'debuglib'
 local loading = namespace 'loading'

@@ -1,4 +1,3 @@
-require 'prelude'
 
 local function name(l) return fns('worker-robots-battery') .. '-' .. l end
 

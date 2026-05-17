@@ -1,4 +1,3 @@
-require 'prelude'
 
 local robotics = namespace 'tweaks.robotics'
 robotics.enabled = true

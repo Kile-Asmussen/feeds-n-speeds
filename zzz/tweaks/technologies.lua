@@ -1,4 +1,3 @@
-require 'prelude'
 
 local technologies = namespace 'tweaks.technologies'
 

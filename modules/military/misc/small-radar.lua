@@ -1,4 +1,3 @@
-require 'prelude'
 
 local small = table.clone(data.raw.radar.radar)
 

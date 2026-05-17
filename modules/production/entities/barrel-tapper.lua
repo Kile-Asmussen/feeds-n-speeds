@@ -1,4 +1,3 @@
-require 'prelude'
 
 local iron_chest =  data.raw.container['iron-chest']
 local tap = table.clone(data.raw.furnace['stone-furnace'])

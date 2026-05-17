@@ -1,4 +1,3 @@
-require 'prelude'
 
 -- Purifying variant of advanced oil processing
 -- Slightly slower but higher yield, also extracts sulfur

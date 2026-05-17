@@ -3,7 +3,6 @@
 --
 -- Usage: require 'test.script' early in test harness
 
-require 'prelude'
 
 local script = namespace 'script'
 local debuglib = require 'debuglib'

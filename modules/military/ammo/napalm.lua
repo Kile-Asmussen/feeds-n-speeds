@@ -1,4 +1,3 @@
-require 'prelude'
 
 local napalm = table.clone(data.raw.fluid['light-oil'])
 napalm.name = fns 'napalm'

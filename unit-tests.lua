@@ -1,5 +1,4 @@
 
-require 'prelude'
 local debuglib = require 'debuglib'
 
 local modules = { 'debuglib', 'prelude', 'string', 'table' }
@@ -20,12 +19,16 @@ function fiction(description, test_func)
     table.insert(__tests, {description=description, test_func=test_func, success=false})
 end
 
+function assert(a, msg)
+    if not a then error(msg or "assertion failed", 2)
+end
+
 --- Assertion helpers (global)
 function assert_eq(a, b, msg)
     if a ~= b then
         error((msg or 'values not equal')
             .. ': expected ' .. tostring(b)
-            .. ', got ' .. tostring(a))
+            .. ', got ' .. tostring(a), 2)
     end
 end
 
@@ -33,7 +36,7 @@ function assert_is(val, expected_type, msg)
     if type(val) ~= expected_type then
         error((msg or 'not the right type')
             .. ': expected ' .. tostring(expected_type)
-            .. ', got ' .. type(val))
+            .. ', got ' .. type(val), 2)
     end
 end
 
@@ -60,7 +63,7 @@ end
 local __print = print
 local __exit = os.exit
 local __require = require
-local __ENVetinfo = debug.getinfo
+local __getinfo = debug.getinfo
 
 -- sandboxing
 -- Critical: filesystem, OS, module loading, sandbox escape                               
@@ -76,7 +79,6 @@ _ENV.loadstring = nil
 _ENV.getfenv = nil
 _ENV.setfenv = nil
 _ENV.newproxy = nil
-_ENV.print = nil
 _ENV.rawget = nil
 _ENV.table.rawget = nil
 _ENV.rawset = nil
@@ -103,7 +105,7 @@ for _, test in ipairs(__tests) do
 
     local success, err = pcall(test.test_func)
     
-    local info = __ENVetinfo(test.test_func)
+    local info = __getinfo(test.test_func)
     local loc = info and tostring(info.short_src) .. ':' .. tostring(info.linedefined)
     loc = loc and ' (' .. loc .. ')' or ''
 

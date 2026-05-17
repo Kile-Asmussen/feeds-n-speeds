@@ -1,4 +1,3 @@
-require 'prelude'
 
 local cliffs = data.raw.technology['cliff-explosives']
 

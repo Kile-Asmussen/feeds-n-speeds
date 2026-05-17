@@ -1,4 +1,3 @@
-require 'prelude'
 
 local base = data.raw['mining-drill']['electric-mining-drill']
 

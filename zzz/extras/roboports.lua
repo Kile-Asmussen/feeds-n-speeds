@@ -1,4 +1,3 @@
-require 'prelude'
 
 local roboports = namespace 'extras.roboports'
 roboports.enabled = true

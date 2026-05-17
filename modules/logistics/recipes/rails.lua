@@ -1,4 +1,3 @@
-require 'prelude'
 
 local rail1 = table.clone(data.raw.recipe.rail)
 local rail2 = table.clone(data.raw.recipe.rail)

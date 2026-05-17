@@ -1,4 +1,3 @@
-require 'prelude'
 
 local malltech = namespace 'tweaks.malltech'
 malltech.enabled = true

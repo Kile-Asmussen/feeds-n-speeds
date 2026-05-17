@@ -1,4 +1,3 @@
-require 'prelude'
 
 data.raw.item.sulfur.pictures = table.imap(
     {

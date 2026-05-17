@@ -1,5 +1,4 @@
 
-require 'prelude'
 
 local hopper = namespace 'extras.chests.hopper'
 

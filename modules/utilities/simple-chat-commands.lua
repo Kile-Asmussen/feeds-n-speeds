@@ -1,4 +1,3 @@
-require 'prelude'
 
 local function reset_tech(event)
     game.players[event.player_index].force.reset_technology_effects()
