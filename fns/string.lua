@@ -36,6 +36,6 @@ string.unpack = __env_string.unpack or function() error("string.unpack is not de
 
 require 'fns.string.extras'
 
-string_.restore()
+string.restore()
 
 return string_:seal()

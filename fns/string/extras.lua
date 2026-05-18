@@ -121,7 +121,6 @@ function string.replace_prefix(str, sample, rep)
     end
 end
 
-
 function string.endswith(str, sample)
     assert(type(sample) == 'string', "argument #2 must be a string")
     if sample == '' then return true end
@@ -129,7 +128,6 @@ function string.endswith(str, sample)
     if #sample > #str then return false end
     return str:sub(#str - #sample - 1,  #str) == sample
 end
-
 
 function string.before(str, pat, include)
     assert(type(pat) == 'string', "argument #2 must be a string")
