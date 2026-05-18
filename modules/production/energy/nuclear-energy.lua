@@ -36,10 +36,8 @@ heat_exchanger.energy_source.min_working_temperature = high_temperature
 steam_turbine.maximum_temperature = high_temperature
 steam_turbine.energy_source.max_temperature = high_temperature
 
-heating_tower.scale_energy_usage = true
 heating_tower.localised_description = {fns_locale_key('entity-description', 'tweaked-heating-tower')}
 
-nuclear_reactor.scale_energy_usage = true
 nuclear_reactor.localised_description = {fns_locale_key('entity-description', 'tweaked-nuclear-reactor')}
 
 nuclear_reactor.neighbour_bonus = 0.5

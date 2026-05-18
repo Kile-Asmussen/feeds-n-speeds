@@ -11,6 +11,7 @@ modules.stages = asset{
 }
 
 modules:require 'construction'
+modules:require 'integrations'
 modules:require 'production'
 modules:require 'bootstrap'
 modules:require 'military'

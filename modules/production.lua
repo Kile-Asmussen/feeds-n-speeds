@@ -6,7 +6,7 @@ production.data = asset{
     '.fluids.oil-processing',
     ['.fluids.boil-water'] = asset{ '.fluids.water' },
 
-    '.entities.barrel-tapper',
+    '.fluids.barrel-tapper',
     '.recipes.concrete',
     '.recipes.casting',
 

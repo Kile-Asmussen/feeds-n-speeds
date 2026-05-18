@@ -18,15 +18,15 @@ boiler.energy_source = {
 
 for _, picture in pairs(boiler.pictures) do
     picture.fire = nil
-    picture.fire_ENVlow = nil
+    picture.fire_glow = nil
 end
-
+ 
 
 -- Keep same energy consumption as vanilla boiler (1.8MW)
 boiler.energy_consumption = '1.8MW'
 
 -- Put in same fast-replace group as regular boiler
-boiler.fast_replaceable_ENVroup = 'boiler'
+boiler.fast_replaceable_group = 'boiler'
 
 local boiler_item = {
     type = 'item',

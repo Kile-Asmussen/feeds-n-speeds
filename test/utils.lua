@@ -160,7 +160,7 @@ function circuit_connector_definitions_at(position)
             },
             led_blue = empty_sprite(),
             led_blue_off = empty_sprite(),
-            led_ENVreen = empty_sprite(),
+            led_green = empty_sprite(),
             led_red = empty_sprite(),
             led_light = { intensity = 0, size = 0.9 },
         },

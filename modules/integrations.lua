@@ -2,9 +2,9 @@
 local integrations = namespace "integrations"
 
 integrations.data = asset{
-    "textplates.unobtainables"
+    ".textplates.unobtainables"
 }
 
 integrations['data-updates'] = asset{
-    "textplates.unlocks"
+    ".textplates.unlocks"
 }

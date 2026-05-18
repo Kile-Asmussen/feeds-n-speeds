@@ -11,10 +11,9 @@ for _, k in ipairs{
   'rawlen', 'rawset', 'require', 'select', 'setmetatable',
   'string', 'table', 'tonumber', 'tostring', 'type', 'unpack',
   'xpcall',
-  -- tables
-  'string', 'debug', 'os', 'math', 'io', 'bit32', 'table', 'package',
-  -- factorio
-  'data', 'remote', 'settings', 'mods', 'script', 'defines', "log",
+
+  -- factorio-specific
+  'data', 'remote', 'settings', 'mods', 'script', 'defines', 'log', 'localised_print', 'table_size'
 } do
   _FNS[k] = _ENV[k]
 end

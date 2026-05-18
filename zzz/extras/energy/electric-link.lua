@@ -13,7 +13,7 @@ for _, field in ipairs(
     .corpse
     .dying_explosion
     .damaged_trigger_effect
-    .fast_replaceable_ENVroup
+    .fast_replaceable_group
     .icon
     -- .frozen_patch
     .max_health
@@ -39,11 +39,11 @@ link.energy_source = {
     usage_priority = 'primary-input'
 }
 
--- link.chargeable_ENVraphics.c
+-- link.chargeable_graphics.c
 
 link.minable.result = link.name
 
-link.chargable_ENVraphics.picture = {
+link.chargable_graphics.picture = {
     layers = {
         {
             filename = '__base__/graphics/entity/power-switch/power-switch.png',
@@ -74,11 +74,11 @@ link.chargable_ENVraphics.picture = {
     },
 }
 
-local animation_layers = table.clone(link.chargable_ENVraphics.picture.layers)
+local animation_layers = table.clone(link.chargable_graphics.picture.layers)
 animation_layers[1].repeat_count = switch.overlay_loop.frame_count
 animation_layers[2].repeat_count = switch.overlay_loop.frame_count
 
-link.chargable_ENVraphics.charge_animation = {
+link.chargable_graphics.charge_animation = {
     layers = {
         {
             layers = animation_layers
@@ -87,7 +87,7 @@ link.chargable_ENVraphics.charge_animation = {
     }
 }
 
-link.chargable_ENVraphics.discharge_animation = table.clone(link.chargable_ENVraphics.charge_animation)
+link.chargable_graphics.discharge_animation = table.clone(link.chargable_graphics.charge_animation)
 
 link.icons = {
     {
@@ -106,7 +106,7 @@ link.icons = {
     },
 }
 
-table.traverse(link.chargable_ENVraphics, function(x)
+table.traverse(link.chargable_graphics, function(x)
     if x == "__base__/graphics/entity/accumulator/accumulator.png" then
         return "__base__/graphics/entity/power-switch/power-switch.png", true
     elseif x == "__base__/graphics/entity/accumulator/accumulator-shadow.png" then
