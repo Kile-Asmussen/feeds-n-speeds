@@ -1,6 +1,6 @@
 
 
-local functions = require("fns.namespace")("functions")
+local functions = require("namespace")("functions")
 
 function functions.assert(cond, msg)
     if not cond then error(msg, 3) end

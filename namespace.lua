@@ -118,11 +118,11 @@ local function list_namespaces()
     return table.sorted_keys(namespaces)
 end
 
-local namespace = new_namespace "namespace"
+local namespace = new_namespace(nil, "namespace")
 
-namespace.import = import_namespace,
-namespace.is = isnamespace,
-namespace.list = list_namespaces,
+namespace.import = import_namespace
+namespace.is = isnamespace
+namespace.list = list_namespaces
 getmetatable(namespace).__call = new_namespace
 
 -- little shuffle to return namespace.seal

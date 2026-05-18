@@ -4,12 +4,12 @@ local __env_string = _ENV.string
 
 function string_.use()
     _ENV.string = string_
-    getmetatable("").__index == string_
+    getmetatable("").__index = string_
 end
 
 function string_.restore()
     _ENV.string = __env_string
-    getmetatable("").__index == __env_string
+    getmetatable("").__index = __env_string
 end
 
 string_.use()
