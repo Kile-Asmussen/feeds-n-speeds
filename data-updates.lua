@@ -1,7 +1,9 @@
 
-fns_instance()
+local fns = require 'fns'
+
+fns.use()
 
 require('modules')
     .load_stage 'data-updates'
 
-fns_restore()
+fns.restore()

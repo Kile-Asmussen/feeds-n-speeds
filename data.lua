@@ -1,8 +1,8 @@
-require 'prelude'
+local fns = require 'fns'
 
-fns_instance()
+fns.use()
 
 require('modules')
     .load_stage 'data'
 
-fns_restore()
+fns.restore()
