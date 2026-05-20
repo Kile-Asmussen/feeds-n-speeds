@@ -1,5 +1,5 @@
 
-local tools = require 'tools'
+local tools = require 'gadgets'
 
 local steam = data.raw.fluid.steam
 local water = data.raw.fluid.water

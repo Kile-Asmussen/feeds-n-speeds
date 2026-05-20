@@ -1,5 +1,5 @@
 
-local tools = require 'tools'
+local tools = require 'gadgets'
 
 local smg = table.clone(data.raw.recipe['submachine-gun'])
 local shotty = table.clone(data.raw.recipe['combat-shotgun'])

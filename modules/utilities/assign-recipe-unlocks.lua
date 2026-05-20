@@ -1,5 +1,5 @@
 
-local tools = require 'tools'
+local tools = require 'gadgets'
 local debuglib = require 'debuglib'
 local remove = assoc{}
 local unlocks = array{}

@@ -1,7 +1,7 @@
 
-local tools = namespace 'tools'
+local gadgets = namespace 'gadgets'
 
-function tools.resource_autoplace_all_patches(tbl)
+function gadgets.resource_autoplace_all_patches(tbl)
 
     local expr = table.concat{
         "resource_autoplace_all_patches{",
@@ -27,7 +27,7 @@ function tools.resource_autoplace_all_patches(tbl)
 
 end
 
-function tools.restart_toggle()
+function gadgets.restart_toggle()
     data:extend{{
         type = 'bool-setting',
         name = fns 'restart-toggle',
@@ -37,13 +37,13 @@ function tools.restart_toggle()
     }}
 end
 
-tools.icon_sizes = {
+gadgets.icon_sizes = {
     technology = 256,
     recipe = 64,
     item = 64,
 }
 
-tools.icon_scales = {
+gadgets.icon_scales = {
     tiny = 0.25,
     small = 0.33,
     medium = 0.5,
@@ -51,7 +51,7 @@ tools.icon_scales = {
     huge = 1.0,
 }
 
-tools.icons_shifts = {
+gadgets.icons_shifts = {
     tiny = 8,
     small = 6,
     medium = 5,
@@ -59,7 +59,7 @@ tools.icons_shifts = {
     huge = 0,
 }
 
-tools.icon_placements = {
+gadgets.icon_placements = {
     upleft = { -1, 1 },
     loleft = { -1, 1 },
     upright = { 1, -1 },
@@ -67,14 +67,14 @@ tools.icon_placements = {
     center = { 0, 0 }
 }
 
-function tools.color(col)
+function gadgets.color(col)
     assert(type(col) == 'table' or type(col) == 'string', "colors must be strings or tables")
-    if type(col) == 'string' then return tools.hexcolor(col) end
+    if type(col) == 'string' then return gadgets.hexcolor(col) end
     assert(#col == 3 or #col == 4, "colors must have 3 or 4 components")
     assert(table.iall(col, functions.as('number')), "colors must have 3 or 4 components")
 end
 
-function tools.hexcolor(hex)
+function gadgets.hexcolor(hex)
     assert(type(hex) == 'string', "argument #1 must be a string")
     local color = hex:match('#(%X%X%X%X%X%X%X%X)') or hex:match('#(%X%X%X%X%X%X)')
     assert(color, "invalid color format, must be 6 or 8 hex digits")
@@ -85,21 +85,21 @@ function tools.hexcolor(hex)
     return res
 end
 
-function tools.icons(icon, icon2)
+function gadgets.icons(icon, icon2)
     icon = assoc(icon)
     icon2 = assoc(icon)
 
     if not icon.shift then
-        icon.shift = tools.icon_placements[icon.placement]
+        icon.shift = gadgets.icon_placements[icon.placement]
         if icon.shift then
-            table.vecmul(icon.shift, tools.icons_shifts[icon.placement])
+            table.vecmul(icon.shift, gadgets.icons_shifts[icon.placement])
         end
     end
 
     if not icon2.shift then
-        icon2.shift = tools.icon_placements[icon2.placement]
+        icon2.shift = gadgets.icon_placements[icon2.placement]
         if icon2.shift then
-            table.vecmul(icon2.shift, tools.icons_shifts[icon2.placement])
+            table.vecmul(icon2.shift, gadgets.icons_shifts[icon2.placement])
         end
     end
 
@@ -115,14 +115,14 @@ function tools.icons(icon, icon2)
     icon.name = nil
     icon2.name = nil
 
-    icon.icon_size = tools.icon_sizes[icon.type]
-    icon2.icon_size = tools.icon_sizes[icon2.type]
+    icon.icon_size = gadgets.icon_sizes[icon.type]
+    icon2.icon_size = gadgets.icon_sizes[icon2.type]
 
-    icon.tint = icon.tint and tools.color(icon.tint)
-    icon2.tint = icon2.tint and tools.color(icon2.tint)
+    icon.tint = icon.tint and gadgets.color(icon.tint)
+    icon2.tint = icon2.tint and gadgets.color(icon2.tint)
 
-    icon.scale = tools.icon_scales[icon.scale] or icon.scale
-    icon2.scale = tools.icon_scales[icon2.scale] or icon2.scale
+    icon.scale = gadgets.icon_scales[icon.scale] or icon.scale
+    icon2.scale = gadgets.icon_scales[icon2.scale] or icon2.scale
 
     icon.float = true
     icon2.float = true
@@ -133,7 +133,7 @@ function tools.icons(icon, icon2)
     }
 end
 
-tools.science_pack_tier = {
+gadgets.science_pack_tier = {
     ["automation-science-pack"]      = 1,
     ["logistic-science-pack"]        = 2,
     ["military-science-pack"]        = 3,
@@ -150,7 +150,7 @@ tools.science_pack_tier = {
 
 local entity_to_techs = table.null
 
-function tools.entity_tier(name)
+function gadgets.entity_tier(name)
     if entity_to_techs ~= table.null then goto result end
 
     entity_to_techs = {}
@@ -173,33 +173,33 @@ function tools.entity_tier(name)
 
     ::result::
     if not entity_to_techs[name] then return 0 end
-    return table.max(table.collect(entity_to_techs[name], tools.highest_unlock))
+    return table.max(table.collect(entity_to_techs[name], gadgets.highest_unlock))
 end
 
-function tools.highest_tier_pack(name)
+function gadgets.highest_tier_pack(name)
     local technology = data.raw.technology[name]
     assert(technology, "no such technology: " .. name)
     if not technology.unit then return 0 end
 
     local highest = table.max(technology.unit.ingredients, function(u, v)
-        return tools.science_pack_tier[u[1]] < tools.science_pack_tier[v[1]]
+        return gadgets.science_pack_tier[u[1]] < gadgets.science_pack_tier[v[1]]
     end)
-    return tools.science_pack_tier[highest[1]]
+    return gadgets.science_pack_tier[highest[1]]
 end
 
 local highest_unlock = {}
 
-function tools.highest_unlock(name)
+function gadgets.highest_unlock(name)
     if not highest_unlock[name] then
         local tech = data.raw.technology[name]
-        local prereqs = table.collect(tech.prerequisites, tools.highest_unlock)
-        table.insert(prereqs, tools.highest_unlock(name))
+        local prereqs = table.collect(tech.prerequisites, gadgets.highest_unlock)
+        table.insert(prereqs, gadgets.highest_unlock(name))
         highest_unlock[name] = table.max(prereqs)
     end
     return highest_unlock[name]
 end
 
-function tools.remove_unlock(names)
+function gadgets.remove_unlock(names)
 
     if type(names) == 'string' then
         names = { [names] = true }
@@ -214,7 +214,7 @@ function tools.remove_unlock(names)
     end
 end
 
-tools.si_prefixes = {
+gadgets.si_prefixes = {
     'k', 'M', 'G', 'T',
     k = 1000,
     M = 1000 * 1000,
@@ -222,15 +222,15 @@ tools.si_prefixes = {
     T = 1000 * 1000 * 1000 * 1000,
 }
 
-function tools.to_si(energy)
+function gadgets.to_si(energy)
     local si = ''
 
-    for i = 1, #tools.si_prefixes do
+    for i = 1, #gadgets.si_prefixes do
 
         energy = energy / 1000
 
         if energy < 1000 then
-            si = tools.si_prefixes[i]
+            si = gadgets.si_prefixes[i]
             break
         end
     end
@@ -239,26 +239,26 @@ function tools.to_si(energy)
     return num .. si
 end
 
-function tools.to_joules(energy)
-    return tools.to_si(energy) .. 'J'
+function gadgets.to_joules(energy)
+    return gadgets.to_si(energy) .. 'J'
 end
 
-function tools.to_watts(energy)
-    return tools.to_si(energy) .. 'W'
+function gadgets.to_watts(energy)
+    return gadgets.to_si(energy) .. 'W'
 end
 
-function tools.joules_or_watts(energy)
+function gadgets.joules_or_watts(energy)
     assert(type(energy) == 'string', "argument #1 must be a string")
     local unit = energy:sub(#energy)
     assert(unit == 'J' or unit == 'W', "argument #1 must end in J or W not: " .. unit)
     local si = energy:sub(#energy - 1, #energy - 1)
-    assert(tools.si_prefixes[si], "argument #1 must have an SI-prefix")
+    assert(gadgets.si_prefixes[si], "argument #1 must have an SI-prefix")
     local num = tonumber(energy:sub(1, #energy - 2)) 
     assert(type(num) == 'number', "argument #1 must have a numeric part")
-    return num * tools.si_prefixes[si]
+    return num * gadgets.si_prefixes[si]
 end
 
-function tools.main_product(recipe)
+function gadgets.main_product(recipe)
     if type(recipe) == 'string' then
         assert(data.raw.recipe[recipe], "no such recipe: " .. recipe)
         recipe = data.raw.recipe[recipe]
@@ -271,7 +271,7 @@ function tools.main_product(recipe)
     error("recipe " .. recipe .. ' has no main product', 2)
 end
 
-function tools.recursion_check(tbl, seen, path)
+function gadgets.recursion_check(tbl, seen, path)
     seen = seen or {}
     path = path or {}
 
@@ -289,11 +289,11 @@ function tools.recursion_check(tbl, seen, path)
 
     for k, v in pairs(tbl) do
         table.insert(path, k)
-        tools.recursion_check(v, seen, path)
+        gadgets.recursion_check(v, seen, path)
         table.remove(path)
     end
 
     seen[tbl] = nil
 end
 
-return tools:seal()
+return gadgets:seal()

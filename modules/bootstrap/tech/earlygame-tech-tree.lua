@@ -1,5 +1,5 @@
 
-local tools = require 'tools'
+local tools = require 'gadgets'
 
 
 local tech = data.raw.technology

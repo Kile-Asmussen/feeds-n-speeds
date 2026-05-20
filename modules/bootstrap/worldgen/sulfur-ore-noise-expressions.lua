@@ -1,7 +1,7 @@
 -- Sulfur ore noise expression with parameterized builder
 -- Placeholder registered in data stage; rebuilt with correct indices in data_updates
 
-local tools = require 'tools'
+local tools = require 'gadgets'
 
 local noise = assoc{
     name = fns 'sulfur-ore',

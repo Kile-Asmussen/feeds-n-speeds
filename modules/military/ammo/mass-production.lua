@@ -1,5 +1,5 @@
 
-local tools = require 'tools'
+local tools = require 'gadgets'
 
 local function make_new_ammo_recipe(name, amount, ingredients)
     local ammo = table.clone(data.raw.recipe[name])

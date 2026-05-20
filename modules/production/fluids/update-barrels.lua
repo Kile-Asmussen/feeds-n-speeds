@@ -1,5 +1,5 @@
 
-local tools = require 'tools'
+local tools = require 'gadgets'
 
 for _, fl in pairs(data.raw.fluid) do
     if fl.auto_barrel then

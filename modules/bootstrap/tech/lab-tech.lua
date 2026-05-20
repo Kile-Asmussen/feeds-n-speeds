@@ -1,5 +1,5 @@
 
-local tools = require 'tools'
+local tools = require 'gadgets'
 
 tools.remove_unlock('inserter')
 tools.remove_unlock('lab')
