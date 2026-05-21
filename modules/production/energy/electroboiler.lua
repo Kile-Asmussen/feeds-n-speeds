@@ -58,6 +58,7 @@ local boiler_recipe = {
     type = 'recipe',
     name = name,
     enabled = false,
+    unlocked_by = 'fluid-handling',
     ingredients = {
         { type = 'item', name = 'boiler', amount = 1 },
         { type = 'item', name = 'electronic-circuit', amount = 2 },

@@ -129,6 +129,7 @@ local link_recipe = table.clone(data.raw.recipe['accumulator'])
 
 link_recipe.name = fns 'electric-link'
 link_recipe.category = 'electronics-with-fluid'
+link_recipe.unlocked_by = 'electric-energy-distribution-2'
 
 link_recipe.ingredients = {
     { type='item', amount=100, name='iron-plate' },
