@@ -42,7 +42,7 @@ end
 
 local function key_not_found_error(self, name)
     assert(type(name) == 'string', 'namespace keys can only be strings not ' .. tostring(name))
-    assert(tostring(self) .. '.' .. name .. ' not found')
+    error(tostring(self) .. '.' .. name .. ' not found', 2)
 end
 
 local function get_namespace_path(self) return paths[self] end
@@ -115,7 +115,9 @@ end
 
 
 local function list_namespaces()
-    return table.sorted_keys(namespaces)
+    local keys = {}
+    for k, _ in pairs(namespaces) do table.insert(keys, k) end
+    return keys
 end
 
 local namespace = new_namespace(nil, "namespace")

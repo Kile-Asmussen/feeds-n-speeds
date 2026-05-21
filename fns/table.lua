@@ -44,7 +44,7 @@ function table_.restore()
     _ENV.assoc = __env.assoc
 end
 
-table_.use()
+_ENV.table = table_
 
 function table.is_empty(tbl)
     assert(type(tbl) == "table", "argument #1 must be a table")
@@ -56,9 +56,10 @@ require 'fns.table.assoc'
 require 'fns.table.iter'
 require 'fns.table.match'
 require 'fns.table.sets'
+require 'fns.table.traverse'
 require 'fns.table.update'
 require 'fns.table.vectors'
 
-table.restore()
+_ENV.table = __env_table
 
 return table_:seal()

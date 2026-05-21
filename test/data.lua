@@ -1,14 +1,18 @@
-
+local fns = require 'fns'
 local localisation = require 'test.localisation'
 local debuglib = require 'debuglib'
 local rawdata = require 'test.rawdata'
 
-local data = namespace 'test.data'
+local namespace = require 'namespace'
+
+local data = namespace('test.data')
 
 _ENV.modlist = table.null
 _ENV.mods = table.null
 
-data.raw = table.null
+data.raw = fns.table.null
+
+
 _ENV.settings = {}
 setmetatable(_ENV.settings, {
     __index = function() die("_ENV.settings is not available at this time") end,
@@ -20,7 +24,7 @@ local function log_change(new, cutpath, fullpath, value)
     if new then __log(cutpath:replace_prefix('data.raw'):replace_prefix('.') .. ' = ...') end
 end
 
-function begin_data_stage(proxy)
+function data.begin_data_stage(proxy)
     if proxy then
         proxied = true
         data.raw = table.proxy{
@@ -32,7 +36,7 @@ function begin_data_stage(proxy)
     else
         data.raw = rawdata.load(_ENV.modlist)
     end
-    rawset(_ENV, 'settings', import('test.settings'):seal())
+    rawset(_ENV, 'settings', namespace.import('test.settings'):seal())
     rawset(_ENV, 'mods', table.collect(table.set(_ENV.modlist), function() return 'X.X.X' end))
 end
 
@@ -80,4 +84,4 @@ function data.extend(self, protos)
 end
 
 
-_ENV.data = seal_namespace(data)  
+_ENV.data = data:seal()

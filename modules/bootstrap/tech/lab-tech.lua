@@ -40,4 +40,4 @@ local tech = assoc{
     },
 }
 
-prototype(tech)
+data:extend{tech}

@@ -140,7 +140,7 @@ link_recipe.results = {
     { type='item', amount=1, name=fns 'electric-link' },
 }
 
-return {
+data:extend{
     link,
     link_recipe,
     link_item,

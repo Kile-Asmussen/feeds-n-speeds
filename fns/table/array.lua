@@ -1,21 +1,6 @@
 
+local table = _ENV.table
 
-
-function table.has_array(tbl)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    local n = table.maxn(tbl)
-    return type(n) == 'number' and n ~= 0 
-end
-
-function table.is_array(tbl)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    if getmetatable(tbl) == table.__array_mt then return true end
-    local k
-    repeat
-        k = next(tbl, k)
-    until type(k) ~= 'number'
-    return k == nil
-end
 
 local function __array_newindex(tbl, i, v)
     assert(type(i) == 'number', "cannot insert non-numerical key into array")
@@ -32,6 +17,22 @@ local __array_mt = {
     __newindex = __array_newindex,
     __pairs = __array_pairs,
 }
+
+function table.has_array(tbl)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    local n = table.maxn(tbl)
+    return type(n) == 'number' and n ~= 0 
+end
+
+function table.is_array(tbl)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    if getmetatable(tbl) == __array_mt then return true end
+    local k
+    repeat
+        k = next(tbl, k)
+    until type(k) ~= 'number'
+    return k == nil
+end
 
 function table.array_mt(tbl)
     tbl = tbl or {}

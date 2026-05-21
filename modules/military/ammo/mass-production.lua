@@ -18,7 +18,7 @@ local function make_new_ammo_recipe(name, amount, ingredients)
     return ammo
 end
 
-prototype(
+data:extend{
     make_new_ammo_recipe('firearm-magazine', 10, {
         { type='item', name='explosives', amount=1 },
         { type='fluid', name='petroleum-gas', amount=20 },
@@ -48,5 +48,5 @@ prototype(
         { type='fluid', name='petroleum-gas', amount=30 },
         { type='item', name='steel-plate', amount=5 },
     })
-)
+}
 

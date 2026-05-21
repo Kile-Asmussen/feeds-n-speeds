@@ -78,4 +78,4 @@ table.append(data.raw.technology['fluid-handling'].effects, {
     { type='unlock-recipe', recipe=fns 'boil-water' },
 })
 
-prototype(boil_water)
+data.extend{boil_water}

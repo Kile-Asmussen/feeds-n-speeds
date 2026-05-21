@@ -1,7 +1,6 @@
 
-fns_instance()
 
-local localisation = namespace 'test.localisation'
+local localisation = require('namespace')('test.localisation')
 local debuglib = require 'debuglib'
 
 localisation.keys = {
@@ -349,4 +348,4 @@ function localisation.list_dead_locale_keys()
     return table.concat(res, '\n')
 end
 
-return seal_namespace(localisation)
+return localisation:seal()

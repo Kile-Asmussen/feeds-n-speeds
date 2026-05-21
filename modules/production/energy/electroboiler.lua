@@ -1,4 +1,4 @@
-
+local fns = require 'fns'
 local name = fns 'electroboiler'
 
 -- Clone vanilla boiler and convert to electric energy source

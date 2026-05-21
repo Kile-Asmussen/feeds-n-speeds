@@ -1,3 +1,5 @@
+local table = _ENV.table
+
 local function __search(tbl, fn)
     if fn(tbl) then return tbl end
 

@@ -137,10 +137,10 @@ data.raw.technology.tank.effects = {
 }
 data.raw.technology.tank.prerequisites = { fns 'cannon-turret-tech', 'automobilism', 'flammables' }
 
-prototype(
+data:extend{
     turret,
     turret_remnants,
     turret_item,
     turret_recipe,
     turret_tech
-)
+}

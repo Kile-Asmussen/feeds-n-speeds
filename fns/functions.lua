@@ -6,8 +6,6 @@ function functions.assert(cond, msg)
     if not cond then error(msg, 3) end
 end
 
-functions.type = type
-
 local assert = functions.assert
 
 local __types = {

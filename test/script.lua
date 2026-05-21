@@ -4,7 +4,7 @@
 -- Usage: require 'test.script' early in test harness
 
 
-local script = namespace 'script'
+local script = require('namespace')('script')
 local debuglib = require 'debuglib'
 
 function script.__reset()
@@ -72,4 +72,4 @@ function script.on_nth_tick(tick, handler)
     table.insert(script.__handlers.ticks[tick], handler)
 end
 
-_ENV.script = seal_namespace(script)
+_ENV.script = script:seal()

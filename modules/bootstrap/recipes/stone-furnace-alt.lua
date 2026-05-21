@@ -79,4 +79,4 @@ local bmp = assoc{
     }
 }
 
-prototype(new_recipe, bmp)
+data:extend{new_recipe, bmp}

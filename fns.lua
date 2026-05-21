@@ -1,13 +1,13 @@
-local fns = require('namespace')('fns')
-
+local namespace = require 'namespace'
+local fns = namespace 'fns'
 fns:require 'functions'
 fns:require 'table'
 fns:require 'string'
 fns:require 'utils'
 
-fns.identifiers = {}
+fns.identifiers = fns.table.assoc{}
 
-fns.names_ = {}
+fns.names_ = fns.table.assoc{}
 
 function fns.name_(name)
     local memo = fns.names_[name]
@@ -19,7 +19,7 @@ function fns.name_(name)
     return memo
 end
 
-fns.names = {}
+fns.names = fns.table.assoc{}
 
 function fns.name(name)
     local memo = fns.names[name]
@@ -33,10 +33,10 @@ end
 
 getmetatable(fns).__call = fns.name
 
-fns.extra_localsation_keys = {}
+fns.extra_localsation_keys = fns.table.assoc{}
 
 function fns.locale_key(category, name)
-    fns.extra_localsation_keys[category] = fns.extra_localsation_keys[category] or {}
+    fns.extra_localsation_keys[category] = fns.extra_localsation_keys[category] or fns.table.assoc{}
     assert(fns.identifiers[name], "argument #2 must be an established mod identifier")
     fns.extra_localsation_keys[category][name] = true
     return category .. '.' .. name

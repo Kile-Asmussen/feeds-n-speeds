@@ -5,13 +5,13 @@ local tier2h = fns('sturdy_pavement_hazard', '_')
 local tier3 = fns('foundation_pavement', '_')
 local tier3h = fns('foundation_pavement_hazard', '_')
 
-prototype(
+data:extend{
     { type = 'collision-layer', name = tier1 },
     { type = 'collision-layer', name = tier2 },
     { type = 'collision-layer', name = tier2h },
     { type = 'collision-layer', name = tier3 },
     { type = 'collision-layer', name = tier3h }
-)
+}
 
 for _, item in ipairs{'stone-brick', 'concrete', 'hazard-concrete', 'refined-concrete', 'refined-hazard-concrete'} do
     data.raw.item[item].localised_description = {fns_locale_key("item-description", item)}

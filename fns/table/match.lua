@@ -1,3 +1,5 @@
+local table = _ENV.table
+
 function table.match(candidate, reference)
 
     if type(reference) == 'function' then

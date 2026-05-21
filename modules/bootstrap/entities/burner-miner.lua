@@ -59,8 +59,8 @@ local drill_recipe = assoc{
     },
 }
 
-prototype(
+data:extend{
     drill,
     drill_item,
     drill_recipe
-)
+}

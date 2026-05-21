@@ -1,4 +1,4 @@
-
+local fns = require 'fns'
 local tools = require 'gadgets'
 
 local steam = data.raw.fluid.steam
@@ -36,13 +36,13 @@ heat_exchanger.energy_source.min_working_temperature = high_temperature
 steam_turbine.maximum_temperature = high_temperature
 steam_turbine.energy_source.max_temperature = high_temperature
 
-heating_tower.localised_description = {fns_locale_key('entity-description', 'tweaked-heating-tower')}
+heating_tower.localised_description = {fns.locale_key('entity-description', 'tweaked-heating-tower')}
 
-nuclear_reactor.localised_description = {fns_locale_key('entity-description', 'tweaked-nuclear-reactor')}
+nuclear_reactor.localised_description = {fns.locale_key('entity-description', 'tweaked-nuclear-reactor')}
 
 nuclear_reactor.neighbour_bonus = 0.5
 
-data.raw.technology['heating-tower'].localised_description = {fns_locale_key('technology-description', 'tweaked-heating-tower')}
+data.raw.technology['heating-tower'].localised_description = {fns.locale_key('technology-description', 'tweaked-heating-tower')}
 
 data.raw.recipe['acid-neutralisation'].results[1].temperature = high_temperature
 

@@ -30,8 +30,9 @@ end
 
 ushell.unlocked_by = 'uranium-ammo'
 
-prototype(
+data:extend{
     ushell,
     ushell_proj,
     ushell_recipe,
-)
+}
+

@@ -1,4 +1,5 @@
-
+local fns = require 'fns'
+local namespace = require 'namespace'
 local debuglib = namespace 'debuglib'
 
 debuglib.recursion_limit = 2
@@ -67,7 +68,7 @@ function debuglib.new_buffer(settings)
              path = {}
      }, settings)
 
-     table.setmetatable(res, debuglib.__buffer_mt)
+     setmetatable(res, debuglib.__buffer_mt)
      return res
 end
 
@@ -90,7 +91,7 @@ function debuglib.print_any(buffer, data, name)
         table.insert(buffer.path, name)
     end
 
-    (debuglib['print_' .. type(data)] or print_tostring)(buffer, data)
+    (debuglib / ('print_' .. type(data)) or print_tostring)(buffer, data)
 
     if name ~= nil then
         table.remove(buffer.path)
@@ -256,7 +257,7 @@ function debuglib.print_keyval_pairs(buffer, data)
 
     local first = true
 
-    for k, v in opairs(data) do
+    for k, v in fns.table.opairs(data) do
 
         if not first then
             buffer:print(',', buffer.separator)
@@ -285,4 +286,4 @@ function debuglib.small_table(buffer, tbl)
         end)) <= buffer.small.length
 end
 
-return seal_namespace(debuglib)
+return debuglib:seal()

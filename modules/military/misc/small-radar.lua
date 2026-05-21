@@ -75,10 +75,10 @@ table.find_matching(data.raw.recipe['artillery-shell'].ingredients,
     { type='item', name = 'radar'}
 ).name = fns 'small-radar'
 
-prototype(
+data:extend{
   small,
   item,
   recipe,
   explosion,
   remnants
-)
+}

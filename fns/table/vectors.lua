@@ -1,3 +1,5 @@
+local table = _ENV.table
+
 function table.vecsum(tbl1, tbl2, res)
     assert(type(tbl1) == 'table' and type(tbl2) == 'table', "arguments #1 and #2 must be tables")
     assert(#tbl1 == #tbl2, "arguments #1 and #2 must tables of the same length")

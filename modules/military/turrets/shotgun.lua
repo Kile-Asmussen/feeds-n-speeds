@@ -79,9 +79,9 @@ turret_tech.icons = {
     },
 }
 
-prototype(
+data:extend{
     turret,
     turret_item,
     turret_recipe,
     turret_tech
-)
+}

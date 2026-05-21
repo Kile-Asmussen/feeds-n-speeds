@@ -1,3 +1,4 @@
+local table = _ENV.table
 
 function table.overwrite(tbl1, tbl2)
     assert(type(tbl1) == "table", "argument #1 must be a table")

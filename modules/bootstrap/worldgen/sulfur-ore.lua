@@ -1,5 +1,5 @@
 
-prototype({
+data:extend{{
     type = 'resource',
     name = fns 'sulfur-ore',
     icon = '__base__/graphics/icons/sulfur.png',
@@ -44,4 +44,4 @@ prototype({
             "max((1000+distance)/2600,1))"
         }
     }
-})
+}}

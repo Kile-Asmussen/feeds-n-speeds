@@ -12,7 +12,7 @@ local noise = assoc{
     starting_rq_factor=11/70,
 }
 
-prototype(
+data:extend{
     assoc{
         type = 'noise-expression',
         name = fns 'sulfur-ore-patches',
@@ -37,4 +37,4 @@ prototype(
         richness = true,
         order = 'a-g',
     }
-)
+}

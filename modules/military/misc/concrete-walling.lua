@@ -1,5 +1,6 @@
+local fns = require 'fns'
 
-prototype(
+data:extend{
     assoc{
         type = 'recipe',
         name = fns 'concrete-wall',
@@ -52,4 +53,4 @@ prototype(
             count = 100,
         },
     }
-)
+}

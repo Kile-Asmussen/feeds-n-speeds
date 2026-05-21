@@ -28,4 +28,4 @@ shotty.localised_description = {fns_locale_key("recipe-description", "plastic-fu
 table.find_matching(smg.ingredients, {name='wood'}).name = 'plastic-bar'
 table.find_matching(shotty.ingredients, {name='wood'}).name = 'plastic-bar'
 
-prototype( smg, shotty )
+data:extend{ smg, shotty }

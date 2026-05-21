@@ -1,5 +1,5 @@
 
-local defines = namespace 'defines'
+local defines = require('namespace')('defines')
 
 -- Direction constants (defines.direction)
 defines.direction = {
@@ -115,4 +115,4 @@ for k, v in pairs(defines.events) do
     defines.event_names[v] = k
 end
 
-_ENV.defines = seal_namespace(defines)
+_ENV.defines = defines:seal()

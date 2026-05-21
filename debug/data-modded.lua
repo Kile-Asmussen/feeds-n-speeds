@@ -1,4 +1,7 @@
-require 'prelude'
+local fns = require 'fns'
+
+fns.use()
+
 require 'test'
 
 local __log = _ENV.__log
@@ -21,17 +24,14 @@ local args = { ... }
 table.icollect(args, function(s) return tonumber(s) or s end)
 
 local ix =  string.tablepath('data.raw', args)
-local result, found = table.descend(data.raw, table.unpack(args))
+local result, found = table.descend(data.raw, args)
 
--- if args.n < 2 then
-    -- debuglib.recursion_limit = 1
--- end
+if #args < 2 then
+    debuglib.recursion_limit = 1
+end
 
 if found then
     __log(ix .. ' = ' .. debuglib.pp(result, 'data.raw'))
 else
     __log('Path not found: ' .. ix)
-    if result ~= nil then
-        __log('Stopped at value of type: ' .. type(result))
-    end
 end

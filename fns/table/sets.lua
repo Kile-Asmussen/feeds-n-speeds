@@ -1,3 +1,4 @@
+local table = _ENV.table
 
 local __quantify = {
     any = {
@@ -116,14 +117,8 @@ function table.asset(tbl)
     return table.assoc(tbl)
 end
 
-local function __opairs_iter(state, x)
-    state.i = state.i + 1
-    local key = state.keys[state.i]
-    if key then 
-        return key, state.tbl[key]
-    end
-end
-
-function table.opairs(tbl)
-    return __opairs_iter, { i=0, keys=table.sorted_keys(tbl), tbl=tbl }, nil
-end
+table.null = {}
+setmetatable(table.null, {
+    __tostring = function() return "table.null" end,
+    __newindex = function() error("table.null is immutable", 2) end
+})

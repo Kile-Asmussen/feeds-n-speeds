@@ -1,4 +1,6 @@
 
+local table = _ENV.table
+
 function table.imap(tbl, func)
     assert(type(tbl) == "table", "argument #1 must be a table")
     assert(type(func) == "function", "argument #2 must be a function")
@@ -51,4 +53,16 @@ function table.icollect(tbl, func)
         end
     end
     return res
+end
+
+local function __opairs_iter(state, x)
+    state.i = state.i + 1
+    local key = state.keys[state.i]
+    if key then 
+        return key, state.tbl[key]
+    end
+end
+
+function table.opairs(tbl)
+    return __opairs_iter, { i=0, keys=table.sorted_keys(tbl), tbl=tbl }, nil
 end

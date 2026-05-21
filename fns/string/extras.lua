@@ -1,4 +1,4 @@
-
+local string = _ENV.string
 
 function string.lpad(self, length, char)
     if char == nil then

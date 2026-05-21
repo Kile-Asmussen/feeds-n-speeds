@@ -83,9 +83,9 @@ local tech = {
     },
 }
 
-prototype(
+data:extend{
     rail1,
     rail2,
     rail3,
     tech
-)
+}

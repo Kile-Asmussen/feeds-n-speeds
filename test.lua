@@ -1,6 +1,6 @@
-require 'prelude'
+local fns = require 'fns'
 
-fns_instance()
+fns.use()
 
 _ENV.TESTING = true
 _ENV.QUIET = os.getenv("QUIET") and true or false
@@ -87,21 +87,14 @@ local function __lock_mt(name, index, newindex)
     newindex = newindex or index
     return {
         __index = function(_, key)
-            die(string.tablepath(name, { key }) .. ' not found' .. (index(key) or ''))
+            die(fns.utils.tablepath(name, { key }) .. ' not found' .. (index(key) or ''))
         end,
         __newindex = function(_, key)
-            die(string.tablepath(name, { key })  .. ' cannot be set' .. (newindex(key) or ''))
+            die(fns.utils.tablepath(name, { key })  .. ' cannot be set' .. (newindex(key) or ''))
         end,
     }
 end
 
-setmetatable(_ENV.table, __lock_mt('table'))
-setmetatable(_ENV.functions, __lock_mt('functions'))
-setmetatable(_ENV.string, __lock_mt('string', function(k)
-    if type(k) == 'number' then return ', use string:sub to index strings' end
-end, function(k)
-    if type(k) == 'number' then return ', strings are immutable' end 
-end))
 setmetatable(_ENV.debug, __lock_mt('debug'))
 
 setmetatable(_ENV, {

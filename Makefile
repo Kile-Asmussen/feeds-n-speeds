@@ -18,8 +18,8 @@ export MODS_DIR := $(HOME)/.factorio/mods
 export MOD_LIST := mod-list.json
 export OUTPUT_DIR := ./target
 
-.PHONY: all build clean rawdata lualib load textplates
-.PHONY: install uninstall clean-reinstall nuke
+.PHONY: all build clean rawdata grab-base load textplates
+.PHONY: install uninstall clean-reinstall nuke 
 
 build: # $(OUTPUT_DIR)/$(ZIPFILE)
 	./build-scripts/build.sh
@@ -32,6 +32,7 @@ unzip: build
 	(cd $(OUTPUT_DIR) && unzip $(ZIPFILE))
 
 clean:
+	cargo clean
 	rm -rf ./target/*
 	rm -f ./test/rawdata.so
 
@@ -52,9 +53,8 @@ rawdata:
 load: 
 	@lua debug/load.lua
 
-
-lualib:
-	@cp -r $(FACTORIO_DIR)/data/core/lualib ./lualib
-
 textplates:
 	./build-scripts/textplates.sh
+
+grab-base:
+	./build-scripts/grab-base.sh

@@ -113,9 +113,9 @@ local tap_recipe = {
 }
 
 
-prototype(
+data:extend{
     { type='recipe-category', name=fns 'barrelling' },
     tap,
     tap_item,
     tap_recipe
-)
+}

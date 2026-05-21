@@ -71,4 +71,4 @@ table.merge(data.raw.technology['electric-mining-drill'], {
     prerequisites = { 'automation-science-pack', fns 'wet-drilling' }
 })
 
-prototype(wet)
+data:extend{wet}

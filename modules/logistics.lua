@@ -4,6 +4,8 @@ local logistics = namespace 'logistics'
 
 logistics.data = asset{
     '.recipes.rails',
+    '.entities.electric-link',
+    '.items.stack-sizes'
 }
 
-return seal_namespace(logistics)
+return logistics:seal()

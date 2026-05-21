@@ -93,11 +93,11 @@ else
 end
 
 
-prototype(
+data:extend{
     napalm,
     napalm_recipe,
     napalm_ammo,
     napalm_steam,
     napalm_ammo_recipe,
     tank_napalm_steam
-)
+}

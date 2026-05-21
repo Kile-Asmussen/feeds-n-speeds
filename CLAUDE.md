@@ -1,10 +1,16 @@
 # FeedsNSpeeds - Factorio Mod
 
-A Factorio 2.0 mod providing value tweaks, balance changes, and new items.
+A Factorio 2.0 overhaul mod providing value tweaks, balance changes, and new items.
 
-## Operator Profile
+A factorio-research skill is available.
 
-- Name: Kashmira Qeel — address as **Operator**
+Primary programming language: Lua
+Supplementary utilities: Rust, Bash, Makefile
+Claude hooks: Python
+
+## User Profile
+
+- Name: Kashmira Qeel
 - Pronouns: she/her
 - Background: CS master's, 5 years professional software development, fluent in Lua/Python/Rust/Bash
 
@@ -12,102 +18,105 @@ A Factorio 2.0 mod providing value tweaks, balance changes, and new items.
 
 ### What I can do without asking
 
-- **Read** anything in this project directory, plus Factorio game data and `~/.factorio` (see `.claude/read-grep-glob-paths.json` for the full allowlist)
-- **Edit** files in `extras/**/*`, `tweaks/**/*`, `locale/**/*`, `unit-tests/*`, `slop/**/*`, `CLAUDE.md`
-- **Write** (create) files in `extras/*/*`, `tweaks/*/*`, `unit-tests/*`, `slop/**/*`
+- **Read** anything in this project directory.
+- **Edit** files in  `locale/**/*`, `slop/**/*`, as well as `CLAUDE.md`
+- **Write** (create) files in `slop/**/*`
 - **Run** the specific Bash commands listed in `.claude/bash-commands.json` (see below)
 - **WebFetch** from `lua-api.factorio.com`, `wiki.factorio.com`, `forums.factorio.com`, `mods.factorio.com`, `github.com/wube/factorio-data/*`, `raw.githubusercontent.com/wube/factorio-data/*`
 
-### What I must ask the Operator to do
+### What I must ask the user to do
 
-- **Create new files** directly in `extras/` or `tweaks/` (top level — I can only edit, not write there). Ask her to create a blank template file with the right name, then I can fill it in.
 - **Modify hook or settings configuration** — `.claude/` is fully off-limits for edits and writes.
-- **Add new allowed Bash commands** — Operator must update `.claude/bash-commands.json`.
+- **Add new allowed Bash commands** — user must update `.claude/bash-commands.json`.
 - **Read files outside the project** that aren't in the allowlist (e.g. new system paths).
-- **Fetch from new web domains** — Operator must update `.claude/webfetch-urls.json`.
+- **Fetch from new web domains** — user must update `.claude/webfetch-urls.json`.
 
 ### Allowed Bash commands
 
-Exact patterns (glob `*` is allowed only where shown):
+Exact patterns:
 
 ```
 lua debug/load.lua
-DEPTH=[1-5] lua debug/data-raw.lua [<category> [<name>]]
-DEPTH=[1-5] lua debug/data-modded.lua [<category> [<name>]]
+DEPTH=[1-3] lua debug/data-raw.lua [<category> [<name> [<further properties/indexes>]]]
+DEPTH=[1-3] lua debug/data-modded.lua [<category> [<name> [<further properties/indexes>]]] 
 lua unit-tests.lua <module-name>
 python .claude/safe-rm.py <path>
 .claude/factorio-research.sh fetch
 .claude/factorio-research.sh install
 ```
+The debug/data-raw.lua and debug/data-modded.lua scripts will only print DEPTH=1 until a specific prototype is requested, to limit token usage.
 
 **Important:** The bash hook rejects pipes (`|`), redirects (`>`/`<`), chained commands (`&&`, `;`, `||`), subshells, and glob characters in the command string. Commands must match the pattern exactly. When a command is blocked, the error message lists the allowed patterns — use that to self-correct immediately.
 
 ## Architecture
 
-The project is split into `extras` (new game objects) and `tweaks` (changes to existing objects).
+The project built around `module.lua` and the `module/` directory, which contains a full module loading system with dependency ordering, loading specific lua files. Currely a migration is ongoing, with `zzz/` containing the old code.
 
-### Namespace System (`prelude.lua`)
+### Namespace System (`namespace.lua`)
 
-- `namespace(path)` — declares a new namespace; errors on duplicate
-- `import(path)` — retrieves a declared namespace; errors if not found
-- `fns(name)` — returns `feeds-n-speeds-{name}`, registering it globally; normalizes non-alphanumeric chars to `-`
-- `fns(category, name)` — same but also registers under a named category for localization lookup
-- `isnamespace(thing)` — type check, works on sealed and unsealed namespaces
-- `namespace:__seal()` — makes namespace read-only; call at end of every module as `return module:__seal()`
+- `let foo = namespace('foo')` — declares a new namespace; errors on duplicate
+- `namespace.import('foo')` — retrieves a declared namespace; errors if not found
+- `foo:require 'bar'` — requires `'foo.bar'` and assigns it to `foo.bar`
+- `return foo:seal()` — makes namespace read-only
+
+### Instancing and isolation
+
+In `fns.lua` a namespace is declared, with functionality to isolate this mod from other mods.
+
+- `fns.use()` replaces the global namespaces `string`, `table`, etc. with their default versions from Lua 5.2, removing access to any factorio-specific functions (chiefly `core/lualib`) and also changes the `getmetatable("").__index` to the new `string` namespace, allowing the use of new functions. `fns.restore()` undoes these changes.
+- In the instanced version of these namespaces, new utility functions are declared, see the `fns/` directory.
+- Instanced namespaces are also available as `fns.table`, `fns.string`, etc.
+- In non-performance-critical code (data stages) calling `fns.use()` at the top of the file is acceptable.
+- In the control stage, care must be taken to remain isolated, and so calling `fns.use()` and `fns.restore()` is necessary in each function body. Therefore prefer directly using `fns.table`, `fns.string`, etc.
+
+Game object identifiers are generated via `fns.name()` or its alias via operator overloading, `fns()`, which prepends `feeds-n-speeds-` to any given string, making collisions with other mods unlikely.
 
 ### Module Pattern
 
-Both `tweaks` and `extras` follow an identical pattern:
-
-1. **Coordinator** (`tweaks.lua`, `extras.lua`) — requires submodules, exposes `create_toggles()`, `settings()`, `data()`, etc.
-2. **Domain modules** (`tweaks/inserter.lua`, `extras/chests.lua`) — individual features
+1. **Coordinator** (`module.lua`) — requires submodules listed in each stage, performs dependency ordering, requires each file in that order.
+2. **Domain modules** (`module/`) — individual features, `production`, `construction`, etc.
 3. **Loading system** (`loading.lua`) — calls lifecycle methods across all domains, sorted by `priority`
 
 Each domain module:
-- Declares `namespace 'tweaks.foo'` or `namespace 'extras.foo'`
-- Setting `module.enabled = true` causes `loading.create_toggle()` to auto-create a startup bool-setting named `fns(tostring(domain) .. '-enable')`
-- Implements whichever lifecycle functions it needs: `data()`, `data_updates()`, `data_final_fixes()`, `settings()`, `control()`
-- Returns `module:__seal()`
+- Declares `local some_domain = namespace 'module.some-domain'`
+- Declares `some_domain.data`, `some_domain['data-updates']` and other properties as dependency graphs of this stage
+- Returns `some_domain:seal()`.
+
+The dependency graphs are declared with the `asset` function, a pun on "as set" since it removes the numbered
+keys from a table and inserts their string values as named keys, set to `true`. This data format is used in `module.lua`.
+
+Each entry in the dependency graphs are either fully qualified require paths or start with `.` and are assumed to be
+local to the submodule, prefixed with the submodule require path in `module.load_stage`.
+
+The individual required files have no special formatting, just execute as lua code.
 
 ### Lifecycle Stages
 
-- `settings.lua` — create new settings (also where `extras.create_toggles()` / `tweaks.create_toggles()` run)
-- `settings-updates.lua`, `settings-final-fixes.lua` — unused
-- `data.lua` — load new prototypes (chiefly `extras`)
+Each lifecycle stage calls `modules.load_stage '<stage-name>'`
+
+- `settings.lua` — loads a few files in the `models.utility` namespace
+- `data.lua` — load new prototypes
 - `data-updates.lua` — modify existing prototypes (chiefly `tweaks`)
-- `data-final-fixes.lua` — last resort; currently only `tweaks.ores`
 - `control.lua` — runtime event handlers
 
+Other stages are unused.
+
 ## Testing
-
-### Running tests
-
-```
-lua unit-tests.lua <module-name>
-```
-
-`<module-name>` maps to `unit-tests/<module-name>.lua`. There is no "run all" — specify a module. Multiple module names can be passed as separate arguments.
-
-### Writing tests
-
-- `fact('description', fn)` — test expected to pass
-- `fiction('description', fn)` — test expected to error
-- Assertion helpers: `assert_eq(a, b)`, `assert_ok(val)`, `assert_is(val, type)`
-- Write test files to `unit-tests/<name>.lua` — I can create these directly
-- If a test needs `setmetatable`/`getmetatable`/`rawget`/`rawset`, it must go in `unit-tests-trusted.lua` (runs before sandbox). Ask Operator to add it there if needed.
-- The sandbox nil's: `require`, `io`, `os`, `package`, `debug`, `load`, `loadfile`, `dofile`, `print`, `rawget`, `rawset`, `getmetatable`, `setmetatable`, `coroutine`, `string.dump`, `collectgarbage`
 
 ### Debug scripts
 
 - `lua debug/load.lua` — runs the full settings → data → control pipeline and prints missing localization strings at the end
-- `DEPTH=N lua debug/data-raw.lua [category [name]]` — inspect vanilla `data.raw`
-- `DEPTH=N lua debug/data-modded.lua [category [name]]` — inspect `data.raw` after mod changes
+- `DEPTH=N lua debug/data-raw.lua [category [name [additional properties]]]` — inspect vanilla `data.raw`
+- `DEPTH=N lua debug/data-modded.lua [category [name [additional properties]]]` — inspect `data.raw` after mod changes
+
+The simulated pipeline is imperfect: it does not include full consistency checks, and does not account for staging of
+the vanilla mods -- for instance auto-generation of recycling and barelling recipes.
 
 ## Localization
 
 - Locale file: `locale/en/localization.cfg`
 - Run `lua debug/load.lua` to find missing strings — it prints stubs for anything registered via `data:extend` that isn't in the locale file
-- `fns(category, name)` registers the name under `category` for localization tracking; `fns(name)` without a category only registers it in `mod_identifiers`, not in any named category — the localization checker finds it via `localization.keys` instead
+- `fns.locale_key(category, name)` registers the name under `category` for localization tracking; `fns(name)` only registers it in `mod_identifiers`, not in any named category — the localization checker finds it via `localization.keys` instead
 - Noise expressions (`noise-expression` type) are internal and their entity-name/description entries are never shown to players, but the localization checker flags them anyway — fill them with internal-facing descriptions
 
 ## Skills
@@ -128,9 +137,11 @@ Cross-reference with WebFetch to `lua-api.factorio.com` or `wiki.factorio.com`.
 
 See `.claude/skills/factorio-research/SKILL.md` for full documentation.
 
+The skill file can be edited through symbolic link in `slop/scratch/factorio-research.md`.
+
 ## Safety Harness Notes
 
 - `defaultMode: dontAsk` means any tool not explicitly allowed is auto-denied without prompting.
 - Hooks are a defense-in-depth layer; they fire even if permissions are misconfigured.
 - When a hook denies a tool call, the error message includes the full list of allowed patterns. Use that list to self-correct — no need to read config files.
-- Hook and settings files (`.claude/`) cannot be read-restricted at the moment, but must not be edited.
+- No edit access to `.claude/`, ask user for help if Claude's configration files or any of the hook scripts cause problems.
