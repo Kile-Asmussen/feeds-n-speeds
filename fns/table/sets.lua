@@ -108,6 +108,32 @@ function table.set(tbl)
     return res
 end
 
+function __complement_next(tbl, k)
+    local v
+    k, v = next(tbl, k)
+    return k, not v
+end
+
+function __complement_inext(tbl, i)
+    i = i + 1
+    if i > #tbl then return nil, nil end
+
+    return i, not tbl[i]
+end
+
+
+function table.complementary(tbl)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+    local res = {}
+    setmetatable(res, {
+        __index = function(_, k) return not tbl[k] end,
+        __newindex = function(_, k, v) tbl[k] = not v end,
+        __pairs = function(res) return __complement_next, tbl, nil end,
+        __ipairs = function(res) return __complement_inext, tbl, 0 end,
+    })
+    return res
+end
+
 function table.asset(tbl)
     assert(type(tbl) == 'table', "argument #1 must be a table")
     while #tbl > 0 do

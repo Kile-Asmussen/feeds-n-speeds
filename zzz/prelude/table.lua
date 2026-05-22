@@ -1,5 +1,7 @@
 --! Utility functions for tables
 
+local table = _ENV.table
+
 local setmetatable = _ENV.setmetatable
 local getmetatable = _ENV.getmetatable
 
@@ -36,7 +38,7 @@ require 'prelude.table.traverse'
 require 'prelude.table.types'
 require 'prelude.table.vectors'
 
-function table.purgemetatable(tbl)
+function table.purgemetatables(tbl)
     table.traverse(tbl, function(t)
         if type(t) == 'table' then setmetatable(t, nil) end
     end)

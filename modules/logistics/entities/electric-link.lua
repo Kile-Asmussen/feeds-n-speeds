@@ -132,7 +132,7 @@ link_recipe.category = 'electronics-with-fluid'
 link_recipe.unlocked_by = 'electric-energy-distribution-2'
 
 link_recipe.ingredients = {
-    { type='item', amount=100, name='iron-plate' },
+    { type='item', amount=20, name='iron-plate' },
     { type='item', amount=20, name='copper-cable' },
     { type='fluid', amount=50, name='light-oil' },
 }

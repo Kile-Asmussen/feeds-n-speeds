@@ -15,6 +15,7 @@
         "localised",
         "mlua",
         "num",
+        "opairs",
         "serde",
         "sz",
         "tbl",

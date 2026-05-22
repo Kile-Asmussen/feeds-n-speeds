@@ -1,4 +1,5 @@
 
+local namespace = require 'namespace'
 local modules = namespace 'modules'
 
 modules.stages = asset{
@@ -49,24 +50,20 @@ end
 function modules.stage_dependencies(stage)
     local dependencies = assoc{}
 
-    for k, mod in opairs(modules) do
-        if isnamespace(mod) and rawget(mod, stage) then
-            local name = tostring(mod)
-            local deps = assoc{}
-            
-            for k, v in opairs(mod[stage]) do
-                k = modules.name(mod, k)
+    for _, mod in opairs(modules) do
+        if namespace.is(mod) and mod/stage then
 
-                assert(not dependencies[k], 'name collission on ' .. k .. ' during ' .. stage)
-                if type(v) == 'table' then
-                    dependencies[k] = table.set(
-                        table.icollect(
-                            table.sorted_keys(v),
-                            function(s) return modules.name(mod, s) end
-                        )
-                    )
+            for name, deps in opairs(mod[stage]) do
+                name = modules.name(mod, name)
+
+                dependencies[name] = dependencies[name] or assoc{}
+
+                if type(deps) == 'table' then
+                    for dep, val in opairs(deps) do
+                        dependencies[name][modules.name(mod, dep)] = val
+                    end
                 else
-                    dependencies[k] = v
+                    dependencies[name] = mod
                 end
             end
         end
