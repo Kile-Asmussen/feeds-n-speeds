@@ -1,4 +1,5 @@
 
+local namespace = require 'namespace'
 local gadgets = namespace 'gadgets'
 
 function gadgets.resource_autoplace_all_patches(tbl)
@@ -269,31 +270,6 @@ function gadgets.main_product(recipe)
     if recipe.main_product then return recipe.main_product end
     if #recipe.results == 1 then return recipe.results[1].name end
     error("recipe " .. recipe .. ' has no main product', 2)
-end
-
-function gadgets.recursion_check(tbl, seen, path)
-    seen = seen or {}
-    path = path or {}
-
-    if type(tbl) ~= 'table' then
-        return
-    end
-
-    tbl = table.unproxy(tbl)
-
-    if seen[tbl] then
-        error(seen[tbl] .. ' = ' .. string.tablepath("data.raw", path), 2)
-    end
-
-    seen[tbl] = string.tablepath("data.raw", path)
-
-    for k, v in pairs(tbl) do
-        table.insert(path, k)
-        gadgets.recursion_check(v, seen, path)
-        table.remove(path)
-    end
-
-    seen[tbl] = nil
 end
 
 return gadgets:seal()

@@ -1,15 +1,8 @@
-local restore = fns_control_stage()
+local fns = require 'fns'
 
--- local tweaks = require 'tweaks'
--- local extras = require 'extras'
-
--- tweaks.read_toggles()
--- extras.read_toggles()
-
--- extras.control()
--- tweaks.control()
+fns.use()
 
 require('modules')
     .load_stage 'control'
 
-restore()
+fns.restore()

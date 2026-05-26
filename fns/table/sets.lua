@@ -1,4 +1,6 @@
+
 local table = _ENV.table
+local assert = _ENV.assert
 
 local __quantify = {
     any = {

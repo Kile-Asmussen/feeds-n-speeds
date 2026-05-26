@@ -4,9 +4,9 @@ local tools = require 'gadgets'
 tools.remove_unlock('inserter')
 tools.remove_unlock('lab')
 
-data.raw.recipe['transport-belt'].unlocked_by = fns 'lab-tech'
-data.raw.recipe['inserter'].unlocked_by = fns 'lab-tech'
-data.raw.recipe['lab'].unlocked_by = fns 'lab-tech'
+data.raw.recipe['transport-belt'].auto_unlocked_by = fns 'lab-tech'
+data.raw.recipe['inserter'].auto_unlocked_by = fns 'lab-tech'
+data.raw.recipe['lab'].auto_unlocked_by = fns 'lab-tech'
 
 local tech = assoc{
     type = 'technology',
@@ -19,24 +19,10 @@ local tech = assoc{
         },
     },
     prerequisites = array{ 'steam-power' },
-    effects = array{
-        -- assoc{
-        --     type = 'unlock-recipe',
-        --     recipe = 'lab',
-        -- },
-        -- assoc{
-        --     type = 'unlock-recipe',
-        --     recipe = 'transport-belt',
-        -- },
-        -- assoc{
-        --     type = 'unlock-recipe',
-        --     recipe = 'inserter',
-        -- },
-    },
     research_trigger = assoc{
         type = 'craft-item',
         item = 'steam-engine',
-        amount = 2
+        amount = 1
     },
 }
 

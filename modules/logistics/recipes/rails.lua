@@ -19,9 +19,9 @@ rail1.localised_name = {"item-name.rail"}
 rail2.localised_name = {"item-name.rail"}
 rail3.localised_name = {"item-name.rail"}
 
-rail1.unlocked_by = 'railway'
-rail2.unlocked_by = fns 'concrete-rail'
-rail3.unlocked_by = fns 'concrete-rail'
+rail1.auto_unlocked_by = 'railway'
+rail2.auto_unlocked_by = fns 'concrete-rail'
+rail3.auto_unlocked_by = fns 'concrete-rail'
 
 rail1.ingredients = {
     { amount = 4, name = 'stone-brick', type = 'item' },

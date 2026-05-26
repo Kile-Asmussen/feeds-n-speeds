@@ -1,5 +1,5 @@
 
-local military = namespace 'military'
+local military = require('namespace')('military')
 
 military.data = asset{
     '.ammo.tweak-recipes',

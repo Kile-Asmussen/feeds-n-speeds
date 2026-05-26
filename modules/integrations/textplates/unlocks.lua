@@ -19,57 +19,57 @@ end
 
 local materials = {
     iron = {
-        type="craft-item", item="iron-plate", unlocked_by = fns "textplates-iron",
+        type="craft-item", item="iron-plate", auto_unlocked_by = fns "textplates-iron",
     },
     copper = {
-        type="craft-item", item="iron-plate", unlocked_by = fns"textplates-copper",
+        type="craft-item", item="iron-plate", auto_unlocked_by = fns"textplates-copper",
     },
     concrete = {
-        type="craft-item", item="concrete", unlocked_by = "textplates-concrete",
+        type="craft-item", item="concrete", auto_unlocked_by = "textplates-concrete",
          prerequisites = { "concrete", fns "textplates-stone" }, 
     },
     steel = {
-        type="craft-item", item="steel-plate", unlocked_by = "textplates-steel",
+        type="craft-item", item="steel-plate", auto_unlocked_by = "textplates-steel",
         prerequisites = { "steel-processing", fns"textplates-iron" }
     },
     plastic = {
-        type="craft-item", item="plastic-bar", unlocked_by = "textplates-plastic",
+        type="craft-item", item="plastic-bar", auto_unlocked_by = "textplates-plastic",
         prerequisites = { "plastics", fns"textplates-wood", }
     },
     plasticcoloured = {
-        unlocked_by = "textplates-plastic"
+        auto_unlocked_by = "textplates-plastic"
     }
     wood = {
-        type="mine-entity", entity="wood", unlocked_by = fns"textplates-wood",
+        type="mine-entity", entity="wood", auto_unlocked_by = fns"textplates-wood",
     },
     gold = {
-        type="mine-entity", entity="sulfur", unlocked_by = "textplates-gold"
+        type="mine-entity", entity="sulfur", auto_unlocked_by = "textplates-gold"
     },
     stone = {
-        type="craft-item", item="stone-brick", unlocked_by = fns"textplates-stone",
+        type="craft-item", item="stone-brick", auto_unlocked_by = fns"textplates-stone",
         prerequisites = { fns "basic-materials-processing", fns "textplates-glass" }
     },
     glass = {
-        type="mine-entity", entity="stone", unlocked_by = fns"textplates-glass"
+        type="mine-entity", entity="stone", auto_unlocked_by = fns"textplates-glass"
     },
     uranium = {
-        type="craft-item", item="uranium-238", unlocked_by = "textplates-uranium"
+        type="craft-item", item="uranium-238", auto_unlocked_by = "textplates-uranium"
         prerequisites = { fns "textplates-glass", "uranium-processing" }
     }
 }
 
 for material, changes in pairs(materials) do
-    data.raw.recipe["textplate-"..material."-small"].unlocked_by = changes.unlocked_by
-    data.raw.recipe["textplate-"..material."-large"].unlocked_by = changes.unlocked_by
+    data.raw.recipe["textplate-"..material."-small"].auto_unlocked_by = changes.auto_unlocked_by
+    data.raw.recipe["textplate-"..material."-large"].auto_unlocked_by = changes.auto_unlocked_by
     if materials.prerequisites then
-        data.raw.technology[changes.unlocked_by].prerequisites = materials.prerequisites
+        data.raw.technology[changes.auto_unlocked_by].prerequisites = materials.prerequisites
     end
     if materials.type then
-        data.raw.technology[changes.unlocked_by].unit = nil
-        data.raw.technology[changes.unlocked_by].research_trigger = {
+        data.raw.technology[changes.auto_unlocked_by].unit = nil
+        data.raw.technology[changes.auto_unlocked_by].research_trigger = {
             type = changes.type, entity = changes.entity, item = changes.item,
             amount = materials.item and 1
         }
     end
-    data.raw.technology[changes.unlocked_by].hidden = true
+    data.raw.technology[changes.auto_unlocked_by].hidden = true
 end

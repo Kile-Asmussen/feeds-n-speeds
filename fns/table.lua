@@ -30,18 +30,18 @@ local __env = {
 
 function table_.use()
     _ENV.table = table_
-    _ENV.opairs = table_.opairs
-    _ENV.asset = table_.asset
-    _ENV.array = table_.array
-    _ENV.assoc = table_.assoc
+    rawset(_ENV, 'opairs', table_.opairs)
+    rawset(_ENV, 'asset', table_.asset)
+    rawset(_ENV, 'array', table_.array)
+    rawset(_ENV, 'assoc', table_.assoc)
 end
 
 function table_.restore()
     _ENV.table = __env_table
-    _ENV.opairs = __env.opairs
-    _ENV.asset = __env.asset
-    _ENV.array = __env.array
-    _ENV.assoc = __env.assoc
+    rawset(_ENV, 'opairs', __env.opairs)
+    rawset(_ENV, 'asset', __env.asset)
+    rawset(_ENV, 'array', __env.array)
+    rawset(_ENV, 'assoc', __env.assoc)
 end
 
 _ENV.table = table_

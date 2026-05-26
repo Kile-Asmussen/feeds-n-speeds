@@ -1,4 +1,5 @@
 local string = _ENV.string
+local assert = _ENV.assert
 
 function string.lpad(self, length, char)
     if char == nil then

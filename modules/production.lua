@@ -1,5 +1,5 @@
 
-local production = namespace 'production'
+local production = require('namespace')('production')
 
 production.data = asset{
     '.fluids.water',

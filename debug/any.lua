@@ -7,7 +7,7 @@ require 'test'
 
 _ENV.modlist = {}
 
-begin_data_stage()
+data.begin_data_stage()
 
 local debuglib = require 'debuglib'
 

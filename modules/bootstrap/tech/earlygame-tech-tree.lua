@@ -5,7 +5,11 @@ local tools = require 'gadgets'
 local tech = data.raw.technology
 local recipe = data.raw.recipe
 
-tools.remove_unlock('iron-stick')
+for _, name in ipairs{ 'iron-stick', 'steel-plate', 'iron-gear-wheel', 'iron-chest', 'steel-chest' } do
+    recipe[name].auto_unlocked_by = 'steel-processing'
+end
+
+data.recipe['iron-stick']
 
 table.merge(tech['steel-processing'], {
     research_trigger = assoc{
@@ -15,36 +19,12 @@ table.merge(tech['steel-processing'], {
     },
     unit = functions.null,
     prerequisites = functions.null,
-    effects = array{
-        assoc{ type = 'unlock-recipe', recipe = 'steel-plate' },
-        assoc{ type = 'unlock-recipe', recipe = 'iron-stick' },
-        assoc{ type = 'unlock-recipe', recipe = 'iron-gear-wheel' },
-        assoc{ type = 'unlock-recipe', recipe = 'iron-chest' },
-        assoc{ type = 'unlock-recipe', recipe = 'steel-chest' }
-    },
     localised_description = {fns_locale_key('technology-description', 'tweaked-steel-processing')}
 })
 
--- tech['steel-processing'].research_trigger = {
---     count = 10,
---     item = 'iron-plate',
---     type = 'craft-item'
--- }
-
--- tech['steel-processing'].unit = nil
--- tech['steel-processing'].prerequisites = nil
-
--- tech['steel-processing'].effects = array{
---     assoc{ type = 'unlock-recipe', recipe = 'steel-plate' },
---     assoc{ type = 'unlock-recipe', recipe = 'iron-stick' },
---     assoc{ type = 'unlock-recipe', recipe = 'iron-gear-wheel' },
---     assoc{ type = 'unlock-recipe', recipe = 'iron-chest' },
---     assoc{ type = 'unlock-recipe', recipe = 'steel-chest' }
--- }
-
--- tech['steel-processing'].localised_description = {fns_locale_key('technology-description', 'tweaked-steel-processing')}
-
 tech['electronics'].localised_description = {fns_locale_key("technology-description", 'tweaked-electronics') }
+
+
 
 tech.automation.effects = array{
     assoc{ type = 'unlock-recipe', recipe = 'assembling-machine-1' },
@@ -52,8 +32,6 @@ tech.automation.effects = array{
     assoc{ type = 'unlock-recipe', recipe = fns 'big-steel-chest' },
     assoc{ type = 'unlock-recipe', recipe = fns 'big-steel-hopper' },
 }
-
-
 
 table.merge(tech['steam-power'], {
     localised_description = { fns_locale_key('technology-description', 'tweaked-steam-power') },

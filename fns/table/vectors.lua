@@ -1,6 +1,8 @@
-local table = _ENV.table
 
-function table.vecsum(tbl1, tbl2, res)
+local table = _ENV.table
+local assert = _ENV.assert
+
+function table.vecadd(tbl1, tbl2, res)
     assert(type(tbl1) == 'table' and type(tbl2) == 'table', "arguments #1 and #2 must be tables")
     assert(#tbl1 == #tbl2, "arguments #1 and #2 must tables of the same length")
     res = res or tbl1
@@ -9,6 +11,13 @@ function table.vecsum(tbl1, tbl2, res)
         res[i] = tbl1[i] + tbl2[i]
     end
     return res
+end
+
+function table.isvec(tbl)
+    return type(tbl) == 'table'
+        and #tbl == 2
+        and type(tbl[1]) == 'number'
+        and type(tbl[2]) == 'number'
 end
 
 function table.vecmul(tbl, k, res)

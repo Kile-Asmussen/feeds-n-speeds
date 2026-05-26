@@ -1,5 +1,6 @@
 
 local table = _ENV.table
+local assert = _ENV.assert
 
 local function __assoc_newindex(tbl, k, v)
     assert(type(k) == 'string', "cannot insert non-string key into associative array")

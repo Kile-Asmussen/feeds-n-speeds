@@ -1,6 +1,11 @@
 local namespace = require 'namespace'
 local fns = namespace 'fns'
 fns:require 'functions'
+
+local __env_assert = _ENV.assert
+_ENV.assert = fns.functions.assert
+local assert = fns.functions.assert
+
 fns:require 'table'
 fns:require 'string'
 fns:require 'utils'
@@ -53,5 +58,7 @@ function fns.restore()
     fns.functions.restore()
     fns.table.restore()
 end
+
+_ENV.assert = __env_assert
 
 return fns:seal()

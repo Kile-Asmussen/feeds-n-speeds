@@ -1,5 +1,5 @@
 
-local logistics = namespace 'logistics'
+local logistics = require('namespace')('logistics')
 
 
 logistics.data = asset{

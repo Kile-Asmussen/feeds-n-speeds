@@ -19,18 +19,6 @@ table.merge(tech['uranium-processing'],{
     }
 })
 
--- uranium.prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack' }
--- uranium.research_trigger = nil
--- uranium.unit = {
---     count = 100,
---     time = 30,
---     ingredients = {
---         { 'automation-science-pack', 1 },
---         { 'logistic-science-pack', 1 },
---         { 'chemical-science-pack', 1 },
---     },
--- }
-
 local wet = assoc{
     type = 'technology',
     name = fns 'wet-drilling',
@@ -51,10 +39,6 @@ local wet = assoc{
             type = 'mining-with-fluid',
             modifier = true,
         },
-        -- assoc{
-        --     type = 'unlock-recipe',
-        --     recipe = fns 'burner-mining-drill-fluid',
-        -- },
     },
     research_trigger = assoc{
         type = 'craft-item',
@@ -63,11 +47,9 @@ local wet = assoc{
     },
 }
 
+
+
 table.merge(data.raw.technology['electric-mining-drill'], {
-    effects = array{
-        -- assoc{ type = 'unlock-recipe', recipe = 'electric-mining-drill' },
-        -- assoc{ type = 'unlock-recipe', recipe = fns 'electric-mining-drill-fluid' },
-    },
     prerequisites = { 'automation-science-pack', fns 'wet-drilling' }
 })
 

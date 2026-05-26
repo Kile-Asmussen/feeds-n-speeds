@@ -5,7 +5,7 @@ local remove = assoc{}
 local unlocks = array{}
 
 for _, recipe in opairs(data.raw.recipe) do
-    if recipe.unlocked_by == nil then goto continue end
+    if recipe.auto_unlocked_by == nil then goto continue end
 
     local unlock = {}
 
@@ -14,15 +14,15 @@ for _, recipe in opairs(data.raw.recipe) do
     if recipe.hidden then goto continue end
 
     if
-        type(recipe.unlocked_by) == 'table' and
-        #recipe.unlocked_by >= 1 and
-        table.iall(recipe.unlocked_by, functions.is('string'))
+        type(recipe.auto_unlocked_by) == 'table' and
+        #recipe.auto_unlocked_by >= 1 and
+        table.iall(recipe.auto_unlocked_by, functions.is('string'))
     then
-        unlock = table.set(recipe.unlocked_by)
-    elseif type(recipe.unlocked_by) == 'string' then
-        unlock = { [recipe.unlocked_by] = true }
+        unlock = table.set(recipe.auto_unlocked_by)
+    elseif type(recipe.auto_unlocked_by) == 'string' then
+        unlock = { [recipe.auto_unlocked_by] = true }
     else
-        die("recipe " .. recipe.name .. " can't be unlocked by " .. tostring(recipe.unlocked_by))
+        die("recipe " .. recipe.name .. " can't be unlocked by " .. tostring(recipe.auto_unlocked_by))
     end
 
     recipe.enabled = table.is_empty(unlock)

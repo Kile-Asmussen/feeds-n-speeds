@@ -1,3 +1,5 @@
+local proxy = require('namespace')('proxy')
+
 local function __proxy_mt_newindex(tbl, key, val)
     tbl.__real[key] = val
     local newpath = {}
@@ -129,7 +131,7 @@ local function monkeypatch()
 end
 
 
-function table.proxy(args)
+function proxy.makeproxy(args)
     assert(type(args) == "table", "table.proxy expects a table with up to six keys: tbl, [rootname, path, hook, changes, maxdepth]")
     assert(type(args.tbl) == "table", "table.proxy mandatory key tbl must be a table")
     monkeypatch()
@@ -164,10 +166,14 @@ function table.proxy(args)
     return res
 end
 
-function table.is_proxied(tbl)
+function proxy.is_proxied(tbl)
     return getmetatable(tbl) == __proxy_mt
 end
 
-function table.unproxy(tbl)
-    if table.is_proxied(tbl) then return tbl.__real else return tbl end
+function proxy.unmakeproxy(tbl)
+    if proxy.is_proxied(tbl) then return tbl.__real else return tbl end
 end
+
+getmetatable(proxy).__call = proxy.makeproxy
+
+return proxy:seal()

@@ -94,17 +94,14 @@ end
 
 function functions.null(...) return nil end
 
-local __env_assert = _ENV.assert
-local __env_functions = _ENV.functions
+local __env_functions = _ENV.functions -- probably nil
 
 function functions.use()
-    _ENV.assert = functions.assert
-    _ENV.functions = functions
+    rawset(_ENV, 'functions', functions)
 end
 
 function functions.restore()
-    _ENV.assert = __env_assert
-    _ENV.functions = __env_functions
+    rawset(_ENV, 'functions', __env_functions)
 end
 
 return functions:seal()

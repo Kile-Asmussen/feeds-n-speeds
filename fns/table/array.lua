@@ -1,6 +1,6 @@
 
 local table = _ENV.table
-
+local assert = _ENV.assert
 
 local function __array_newindex(tbl, i, v)
     assert(type(i) == 'number', "cannot insert non-numerical key into array")

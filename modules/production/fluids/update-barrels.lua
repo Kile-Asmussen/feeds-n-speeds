@@ -14,5 +14,5 @@ for _, fl in pairs(data.raw.fluid) do
     end
 end
 
-data.raw.recipe['water-barrel'].unlocked_by = 'automation-2'
-data.raw.recipe['empty-water-barrel'].unlocked_by = 'automation-2'
+data.raw.recipe['water-barrel'].auto_unlocked_by = 'automation-2'
+data.raw.recipe['empty-water-barrel'].auto_unlocked_by = 'automation-2'

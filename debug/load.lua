@@ -1,4 +1,4 @@
-require 'prelude'
+local fns = require 'fns'
 
 local print = _ENV.print
 
@@ -6,7 +6,7 @@ require 'test'
 
 local localisation = require 'test.localisation'
 local debuglib = require 'debuglib'
-local tools = require 'tools'
+local gadgets = require 'gadgets'
 
 local log = _ENV.__log
 if not _ENV.VERBOSE then
@@ -21,14 +21,9 @@ _ENV.modlist = {}
 print("\nSETTINGS")
 require('settings')
 
-print("\nSETTINGS-UPDATES")
-require('settings-updates')
-
-print("\nSETTINGS-FINAL-FIXES")
-require('settings-final-fixes')
-
-fns_instance()
-begin_data_stage(_ENV.VERBOSE)
+fns.use()
+data.begin_data_stage(_ENV.VERBOSE)
+fns.restore()
 
 print("\nDATA")
 require('data')
@@ -36,18 +31,16 @@ require('data')
 print("\nDATA-UPDATES")
 require('data-updates')
 
-print("\nDATA-FINAL-FIXES")
-require('data-final-fixes')
+fns.use()
+data.recursion_check(data.raw)
+fns.restore()
 
-fns_instance()
-tools.recursion_check(data.raw)
-
-begin_control_stage()
+data.begin_control_stage()
 
 print("\nCONTROL")
 require('control')
 
-fns_instance()
+fns.use()
 localisation.finalize()
 
 local keys

@@ -98,4 +98,4 @@ function loading.if_enabled(stage)
     end
 end
 
-return seal_namespace(loading)
+return loading:seal()

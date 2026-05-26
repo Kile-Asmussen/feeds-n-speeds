@@ -1,12 +1,14 @@
 
-local bootstrap = namespace 'modules.bootstrap'
+local bootstrap = require('namespace')('bootstrap')
 
 bootstrap.data = asset{
     '.recipes.stone-furnace-alt',
 
     '.entities.enrich-rocks',
-    '.entities.burner-miner',
-    '.entities.electric-miner',
+
+    ['.entities.miners'] = asset{
+        
+    },
 
     '.tech.earlygame-tech-tree',
     '.tech.wet-drilling',
@@ -26,4 +28,4 @@ bootstrap.control = asset{
     '.scripts.freeplay'
 }
 
-return seal_namespace(bootstrap)
+return bootstrap:seal()

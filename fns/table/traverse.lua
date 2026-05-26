@@ -1,4 +1,6 @@
+
 local table = _ENV.table
+local assert = _ENV.assert
 
 local function __search(tbl, fn)
     if fn(tbl) then return tbl end
@@ -14,6 +16,7 @@ local function __search(tbl, fn)
 end
 
 function table.search(tbl, thing)
+    assert(type(tbl) == "table", "argument #1 must be a table")
     if type(thing) ~= 'function' then
         return __search(tbl, table.pattern(thing))
     else
@@ -53,10 +56,7 @@ function table.replace(tbl, a, b)
   end)
 end
 
-function table.descend(tbl, keys)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(keys) == "table", "argument #2 must be a table")
-    
+local function __descend(tbl, keys)
     for _, key in ipairs(keys) do
         if type(tbl) ~= 'table' then
             return tbl, false
@@ -72,10 +72,24 @@ function table.descend(tbl, keys)
     return tbl, true
 end
 
-function table.access(tbl, keys)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(keys) == "table", "argument #2 must be a table")
+function table.descend(...)
+    local n = select('#', ...) 
+    if n == 1 then
+        local keys = ...
+        assert(type(keys) == "table", "argument #1 must be a table", 2)
+        return function(tbl)
+            assert(type(tbl) == "table", "argument #1 must be a table", 2)
+            return __descend(tbl, keys)
+        end
+    else
+        local tbl, keys = ...
+        assert(type(tbl) == "table", "argument #1 must be a table", 2)
+        assert(type(keys) == "table", "argument #2 must be a table", 2)
+        return __descend(tbl, keys)
+    end
+end
 
+local function __access(tbl, keys)
     for _, key in ipairs(keys) do
         if type(tbl) ~= 'table' then
             return nil
@@ -91,12 +105,29 @@ function table.access(tbl, keys)
     return tbl
 end
 
-function table.assign(tbl, keys, value)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(keys) == "table" and #keys >= 1, "argument #2 must be a table with at least length 1")
+function table.access(...)
+    local n = select('#', ...)
+    if n == 1 then
+        local keys = ...
+        assert(type(keys) == "table", "argument #1 must be a table")
+        return function(tbl)
+            assert(type(tbl) == "table", "argument #1 must be a table")
+            return __access(tbl, keys)
+        end
+    else
+        local tbl, keys = ...
+        assert(type(tbl) == "table", "argument #1 must be a table")
+        assert(type(keys) == "table", "argument #2 must be a table")
+        return __access(tbl, keys)
+    else
+end
+
+local function __assign(tbl, keys)
+    if #keys == 0 then
+        return keys.val
+    end
 
     local last = table.remove(keys)
-
     local down = tbl
     
     for _, key in ipairs(keys) do
@@ -109,15 +140,34 @@ function table.assign(tbl, keys, value)
         down = down[key]
     end
     
-    down[last] = value
+    down[last] = keys.val
 
     return tbl
 end
 
+function table.assign(...)
+    local n = select('#', ...) 
+    if n == 1 then
+        local keys = ...
+        assert(type(keys) == "table", "argument #1 must be a table")
+        return function(tbl)
+            assert(type(tbl) == "table", "argument #1 must be a table")
+            return __assign(tbl, keys)
+        end
+    else
+        local tbl, keys = ...
+        assert(type(tbl) == "table", "argument #1 must be a table")
+        assert(type(keys) == "table", "argument #2 must be a table")
+        return __assign(tbl, keys)
+    end
+end
+
 function table.index(tbl)
+    assert(type(tbl) == "table", "argument #1 must be a table")
     return function(k) return tbl[k] end
 end
 
 function table.newindex(tbl)
+    assert(type(tbl) == "table", "argument #1 must be a table")
     return function(k, v) tbl[k] = v return tbl end
 end

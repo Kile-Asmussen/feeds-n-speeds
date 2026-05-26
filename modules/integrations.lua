@@ -1,5 +1,5 @@
 
-local integrations = namespace "integrations"
+local integrations = require('namespace')('integrations')
 
 integrations.data = asset{
     ".textplates.unobtainables"

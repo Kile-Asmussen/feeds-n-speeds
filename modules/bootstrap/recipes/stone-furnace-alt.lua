@@ -19,11 +19,12 @@ old_recipe.ingredients = {
     { amount = 10, name = 'stone', type = 'item' }
 }
 
+data.raw.recipe['stone-brick'].auto_unlocked_by = fns 'basic-materials-processing'
 
 local new_recipe = assoc{
     type = 'recipe',
     name = fns 'stone-furnace',
-    unlocked_by = fns 'basic-materials-processing',
+    auto_unlocked_by = fns 'basic-materials-processing',
     localised_name = array{"entity-name.stone-furnace"},
     order = 'a[stone-furnace]-b[stone-brick]',
     energy_required = 3.0,
@@ -67,10 +68,6 @@ local bmp = assoc{
             scale = 0.33,
             shift = array{ 0, 5 }
         },        
-    },
-    effects = array{
-        assoc{ type = 'unlock-recipe', recipe = fns 'stone-furnace' },
-        assoc{ type = 'unlock-recipe', recipe = 'stone-brick' },
     },
     research_trigger = assoc{
         type = 'craft-item',

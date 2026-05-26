@@ -13,10 +13,12 @@ _ENV.modlist = {}
 require('settings')
 require('settings-updates')
 require('settings-final-fixes')
-begin_data_stage()
+data.begin_data_stage()
 require('data')
 require('data-updates')
 require('data-final-fixes')
+
+fns.use()
 
 local debuglib = require 'debuglib'
 

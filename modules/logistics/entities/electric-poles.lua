@@ -10,7 +10,7 @@ medium.maximum_wire_distance = 10
 big.maximum_wire_distance = 50
 substation.maximum_wire_distance = 22
 
-data.raw.recipe['power-switch'].unlocked_by = 'electric-energy-distribution-2'
+data.raw.recipe['power-switch'].auto_unlocked_by = 'electric-energy-distribution-2'
 data.raw.recipe['power-switch'].ingredients = {
     { type='item', name='advanced-circuit', amount=1 },
     { type='item', name='copper-cable', amount=10 },

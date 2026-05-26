@@ -1,5 +1,6 @@
 
 local table = _ENV.table
+local assert = _ENV.assert
 
 function table.imap(tbl, func)
     assert(type(tbl) == "table", "argument #1 must be a table")

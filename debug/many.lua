@@ -13,7 +13,7 @@ _ENV.modlist = {"textplates", "even-more-text-plates"}
 require('settings')
 require('settings-updates')
 require('settings-final-fixes')
-begin_data_stage()
+data.begin_data_stage()
 require('data')
 require('data-updates')
 require('data-final-fixes')

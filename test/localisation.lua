@@ -1,5 +1,5 @@
 
-
+local fns = require 'fns'
 local localisation = require('namespace')('test.localisation')
 local debuglib = require 'debuglib'
 
@@ -152,7 +152,7 @@ function localisation.current_locale_map()
 end
 
 function localisation.add_manual_keys()
-    local manual = fns_categorized_names()
+    local manual = fns.extra_localsation_keys
 
     for cat, list in pairs(manual) do
         for _, name in ipairs(list) do

@@ -1,5 +1,5 @@
 
-local utilities = namespace 'utilities'
+local utilities = require('namespace')('utilities')
 
 utilities.settings = asset{
     '.setting.restart-toggle'

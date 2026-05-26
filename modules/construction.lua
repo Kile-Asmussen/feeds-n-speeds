@@ -1,5 +1,5 @@
 
-local construction = namespace 'construction'
+local construction = require('namespace')('construction')
 
 construction.data = asset{
     '.recipes.crafting-times',
@@ -11,4 +11,4 @@ construction.data = asset{
     }
 }
 
-return seal_namespace(construction)
+return construction:seal()

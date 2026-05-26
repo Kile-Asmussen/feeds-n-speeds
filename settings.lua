@@ -7,9 +7,11 @@
 -- extras.settings()
 -- tweaks.settings()
 
-fns_instance()
+local fns = require 'fns'
+
+fns.use()
 
 require('modules')
     .load_stage 'settings'
 
-fns_restore()
+fns.restore()
