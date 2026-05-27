@@ -1,113 +1,152 @@
-
+local fns = require 'fns'
+local puts = require('gadgets').throughputs
 local recipes = data.raw.recipe
+local merge = table.merge
 
-recipes['shotgun-shell'].energy_required = 4
-recipes['shotgun-shell'].results[1].amount = 2
-recipes['piercing-shotgun-shell'].results[1].amount = 2
-recipes['firearm-magazine'].energy_required = 2
-recipes['firearm-magazine'].results[1].amount = 2
+merge(recipes, {
 
-recipes['artillery-shell'].ingredients = {
-    { type = 'item', name = 'explosives', amount = 10 },
-    { type = 'item', name = 'steel-plate', amount = 2 },
-    { type = 'item', name = fns'small-radar', amount = 1 },
-}
+    ['artillery-shell'] = merge{
+        ingredients = puts{
+            ['explosives'] = 10,
+            ['steel-plate'] = 2,
+            [fns 'small-radar'] = 1,
+        }
+    },
 
-recipes['firearm-magazine'].ingredients = {
-    { type = 'item', name = 'iron-plate', amount = 2 },
-    { type = 'item', name = 'copper-plate', amount = 2 },
-    { type = 'item', name = 'sulfur', amount = 1 },
-    { type = 'item', name = 'coal', amount = 1 },
-}
+    ['destroyer-capsule'] = merge{
+        ingredients = puts{
+            ['solid-fuel'] = 5,
+            ['engine-unit'] = 5,
+            ['advanced-circuit'] = 5,
+            ['copper-cable'] = 10,
+            ['battery'] = 10,
+        }
+    },
 
-recipes['piercing-rounds-magazine'].ingredients = {
-    { type = 'item', name = 'steel-plate', amount = 1 },
-    { type = 'item', name = 'firearm-magazine', amount = 2 },
-    { type = 'item', name = 'sulfur', amount = 1 },
-    { type = 'item', name = 'coal', amount = 1 },
-}
+    ['defender-capsule'] = merge{
+        ingredients = puts{
+            ['solid-fuel'] = 1,
+            ['engine-unit'] = 1,
+            ['advanced-circuit'] = 1,
+            ['iron-gear-wheel'] = 2,
+            ['piercing-rounds-magazine'] = 1,
+        }
+    },
 
-recipes['shotgun-shell'].ingredients = {
-    { type = 'item', name = 'copper-plate', amount = 2 },
-    { type = 'item', name = 'iron-plate', amount = 2 },
-    { type = 'item', name = 'sulfur', amount = 1 },
-    { type = 'item', name = 'coal', amount = 2 },
-}
+    ['distractor-capsule'] = merge{
+        ingredients = puts{
+            ['solid-fuel'] = 3 ,
+            ['engine-unit'] = 3 ,
+            ['advanced-circuit'] = 3 ,
+            ['small-lamp'] = 3 ,
+            ['battery'] = 3 ,
+        }
+    },
 
-recipes['piercing-shotgun-shell'].ingredients = {
-    { type = 'item', name = 'shotgun-shell', amount = 2 },
-    { type = 'item', name = 'steel-plate', amount = 1 },
-    { type = 'item', name = 'sulfur', amount = 1 },
-    { type = 'item', name = 'coal', amount = 1 },
-}
+    ['explosive-rocket'] = merge{
+        ingredients = puts{
+            ['rocket-fuel'] = 2,
+            ['explosives'] = 5,
+            ['steel-plate'] = 2,
+            ['electronic-circuit'] = 3,
+        }
+    },
 
-recipes['grenade'].ingredients = {
-    { type = 'item', name = 'steel-plate', amount = 1 },
-    { type = 'item', name = 'sulfur', amount = 5 },
-    { type = 'item', name = 'coal', amount = 5 },
-}
+    ['firearm-magazine'] = merge{
+        energy_required = 2,
+        results = puts { ['firearm-magazine'] = 2 },
+        ingredients = puts{
+            ['iron-plate'] = 2,
+            ['copper-plate'] = 2,
+            ['sulfur'] = 1,
+            ['coal'] = 1,
+        }
+    },
 
-recipes['flamethrower-ammo'].ingredients = {
-    { type = 'fluid', name = 'crude-oil', amount = 100 },
-    { type = 'item', name = 'barrel', amount = 1 },
-}
+    ['flamethrower-ammo'] = merge{
+        ingredients = puts{
+            ['crude-oil'] = 100,
+            ['barrel'] = 1,
+        }
+    },
 
-recipes['slowdown-capsule'].category = 'crafting-with-fluid'
-recipes['slowdown-capsule'].ingredients = {
-    { type = 'item', name = 'sulfur', amount = 5 },
-    { type = 'item', name = 'copper-cable', amount = 5 },
-    { type = 'fluid', name = 'crude-oil', amount = 50 },
-    { type = 'item', name = 'grenade', amount = 1 },
-}
+    ['grenade'] = merge{
+        ingredients = puts{
+            ['steel-plate'] = 1,
+            ['sulfur'] = 5,
+            ['coal'] = 5,
+        }
+    },
 
-recipes['poison-capsule'].category = 'crafting-with-fluid'
-recipes['poison-capsule'].ingredients = {
-    { type = 'item', name = 'solid-fuel', amount = 5 },
-    { type = 'item', name = 'iron-stick', amount = 5 },
-    { type = 'fluid', name = 'sulfuric-acid', amount = 50 },
-    { type = 'item', name = 'grenade', amount = 1 },
-}
+    ['shotgun-shell'] = merge{
+        ingredients = puts{
+            ['copper-plate'] = 2,
+            ['iron-plate'] = 2,
+            ['sulfur'] = 1,
+            ['coal'] = 2,
+        },
+        results = puts { ['shotgun-shell'] = 2 },
+        energy_required = 4,
+    },
 
-recipes['defender-capsule'].ingredients = {
-    { type = 'item', name = 'solid-fuel', amount = 1 },
-    { type = 'item', name = 'engine-unit', amount = 1 },
-    { type = 'item', name = 'advanced-circuit', amount = 1 },
-    { type = 'item', name = 'iron-gear-wheel', amount = 2 },
-    { type = 'item', name = 'piercing-rounds-magazine', amount = 1 },
-}
 
-recipes['distractor-capsule'].ingredients = {
-    { type = 'item', name = 'solid-fuel', amount = 3 },
-    { type = 'item', name = 'engine-unit', amount = 3 },
-    { type = 'item', name = 'advanced-circuit', amount = 3 },
-    { type = 'item', name = 'small-lamp', amount = 3 },
-    { type = 'item', name = 'battery', amount = 3 },
-}
+    ['piercing-rounds-magazine'] = merge{ 
+        energy_required = 6,
+        ingredients = puts{
+            ['steel-plate'] = 1,
+            ['firearm-magazine'] = 2,
+            ['sulfur'] = 1,
+            ['coal'] = 1,
+        }
+    },
 
-recipes['destroyer-capsule'].ingredients = {
-    { type = 'item', name = 'solid-fuel', amount = 5 },
-    { type = 'item', name = 'engine-unit', amount = 5 },
-    { type = 'item', name = 'advanced-circuit', amount = 5 },
-    { type = 'item', name = 'copper-cable', amount = 10 },
-    { type = 'item', name = 'battery', amount = 10 },
-}
+    ['piercing-shotgun-shell'] = merge{
+        energy_required = 8,
+        ingredients = puts{
+            ['shotgun-shell'] = 2,
+            ['steel-plate'] = 1,
+            ['sulfur'] = 1,
+            ['coal'] = 1,
+        }
+    },
 
-recipes['rocket'].ingredients = {
-    { type = 'item', name = 'rocket-fuel', amount = 1 },
-    { type = 'item', name = 'explosives', amount = 1 },
-    { type = 'item', name = 'steel-plate', amount = 1 },
-    { type = 'item', name = 'electronic-circuit', amount = 3 },
-}
 
-recipes['explosive-rocket'].ingredients = {
-    { type = 'item', name = 'rocket-fuel', amount = 2 },
-    { type = 'item', name = 'explosives', amount = 5 },
-    { type = 'item', name = 'steel-plate', amount = 2 },
-    { type = 'item', name = 'electronic-circuit', amount = 3 },
-}
+    ['slowdown-capsule'] = merge{
+        category = 'crafting-with-fluid',
+        ingredients = puts{
+            ['sulfur'] = 5,
+            ['iron-stick'] = 5,
+            ['crude-oil'] = 50,
+            ['grenade'] = 1,
+        },
+    },
 
-recipes['railgun-ammo'].ingredients = {
-    { type = 'item', name = 'copper-cable', amount = 10 },
-    { type = 'item', name = 'tungsten-carbide', amount = 1 },
-    { type = 'item', name = 'steel-plate', amount = 5 },
-}
+    ['poison-capsule'] = merge{
+        category = 'crafting-with-fluid',
+        ingredients = puts{
+            ['solid-fuel'] = 5,
+            ['copper-cable'] = 5,
+            ['sulfuric-acid'] = 50,
+            ['grenade'] = 1
+        }
+    },
+
+
+    ['rocket'] = merge{
+        ingredients = puts{
+            ['rocket-fuel'] = 1,
+            ['explosives'] = 1,
+            ['steel-plate'] = 1,
+            ['electronic-circuit'] = 3,
+        }
+    },
+
+
+    ['railgun-ammo'] = merge{
+        ingredients = puts{
+            ['copper-cable'] = 10,
+            ['tungsten-carbide'] = 1,
+            ['steel-plate'] = 5,
+        }
+    },
+})

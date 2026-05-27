@@ -1,4 +1,4 @@
-
+local fns = require 'fns'
 local iron_chest =  data.raw.container['iron-chest']
 local tap = table.clone(data.raw.furnace['stone-furnace'])
 
@@ -12,8 +12,8 @@ tap.collision_box = {
 tap.selection_box = table.clone(tap.collision_box)
 tap.crafting_speed = 0.2
 
-tap.cant_insert_at_source_message_key = fns_locale_key('inventory-restriction', 'cant-be-barreled')
-tap.custom_input_slot_tooltip_key = fns_locale_key('tooltip', 'barrel-tapper')
+tap.cant_insert_at_source_message_key = fns.locale_key('inventory-restriction', 'cant-be-barreled')
+tap.custom_input_slot_tooltip_key = fns.locale_key('tooltip', 'barrel-tapper')
 
 tap.corpse = iron_chest.corpse
 tap.dying_explosion = iron_chest.dying_explosion
@@ -112,6 +112,7 @@ local tap_recipe = {
     }
 }
 
+data.raw.recipe.barrel.auto_unlocked_by = 'automation-2'
 
 data:extend{
     { type='recipe-category', name=fns 'barrelling' },

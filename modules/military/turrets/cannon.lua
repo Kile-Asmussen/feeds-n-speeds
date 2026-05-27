@@ -1,5 +1,5 @@
-
-local tools = require'tools'
+local fns = require 'fns'
+local gadgets = require 'gadgets'
 
 local turret = table.clone(data.raw['ammo-turret']['gun-turret'])
 local name = fns 'cannon-turret'
@@ -44,7 +44,7 @@ local layers_list = {
     turret.folded_animation.layers,
     turret.folding_animation.layers,
 }
-table.append(layers_list, table.icollect(turret_remnants.animation, table.at('layers')))
+table.append(layers_list, table.icollect(turret_remnants.animation, table.access{'layers'}))
 
 for _, layers in ipairs(layers_list) do
     for _, layer in ipairs(layers) do
@@ -52,7 +52,7 @@ for _, layers in ipairs(layers_list) do
             layer.tint = { 0.3, 0.3, 0.3 }
         end
         layer.scale = layer.scale * 2
-        table.vecmul(layer.shift, 2)
+        math.vecmul(layer.shift, 2)
     end
 end
 turret.water_reflection.pictures.scale = 10
@@ -76,13 +76,18 @@ local turret_item = {
     stack_size = 50,
 }
 
-turret_item.icons = tools.icons(
-    { icon = '__base__/graphics/icons/gun-turret.png',
+turret_item.icons = {
+    {
+        icon = '__base__/graphics/icons/gun-turret.png',
         tint = { 0.8, 0.8, 0.8 }
-    }, {
-        icon = data.raw.ammo['cannon-shell'].icon
+    },
+    {
+        icon = data.raw.ammo['cannon-shell'].icon,
+        float = true,
+        scale = 0.25,
+        shift = { -8, 8 },
     }
-)
+}
 
 turret.icons = table.clone(turret_item.icons)
 

@@ -31,7 +31,8 @@ end
 
 fns.names = {}
 
-function fns.name(name)
+function fns.name(name, _)
+    if name == fns then name = _ end
     local memo = fns.names[name]
     if memo then return memo end
     assert(type(name) == 'string', "argument #1 must be a string")
@@ -46,8 +47,8 @@ getmetatable(fns).__call = fns.name
 fns.extra_localsation_keys = {}
 
 function fns.locale_key(category, name)
+    if not fns.identifiers[name] then name = fns(name) end
     fns.extra_localsation_keys[category] = fns.extra_localsation_keys[category] or {}
-    assert(fns.identifiers[name], "argument #2 must be an established mod identifier")
     fns.extra_localsation_keys[category][name] = true
     return category .. '.' .. name
 end

@@ -68,7 +68,7 @@ local boiler_recipe = {
     },
 }
 
-return {
+data:extend{
     boiler,
     boiler_item,
     boiler_recipe

@@ -1,11 +1,12 @@
 
+local fns = require 'fns'
 local tech = data.raw.technology
 
 tech['uranium-mining'] = nil
 
 local uranium = tech['uranium-processing']
 
-table.merge(tech['uranium-processing'],{
+table.merge(tech['uranium-processing'], {
     prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack' },
     research_trigger = functions.null,
     unit = {
@@ -22,7 +23,6 @@ table.merge(tech['uranium-processing'],{
 local wet = {
     type = 'technology',
     name = fns 'wet-drilling',
-    order = 'a-b-b',  -- after steam-power (a-b-a)
     icons = {
         {
             icon = '__base__/graphics/technology/steam-power.png',
@@ -34,23 +34,10 @@ local wet = {
         },
     },
     prerequisites = { 'steam-power' },
-    effects = {
-        {
-            type = 'mining-with-fluid',
-            modifier = true,
-        },
-    },
-    research_trigger = {
-        type = 'craft-item',
-        item = 'offshore-pump',
-        amount = 1,
-    },
+    effects = { { type = 'mining-with-fluid', modifier = true, } },
+    research_trigger = { type = 'build-entity', entity = 'offshore-pump', },
 }
 
-
-
-table.merge(data.raw.technology['electric-mining-drill'], {
-    prerequisites = { 'automation-science-pack', fns 'wet-drilling' }
-})
+tech['electric-mining-drill'].prerequisites = { 'automation-science-pack', fns 'wet-drilling' }
 
 data:extend{wet}

@@ -1,6 +1,4 @@
-
-local tools = require'tools'
-
+local fns = require 'fns'
 local turret = table.clone(data.raw['ammo-turret']['gun-turret'])
 
 turret.name = fns 'shotgun-turret'
@@ -18,10 +16,10 @@ end
 local turret_item = {
     type = 'item',
     name = fns 'shotgun-turret',
-    icons = tools.icons(
-        { icon = '__base__/graphics/icons/gun-turret.png' },
-        { icon = data.raw.ammo['shotgun-shell'].icon }
-    ),
+    icons = {
+        { icon = '__base__/graphics/icons/gun-turret.png', size = 64, scale = 0.5 },
+        { icon = data.raw.ammo['shotgun-shell'].icon, size = 64, scale = 0.25, shift = { -8, 8 } }
+    },
     subgroup = data.raw.item['gun-turret'].subgroup,
     order = 'b[turret]-b[shotgun-turret]',
     place_result = fns 'shotgun-turret',

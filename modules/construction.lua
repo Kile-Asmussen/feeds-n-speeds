@@ -4,13 +4,17 @@ local construction = require('namespace')('construction')
 local set = table.intoset
 
 construction.data = set{
-    '.recipes.crafting-times',
-    '.entities.mining-times',
+    ['.entities.fix-quality'] = -1,
+    ['.entities.mining-times'] = -1,
+    ['.recipes.crafting-times'] = -1,
+    
     '.tiles.collision-layers',
-    ['.entities.pavement'] = set{
-        'modules.bootstrap.entities.burner-miner',
-        'modules.bootstrap.entities.electric-miner',
-    }
+    ['.tiles.pavement'] = -1
+
+}
+
+construction['data-updates'] = set{
+    '.tiles.auto-pavement'
 }
 
 return construction:seal()

@@ -1,16 +1,16 @@
 
+local fns = require 'fns'
 local recipes = data.raw.recipe
 
 recipes.shotgun.category = fns 'hand-crafting'
 recipes.pistol.category = fns 'hand-crafting'
 recipes['light-armor'].category = fns 'hand-crafting'
 
-recipes['shotgun-shell'].enabled = true
+recipes['shotgun-shell'].auto_unlocked_by = {}
 
-recipes.pistol.enabled = true
-
+recipes.pistol.auto_unlocked_by = {}
 recipes.pistol.hidden = false
-recipes.shotgun.enabled = true
+recipes.shotgun.auto_unlocked_by = {}
 
 recipes.shotgun.ingredients = {
     { type='item', name='iron-plate', amount=5 },

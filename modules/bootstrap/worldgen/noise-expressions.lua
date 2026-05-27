@@ -1,6 +1,5 @@
--- Sulfur ore noise expression with parameterized builder
--- Placeholder registered in data stage; rebuilt with correct indices in data_updates
 
+local fns = require 'fns'
 local gadgets = require 'gadgets'
 
 local noise = {
@@ -32,7 +31,7 @@ data:extend{
         type = 'autoplace-control',
         name = fns 'sulfur-ore',
         localised_name = {'', '[entity=' .. fns 'sulfur-ore' .. '] ',
-            { fns_locale_key('entity-name', 'sulfur-ore')}},
+            { fns.locale_key('entity-name', 'sulfur-ore')}},
         category = 'resource',
         richness = true,
         order = 'a-g',

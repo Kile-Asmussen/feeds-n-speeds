@@ -154,7 +154,7 @@ function table.intoset(tbl)
         local key = table.remove(tbl)
         tbl[key] = true
     end
-    return table.assoc(tbl)
+    return tbl
 end
 
 table.null = {}

@@ -1,4 +1,6 @@
 
+local fns = require 'fns'
+
 data:extend{
     { type='recipe-category', name=fns 'hand-crafting' },
     { type='recipe-category', name=fns 'advanced-crafting-organic' },

@@ -10,3 +10,5 @@ integrations.data = set{
 integrations['data-updates'] = set{
     ".textplates.unlocks"
 }
+
+return integrations:seal()

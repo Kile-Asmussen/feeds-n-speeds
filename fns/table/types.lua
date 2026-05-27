@@ -24,7 +24,6 @@ end
 
 function table.is_array(tbl)
     assert(type(tbl) == "table", "argument #1 must be a table")
-    if getmetatable(tbl) == __array_mt then return true end
     local k
     repeat
         k = next(tbl, k)

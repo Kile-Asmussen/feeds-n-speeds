@@ -8,13 +8,13 @@ utilities.settings = set{
 }
 
 utilities.control = set{
-    '.simple-chat-commands'
+    '.reset-tech'
 }
 
 utilities['data-updates'] = set{
     ['.assign-recipe-unlocks'] = set{
-        'modules.production.recipes.update-barrels'
-        'modules.integrations.textplates.unlocks'
+        'modules.production.fluids.update-barrels',
+        'modules.integrations.textplates.unlocks',
     }
 }
 

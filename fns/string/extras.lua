@@ -87,7 +87,7 @@ function string.endswith(str, sample)
     if sample == '' then return true
     elseif #sample == #str then return sample == str
     elseif #sample > #str then return false
-    else return string.sub(str, #str - #sample - 1,  #str) == sample
+    else return string.sub(str, #str - #sample + 1) == sample
     end
 end
 
@@ -131,7 +131,7 @@ local function stringlines_iter(state, lastline)
 end
 
 function string.lines(str)
-    assert(type(str) == 'string', "argument #1 must be a string")
+    assert(type(str) == 'string', "argument #1 must be a string not " .. type(str))
     return stringlines_iter, {str, 0}, nil
 end
 

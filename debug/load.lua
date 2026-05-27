@@ -8,7 +8,6 @@ local localisation = require 'test.localisation'
 local debuglib = require 'debuglib'
 local gadgets = require 'gadgets'
 
-local log = _ENV.__log
 if not _ENV.VERBOSE then
     _ENV.__log = function() end
 end
@@ -17,19 +16,20 @@ if _ENV.QUIET then
 end
 
 _ENV.modlist = {}
+local ok, err 
 
 print("\nSETTINGS")
-require('settings')
+require 'settings'
 
 fns.use()
-data.begin_data_stage(_ENV.VERBOSE)
+data.begin_data_stage(_ENV.PROXIED)
 fns.restore()
 
 print("\nDATA")
-require('data')
+require 'data'
 
 print("\nDATA-UPDATES")
-require('data-updates')
+require 'data-updates'
 
 fns.use()
 data.recursion_check(data.raw)
@@ -38,7 +38,7 @@ fns.restore()
 data.begin_control_stage()
 
 print("\nCONTROL")
-require('control')
+require 'control'
 
 fns.use()
 localisation.finalize()

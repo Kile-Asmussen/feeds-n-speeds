@@ -1,4 +1,6 @@
 
+if true then return end
+
 local gadgets = require 'gadgets'
 
 data.raw.technology.radar.prerequisites = { 'lamp' }
@@ -28,8 +30,8 @@ table.traverse(small, downscale)
 table.merge(small, {
   name = fns 'small-radar',
   max_health = 150,
-  minable.result = fns 'small-radar',
-  icon = functions.null, -- delete
+  minable = table.merge{ result = fns 'small-radar' },
+  icon = functions.null,
   auto_unlocked_by = 'radar',
   icons = {
     { icon = '__base__/graphics/icons/radar.png', icon_size = 64 },
@@ -56,7 +58,7 @@ local recipe = table.clone(data.raw.recipe.radar)
 
 table.merge(recipe, {
   name = item.name,
-  recipe.results[1].name = item.name,
+  results = gadgets.throughputs{ [fns 'small-radar'] = 1 },
   ingredients = {
     { type='item', amount=10, name='copper-cable' },
     { type='item', amount=4, name='iron-plate' },

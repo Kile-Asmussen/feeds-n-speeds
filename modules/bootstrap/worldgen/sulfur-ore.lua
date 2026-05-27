@@ -1,4 +1,6 @@
 
+local fns = require 'fns'
+
 data:extend{{
     type = 'resource',
     name = fns 'sulfur-ore',

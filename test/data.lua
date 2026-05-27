@@ -6,6 +6,8 @@ local rawdata = require 'test.rawdata'
 local namespace = require 'namespace'
 local utils = fns.utils
 
+local proxy = require 'test.proxy'
+
 local data = namespace('test.data')
 
 rawset(_ENV, 'modlist', table.null)
@@ -19,15 +21,13 @@ setmetatable(_ENV.settings, {
     __newindex = function() die("_ENV.settings is not available at this time") end,
 })
 
-local proxied = false
 local function log_change(new, cutpath, fullpath, value)
     if new then __log(cutpath:replace_prefix('data.raw'):replace_prefix('.') .. ' = ...') end
 end
 
-function data.begin_data_stage(proxy)
-    if proxy then
-        proxied = true
-        data.raw = table.proxy{
+function data.begin_data_stage(proxied)
+    if proxied then
+        data.raw = proxy.makeproxy{
             tbl=rawdata.load(_ENV.modlist),
             rootname='data.raw',
             hook=log_change,
@@ -53,9 +53,9 @@ function data.extend(self, protos)
 
         assert(table.is_assoc(proto), "data:extend argument entry #" .. i .. " is not an associative array")
 
-        assert(is_fns_name(proto.name), "not an fns-based name: " .. proto.name)
+        assert(fns.identifiers[proto.name], "not an fns-based name: " .. proto.name)
 
-        __log("prototype{ type = '" .. proto.type .. "', name = fns '" .. proto.name:replace_prefix('feeds-n-speeds-') .. "' }")
+        __log("data:extend{{ type = " .. ("%q"):format(proto.type) .. ", name = fns " .. ("%q"):format(proto.name:replace_prefix('feeds-n-speeds-')) .. " }}")
 
         if proto.type:endswith('-setting') then
             settings[proto.setting_type] = settings/proto.setting_type or {}
@@ -67,9 +67,8 @@ function data.extend(self, protos)
 
         elseif data.raw ~= table.null then
             local raw = data.raw
-            if proxied then raw = data.raw.__real end
+            if proxy.is_proxied(data.raw) then raw = data.raw.__real end
 
-            
             raw[proto.type] = raw[proto.type] or {}
             assert(not raw[proto.type][proto.name], proto.name .. " already declared!")
             

@@ -1,8 +1,8 @@
-
+local fns = require 'fns'
 for _,material in ipairs{
     "wood", "iron", "copper", "stone", "glass"
 } do
-    prototype{
+    data:extend{{
         type='technology',
         name=fns('textplates-'..material),
         effects={},
@@ -10,10 +10,10 @@ for _,material in ipairs{
         localised_name = {
             'technology-name.textplate',
             { 'textplates.wood-C' }
-        }
+        },
         icon = '__textplates__/graphics/entity/'..material..'/t.png',
         icon_size = 128,
-    }
+    }}
 end
 
 
@@ -38,7 +38,7 @@ local materials = {
     },
     plasticcoloured = {
         auto_unlocked_by = "textplates-plastic"
-    }
+    },
     wood = {
         type="mine-entity", entity="wood", auto_unlocked_by = fns"textplates-wood",
     },
@@ -53,14 +53,17 @@ local materials = {
         type="mine-entity", entity="stone", auto_unlocked_by = fns"textplates-glass"
     },
     uranium = {
-        type="craft-item", item="uranium-238", auto_unlocked_by = "textplates-uranium"
+        type="craft-item", item="uranium-238", auto_unlocked_by = "textplates-uranium",
         prerequisites = { fns "textplates-glass", "uranium-processing" }
     }
 }
 
 for material, changes in pairs(materials) do
-    data.raw.recipe["textplate-"..material."-small"].auto_unlocked_by = changes.auto_unlocked_by
-    data.raw.recipe["textplate-"..material."-large"].auto_unlocked_by = changes.auto_unlocked_by
+    if not data.raw.recipe['textplate-'..material..'-small'] then
+        goto continue
+    end
+    data.raw.recipe["textplate-"..material.."-small"].auto_unlocked_by = changes.auto_unlocked_by
+    data.raw.recipe["textplate-"..material.."-large"].auto_unlocked_by = changes.auto_unlocked_by
     if materials.prerequisites then
         data.raw.technology[changes.auto_unlocked_by].prerequisites = materials.prerequisites
     end
@@ -72,4 +75,5 @@ for material, changes in pairs(materials) do
         }
     end
     data.raw.technology[changes.auto_unlocked_by].hidden = true
+    ::continue::
 end

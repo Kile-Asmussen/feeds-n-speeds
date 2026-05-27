@@ -1,4 +1,5 @@
 
+local fns = require 'fns'
 local ushell = table.clone(data.raw.ammo['piercing-shotgun-shell'])
 local ushell_proj = table.clone(data.raw.projectile['piercing-shotgun-pellet'])
 local ushell_recipe = table.clone(data.raw.recipe['uranium-rounds-magazine'])

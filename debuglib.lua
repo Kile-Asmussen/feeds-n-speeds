@@ -133,7 +133,7 @@ function debuglib.function_signature(func, short)
         local read_lines = {}
         local file = debuglib.io.open(info.short_src)
         if file then
-            for l in string.lines(file) do
+            for l in file:lines() do
                 table.insert(read_lines, l)
             end
                 file:close()
@@ -279,7 +279,7 @@ end
 
 function debuglib.small_table(buffer, tbl)
 
-    if not buffer.small then return false end
+    if not rawget(buffer, 'small') then return false end
 
     return
         table.size(tbl) <= buffer.small.size and

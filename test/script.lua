@@ -4,8 +4,11 @@
 -- Usage: require 'test.script' early in test harness
 
 
-local script = require('namespace')('script')
+local namespace = require 'namespace'
 local debuglib = require 'debuglib'
+
+local script = namespace 'script'
+local commands = namespace 'commands'
 
 function script.__reset()
     script.__handlers = {
@@ -72,4 +75,9 @@ function script.on_nth_tick(tick, handler)
     table.insert(script.__handlers.ticks[tick], handler)
 end
 
+function commands.add_command(command, localisation_string, handler)
+    __log('/' .. command .. ' ' .. debuglib.p(localisation_string) .. ' ' .. func(handler))
+end
+
 rawset(_ENV, 'script', script:seal())
+rawset(_ENV, 'commands', commands:seal())

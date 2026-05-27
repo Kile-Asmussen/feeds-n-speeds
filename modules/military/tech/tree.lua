@@ -1,4 +1,4 @@
-
+local fns = require 'fns'
 local tech = data.raw.technology
 
 table.insert(tech['gun-turret'].prerequisites, 'military')
@@ -86,14 +86,14 @@ tech['military-3'].effects = {
 }
 
 tech['military-4'].prerequisites = { 'utility-science-pack', 'military-3' }
-tech['military-4'].localised_description = {fns_locale_key('technology-description', 'military-4-mass-production')}
+tech['military-4'].localised_description = {fns.locale_key('technology-description', 'military-4-mass-production')}
 
 tech['military-4'].effects = {
-    fns 'firearms-magazine-mass-production',
-    fns 'piercing-rounds-magazine-mass-production',
-    fns 'shotgun-shell-mass-production',
-    fns 'piercing-shotgun-shell-mass-production',
-    fns 'grenade-mass-production',
+    { type='unlock-recipe', recipe=fns 'firearms-magazine-mass-production', },
+    { type='unlock-recipe', recipe=fns 'piercing-rounds-magazine-mass-production', },
+    { type='unlock-recipe', recipe=fns 'shotgun-shell-mass-production', },
+    { type='unlock-recipe', recipe=fns 'piercing-shotgun-shell-mass-production', },
+    { type='unlock-recipe', recipe=fns 'grenade-mass-production', },
 }
 
 tech['discharge-defense-equipment'].prerequisites = {
@@ -114,7 +114,7 @@ tech['railgun'].unit.ingredients = table.icollect(
 tech['railgun-shooting-speed-1'].unit.ingredients = table.clone(tech['railgun'].unit.ingredients)
 tech['railgun-damage-1'].unit.ingredients = table.clone(tech['railgun'].unit.ingredients)
 
-fns_locale_key("modifier-description", "rocket-turret-attack-bonus")
+fns.locale_key("modifier-description", "rocket-turret-attack-bonus")
 
 table.insert(tech['stronger-explosives-5'].effects,
     { type='turret-attack', modifier = 0.4, turret_id = 'rocket-turret' }

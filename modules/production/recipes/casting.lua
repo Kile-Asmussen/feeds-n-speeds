@@ -1,5 +1,5 @@
 
-
+local fns = require 'fns'
 local recipes = data.raw.recipe
 
 recipes['casting-pipe'].allow_productivity = true
@@ -19,82 +19,81 @@ for _, r in ipairs{
     recipes[r].energy_required = 1.6
 end
 
-prototype{
-    type = 'recipe',
-    name = fns 'casting-engine',
-    allow_productivity = true,
-    allow_auto_recycle = false,
-    enabled = false,
-    icons = {
-        {
-            icon=data.raw.item['engine-unit'].icon,
-            scale=0.5,
-            shift={-4, 4},
-            float=true
+data:extend{
+    {
+        type = 'recipe',
+        name = fns 'casting-engine',
+        allow_productivity = true,
+        allow_auto_recycle = false,
+        auto_unlocked_by = 'foundry',
+        enabled = false,
+        icons = {
+            {
+                icon=data.raw.item['engine-unit'].icon,
+                scale=0.5,
+                shift={-4, 4},
+                float=true
+            },
+            {
+                icon='__FeedsNSpeeds__/graphics/icon/iron-casting-icon.png',
+                scale=0.33,
+                shift={6, -6},
+                float=true
+            }
         },
-        {
-            icon='__FeedsNSpeeds__/graphics/icon/iron-casting-icon.png',
-            scale=0.33,
-            shift={6, -6},
-            float=true
+        category = 'metallurgy',
+        ingredients = {
+            { type='fluid', name='molten-iron', amount=60 },
+            { type='item', name='steel-plate', amount=3 },
+            { type='item', name='iron-gear-wheel', amount=6 },
+            { type='item', name='pipe', amount=3 },
+        },
+        energy_required = 40,
+        results = {
+            { type='item', name='engine-unit', amount=4 }
         }
     },
-    category = 'metallurgy',
-    ingredients = {
-        { type='fluid', name='molten-iron', amount=60 },
-        { type='item', name='steel-plate', amount=3 },
-        { type='item', name='iron-gear-wheel', amount=6 },
-        { type='item', name='pipe', amount=3 },
-    },
-    energy_required = 40,
-    results = {
-        { type='item', name='engine-unit', amount=4 }
+    {
+        type = 'recipe',
+        name = fns 'casting-heat-pipe',
+        allow_productivity = true,
+        enabled = false,
+        allow_auto_recycle = false,
+        auto_unlocked_by = 'foundry',
+        icons = {
+            {
+                icon=data.raw.item['heat-pipe'].icon,
+                scale=0.5,
+                shift={-4, 4},
+                float=true
+            },
+            {
+                icon='__FeedsNSpeeds__/graphics/icon/copper-casting-icon.png',
+                scale=0.33,
+                shift={6, -6},
+                float=true
+            },
+        },
+        category = 'metallurgy',
+        ingredients = {
+            { type='fluid', name='molten-copper', amount=200 },
+            { type='item', name='steel-plate', amount=10 },
+        },
+        energy_required = 8,
+        results = {
+            { type='item', name='heat-pipe', amount=1 }
+        }
     }
 }
-
-prototype{
-    type = 'recipe',
-    name = fns 'casting-heat-pipe',
-    allow_productivity = true,
-    enabled = false,
-    allow_auto_recycle = false,
-    icons = {
-        {
-            icon=data.raw.item['heat-pipe'].icon,
-            scale=0.5,
-            shift={-4, 4},
-            float=true
-        },
-        {
-            icon='__FeedsNSpeeds__/graphics/icon/copper-casting-icon.png',
-            scale=0.33,
-            shift={6, -6},
-            float=true
-        },
-    },
-    category = 'metallurgy',
-    ingredients = {
-        { type='fluid', name='molten-copper', amount=200 },
-        { type='item', name='steel-plate', amount=10 },
-    },
-    energy_required = 8,
-    results = {
-        { type='item', name='heat-pipe', amount=1 }
-    }
-}
-
-table.append(data.raw.technology.foundry.effects, {
-    { type='unlock-recipe', recipe=fns 'casting-engine' },
-    { type='unlock-recipe', recipe=fns 'casting-heat-pipe' },
-})
 
 local function melt_down(item, input, fluid, output)
     local name = fns ('melt-scrap-' .. item);
-    prototype{
+    data:extend{{
         type = 'recipe',
         name = name,
         enabled = false,
         allow_productivity = false,
+        auto_unlocked_by = 'foundry',
         icons = {
             {
                 icon=data.raw.item[item].icon,
@@ -117,10 +116,7 @@ local function melt_down(item, input, fluid, output)
         results = {
             { type='fluid', name=fluid, amount=output }
         }
-    }
-    table.insert(data.raw.technology.foundry.effects,
-        { type='unlock-recipe', recipe=name }
-    )
+    }}
 end
 
 melt_down('iron-plate', 20, 'molten-iron', 50)

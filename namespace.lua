@@ -56,7 +56,7 @@ local function require_namespace(self, modname)
     self[name] = require(tostring(self) .. '.' .. modname)
 end
 
-local function seal_namespace(ns, recursive)
+local function seal_namespace(ns)
     assert(isnamespace(ns), "argument #1 must be a namespace, not " .. tostring(ns))
 
     if sealed[ns] then return ns end
@@ -71,14 +71,6 @@ local function seal_namespace(ns, recursive)
 
     sealed[ns] = true
     getmetatable(ns).__metatable = 'namespace'
-
-    if recursive then
-        for _, contained in pairs(ns) do
-            if isnamespace(contained) and containing_namespace(contained) == ns then
-                seal_namespace(contained)
-            end
-        end
-    end
 
     return ns
 end

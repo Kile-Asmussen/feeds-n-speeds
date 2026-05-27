@@ -1,25 +1,31 @@
 
+local fns = require 'fns'
+local puts = require('gadgets').throughputs
+
 local old_recipe = data.raw.recipe['stone-furnace']
 
-old_recipe.energy_required = 6.0
-old_recipe.icons = {
-    {
-        icon = '__base__/graphics/icons/stone-furnace.png',
-        icon_size = 64,
+table.merge(old_recipe, {
+    ingredients = puts{ stone = 20 },
+    icon = functions.null,
+    icons = {
+        {
+            icon = '__base__/graphics/icons/stone-furnace.png',
+            icon_size = 64,
+        },
+        {
+            icon = '__base__/graphics/icons/stone.png',
+            icon_size = 64,
+            scale = 0.25,
+            shift = {-8, -8},
+        },
     },
-    {
-        icon = '__base__/graphics/icons/stone.png',
-        icon_size = 64,
-        scale = 0.25,
-        shift = {-8, -8},
-    },
-}
+    energy_required = 6.0,
+})
 
-old_recipe.ingredients = {
-    { amount = 10, name = 'stone', type = 'item' }
-}
+local recipes = data.raw.recipe
 
-data.raw.recipe['stone-brick'].auto_unlocked_by = fns 'basic-materials-processing'
+recipes['stone-brick'].auto_unlocked_by = fns 'basic-materials-processing'
+
 
 local new_recipe = {
     type = 'recipe',
@@ -40,15 +46,10 @@ local new_recipe = {
             shift = {-8, -8},
         },
     },
-    ingredients = {
-        { amount = 5, name = 'stone-brick', type = 'item' },
-    },
-    results = {
-        { amount = 1, name = 'stone-furnace', type = 'item' }
-    },
+    ingredients = puts{ ['stone-brick'] = 5 },
+    results = puts{ ['stone-furnace'] = 1 },
     allow_auto_recycle = false
 }
-
 
 local bmp = {
     type = 'technology',
@@ -76,4 +77,7 @@ local bmp = {
     }
 }
 
-data:extend{new_recipe, bmp}
+data:extend{
+    new_recipe,
+    bmp,
+}

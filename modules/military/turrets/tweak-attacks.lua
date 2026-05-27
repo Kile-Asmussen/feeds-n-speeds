@@ -1,6 +1,5 @@
 
--- TODO: split
-
+local fns = require 'fns'
 local turrets = data.raw['ammo-turret']
 
 turrets['gun-turret'].max_health = 800
@@ -34,8 +33,8 @@ data.raw['fluid-turret']['flamethrower-turret'].attack_parameters.fluids = {
     { type=fns'napalm', damage_modifier = 1.35 }
 }
 
-fns_locale_key('modifier-description', 'shotgun-turret-attack-bonus')
-fns_locale_key('modifier-description', 'cannon-turret-attack-bonus')
+fns.locale_key('modifier-description', 'shotgun-turret-attack-bonus')
+fns.locale_key('modifier-description', 'cannon-turret-attack-bonus')
 
 for i = 2, 7 do
     local ppd = data.raw.technology['physical-projectile-damage-' .. i]

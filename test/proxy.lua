@@ -1,13 +1,15 @@
 local proxy = require('namespace')('proxy')
+local fns = require 'fns'
+local utils = fns.utils
 
 local function __proxy_mt_newindex(tbl, key, val)
     tbl.__real[key] = val
     local newpath = {}
     table.append(newpath, tbl.__path)
     table.insert(newpath, key)
-    local fullpath = string.tablepath(tbl.__rootname, newpath)
+    local fullpath = utils.tablepath(tbl.__rootname, newpath)
     table.cut(newpath, tbl.__maxdepth)
-    local path = string.tablepath(tbl.__rootname, newpath)
+    local path = utils.tablepath(tbl.__rootname, newpath)
     tbl.__hook(not tbl.__changes[path], path, fullpath, val)
     tbl.__changes[path] = true
 end
@@ -18,7 +20,7 @@ local function __proxy_mt_index(tbl, name)
         local newpath = {}
         table.append(newpath, tbl.__path)
         table.insert(newpath, name)
-        return table.proxy{
+        return proxy.makeproxy{
             tbl=val,
             rootname=tbl.__rootname,
             path=newpath,
@@ -41,9 +43,9 @@ local function __proxy_mt_pairs(tbl)
 end
 
 local function __proxy_incr(tbl, i)
-    if i <= #tbl.__real then
+    if i < #tbl.__real then
         i = i + 1
-        return i, tbl[i]
+        return i, tbl.__real[i]
     end
 end
 
@@ -56,7 +58,7 @@ local function __proxy_mt_len(tbl)
 end
 
 local function __proxy_mt_tostring(tbl)
-    return tbl.__rootname .. string.tablepath(tbl.__path) .. '=' .. tostring(tbl.__real)
+    return utils.tablepath(tbl.__rootname, tbl.__path) .. '=' .. tostring(tbl.__real)
 end
 
 local __proxy_mt = {

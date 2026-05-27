@@ -22,11 +22,11 @@ table.merge(sleeper, {
     name = fns 'sleeper-roboport',
     auto_unlocked_by = 'logistic-robotics',
     minable = table.assign{ 'result', val = fns 'sleeper-roboport' },
-    base_animation = table.with(table.merge, {
+    base_animation = table.merge{
         animation_speed = 0.25,
         run_mode = 'backward',
         tint = { 1, 1, 0.0 },
-    }),
+    },
     icon = functions.null,
     icons = {
         { icon = data.raw.item.roboport.icon, icon_size = 64 },
@@ -50,11 +50,11 @@ table.merge(log_only, {
     name = fns 'logistics-roboport',
     auto_unlocked_by = 'logistic-robotics',
     minable = table.assign{ 'result', val = fns 'logistics-roboport' },
-    base_animation = table.with(table.merge, {
+    base_animation = table.merge{
         animation_speed =0.50,
         run_mode = 'backward',
         tint = { 1, 0.7, 0.0 },
-    })
+    },
     icon = functions.null,
     icons = {
         { icon = data.raw.item.roboport.icon, icon_size = 64 },
@@ -115,7 +115,7 @@ local function change_recipe(recipe, name, tech, ingredients)
         name = name,
         main_product = name,
         auto_unlocked_by = tech,
-        results = table.assign{ 1, 'name', val = name },
+        results = inputs{ [name] = 1 },
         ingredients = ingredients
     })
 end
@@ -141,7 +141,7 @@ base_recipe.ingredients = inputs{
 --     { type='item', name='passive-provider-chest', amount=1 },
 -- }
 
-change_recipe(sleeper_recipe, sleeper.name, 'logistic-robotics'
+change_recipe(sleeper_recipe, sleeper.name, 'logistic-robotics',
     inputs{
         ['steel-plate'] = 10,
         [fns 'small-radar'] = 1,
@@ -161,7 +161,7 @@ change_recipe(sleeper_recipe, sleeper.name, 'logistic-robotics'
 --     { type='item', name='storage-chest', amount=1 },
 -- })
 
-change_recipe(log_recipe, log_only.name, 'logistics-system',
+change_recipe(log_recipe, log_only.name, 'logistic-system',
     inputs{
         ['steel-plate'] = 10,
         [fns 'small-radar'] = 2,

@@ -83,7 +83,6 @@ local times = {
     },
 }
 
-
 data.raw.technology['steel-axe'] = nil
 
 -- Update mining times

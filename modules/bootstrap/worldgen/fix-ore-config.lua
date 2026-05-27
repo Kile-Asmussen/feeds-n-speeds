@@ -1,4 +1,5 @@
 
+local fns = require 'fns'
 local name = fns 'sulfur-ore'
 
 local noise_expressions = data.raw['noise-expression']

@@ -1,8 +1,6 @@
 
+local fns = require 'fns'
 local puts = require('gadgets').throughputs
-
-data.raw.recipe['electric-mining-drill'].ingredients
-    = puts{  }
 
 data.raw.recipe['burner-mining-drill'].auto_unlocked_by = 'steam-power'
 
@@ -47,7 +45,7 @@ local burner_drill_item = table.clone(data.raw.item['burner-mining-drill'])
 table.merge(burner_drill_item, {
     name = name,
     place_result = name,
-    icons = table.clone(burner_drill.icons)
+    icons = table.clone(burner_drill.icons),
     icon = functions.null,
     order = 'a[items]-a[burner-mining-drill]-b[fluid]',
 })

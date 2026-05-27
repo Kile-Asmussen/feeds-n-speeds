@@ -2,6 +2,7 @@
 _ENV.TESTING = true
 _ENV.QUIET = os.getenv("QUIET") and true or false
 _ENV.VERBOSE = os.getenv("VERBOSE") and true or false
+_ENV.PROXIED = os.getenv("VERBOSE") and true or false
 
 setmetatable(_ENV, {
     __index = function(_, name) error('_ENV.' .. name .. ' undefined', 2) end,
@@ -24,30 +25,11 @@ require 'test.localisation'
 local debuglib = require 'debuglib'
 debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 2
 
-local stub_libs = {
-    ['resource-autoplace'] = 'test.resource-autoplace'
-}
-local __require = require
-local function require(name)
-    name = stub_libs[name] or name
-    local ok, val = pcall(__require, name)
-    if not ok then
-        if string.startswith(val, 'module') and val:find('not found', 1, true) then
-            error(string.before(val, ':\n'), 2)
-        elseif val:startswith('error loading module') then
-            error(string.after(val, ':\n\t'), 2)
-        end
-    else
-        return val
-    end
-end
-rawset(_ENV, 'require', require)
-
 local __exit = _ENV.os.exit
 
 function debug.getline(n, msg)
     local traceback = debug.traceback(nil, n + 1)
-    taceback = string.replace_prefix("stack traceback:\n\t")
+    traceback = string.replace_prefix(traceback, "stack traceback:\n\t")
     traceback = string.before(traceback, ': ', msg and true)
     return traceback .. (msg or '')
 end
@@ -58,7 +40,7 @@ local function log(str)
 end
 
 rawset(_ENV, 'log', log)
-rawset(_ENV, '__log', log)
+rawset(_ENV, '__log', print)
 
 rawset(_ENV, 'io', nil)
 rawset(_ENV, 'os', nil)

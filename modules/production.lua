@@ -4,19 +4,22 @@ local production = require('namespace')('production')
 local set = table.intoset
 
 production.data = set{
-    '.fluids.water',
-    '.fluids.oil-processing',
-    ['.fluids.boil-water'] = set{ '.fluids.water' },
+    '.energy.electroboiler',
+    ['.energy.nuclear-energy'] = set{ '.fluids.water' },
 
     '.fluids.barrel-tapper',
-    '.recipes.concrete',
-    '.recipes.casting',
+    '.fluids.oil-processing',
+    '.fluids.water',
+    ['.fluids.boil-water'] = set{ '.fluids.water' },
 
-    ['.entities.nuclear-energy'] = set{ '.fluids.water' }
+    '.recipes.casting',
+    '.recipes.concrete',
+    ['.recipes.crafting-categories'] = -1,
+    ['.recipes.machines'] = -1,
 }
 
 production['data-updates'] = set{
-    '.recipes.update-barrels'
+    '.fluids.update-barrels'
 }
 
 return production:seal()

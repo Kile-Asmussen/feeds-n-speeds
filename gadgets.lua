@@ -11,7 +11,7 @@ local string = fns.string
 function gadgets.throughputs(throughputs)
     local ingredients = {}
 
-    for k, v in opairs(throughputs) do
+    for k, v in table.opairs(throughputs) do
         local t
 
         if data.raw.fluid[k] then

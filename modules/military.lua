@@ -4,24 +4,29 @@ local military = require('namespace')('military')
 local set = table.intoset
 
 military.data = set{
-    '.ammo.tweak-recipes',
     '.ammo.mass-production',
+    '.ammo.napalm',
+    ['.ammo.tweak-recipes'] = -1,
+    '.ammo.uranium-buckshot',
+
+    '.guns.tweak-attacks',
+    ['.guns.tweak-recipes'] = -1,
+    ['.guns.plastics'] = set{ '.guns.tweak-recipes' },
+
+    '.misc.radar',
+    '.misc.concrete-walling',
+
 
     '.projectiles.tweak-rockets',
+    '.projectiles.cliffsplosives',
+
     '.tech.tree',
 
     '.turrets.cannon',
     '.turrets.shotgun',
-    '.turrets.tweak-attacks',
-    '.turrets.tweak-recipes',
+    ['.turrets.tweak-attacks'] = -1,
+    ['.turrets.tweak-recipes'] = -1,
 
-    '.guns.tweak-attacks',
-    '.guns.tweak-recipes',
-
-    '.misc.small-radar',
-    '.misc.concrete-walling',
-
-    ['.guns.plastics'] = set{ '.guns.tweak-recipes' },
 }
 
 return military:seal()

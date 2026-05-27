@@ -1,4 +1,4 @@
-
+local fns = require 'fns'
 local napalm = table.clone(data.raw.fluid['light-oil'])
 napalm.name = fns 'napalm'
 napalm.base_color = { 0.77, 0.33, 0 }

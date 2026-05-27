@@ -3,7 +3,8 @@ local fns = require 'fns'
 
 local stack_sizes = {
     ['rail-planner'] = {
-        ['rail-planner'] = 40
+        ['rail'] = 40,
+        ['rail-ramp'] = 5,
     },
 
     item = {
@@ -119,9 +120,6 @@ local stack_sizes = {
         ['thruster']              = 5,
 
         ['roboport']                  = 5,
-        [fns 'sleeper-roboport']      = 5,
-        [fns 'logsistic-roboport']    = 5,
-        [fns 'construction-roboport'] = 5,
         
         -- 5x5
         ['heating-tower']     = 5,
@@ -150,8 +148,10 @@ local stack_sizes = {
     }
 }
 
-for cat, changes in pairs(STACK_SIZES) do
+for cat, changes in pairs(stack_sizes) do
+    assert(data.raw[cat], "no such item category: " .. cat)
     for id, size in pairs(changes) do
+        assert(data.raw[cat][id], "no such item: " .. cat .. "." .. id)
         data.raw[cat][id].stack_size = size
     end
 end

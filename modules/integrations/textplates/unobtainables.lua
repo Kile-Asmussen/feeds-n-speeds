@@ -21,7 +21,7 @@ end
 
 for name, _ in pairs(data.raw.item) do
     for _, prefix in ipairs(prefixes) do
-        if item.name:startswith(prefix) then
+        if name:startswith(prefix) then
             data.raw.item[name] = nil
         end
     end

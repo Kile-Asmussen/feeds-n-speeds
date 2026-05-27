@@ -231,6 +231,7 @@ function localisation.winnow_unneeded_keys()
         if recipe.main_product then
             -- find it in results
             for _, r in ipairs(recipe.results or {}) do
+                assert(type(r) == 'table', "recipe " .. recipe.name .. " is wonky!")
                 if r.name == recipe.main_product and r.type ~= 'fluid' then
                     return r.name
                 end

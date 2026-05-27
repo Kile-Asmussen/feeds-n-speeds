@@ -1,18 +1,18 @@
 
+if true then return end
+
 local fns = require 'fns'
 local gadgets = require 'gadgets'
 
-local utils = 
+local utils = fns.utils
 local set = table.intoset
-
-local double_fields = 
 
 local upscale = gadgets.scale_vectors_and_numbers(
   2.0,
   set{
     'max_health', 'scale', 'number', 'volume_multiplier',
     'inventory_size', 
-}
+  }
 )
 
 local function upscale(v, k)
@@ -88,14 +88,13 @@ table.merge(big_steel_recipe, {
     auto_unlocked_by = 'automation-1',
     results = {
         { amount = 1, name = fns 'big-steel-chest', type = 'item' }
-    }
+    },
     ingredients = {
         { amount = 4, name = 'steel-chest', type = 'item', },
         { amount = 4, name = 'electronic-circuit', type = 'item', }
     },
 })
 
-local 
 
 data:extend{
     big_steel_chest,
