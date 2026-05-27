@@ -92,6 +92,16 @@ end
 
 function functions.null(...) return nil end
 
+function functions.default(default)
+    return function(val)
+        if val == nil then
+            return default
+        else
+            return val
+        end
+    end
+end
+
 local __env_functions = _ENV.functions -- probably nil
 
 function functions.use()

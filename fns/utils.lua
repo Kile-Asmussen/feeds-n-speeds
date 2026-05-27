@@ -33,15 +33,14 @@ function utils.tablepath(base, path)
     return table.concat(res)
 end
 
-function utils.scale(factor, fields, vectors)
-    return function(v, k)
-        if vectors and table.isvec(v) then
-            math.vecmul(v, factor)
-            return true
-        elseif fields[k] then
-            return v * factor, true
-        end
-    end
+local __env_utils = _ENV.utils
+
+function utils.use()
+    rawset(_ENV, 'utils', utils)
+end
+
+function utils.restore()
+    rawset(_ENV, 'utils', nil)
 end
 
 return utils:seal()

@@ -34,15 +34,16 @@ function modules.load_stage(stage)
         __log('# ' .. dep)
         local ok, val = pcall(require, dep)
         if not ok then
-            die(val)
+            error(val, 2)
         elseif type(val) == 'table' or type(val) == 'function' then
-            die('loading module ' .. dep .. ' returned a value of type ' .. type(val) .. ' which is probably unintentional')
+            error('loading module ' .. dep .. ' returned a value of type ' .. type(val) .. ' which is probably unintentional', 2)
         end
     end
 end
 
 function modules.name(mod, name)
-    if name:sub(1, 1) == '.' then
+    string.replace_prefix(name, '^')
+    if string.startswith(name, '.') then
         return tostring(mod) .. name
     else
         return name
@@ -58,14 +59,24 @@ function modules.stage_dependencies(stage)
             for name, deps in opairs(mod[stage]) do
                 name = modules.name(mod, name)
 
-                dependencies[name] = dependencies[name] or {}
-
                 if type(deps) == 'table' then
                     for dep, val in opairs(deps) do
-                        dependencies[name][modules.name(mod, dep)] = val
+                        
+                        assert(type(val) == 'boolean', 'dependencies of a module '
+                            .. 'may not themselves have dependencies: ' .. utils.tablepath(mod, { stage, dep }))
+
+                        depname = modules.name(mod, dep)
+
+                        if string.startswith(dep, '^') then
+                            dependencies[depname] = dependencies[depname] or {}
+                            dependencies[depname][name] = val
+                        else
+                            dependencies[name] = dependencies[name] or {}
+                            dependencies[name][depname] = val
+                        end
                     end
                 else
-                    dependencies[name] = mod
+                    dependencies[name] = true
                 end
             end
         end

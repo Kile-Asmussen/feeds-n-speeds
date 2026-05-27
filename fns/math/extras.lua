@@ -1,5 +1,5 @@
 local table = _ENV.table
-local assert = _ENV.table
+local assert = _ENV.assert
 
 function math.vecadd(tbl1, tbl2, res)
     assert(type(tbl1) == 'table' and type(tbl2) == 'table', "arguments #1 and #2 must be tables")

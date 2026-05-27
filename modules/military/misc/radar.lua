@@ -1,17 +1,27 @@
 
-local small = table.clone(data.raw.radar.radar)
+local gadgets = require 'gadgets'
 
-local function downscale(v, k)
-  if table.isvec(v) then
-    table.vecmul(v, 2/3)
-    return true
-  elseif
-    (k == 'scale' or k == 'volume' or k == 'volume_multiplier')
-    and type(v) == 'number'
-  then
-    return v * (2/3), true
-  end
-end
+data.raw.technology.radar.prerequisites = { 'lamp' }
+
+data.raw.recipe.radar.ingredients = {
+  { type='item', amount=20, name='small-lamp' },
+  { type='item', amount=20, name='copper-cable' },
+  { type='item', amount=10, name='iron-stick' },
+  { type='item', amount=2, name='steel-plate' },
+  { type='item', amount=5, name='iron-gear-wheel' },
+  { type='item', amount=10, name='electronic-circuit' },
+}
+
+local small = table.clone(data.raw.radar.radar)
+local set = table.intoset
+
+local downscale =
+  utils.scale(
+    2/3,
+    set{ 'scale', 'volume', 'volume_multiplier' }, -- these fields
+    true, -- all vectors
+    nil -- stop at nothing
+  )
 
 table.traverse(small, downscale)
 
@@ -19,7 +29,7 @@ table.merge(small, {
   name = fns 'small-radar',
   max_health = 150,
   minable.result = fns 'small-radar',
-  icon = functions.null,
+  icon = functions.null, -- delete
   auto_unlocked_by = 'radar',
   icons = {
     { icon = '__base__/graphics/icons/radar.png', icon_size = 64 },
@@ -48,11 +58,11 @@ table.merge(recipe, {
   name = item.name,
   recipe.results[1].name = item.name,
   ingredients = {
-    { type='item', amount=5, name='iron-plate' },
+    { type='item', amount=10, name='copper-cable' },
+    { type='item', amount=4, name='iron-plate' },
     { type='item', amount=4, name='iron-gear-wheel' },
     { type='item', amount=5, name='electronic-circuit' },
   },
-  energy_required = 3.0,
 })
 
 local remnants = table.clone(data.raw.corpse['radar-remnants'])

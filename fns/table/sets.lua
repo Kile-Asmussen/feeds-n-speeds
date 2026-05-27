@@ -101,6 +101,18 @@ function table.sorted_keys(tbl)
     return res
 end
 
+table.fullset = {}
+setmetatable(table.fullset, {
+    __index = function() return true end,
+    __newindex = function() return "fullset cannot be inserted into" end,
+})
+
+table.emptyset = {}
+setmetatable(table.emptyset, {
+    __index = function() return false end,
+    __newindex = function() return "emptyset cannot be inserted into" end,
+})
+
 function table.set(tbl)
     assert(type(tbl) == 'table', "argument #1 must be a table")
     local res = {}

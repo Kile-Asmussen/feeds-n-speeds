@@ -1,7 +1,7 @@
 -- Sulfur ore noise expression with parameterized builder
 -- Placeholder registered in data stage; rebuilt with correct indices in data_updates
 
-local tools = require 'gadgets'
+local gadgets = require 'gadgets'
 
 local noise = {
     name = fns 'sulfur-ore',
@@ -16,7 +16,7 @@ data:extend{
     {
         type = 'noise-expression',
         name = fns 'sulfur-ore-patches',
-        expression = tools.resource_autoplace_all_patches(noise)
+        expression = gadgets.resource_autoplace_all_patches(noise)
     },
     {
         type = 'noise-expression',

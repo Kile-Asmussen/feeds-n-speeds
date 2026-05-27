@@ -2,10 +2,7 @@
 local table = _ENV.table
 local assert = _ENV.assert
 
-function table.overwrite(tbl1, tbl2)
-    assert(type(tbl1) == "table", "argument #1 must be a table")
-    assert(type(tbl2) == "table", "argument #2 must be a table")
-
+local function __overwrite(tbl1, tbl2)
     for k, v in pairs(tbl2) do
         tbl1[k] = v
     end
@@ -13,10 +10,7 @@ function table.overwrite(tbl1, tbl2)
     return tbl1
 end
 
-function table.replace(tbl1, tbl2)
-    assert(type(tbl1) == "table", "argument #1 must be a table")
-    assert(type(tbl2) == "table", "argument #2 must be a table")
-
+local function __replace(tbl1, tbl2)
     for k, _ in pairs(tbl1) do
         if tbl2[k] ~= nil then
             tbl1[k] = tbl2[k]
@@ -26,10 +20,7 @@ function table.replace(tbl1, tbl2)
     return tbl1
 end
 
-function table.include(tbl1, tbl2)
-    assert(type(tbl1) == "table", "argument #1 must be a table")
-    assert(type(tbl2) == "table", "argument #2 must be a table")
-
+local function __include(tbl1, tbl2)
     for k, v in pairs(tbl2) do
         if tbl1[k] == nil then
             tbl1[k] = v
@@ -39,14 +30,34 @@ function table.include(tbl1, tbl2)
     return tbl1
 end
 
-function table.append(tbl1, tbl2)
-    assert(type(tbl1) == 'table', "argument #1 must be a table")
-    assert(type(tbl2) == 'table', "argument #2 must be a table")
+local function __transmute(tbl1, tbl2)
+    for k, _ in pairs(tbl1) do
+        local func = tbl2[k]
+        if func then
+            tbl1[k] = func(tbl1)
+        end
+    end
+end
+
+local function __append(tbl1, tbl2)
     for i = 1, #tbl2 do
         table.insert(tbl1, tbl2[i])
     end
     return tbl1
 end
+
+local function __keep(tbl1, tbl2)
+    for k, v in pairs(tbl1) do
+        tbl1[k] = tbl2[k] and v or nil
+    end
+end
+
+table.keep = table.twoarg(__keep)
+table.overwrite = table.twoarg(__overwrite)
+table.replace = table.twoarg(__replace)
+table.include = table.twoarg(__include)
+table.transmute = table.twoarg(__transmute)
+table.append = table.twoarg(__append)
 
 function table.cut(tbl, n)
     assert(type(tbl) == 'table', "argument #1 must be a table")
@@ -58,27 +69,26 @@ end
 
 local function __merge(tbl1, tbl2)
     for k, v in pairs(tbl2) do
-        if type(v) == 'function' then
-            tbl1[k] = v(tbl1[k])
-        else
-            tbl1[k] = v
-        end
+        if type(v) ~= 'function' then tbl1[k] = v end
+    end
+    for k, f in pairs(tbl2) do
+        if type(f) == 'function' then tbl1[k] = f(tbl1[k]) end
     end
     return tbl1
 end
 
-function table.merge(tbl, extra) 
-    assert(type(tbl) == "table", "argument #1 must be a table")
-
-    if extra == nil then
-        return table.with(table.merge, tbl)
-    else
-        assert(type(extra) == "table", "argument #2 must be a table")
-
-        return __merge(tbl, extra)
+local function __merge_rec(tbl1, tbl2)
+    for k, v in pairs(tbl2) do
+        if type(v) ~= 'function' then tbl1[k] = v end
     end
-
+    for k, f in pairs(tbl2) do
+        if type(f) == 'function' then tbl1[k] = f(tbl1[k], tbl1) end
+    end
+    return tbl1
 end
+
+table.merge = table.twoarg(__merge)
+table.merge_rec = table.twoarg(__merge_rec)
 
 function table.with(func, ...)
     assert(type(func) == "function", "argument #1 must be a function")

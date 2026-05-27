@@ -119,7 +119,7 @@ function table.access(...)
         assert(type(tbl) == "table", "argument #1 must be a table")
         assert(type(keys) == "table", "argument #2 must be a table")
         return __access(tbl, keys)
-    else
+    end
 end
 
 local function __assign(tbl, keys)
@@ -145,22 +145,7 @@ local function __assign(tbl, keys)
     return tbl
 end
 
-function table.assign(...)
-    local n = select('#', ...) 
-    if n == 1 then
-        local keys = ...
-        assert(type(keys) == "table", "argument #1 must be a table")
-        return function(tbl)
-            assert(type(tbl) == "table", "argument #1 must be a table")
-            return __assign(tbl, keys)
-        end
-    else
-        local tbl, keys = ...
-        assert(type(tbl) == "table", "argument #1 must be a table")
-        assert(type(keys) == "table", "argument #2 must be a table")
-        return __assign(tbl, keys)
-    end
-end
+table.assign = table.twoarg(__assign)
 
 function table.index(tbl)
     assert(type(tbl) == "table", "argument #1 must be a table")
@@ -170,4 +155,43 @@ end
 function table.newindex(tbl)
     assert(type(tbl) == "table", "argument #1 must be a table")
     return function(k, v) tbl[k] = v return tbl end
+end
+
+local function __clone(seen, setmeta)
+    if setmeta then
+        local function clone(tbl)
+            if type(tbl) == 'table' then
+                if not seen[tbl] then
+                    seen[tbl] = table.collect(tbl, clone)
+                    setmetatable(seen[tbl], getmetatable(tbl))
+                    return seen[tbl]
+                else
+                    return tbl
+                end
+            else
+                return tbl
+            end
+        end
+        return clone
+    else
+        local function clone(tbl)
+            if type(tbl) == 'table' then
+                if not seen[tbl] then
+                    seen[tbl] = table.collect(tbl, clone)
+                    return seen[tbl]
+                else
+                    return tbl
+                end
+            else
+                return tbl
+            end
+        end
+        return clone
+    end
+end
+
+function table.clone(tbl, setmeta)
+    setmeta = setmeta and true or false
+    if type(tbl) ~= 'table' then return tbl end
+    return __clone({}, setmeta)(tbl)
 end

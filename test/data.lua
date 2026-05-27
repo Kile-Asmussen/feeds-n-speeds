@@ -4,15 +4,16 @@ local debuglib = require 'debuglib'
 local rawdata = require 'test.rawdata'
 
 local namespace = require 'namespace'
+local utils = fns.utils
 
 local data = namespace('test.data')
 
-_ENV.modlist = table.null
-_ENV.mods = table.null
+rawset(_ENV, 'modlist', table.null)
+rawset(_ENV, 'mods', table.null)
+rawset(_ENV, 'settings', {})
 
 data.raw = fns.table.null
 
-_ENV.settings = {}
 setmetatable(_ENV.settings, {
     __index = function() die("_ENV.settings is not available at this time") end,
     __newindex = function() die("_ENV.settings is not available at this time") end,
@@ -98,7 +99,7 @@ function data.recursion_check(tbl, seen, path)
         error(seen[tbl] .. ' = ' .. string.tablepath("data.raw", path), 2)
     end
 
-    seen[tbl] = string.tablepath("data.raw", path)
+    seen[tbl] = utils.tablepath("data.raw", path)
 
     for k, v in pairs(tbl) do
         table.insert(path, k)
@@ -109,4 +110,4 @@ function data.recursion_check(tbl, seen, path)
     seen[tbl] = nil
 end
 
-_ENV.data = data:seal()
+rawset(_ENV, 'data', data:seal())

@@ -1,10 +1,19 @@
-local fns = require 'fns'
-
-fns.use()
 
 _ENV.TESTING = true
 _ENV.QUIET = os.getenv("QUIET") and true or false
 _ENV.VERBOSE = os.getenv("VERBOSE") and true or false
+
+setmetatable(_ENV, {
+    __index = function(_, name) error('_ENV.' .. name .. ' undefined', 2) end,
+    __newindex = function(_, name, val) error('_ENV.' .. name .. ' = ' .. tostring(val), 2) end,
+})
+
+local fns = require 'fns'
+
+fns.use()
+
+local table = fns.table
+local string = fns.string
 
 require 'test.data'
 require 'test.defines'
@@ -19,68 +28,51 @@ local stub_libs = {
     ['resource-autoplace'] = 'test.resource-autoplace'
 }
 local __require = require
-function _ENV.require(name)
+local function require(name)
     name = stub_libs[name] or name
     local ok, val = pcall(__require, name)
     if not ok then
-        if val:startswith('module') and val:find('not found', 1, true) then
-            error(val:before(':\n'), 2)
+        if string.startswith(val, 'module') and val:find('not found', 1, true) then
+            error(string.before(val, ':\n'), 2)
         elseif val:startswith('error loading module') then
-            error(val:after(':\n\t'), 2)
+            error(string.after(val, ':\n\t'), 2)
         end
     else
         return val
     end
 end
+rawset(_ENV, 'require', require)
 
-local __print = _ENV.print
 local __exit = _ENV.os.exit
 
-function _ENV.__log(str)
-    assert(type(str) == 'string', "argument #1 must be a string not " .. type(str))
-    __print(str)
-end
-
-function _ENV.die(message, n)
-    n = n or 2
-    __print(message)
-    __print(debug.traceback(nil, n))
-    __exit(1)
-end
-
 function debug.getline(n, msg)
-    return debug.traceback(nil, n + 1):replace_prefix("stack traceback:\n\t"):before(': ', msg and true) .. (msg or '')
+    local traceback = debug.traceback(nil, n + 1)
+    taceback = string.replace_prefix("stack traceback:\n\t")
+    traceback = string.before(traceback, ': ', msg and true)
+    return traceback .. (msg or '')
 end
 
-function _ENV.log(str)
+local function log(str)
     assert(type(str) == 'string', "argument #1 must be a string not " .. type(str))
-
-    __print(debug.getline(2, str))
+    print(debug.getline(2, str))
 end
 
-local function __global_index(_, name)
-    die('_ENV.' .. name .. ' undefined', 3)
-end
+rawset(_ENV, 'log', log)
+rawset(_ENV, '__log', log)
 
-local function __global_newindex(_, name, val)
-    die('_ENV.' .. name .. ' = ' .. tostring(val), 3)
-end
+rawset(_ENV, 'io', nil)
+rawset(_ENV, 'os', nil)
+rawset(_ENV, 'coroutine', nil)
+rawset(_ENV, 'loadfile', nil)
+rawset(_ENV, 'dofile', nil)
+rawset(_ENV, 'package', nil)
 
-
-_ENV.io = nil
-_ENV.os = nil
-_ENV.coroutine = nil
-_ENV.loadfile = nil
-_ENV.dofile = nil
-_ENV.package = nil
-_ENV.math.randomseed = nil
-
-_ENV.debug = {
+rawset(_ENV, 'debug', {
     getinfo = debug.getinfo,
     traceback = debug.traceback,
     getline = debug.getline,
     debug = debug.debug,
-}
+})
 
 local function __lock_mt(name, index, newindex)
     index = index or function() end
@@ -96,8 +88,3 @@ local function __lock_mt(name, index, newindex)
 end
 
 setmetatable(_ENV.debug, __lock_mt('debug'))
-
-setmetatable(_ENV, {
-    __index = __global_index,
-    __newindex = __global_newindex,
-})

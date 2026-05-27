@@ -1,6 +1,48 @@
 
+local fns = require 'fns'
 local namespace = require 'namespace'
 local gadgets = namespace 'gadgets'
+
+local assert = fns.assert
+
+local table = fns.table
+local string = fns.string
+
+function gadgets.throughputs(throughputs)
+    local ingredients = {}
+
+    for k, v in opairs(throughputs) do
+        local t
+
+        if data.raw.fluid[k] then
+            t = 'fluid'
+        elseif
+            data.raw.item[k] or
+            data.raw.capsule[k] or
+            data.raw.tool[k] or
+            data.raw.gun[k]
+        then
+            t = 'item'
+        end
+
+        if type(v) == 'number' then
+            v = { type=t, amount=v, name=k }
+        else
+            v = table.clone(v)
+            v.type = t
+            v.name = k
+            if #v == 1 then
+                v.amount = table.remove(v)
+            elseif #v == 2 then
+                v.amount_max = table.remove(v)
+                v.amount_min = table.remove(v)
+            end
+        end
+        
+        table.insert(ingredients, v)
+    end
+    return ingredients
+end
 
 function gadgets.resource_autoplace_all_patches(tbl)
 
@@ -26,16 +68,6 @@ function gadgets.resource_autoplace_all_patches(tbl)
     }
     return expr
 
-end
-
-function gadgets.restart_toggle()
-    data:extend{{
-        type = 'bool-setting',
-        name = fns 'restart-toggle',
-        order='a',
-        setting_type = 'startup',
-        default_value = true,
-    }}
 end
 
 gadgets.icon_sizes = {
@@ -77,32 +109,33 @@ end
 
 function gadgets.hexcolor(hex)
     assert(type(hex) == 'string', "argument #1 must be a string")
-    local color = hex:match('#(%X%X%X%X%X%X%X%X)') or hex:match('#(%X%X%X%X%X%X)')
-    assert(color, "invalid color format, must be 6 or 8 hex digits")
+    local color = string.match(hex, '%X%X%X%X%X%X%X%X)') or string.match(hex, '%X%X%X%X%X%X')
+    assert(color, "invalid color format, must be 6 or 8 uppercase hex digits")
     local res = {}
     for i = 1,#color,2 do
-        table.insert(res, tonumber(color:sub(i, i+1), 16) / 255)
+        table.insert(res, tonumber(string.sub(color, i, i+1), 16) / 255)
     end
     return res
 end
 
 function gadgets.icons(icon, icon2)
-    icon = assoc(icon)
-    icon2 = assoc(icon)
-
     if not icon.shift then
-        icon.shift = gadgets.icon_placements[icon.placement]
-        if icon.shift then
-            table.vecmul(icon.shift, gadgets.icons_shifts[icon.placement])
+        local shift = gadgets.icons_shifts[icon.placement]
+        if shift then
+            icon.shift = math.vecmul(shift, gadgets.icons_shifts[icon.placement], {})
         end
     end
 
     if not icon2.shift then
-        icon2.shift = gadgets.icon_placements[icon2.placement]
-        if icon2.shift then
-            table.vecmul(icon2.shift, gadgets.icons_shifts[icon2.placement])
+        local shift = gadgets.icons_shifts[icon.placement]
+        if shift then
+            icon2.shift = math.vecmul(shift, gadgets.icons_shifts[icon2.placement], {})
         end
     end
+
+    table.include{
+        type = 'item',
+    }
 
     icon.placement = nil
     icon2.placement = nil
@@ -115,6 +148,9 @@ function gadgets.icons(icon, icon2)
 
     icon.name = nil
     icon2.name = nil
+
+    icon.type = nil
+    icon2.type = nil
 
     icon.icon_size = gadgets.icon_sizes[icon.type]
     icon2.icon_size = gadgets.icon_sizes[icon2.type]
@@ -200,21 +236,6 @@ function gadgets.highest_unlock(name)
     return highest_unlock[name]
 end
 
-function gadgets.remove_unlock(names)
-
-    if type(names) == 'string' then
-        names = { [names] = true }
-    end
-
-    assert(type(names) == 'table', "argument #1 must be either a string or a table.set of strings")
-
-    for _, tech in pairs(data.raw.technology) do
-        if tech.effects then
-            table.remove_matching(tech.effects, { type='unlock-recipe', recipe=table.index(names) }, true)
-        end
-    end
-end
-
 gadgets.si_prefixes = {
     'k', 'M', 'G', 'T',
     k = 1000,
@@ -270,6 +291,52 @@ function gadgets.main_product(recipe)
     if recipe.main_product then return recipe.main_product end
     if #recipe.results == 1 then return recipe.results[1].name end
     error("recipe " .. recipe .. ' has no main product', 2)
+end
+
+
+function gadgets.scale_vectors_and_numbers(factor, fields, vectors, stop_at)
+    assert(type(factor) == 'number', "argument #1 must be a number")
+    assert(type(fields) == 'table', "argument #2 must be a table")
+    assert(type(vectors) == 'table', "argument #3 must be a table")
+    assert(type(stop_at) == 'table', "argument #4 must be a table")
+
+    return function(v, k)
+        if type(v) == 'table' then
+            if stop_at[k] then
+                return true
+            end
+        else
+            if stop_at[k] then
+                return nil, false
+            end
+        end
+
+        if vectors[k] and math.isvec(v) then
+            math.vecmul(v, factor)
+            return true
+        elseif fields[k] and type(v) == 'number' then
+            return v * factor, true
+        end
+    end
+end
+
+function gadgets.shift_vectors(offset, fields, stop_at)
+    assert(type(offset) == 'table', "argument #1 must be a number")
+    assert(type(offset) == 'table', "argument #2 must be a table")
+    assert(type(stop_at) == 'table', "argument #3 must be a table")
+
+    return function(v, k)
+        if type(v) == 'table' then
+            if stop_at[k] then
+                return true
+            end
+        end
+
+        if fields[k] and math.isvec(v) then
+            math.vecadd(v, offset)
+            return true
+        end
+    end
 end
 
 return gadgets:seal()

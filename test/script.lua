@@ -72,4 +72,4 @@ function script.on_nth_tick(tick, handler)
     table.insert(script.__handlers.ticks[tick], handler)
 end
 
-_ENV.script = script:seal()
+rawset(_ENV, 'script', script:seal())

@@ -115,4 +115,4 @@ for k, v in pairs(defines.events) do
     defines.event_names[v] = k
 end
 
-_ENV.defines = defines:seal()
+rawset(_ENV, 'defines', defines:seal())

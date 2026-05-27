@@ -2,6 +2,8 @@ local fns = require 'fns'
 local namespace = require 'namespace'
 local debuglib = namespace 'debuglib'
 
+fns.use()
+
 debuglib.recursion_limit = 2
 debuglib.serialize = false
 debuglib.seen_tables = { [_ENV] = '_ENV' }
@@ -68,7 +70,7 @@ function debuglib.new_buffer(settings)
      assert(type(settings.indent) == 'string', "argument #1's indent field must be a string")
      assert(type(settings.root) == 'string', "argument #1's root field must be a string")
 
-     local res = table.include({
+     local res = table.overwrite({
              seen_tables = { [_ENV] = '_ENV', [table.null] = 'table.null' },
              path = {}
      }, settings)
@@ -104,7 +106,7 @@ function debuglib.print_any(buffer, data, name)
 end
 
 function debuglib.print_string(buffer, data)
-     buffer:print(string.repr(data))
+     buffer:print(string.format("%q", data))
 end
 
 
@@ -267,7 +269,7 @@ function debuglib.print_keyval_pairs(buffer, data)
             buffer:print(',', buffer.separator)
         end
 
-        buffer:print(string.rep(buffer.indent, #buffer.path + 1), string.tableindex(k, true), ' = ')
+        buffer:print(string.rep(buffer.indent, #buffer.path + 1), utils.tableindex(k, true), ' = ')
         buffer:print_any(v, k)
 
         first = false
@@ -285,7 +287,7 @@ function debuglib.small_table(buffer, tbl)
             (type(v) == 'string' or type(v) == 'number') and
             (type(k) == 'string' or type(k) == 'number')
         end) and
-        table.sum(table.collect(tbl, function(v, k)
+        math.sum(table.collect(tbl, function(v, k)
             return #tostring(k) + #tostring(v)
         end)) <= buffer.small.length
 end

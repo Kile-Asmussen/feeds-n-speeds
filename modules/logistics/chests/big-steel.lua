@@ -1,12 +1,19 @@
 
 local fns = require 'fns'
+local gadgets = require 'gadgets'
 
+local utils = 
 local set = table.intoset
 
-local double_fields = set{
+local double_fields = 
+
+local upscale = gadgets.scale_vectors_and_numbers(
+  2.0,
+  set{
     'max_health', 'scale', 'number', 'volume_multiplier',
     'inventory_size', 
 }
+)
 
 local function upscale(v, k)
   if

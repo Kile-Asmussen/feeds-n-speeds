@@ -1,5 +1,5 @@
 
-function pipecoverspictures()
+local function pipecoverspictures()
     local base_path = '__base__/graphics/entity/pipe-covers/'
     return {
         north = {
@@ -82,7 +82,7 @@ function pipecoverspictures()
 end
 
 --- Pipe pictures for entities with visible pipe connections
-function pipepictures()
+local function pipepictures()
     return {
         straight_vertical_single = { filename = '__base__/graphics/entity/pipe/pipe-straight-vertical-single.png', width = 80, height = 80 },
         straight_vertical = { filename = '__base__/graphics/entity/pipe/pipe-straight-vertical.png', width = 64, height = 64 },
@@ -105,99 +105,5 @@ function pipepictures()
     }
 end
 
---- Empty sprite definition
-function empty_sprite()
-    return {
-        filename = '__core__/graphics/empty.png',
-        width = 1,
-        height = 1,
-    }
-end
-
-
--------------------------------------------------------------------------------
--- Sound utility functions
--------------------------------------------------------------------------------
-
---- Generic working sound definition
-function make_working_sound(filename, volume)
-    volume = volume or 0.5
-    return {
-        sound = {
-            filename = filename,
-            volume = volume,
-        },
-        idle_sound = { filename = '__base__/sound/idle1.ogg', volume = 0.3 },
-        apparent_volume = 1,
-    }
-end
-
-
--------------------------------------------------------------------------------
--- Circuit connector utilities
--------------------------------------------------------------------------------
-
---- Generate circuit connector sprites for a given position
-function circuit_connector_definitions_at(position)
-    return {
-        points = {
-            shadow = {
-                green = { position[1] + 0.3, position[2] + 0.3 },
-                red = { position[1] + 0.5, position[2] + 0.3 },
-            },
-            wire = {
-                green = { position[1], position[2] },
-                red = { position[1] + 0.2, position[2] - 0.1 },
-            },
-        },
-        sprites = {
-            connector_main = {
-                filename = '__base__/graphics/entity/circuit-connector/ccm-universal-04a-base-sequence.png',
-                width = 52,
-                height = 50,
-                scale = 0.5,
-                shift = { position[1], position[2] },
-            },
-            led_blue = empty_sprite(),
-            led_blue_off = empty_sprite(),
-            led_green = empty_sprite(),
-            led_red = empty_sprite(),
-            led_light = { intensity = 0, size = 0.9 },
-        },
-    }
-end
-
-
--------------------------------------------------------------------------------
--- Prototype utility functions
--------------------------------------------------------------------------------
-
---- Standard hit effects for entities
-function hit_effects()
-    return {
-        type = 'create-entity',
-        entity_name = 'spark-explosion',
-        offset_deviation = { { -0.5, -0.5 }, { 0.5, 0.5 } },
-        offsets = { { 0, 1 } },
-        damage_type_filters = 'fire',
-    }
-end
-
---- Standard resistances table
-function standard_resistances()
-    return {
-        { type = 'fire', percent = 70 },
-        { type = 'impact', percent = 30 },
-    }
-end
-
-
--------------------------------------------------------------------------------
--- Math/position utilities
--------------------------------------------------------------------------------
-
--- Use prelude/table.lua instead:
---   table.vecsum(pos, offset)   -- vector addition (returns new)
---   table.vecscale(pos, factor) -- scalar multiply (returns new)
---   table.vecadd(pos, offset) -- in-place addition
---   table.vecmul(pos, factor) -- in-place multiply
+rawset(_ENV, 'pipepictures', pipepictures)
+rawset(_ENV, 'pipecoverspictures', pipecoverspictures)

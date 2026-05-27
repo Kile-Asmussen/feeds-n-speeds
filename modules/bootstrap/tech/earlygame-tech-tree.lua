@@ -9,8 +9,6 @@ for _, name in ipairs{ 'iron-stick', 'steel-plate', 'iron-gear-wheel', 'iron-che
     recipe[name].auto_unlocked_by = 'steel-processing'
 end
 
-data.recipe['iron-stick']
-
 table.merge(tech['steel-processing'], {
     research_trigger = {
         count = 10,
@@ -24,7 +22,7 @@ table.merge(tech['steel-processing'], {
 
 tech['electronics'].localised_description = {fns_locale_key("technology-description", 'tweaked-electronics') }
 
-
+data.raw.recipe['assembling-machine-1'].auto_unlocked_by = 'automation'
 
 tech.automation.effects = {
     { type = 'unlock-recipe', recipe = 'assembling-machine-1' },

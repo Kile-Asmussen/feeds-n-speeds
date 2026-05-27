@@ -1,4 +1,9 @@
 
+local puts = require('gadgets').throughputs
+
+data.raw.recipe['electric-mining-drill'].ingredients
+    = puts{  }
+
 data.raw.recipe['burner-mining-drill'].auto_unlocked_by = 'steam-power'
 
 -- Copy burner mining burner_drill and add fluid input on south side (opposite output)
@@ -54,13 +59,8 @@ local burner_drill_recipe = {
     auto_unlocked_by = fns 'wet-drilling',
     enabled = false,
     energy_required = 2.0,
-    ingredients = {
-        { type = 'item', name = 'burner-mining-drill', amount = 1 },
-        { type = 'item', name = 'pipe', amount = 1 },
-    },
-    results = {
-        { type = 'item', name = burner_drill_item.name, amount = 1 },
-    },
+    ingredients = puts{ ['burner-mining-drill'] = 1, ['pipe'] = 1 },
+    results = puts{ [name] = 1 },
 }
 
 data:extend{

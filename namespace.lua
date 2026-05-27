@@ -5,8 +5,9 @@ local sealed = {}
 local parents = {}
 local calls = {}
 
-local getmetatable = _ENV.getmetatable
-local setmetatable = _ENV.setmetatable
+local function assert(cond, msg)
+    if not cond then error(msg, 3) end
+end
 
 local function isnamespace(thing)
     if type(thing) ~= 'table' then return false end

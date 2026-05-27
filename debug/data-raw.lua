@@ -16,7 +16,7 @@ local args = { ... }
 
 args = table.icollect(args, function(s) return tonumber(s) or s end)
 
-local ix = string.tablepath('data.raw', args)
+local ix = utils.tablepath('data.raw', args)
 local result, found = table.descend(data.raw, args)
 
 if #args < 2 then

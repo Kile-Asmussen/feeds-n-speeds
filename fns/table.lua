@@ -32,7 +32,22 @@ function table_.restore()
     _ENV.table = __env_table
 end
 
-table_s.use()
+table_.use()
+
+function table.twoarg(func)
+    return function(tbl1, tbl2)
+        assert(type(tbl1) == "table", "argument #1 must be a table")
+        if tbl2 == nil then
+            return function(tbl2)
+                assert(type(tbl2) == "table", "argument #1 must be a table")
+                return func(tbl1, tbl2)
+            end
+        else
+            assert(type(tbl2) == "table", "argument #2 must be a table")
+            return func(tbl1, tbl2)
+        end
+    end
+end
 
 function table.is_empty(tbl)
     assert(type(tbl) == "table", "argument #1 must be a table")

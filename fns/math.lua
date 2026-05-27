@@ -1,7 +1,7 @@
 
 local math_ = require("namespace")("math")
 
-local __env_math = math_
+local __env_math = math
 
 function math_.use()
     _ENV.math = math_
