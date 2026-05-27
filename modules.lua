@@ -2,7 +2,9 @@
 local namespace = require 'namespace'
 local modules = namespace 'modules'
 
-modules.stages = asset{
+local set = table.intoset
+
+modules.stages = set{
     'settings',
     'data',
     'data-updates',
@@ -48,7 +50,7 @@ function modules.name(mod, name)
 end
 
 function modules.stage_dependencies(stage)
-    local dependencies = assoc{}
+    local dependencies = {}
 
     for _, mod in opairs(modules) do
         if namespace.is(mod) and mod/stage then
@@ -56,7 +58,7 @@ function modules.stage_dependencies(stage)
             for name, deps in opairs(mod[stage]) do
                 name = modules.name(mod, name)
 
-                dependencies[name] = dependencies[name] or assoc{}
+                dependencies[name] = dependencies[name] or {}
 
                 if type(deps) == 'table' then
                     for dep, val in opairs(deps) do
@@ -86,7 +88,7 @@ function modules.order_dependencies(dependencies)
         end
     end
 
-    local order = array{}
+    local order = {}
     local ordered = assoc(table.set(order))
 
     while table.has_assoc(dependencies) do

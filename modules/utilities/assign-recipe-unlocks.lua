@@ -1,8 +1,8 @@
 
 local tools = require 'gadgets'
 local debuglib = require 'debuglib'
-local remove = assoc{}
-local unlocks = array{}
+local remove = {}
+local unlocks = {}
 
 for _, recipe in opairs(data.raw.recipe) do
     if recipe.auto_unlocked_by == nil then goto continue end

@@ -13,6 +13,7 @@
         "isum",
         "isvec",
         "localised",
+        "maxn",
         "mlua",
         "num",
         "opairs",

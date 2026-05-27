@@ -1,15 +1,15 @@
 
 local fns = require 'fns'
 
-local ENTITIES = assoc{
+local ENTITIES = {
     roboport = 10,
     locomotive = 2,
     gate = 20,
     wall = 20
 }
 
-local STACK_SIZES = assoc{
-    item = assoc{
+local STACK_SIZES = {
+    item = {
         --[==============[
            INTERMEDIARIES
           ]==============]
@@ -109,13 +109,13 @@ local STACK_SIZES = assoc{
         ['rocket-silo']          = 1,
         ['landing-pad']          = 1, 
     },
-    ammo = assoc{
+    ammo = {
 
     },
-    capsule = assoc{
+    capsule = {
 
     },
-    tool = assoc{
+    tool = {
 
     }
 }

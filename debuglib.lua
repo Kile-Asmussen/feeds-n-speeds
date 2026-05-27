@@ -8,6 +8,11 @@ debuglib.seen_tables = { [_ENV] = '_ENV' }
 
 debuglib.io = _ENV.io and { open = _ENV.io.open } or {}
 
+local table = fns.table
+local string = fns.string
+local functions = fns.functions
+local utils = fns.utils
+
 function debuglib.pp(data, root)
     local settings = {
         depth_limit = debuglib.recursion_limit or 2,
@@ -126,7 +131,7 @@ function debuglib.function_signature(func, short)
         local read_lines = {}
         local file = debuglib.io.open(info.short_src)
         if file then
-            for l in file:lines() do
+            for l in string.lines(file) do
                 table.insert(read_lines, l)
             end
                 file:close()
@@ -138,28 +143,28 @@ function debuglib.function_signature(func, short)
 
     if read_files[info.short_src] then
         local line = read_files[info.short_src][info.linedefined]
-        local args = line:match('%(.*%)') or '()'
-        local arg_count = #(args:gsub(debuglib.IDENTIFIER, 'x'):gsub('[^x]', ''))
+        local args = string.match(line, '%(.*%)') or '()'
+        local arg_count = #(string.gsub(string.gsub(line, debuglib.IDENTIFIER, 'x'), '[^x]', ''))
 
-        local decl_as = line:match('local%s+function%s*') or line:match('function%s*')
-        local name = line:sub(line:find(decl_as) + #decl_as, (line:find('%s*%(') or #line + 1) - 1)
+        local decl_as = string.match(line, 'local%s+function%s*') or string.match(line, 'function%s*')
+        local name = string.sub(line, string.find(line, decl_as) + #decl_as, (string.find(line, '%s*%(') or #line + 1) - 1)
         local scope = ''
 
-        if name:match('^%s*$') then
+        if string.match(name, '^%s*$') then
             scope = 'function'
-        elseif decl_as:match('local') then
+        elseif string.match(decl_as, 'local') then
             scope = 'local function '
-        elseif not name:find('%.') then
+        elseif not string.find(name, '%.') then
             scope = 'global function '
         elseif name:match('_ENV%.') then
-            name = name:gsub('_ENV%.', '')
+            name = string.gsub(name, '_ENV%.', '')
             scope = 'global function '
         else
             scope = 'function '
         end
 
         if short then
-            scope = scope:gsub('function ', '')
+            scope = string.gsub(scope, 'function ', '')
         end
 
         signature = scope .. name .. '(' .. arg_count .. ') ' .. origin
@@ -187,7 +192,7 @@ function debuglib.print_table(buffer, data)
         buffer:print(buffer.seen_tables[data])
         return
     else
-        buffer.seen_tables[data] = string.tablepath(buffer.root, buffer.path)
+        buffer.seen_tables[data] = utils.tablepath(buffer.root, buffer.path)
     end
 
     if table.is_empty(data) then
@@ -233,7 +238,6 @@ function debuglib.print_table(buffer, data)
 
     buffer:print(buffer.separator, string.rep(buffer.indent, #buffer.path), "}")
     table.overwrite(buffer, restore)
-
 end
 
 function debuglib.print_elements(buffer, data)

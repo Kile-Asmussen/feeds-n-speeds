@@ -1,7 +1,9 @@
 
 local military = require('namespace')('military')
 
-military.data = asset{
+local set = table.intoset
+
+military.data = set{
     '.ammo.tweak-recipes',
     '.ammo.mass-production',
 
@@ -19,7 +21,7 @@ military.data = asset{
     '.misc.small-radar',
     '.misc.concrete-walling',
 
-    ['.guns.plastics'] = asset{ '.guns.tweak-recipes' },
+    ['.guns.plastics'] = set{ '.guns.tweak-recipes' },
 }
 
 return military:seal()

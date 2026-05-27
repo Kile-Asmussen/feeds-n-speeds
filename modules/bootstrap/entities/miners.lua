@@ -9,12 +9,12 @@ local name = fns 'burner-mining-drill-fluid'
 table.merge(burner_drill, {
     name = fns 'burner-mining-drill-fluid',
     minable = table.assign{'result', val = name},
-    input_fluid_box = assoc{
+    input_fluid_box = {
         volume = 50,
         filter = 'water',
         production_type = 'input',
-        pipe_connections = array{
-            assoc{
+        pipe_connections = {
+            {
                 direction = defines.direction.north,
                 flow_direction = 'input',
                 position = {0.5, -0.5},
@@ -23,12 +23,12 @@ table.merge(burner_drill, {
         pipe_covers = pipecoverspictures(),
     },
     icon = functions.null,
-    icons = array{
-        assoc{
+    icons = {
+        {
             icon = '__base__/graphics/icons/burner-mining-drill.png',
             icon_size = 64,
         },
-        assoc{
+        {
             icon = '__base__/graphics/icons/water.png',
             icon_size = 64,
             scale = 0.25,
@@ -39,7 +39,7 @@ table.merge(burner_drill, {
 
 local burner_drill_item = table.clone(data.raw.item['burner-mining-drill'])
 
-table.merge(burner_drill_item, assoc{
+table.merge(burner_drill_item, {
     name = name,
     place_result = name,
     icons = table.clone(burner_drill.icons)
@@ -48,18 +48,18 @@ table.merge(burner_drill_item, assoc{
 })
 
 
-local burner_drill_recipe = assoc{
+local burner_drill_recipe = {
     type = 'recipe',
     name = burner_drill_item.name,
     auto_unlocked_by = fns 'wet-drilling',
     enabled = false,
     energy_required = 2.0,
-    ingredients = array{
-        assoc{ type = 'item', name = 'burner-mining-drill', amount = 1 },
-        assoc{ type = 'item', name = 'pipe', amount = 1 },
+    ingredients = {
+        { type = 'item', name = 'burner-mining-drill', amount = 1 },
+        { type = 'item', name = 'pipe', amount = 1 },
     },
-    results = array{
-        assoc{ type = 'item', name = burner_drill_item.name, amount = 1 },
+    results = {
+        { type = 'item', name = burner_drill_item.name, amount = 1 },
     },
 }
 

@@ -1,12 +1,8 @@
 
 
 local functions = require("namespace")("functions")
-
-function functions.assert(cond, msg)
-    if not cond then error(msg, 3) end
-end
-
-local assert = functions.assert
+local assert = _ENV.assert
+local table = _ENV.table
 
 local __types = {
     string = true,
@@ -14,6 +10,8 @@ local __types = {
     ['function'] = true,
     userdata = true,
     coroutine = true,
+    ['nil'] = true,
+    boolean = true,
     table = true
 }
 
@@ -53,13 +51,13 @@ end
 
 function functions.drop(f, n)
     assert(type(f) == 'function', "argument #1 must be a function")
-    assert(type(n) == 'function', "argument #2 must be a number")
+    assert(type(n) == 'number' and n >= 1 and n == math.floor(n),
+        "argument #2 must be a positive non-zero integer")
     return function(...) return f(select(n, ...)) end
 end
 
 function functions.curry(f, ...)
-    f = functions.as(f, "function")
-    assert(f, "argument #1 must be a function")
+    assert(type(f) == 'function', "argument #1 must be a function")
     local outer_args = { ... }
     return function(...)
         local args = {}

@@ -3,7 +3,7 @@
 
 local tools = require 'gadgets'
 
-local noise = assoc{
+local noise = {
     name = fns 'sulfur-ore',
     has_starting_area_placement = 1,
     base_spots_per_km2 = 1.25,
@@ -13,26 +13,26 @@ local noise = assoc{
 }
 
 data:extend{
-    assoc{
+    {
         type = 'noise-expression',
         name = fns 'sulfur-ore-patches',
         expression = tools.resource_autoplace_all_patches(noise)
     },
-    assoc{
+    {
         type = 'noise-expression',
         name = fns 'sulfur-ore-regular-index',
         expression = -1,
     },
-    assoc{
+    {
         type = 'noise-expression',
         name = fns 'sulfur-ore-starting-index',
         expression = -1,
     },
-    assoc{
+    {
         type = 'autoplace-control',
         name = fns 'sulfur-ore',
-        localised_name = array{'', '[entity=' .. fns 'sulfur-ore' .. '] ',
-            array{ fns_locale_key('entity-name', 'sulfur-ore')}},
+        localised_name = {'', '[entity=' .. fns 'sulfur-ore' .. '] ',
+            { fns_locale_key('entity-name', 'sulfur-ore')}},
         category = 'resource',
         richness = true,
         order = 'a-g',

@@ -1,10 +1,12 @@
 
 local integrations = require('namespace')('integrations')
 
-integrations.data = asset{
+local set = table.intoset
+
+integrations.data = set{
     ".textplates.unobtainables"
 }
 
-integrations['data-updates'] = asset{
+integrations['data-updates'] = set{
     ".textplates.unlocks"
 }

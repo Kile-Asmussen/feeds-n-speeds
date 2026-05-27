@@ -1,5 +1,5 @@
 
-data:extend{assoc{
+data:extend{{
     type = 'bool-setting',
     name = fns 'restart-toggle',
     order='a',

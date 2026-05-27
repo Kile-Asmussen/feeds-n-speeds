@@ -1,16 +1,18 @@
 
 local utilities = require('namespace')('utilities')
 
-utilities.settings = asset{
+local set = table.intoset
+
+utilities.settings = set{
     '.setting.restart-toggle'
 }
 
-utilities.control = asset{
+utilities.control = set{
     '.simple-chat-commands'
 }
 
-utilities['data-updates'] = asset{
-    ['.assign-recipe-unlocks'] = asset{
+utilities['data-updates'] = set{
+    ['.assign-recipe-unlocks'] = set{
         'modules.production.recipes.update-barrels'
         'modules.integrations.textplates.unlocks'
     }

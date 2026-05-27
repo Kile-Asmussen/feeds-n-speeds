@@ -1,12 +1,14 @@
 
 local bootstrap = require('namespace')('bootstrap')
 
-bootstrap.data = asset{
+local set = table.intoset
+
+bootstrap.data = set{
     '.recipes.stone-furnace-alt',
 
     '.entities.enrich-rocks',
 
-    ['.entities.miners'] = asset{
+    ['.entities.miners'] = set{
         
     },
 
@@ -18,13 +20,13 @@ bootstrap.data = asset{
     '.worldgen.sulfur-ore-noise-expressions',
     '.worldgen.sulfur-item-variations',
 
-    ['.worldgen.fix-ore-config'] = asset{
+    ['.worldgen.fix-ore-config'] = set{
         '.worldgen.sulfur-ore',
         '.worldgen.sulfur-ore-noise-expressions',
     }
 }
 
-bootstrap.control = asset{
+bootstrap.control = set{
     '.scripts.freeplay'
 }
 

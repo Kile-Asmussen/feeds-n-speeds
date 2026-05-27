@@ -79,7 +79,7 @@ function gadgets.hexcolor(hex)
     assert(type(hex) == 'string', "argument #1 must be a string")
     local color = hex:match('#(%X%X%X%X%X%X%X%X)') or hex:match('#(%X%X%X%X%X%X)')
     assert(color, "invalid color format, must be 6 or 8 hex digits")
-    local res = array{}
+    local res = {}
     for i = 1,#color,2 do
         table.insert(res, tonumber(color:sub(i, i+1), 16) / 255)
     end
@@ -128,7 +128,7 @@ function gadgets.icons(icon, icon2)
     icon.float = true
     icon2.float = true
 
-    return array{
+    return {
         icon,
         icon2
     }

@@ -1,7 +1,9 @@
 
 local fns = require 'fns'
 
-local double_fields = asset{
+local set = table.intoset
+
+local double_fields = set{
     'max_health', 'scale', 'number', 'volume_multiplier',
     'inventory_size', 
 }
@@ -14,18 +16,14 @@ local function upscale(v, k)
     table.vecmul(v, 2)
     return true
   elseif
-    (asset{})(k == 'scale' or k == 'volume' or k == 'volume_multiplier')
-    and type(v) == 'number'
+    double_fields[k] and type(v) == 'number'
   then
     return v * 2, true
   end
 end
 
 local function shift_wire(v, k)
-  if
-    type(v) == 'table' and #v == 2
-    and type(v[1]) == 'number' and type(v[2]) == 'number'
-  then
+  if table.isvec(v) then
     table.vecadd(v, {0.35, 0.30})
     return true
   end
@@ -53,8 +51,10 @@ table.merge(big_steel_chest, {
             tint = { r = 0.2, g = 1, b = 0.2 },
         },
     },
+
 })
 
+-- switcheroo to avoid upscaling the 
 local circuit_connector = big_steel_chest.circuit_connector
 big_steel_chest.circuit_connector = {}
 
@@ -79,15 +79,20 @@ local big_steel_recipe = table.clone(data.raw.recipe['steel-chest'])
 table.merge(big_steel_recipe, {
     name = fns 'big-steel-chest',
     auto_unlocked_by = 'automation-1',
-    results = array{
-        assoc{ amount = 1, name = fns 'big-steel-chest', type = 'item' }
+    results = {
+        { amount = 1, name = fns 'big-steel-chest', type = 'item' }
     }
-    ingredients = array{
-        assoc{ amount = 4, name = 'steel-chest', type = 'item', },
-        assoc{ amount = 4, name = 'electronic-circuit', type = 'item', }
+    ingredients = {
+        { amount = 4, name = 'steel-chest', type = 'item', },
+        { amount = 4, name = 'electronic-circuit', type = 'item', }
     },
 })
 
+local 
 
-
+data:extend{
+    big_steel_chest,
+    big_steel_item,
+    big_steel_recipe,
+}
 

@@ -136,7 +136,7 @@ function table.complementary(tbl)
     return res
 end
 
-function table.asset(tbl)
+function table.intoset(tbl)
     assert(type(tbl) == 'table', "argument #1 must be a table")
     while #tbl > 0 do
         local key = table.remove(tbl)

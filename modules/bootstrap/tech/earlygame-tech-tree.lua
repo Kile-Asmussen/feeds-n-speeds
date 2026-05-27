@@ -12,7 +12,7 @@ end
 data.recipe['iron-stick']
 
 table.merge(tech['steel-processing'], {
-    research_trigger = assoc{
+    research_trigger = {
         count = 10,
         item = 'iron-plate',
         type = 'craft-item'
@@ -26,21 +26,21 @@ tech['electronics'].localised_description = {fns_locale_key("technology-descript
 
 
 
-tech.automation.effects = array{
-    assoc{ type = 'unlock-recipe', recipe = 'assembling-machine-1' },
-    assoc{ type = 'unlock-recipe', recipe = 'long-handed-inserter' },
-    assoc{ type = 'unlock-recipe', recipe = fns 'big-steel-chest' },
-    assoc{ type = 'unlock-recipe', recipe = fns 'big-steel-hopper' },
+tech.automation.effects = {
+    { type = 'unlock-recipe', recipe = 'assembling-machine-1' },
+    { type = 'unlock-recipe', recipe = 'long-handed-inserter' },
+    { type = 'unlock-recipe', recipe = fns 'big-steel-chest' },
+    { type = 'unlock-recipe', recipe = fns 'big-steel-hopper' },
 }
 
 table.merge(tech['steam-power'], {
     localised_description = { fns_locale_key('technology-description', 'tweaked-steam-power') },
-    research_trigger = assoc{
+    research_trigger = {
         count = 10,
         item = 'steel-plate',
         type = 'craft-item'
     },
-    prerequisites = array{
+    prerequisites = {
         'steel-processing',
         'electronics',
         fns 'basic-materials-processing',
@@ -49,13 +49,13 @@ table.merge(tech['steam-power'], {
 
 -- tech['steam-power'].localised_description = { fns_locale_key('technology-description', 'tweaked-steam-power') }
 
--- tech['steam-power'].research_trigger = assoc{
+-- tech['steam-power'].research_trigger = {
 --     count = 10,
 --     item = 'steel-plate',
 --     type = 'craft-item'
 -- }
 
--- tech['steam-power'].prerequisites = array{
+-- tech['steam-power'].prerequisites = {
 --     'steel-processing',
 --     'electronics',
 --     fns 'basic-materials-processing',

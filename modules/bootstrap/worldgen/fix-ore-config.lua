@@ -17,7 +17,7 @@ starting_counts.expression = starting_counts.expression + 1
 data.raw.planet.nauvis.map_gen_settings.autoplace_controls[fns 'sulfur-ore'] = {}
 data.raw.planet.nauvis.map_gen_settings.autoplace_settings.entity.settings[fns 'sulfur-ore'] = {}
 
-table.merge(data.raw.planet.nauvis.map_gen_settings, assoc{
+table.merge(data.raw.planet.nauvis.map_gen_settings, {
     autoplace_controls = table.writing({}, fns 'sulfur-ore'),
     autoplace_settings = table.writing({}, 'entity', 'settings', fns 'sulfur-ore'),
 })

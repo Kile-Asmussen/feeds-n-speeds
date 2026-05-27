@@ -1,8 +1,9 @@
 
 local logistics = require('namespace')('logistics')
 
+local set = table.intoset
 
-logistics.data = asset{
+logistics.data = table.set{
     '.recipes.rails',
     '.entities.electric-link',
     '.items.stack-sizes'

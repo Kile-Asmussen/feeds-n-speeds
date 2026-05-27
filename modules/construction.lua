@@ -1,11 +1,13 @@
 
 local construction = require('namespace')('construction')
 
-construction.data = asset{
+local set = table.intoset
+
+construction.data = set{
     '.recipes.crafting-times',
     '.entities.mining-times',
     '.tiles.collision-layers',
-    ['.entities.pavement'] = asset{
+    ['.entities.pavement'] = set{
         'modules.bootstrap.entities.burner-miner',
         'modules.bootstrap.entities.electric-miner',
     }

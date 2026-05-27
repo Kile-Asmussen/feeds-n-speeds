@@ -1,18 +1,22 @@
 local namespace = require 'namespace'
 local fns = namespace 'fns'
-fns:require 'functions'
 
 local __env_assert = _ENV.assert
-_ENV.assert = fns.functions.assert
-local assert = fns.functions.assert
+local function assert(cond, msg)
+    if not cond then error(msg, 3) end
+end
+
+_ENV.assert = assert
 
 fns:require 'table'
+fns:require 'math'
+fns:require 'functions'
 fns:require 'string'
 fns:require 'utils'
 
-fns.identifiers = fns.table.assoc{}
+fns.identifiers = fns.table.{}
 
-fns.names_ = fns.table.assoc{}
+fns.names_ = fns.table.{}
 
 function fns.name_(name)
     local memo = fns.names_[name]
@@ -24,7 +28,7 @@ function fns.name_(name)
     return memo
 end
 
-fns.names = fns.table.assoc{}
+fns.names = fns.table.{}
 
 function fns.name(name)
     local memo = fns.names[name]
@@ -38,10 +42,10 @@ end
 
 getmetatable(fns).__call = fns.name
 
-fns.extra_localsation_keys = fns.table.assoc{}
+fns.extra_localsation_keys = fns.table.{}
 
 function fns.locale_key(category, name)
-    fns.extra_localsation_keys[category] = fns.extra_localsation_keys[category] or fns.table.assoc{}
+    fns.extra_localsation_keys[category] = fns.extra_localsation_keys[category] or fns.table.{}
     assert(fns.identifiers[name], "argument #2 must be an established mod identifier")
     fns.extra_localsation_keys[category][name] = true
     return category .. '.' .. name

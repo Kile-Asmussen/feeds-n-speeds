@@ -2,120 +2,79 @@ local string = _ENV.string
 local assert = _ENV.assert
 
 function string.lpad(self, length, char)
+    assert(type(self) == 'string', "argument #1 must be a string")
+    assert(type(length) == 'number' and index >= 1 and index == math.floor(index),
+        "argument #2 must be a string")
+
+
     if char == nil then
         char = ' '
     end
-
-    assert(type(char) ~= 'string' or #char ~= 1, "argument #2 must be a string of length 1")
+    assert(type(char) ~= 'string' or #char ~= 1,
+        "optional argument #3 must be a string of length 1, if given")
 
     if #self >= length then
         return self
     end
 
-    return char:rep(length - #self) .. self
+    return string.rep(char, length - #self) .. self
 end
 
 function string.rpad(self, length, char)
+    assert(type(self) == 'string', "argument #1 must be a string")
+    assert(type(length) == 'number' and index >= 1 and index == math.floor(index),
+        "argument #2 must be a string")
+
     if char == nil then
         char = ' '
     end
-    
-    assert(type(char) ~= 'string' or #char ~= 1, "argument #2 must be a string of length 1")
+    assert(type(char) ~= 'string' or #char ~= 1,
+        "optional argument #3 must be a string of length 1, if given")
 
     if #self >= length then
         return self
     end
 
-    return self .. char:rep(length - #self) 
-end
-
-function string.chomp(str)
-    if #str == 0 then
-        return str
-    end
-
-    if str:sub(-1) == '\n' then
-        return str:sub(1, #str - 1)
-    end
-
-    return str
-end
-
-function string.tableindex(value, first)
-    if type(value) ~= 'string' then
-        return "[" .. tostring(value) .. "]"
-    end
-
-    if value:match('^%s*[a-zA-Z_][a-zA-Z_0-9]*%s*$') then
-        if first then
-            return value
-        else
-            return '.' .. value
-        end
-    else
-        local repr = value:repr()
-        if repr:sub(1, 1) == '[' then
-            return '[ ' .. repr .. ' ]'
-        else
-            return '[' .. repr .. ']'
-        end
-    end
-end
-
-function string.tablepath(base, path)
-    local res = { tostring(base) }
-    if path ~= nil then
-        assert(type(path) == 'table', "expected argument #2 to be a table")
-        for _, v in ipairs(path) do
-            table.insert(res, string.tableindex(v))
-        end
-    end
-    return table.concat(res)
+    return self .. string.rep(char, length - #self) 
 end
 
 function string.pattern(needle, index, plain)
-    return function(haystack) return haystack:match(needle, index, plain) end
+    index = index or 1
+    plain = plain and true or false
+    assert(type(needle) == 'string', "argument #1 must be a string")
+    assert(type(index) == 'number' and index >= 1 and index == math.floor(index),
+        "optional argument #2 must be a strictly positive integer if given")
+    return function(haystack) return string.match(haystack, needle, index, plain) end
 end
 
 function string.match_function(haystack, index, plain)
-    return function(needle) return haystack:match(needle, index, plain) end
-end
-
-function string.repr(str)
-    if type(str) ~= 'string' then
-        error("argument #1 to string.repr must be a string, was " .. type(str), 2)
-    end
-
-    local sq = str:match("'")
-    local dq = str:match('"')
-    local nl = str:match('\n')
-    if (sq and dq) or nl then
-        if str:match('^%[') or str:match('%]$') or str:match('%]%]') or str:match('%[%[') then
-        return "[=[" .. str .. "]=]"
-        else
-        return "[[" .. str .. "]]"
-        end
-    elseif sq then
-        return '"' .. str .. '"'
-    else
-        return "'" .. str .. "'"
-    end
+    index = index or 1
+    plain = plain and true or false
+    assert(type(haystack) == 'string', "argument #1 must be a string")
+    assert(type(index) == 'number' and index >= 1 and index == math.floor(index),
+        "optional argument #2 must be a strictly positive integer if given")
+    return function(needle) return string.match(haystack, needle, index, plain) end
 end
 
 function string.startswith(str, sample)
+    assert(type(str) == 'string', "argument #1 must be a string")
     assert(type(sample) == 'string', "argument #2 must be a string")
     if sample == '' then return true end
     if #sample == #str then return sample == str end
     if #sample > #str then return false end
-    return str:sub(1, #sample) == sample
+    return string.sub(str, 1, #sample) == sample
 end
 
 function string.replace_prefix(str, sample, rep)
-    if str:startswith(sample) then
+    rep = rep or ''
+    assert(type(str) == 'string', "argument #1 must be a string")
+    assert(type(sample) == 'string', "argument #2 must be a string")
+    assert(type(rep) == 'string', "argument #3 must be a string")
+    if string.startswith(str, sample) then
         if rep then
-            return rep .. str:sub(#sample+1)
+            return rep .. string.sub(str, #sample+1)
         else
-            return str:sub(#sample+1)
+            return string.sub(str, #sample+1)
         end
     else
         return str
@@ -123,27 +82,31 @@ function string.replace_prefix(str, sample, rep)
 end
 
 function string.endswith(str, sample)
+    assert(type(str) == 'string', "argument #1 must be a string")
     assert(type(sample) == 'string', "argument #2 must be a string")
-    if sample == '' then return true end
-    if #sample == #str then return sample == str end
-    if #sample > #str then return false end
-    return str:sub(#str - #sample - 1,  #str) == sample
+    if sample == '' then return true
+    elseif #sample == #str then return sample == str
+    elseif #sample > #str then return false
+    else return string.sub(str, #str - #sample - 1,  #str) == sample
+    end
 end
 
 function string.before(str, pat, include)
+    assert(type(str) == 'string', "argument #1 must be a string")
     assert(type(pat) == 'string', "argument #2 must be a string")
     local ix, ix2 = str:find(pat, 1, true)
     if not ix then
         return str, false
     else
         if include then ix = ix2 + 1 end
-        return str:sub(1, ix - 1), true
+        return string.sub(str, 1, ix - 1), true
     end
 end
 
 function string.after(str, pat, include)
+    assert(type(str) == 'string', "argument #1 must be a string")
     assert(type(pat) == 'string', "argument #2 must be a string")
-    local ix, ix2 = str:find(pat, 1, true)
+    local ix, ix2 = string.find(str, pat, 1, true)
     if not ix then
         return nil
     else
@@ -173,5 +136,6 @@ function string.lines(str)
 end
 
 function string.prepend(str)
+    assert(type(str) == 'string', "argument #1 must be a string")
     return function(s) return str .. s end
 end

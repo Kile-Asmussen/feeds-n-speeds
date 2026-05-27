@@ -1,7 +1,7 @@
 
 local tools = require 'gadgets'
 
-local boil_water = assoc{
+local boil_water = {
     type='recipe',
     name=fns 'boil-water',
     category = 'chemistry',
@@ -17,35 +17,35 @@ local boil_water = assoc{
     order = 'd[other-chemistry]-d[boiling]',
     auto_unlocked_by = 'fluid-handling',
     show_amount_in_title = false,
-    icons = array{
-        assoc{
+    icons = {
+        {
             icon = data.raw.fluid.steam.icon,
             float = true,
             scale = 0.7,
-            shift = array{ 4, 0 }
+            shift = { 4, 0 }
         },
-        assoc{
+        {
             icon = data.raw.fluid.water.icon,
             float = true,
             scale = 0.33,
-            shift = array{ 4, -6 }
+            shift = { 4, -6 }
         },
-        assoc{
+        {
             icon = data.raw['virtual-signal']['signal-thermometer-red'].icon,
             float = true,
             scale = 0.7,
-            shift = array{ -6, 4 }
+            shift = { -6, 4 }
         },
     },
 
     emissions_multiplier = 0,
     hide_from_stats = true,
 
-    ingredients = array{
-        assoc{ type='fluid', amount=10, name='water' }
+    ingredients = {
+        { type='fluid', amount=10, name='water' }
     },
-    results = array{
-        assoc{ type='fluid', amount=100, name='steam' }
+    results = {
+        { type='fluid', amount=100, name='steam' }
     },
 }
 

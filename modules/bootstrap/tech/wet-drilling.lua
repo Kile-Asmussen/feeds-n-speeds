@@ -6,12 +6,12 @@ tech['uranium-mining'] = nil
 local uranium = tech['uranium-processing']
 
 table.merge(tech['uranium-processing'],{
-    prerequisites = array{ fns 'wet-drilling', 'concrete', 'chemical-science-pack' },
+    prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack' },
     research_trigger = functions.null,
-    unit = assoc{
+    unit = {
         count = 100,
         time = 30,
-        ingredients = array{
+        ingredients = {
             { 'automation-science-pack', 1 },
             { 'logistic-science-pack', 1 },
             { 'chemical-science-pack', 1 },
@@ -19,28 +19,28 @@ table.merge(tech['uranium-processing'],{
     }
 })
 
-local wet = assoc{
+local wet = {
     type = 'technology',
     name = fns 'wet-drilling',
     order = 'a-b-b',  -- after steam-power (a-b-a)
-    icons = array{
-        assoc{
+    icons = {
+        {
             icon = '__base__/graphics/technology/steam-power.png',
             icon_size = 256,
         },
-        assoc{
+        {
             icon = '__base__/graphics/technology/mining-productivity.png',
             icon_size = 256,
         },
     },
-    prerequisites = array{ 'steam-power' },
-    effects = array{
-        assoc{
+    prerequisites = { 'steam-power' },
+    effects = {
+        {
             type = 'mining-with-fluid',
             modifier = true,
         },
     },
-    research_trigger = assoc{
+    research_trigger = {
         type = 'craft-item',
         item = 'offshore-pump',
         amount = 1,

@@ -8,18 +8,18 @@ data.raw.recipe['transport-belt'].auto_unlocked_by = fns 'lab-tech'
 data.raw.recipe['inserter'].auto_unlocked_by = fns 'lab-tech'
 data.raw.recipe['lab'].auto_unlocked_by = fns 'lab-tech'
 
-local tech = assoc{
+local tech = {
     type = 'technology',
     name = fns 'lab-tech',
     order = 'a-a-z',
-    icons = array{
-        assoc{
+    icons = {
+        {
             icon = '__base__/graphics/technology/research-speed.png',
             icon_size = 256
         },
     },
-    prerequisites = array{ 'steam-power' },
-    research_trigger = assoc{
+    prerequisites = { 'steam-power' },
+    research_trigger = {
         type = 'craft-item',
         item = 'steam-engine',
         amount = 1
