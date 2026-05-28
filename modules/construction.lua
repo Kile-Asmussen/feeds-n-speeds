@@ -6,6 +6,7 @@ local set = table.intoset
 construction.data = set{
     ['.entities.fix-quality'] = -1,
     ['.entities.mining-times'] = -1,
+    
     ['.recipes.crafting-times'] = -1,
     
     '.tiles.collision-layers',

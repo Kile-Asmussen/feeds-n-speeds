@@ -157,6 +157,23 @@ function table.intoset(tbl)
     return tbl
 end
 
+function table.invert(tbl)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+    
+    local res = {}
+
+    for k, v in pairs(tbl) do
+        res[v] = res[v] or {}
+        table.insert(res[v], k)
+    end
+
+    for _, v in pairs(res) do
+        table.sort(v)
+    end
+
+    return res
+end
+
 table.null = {}
 setmetatable(table.null, {
     __tostring = function() return "table.null" end,

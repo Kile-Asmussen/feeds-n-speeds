@@ -2,7 +2,7 @@
 _ENV.TESTING = true
 _ENV.QUIET = os.getenv("QUIET") and true or false
 _ENV.VERBOSE = os.getenv("VERBOSE") and true or false
-_ENV.PROXIED = os.getenv("VERBOSE") and true or false
+_ENV.PROXIED = os.getenv("PROXIED") and true or false
 
 setmetatable(_ENV, {
     __index = function(_, name) error('_ENV.' .. name .. ' undefined', 2) end,

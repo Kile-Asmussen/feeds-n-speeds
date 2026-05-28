@@ -27,7 +27,7 @@ table.merge(sleeper, {
         run_mode = 'backward',
         tint = { 1, 1, 0.0 },
     },
-    icon = functions.null,
+    icon = utils.null,
     icons = {
         { icon = data.raw.item.roboport.icon, icon_size = 64 },
         { 
@@ -55,7 +55,7 @@ table.merge(log_only, {
         run_mode = 'backward',
         tint = { 1, 0.7, 0.0 },
     },
-    icon = functions.null,
+    icon = utils.null,
     icons = {
         { icon = data.raw.item.roboport.icon, icon_size = 64 },
         { 
@@ -91,16 +91,16 @@ local log_item = table.clone(base_item)
 local cons_item = table.clone(base_item)
 
 for _, val in ipairs{
-    { sleeper_item, sleeper, 'sleeper' },
-    { cons_item, cons_only, 'construction' },
-    { log_item, log_only, 'logistic' },
+    { sleeper_item, sleeper, 'b[sleeper]' },
+    { cons_item, cons_only, 'c[construction]' },
+    { log_item, log_only, 'd[logistic]' },
 } do
     table.merge(val[1], {
-        icon = functions.null,
+        icon = utils.null,
         icons = table.clone(val[2].icons),
         name = val[2].name,
         place_result = val[2].name,
-        order = 'c[signal]-a[roboport]-a[' .. val[3] .. ']'
+        order = 'c[signal]-a[roboport]-' .. val[3],
     })
 end
 

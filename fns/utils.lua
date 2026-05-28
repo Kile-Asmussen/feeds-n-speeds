@@ -33,6 +33,18 @@ function utils.tablepath(base, path)
     return table.concat(res)
 end
 
+function utils.null(...) return nil end
+
+function utils.call(...)
+    local args = { ... }
+    return function(thing)
+        for i = 1, #args do
+            thing = args[i](thing)
+        end
+        return thing
+    end
+end
+
 local __env_utils = _ENV.utils
 
 function utils.use()

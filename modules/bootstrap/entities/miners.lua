@@ -25,7 +25,7 @@ table.merge(burner_drill, {
         },
         pipe_covers = pipecoverspictures(),
     },
-    icon = functions.null,
+    icon = utils.null,
     icons = {
         {
             icon = '__base__/graphics/icons/burner-mining-drill.png',
@@ -46,7 +46,7 @@ table.merge(burner_drill_item, {
     name = name,
     place_result = name,
     icons = table.clone(burner_drill.icons),
-    icon = functions.null,
+    icon = utils.null,
     order = 'a[items]-a[burner-mining-drill]-b[fluid]',
 })
 

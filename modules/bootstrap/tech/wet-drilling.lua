@@ -8,7 +8,7 @@ local uranium = tech['uranium-processing']
 
 table.merge(tech['uranium-processing'], {
     prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack' },
-    research_trigger = functions.null,
+    research_trigger = utils.null,
     unit = {
         count = 100,
         time = 30,
@@ -23,6 +23,7 @@ table.merge(tech['uranium-processing'], {
 local wet = {
     type = 'technology',
     name = fns 'wet-drilling',
+    essential = true,
     icons = {
         {
             icon = '__base__/graphics/technology/steam-power.png',

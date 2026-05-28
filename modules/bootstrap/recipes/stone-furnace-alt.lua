@@ -6,7 +6,7 @@ local old_recipe = data.raw.recipe['stone-furnace']
 
 table.merge(old_recipe, {
     ingredients = puts{ stone = 20 },
-    icon = functions.null,
+    icon = utils.null,
     icons = {
         {
             icon = '__base__/graphics/icons/stone-furnace.png',

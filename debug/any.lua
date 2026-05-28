@@ -1,4 +1,5 @@
-require 'prelude'
+local fns = require 'fns'
+fns.use()
 
 local args = { ... }
 local loadstring = loadstring

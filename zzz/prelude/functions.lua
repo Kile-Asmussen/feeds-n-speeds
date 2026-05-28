@@ -88,4 +88,4 @@ function functions.pipe(f, ...)
     end
 end
 
-function functions.null(...) return nil end
+function utils.null(...) return nil end

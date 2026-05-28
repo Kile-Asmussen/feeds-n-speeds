@@ -5,23 +5,17 @@ local switch = data.raw['power-switch']['power-switch']
 link.name = fns 'electric-link'
 -- link.localised_description = {""}
 
-local list = {}
-setmetatable(list, { __index = function(t, k) table.insert(t, k) return t end })
-
-for _, field in ipairs(
-    list
-    .corpse
-    .dying_explosion
-    .damaged_trigger_effect
-    .fast_replaceable_group
-    .icon
-    -- .frozen_patch
-    .max_health
-    .open_sound
-    .selection_box
-    .working_sound
-    -- .water_reflection
-) do
+for _, field in ipairs{
+    'corpse',
+    'dying_explosion',
+    'damaged_trigger_effect',
+    'fast_replaceable_group',
+    'icon',
+    'max_health',
+    'open_sound',
+    'selection_box',
+    'working_sound',
+} do
     assert(link[field] and switch[field], "no such field: " .. field)
     link[field] = table.clone(switch[field])
 end
@@ -32,7 +26,7 @@ link.default_output_signal = {
 }
 
 link.energy_source = {
-    buffer_capacity = '85kJ',
+    buffer_capacity = '85kJ', -- ca. 5MW * 1s / 60
     input_flow_limit = '5MW',
     output_flow_limit = '5MW',
     type = 'electric',

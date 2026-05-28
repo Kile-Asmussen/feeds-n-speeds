@@ -3,10 +3,9 @@ local logistics = require('namespace')('logistics')
 
 local set = table.intoset
 
-logistics.data = table.set{
-    '.chests.big-steel',
-    '.chests.hopper',
-    ['.chests.extant'] = -1,
+logistics.data = set{
+    '.chests.extant',
+    ['.chests.hopper'] = set{ '.chests.extant' },
 
     '.entities.electric-link',
     '.entities.electric-poles',
@@ -15,6 +14,10 @@ logistics.data = table.set{
     ['.items.stack-sizes'] = -1,
 
     '.recipes.rails',
+}
+
+logistics.control = set{
+    '.chests.hopper-control'
 }
 
 return logistics:seal()

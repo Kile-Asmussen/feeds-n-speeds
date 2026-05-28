@@ -1,4 +1,5 @@
-require 'prelude'
+local fns = require 'fns'
+fns.use()
 
 local args = { ... }
 local loadstring = loadstring
@@ -11,12 +12,9 @@ function _ENV.__log() end
 _ENV.modlist = {"textplates", "even-more-text-plates"}
 
 require('settings')
-require('settings-updates')
-require('settings-final-fixes')
 data.begin_data_stage()
 require('data')
 require('data-updates')
-require('data-final-fixes')
 
 local debuglib = require 'debuglib'
 

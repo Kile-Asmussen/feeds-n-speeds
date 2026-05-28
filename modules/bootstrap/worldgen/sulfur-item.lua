@@ -2,13 +2,13 @@
 data.raw.item.sulfur.pictures = table.imap(
     {
         '__base__/graphics/icons/sulfur.png',
-        '__FeedsNSpeeds__/graphics/item/sulfur-1.png',
-        '__FeedsNSpeeds__/graphics/item/sulfur-2.png',
-        '__FeedsNSpeeds__/graphics/item/sulfur-3.png',
-        '__FeedsNSpeeds__/graphics/item/sulfur-4.png',
-        '__FeedsNSpeeds__/graphics/item/sulfur-5.png',
-        '__FeedsNSpeeds__/graphics/item/sulfur-6.png',
-        '__FeedsNSpeeds__/graphics/item/sulfur-7.png',
+        '__FeedsNSpeeds__/graphics/icons/sulfur-1.png',
+        '__FeedsNSpeeds__/graphics/icons/sulfur-2.png',
+        '__FeedsNSpeeds__/graphics/icons/sulfur-3.png',
+        '__FeedsNSpeeds__/graphics/icons/sulfur-4.png',
+        '__FeedsNSpeeds__/graphics/icons/sulfur-5.png',
+        '__FeedsNSpeeds__/graphics/icons/sulfur-6.png',
+        '__FeedsNSpeeds__/graphics/icons/sulfur-7.png',
     },
     function(filename) return {
         filename = filename,

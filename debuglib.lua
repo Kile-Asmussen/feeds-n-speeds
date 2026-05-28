@@ -12,7 +12,6 @@ debuglib.io = _ENV.io and { open = _ENV.io.open } or {}
 
 local table = fns.table
 local string = fns.string
-local functions = fns.functions
 local utils = fns.utils
 
 function debuglib.pp(data, root)

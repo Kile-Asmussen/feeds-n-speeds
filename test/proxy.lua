@@ -76,6 +76,15 @@ local __proxy_mt = {
 __proxy_mt.__metatable = __proxy_mt
 
 local function monkeypatch()
+    local next = _ENV.next
+    function _ENV.next(tbl, k)
+        if getmetatable(tbl) == __proxy_mt then
+            return next(tbl.__real, k)
+        else
+            return next(tbl, k)
+        end
+    end
+
     local unpack = table.unpack
     function table.unpack(tbl)
         if getmetatable(tbl) == __proxy_mt then

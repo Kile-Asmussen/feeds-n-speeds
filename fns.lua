@@ -11,7 +11,6 @@ _ENV.assert = assert
 
 fns:require 'table'
 fns:require 'math'
-fns:require 'functions'
 fns:require 'string'
 fns:require 'utils'
 
@@ -55,7 +54,6 @@ end
 
 function fns.use()
     fns.string.use()
-    fns.functions.use()
     fns.table.use()
     fns.utils.use()
     fns.math.use()
@@ -63,7 +61,6 @@ end
 
 function fns.restore()
     fns.string.restore()
-    fns.functions.restore()
     fns.table.restore()
     fns.utils.restore()
     fns.math.restore()

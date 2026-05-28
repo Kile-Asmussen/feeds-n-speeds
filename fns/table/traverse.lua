@@ -134,7 +134,7 @@ local function __assign(tbl, keys)
         if down[key] == nil then down[key] = {} end
 
         if type(down[key]) ~= 'table' then
-            down[key] = { __assign  = down[key] }
+            down[key] = { __old = down[key] }
         end
 
         down = down[key]
