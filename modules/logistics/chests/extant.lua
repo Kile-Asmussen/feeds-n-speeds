@@ -48,6 +48,7 @@ merge(data.raw.recipe, {
         }
     },
     ['active-provider-chest'] = merge{
+        allow_decomposition = true,
         ingredients = inputs{
             ['passive-provider-chest'] = 1,
             ['selector-combinator'] = 1,
@@ -55,6 +56,7 @@ merge(data.raw.recipe, {
         }
     },
     ['requester-chest'] = merge{
+        allow_decomposition = true,
         ingredients = inputs{
             ['active-provider-chest'] = 1,
             ['selector-combinator'] = 1,

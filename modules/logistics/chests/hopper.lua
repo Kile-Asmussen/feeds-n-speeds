@@ -2,10 +2,11 @@
 local fns = require 'fns'
 local gadgets = require 'gadgets'
 
-local hopper = 
+local hopper =
 table.merge(table.clone(data.raw.container['steel-chest']), {
     type = 'proxy-container',
     name = fns 'hopper',
+    localised_name = nil,
     icon = '__FeedsNSpeeds__/graphics/icons/hopper.png',
     picture = table.assign{ 'layers', 1, 'filename',
         val = '__FeedsNSpeeds__/graphics/entity/hopper.png' },
@@ -14,6 +15,9 @@ table.merge(table.clone(data.raw.container['steel-chest']), {
 local item =
 table.merge(table.clone(data.raw.item['steel-chest']), {
     name = fns 'hopper',
+    localised_name = nil,
+    icon = '__FeedsNSpeeds__/graphics/icons/hopper.png',
+    icons = nil,
     place_result = fns 'hopper',
 })
 

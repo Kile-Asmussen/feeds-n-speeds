@@ -4,6 +4,8 @@ local inputs = require('gadgets').throughputs
 
 base.charging_station_count_affected_by_quality = true
 
+table.insert(data.raw.technology['robotics'].prerequisites, 'advanced-combinators')
+
 local sleeper = table.clone(base)
 local log_only = table.clone(base)
 local cons_only = table.clone(base)

@@ -1,61 +1,63 @@
 # FeedsNSpeeds Functional Feature TODO
 
-## Structural problems
-
-- [ ] The mod misuses the data-updates stage in unintended ways. With almost no exceptions, the current `.data_update()` functions should be called at the data stage, after the `.data()` functions, and renamed to something like `.data2()`. 
-
 ## Bugs
 
 - [ ] The rust raw data loading library does not seem to adequately reset the state of the mod-list.json back to what it was, leading to changes visible in-game. Further investigation needed to verify it is a current issue.
+- [ ] There's something wrong with the electric link.
+
+- [ ] Hopper is still named the same as the steel/smart chest
+
+- [ ] Fix visual bugs.
+  - [ ] Contrast problems in overlaid icons (can Tint lighten a sprite?)
+  - [ ] Something else for the sleeper roboport's antenna
+  - [ ] Overlaid icons look kinda jank
 
 ## Fun tasks
 
-- [ ] Rail automation as triggered tech (place a train or craft N rails -- goes in tweaks.technologies)
-- [ ] Buff roboports (charging spots affected by quality)
-- [ ] Take a look at how qualiety actually works
+- [ ] Turn crushers into a tiered furnaces
+  - Reprocessor
+  - Crusher
+  - Crusher Mk 2
+
+- [ ] **Mini-reactor technology** (IMPORTANT): The mini-reactor is currently inaccessible in-game. Needs a new technology that unlocks it alongside heat pipes, heat exchangers, and steam turbines. This tech should sit in a larger energy branch that connects to accumulator/solar improvements, providing tiered energy storage options (mini-reactor → heat-based steam → supercapacitor accumulators).
+  - [ ] "Tank full of sand" heat battery
+  - [ ] Tertiary generator variants?
+  - [ ] Tertiary 
+
 - [ ] Solar power/accumulator extras
     - [ ] Accumulators should probably be more expensive (when the plastics/battery tweak is enabled) but hold more power
         - [ ] Find a nice ratio
-    - [ ] Create an alternate accumulator prototype with higher energy throughput that might be useful in fusion power, "supercapacitor energy storage" technology or something, with a 5MW charge rate but the same 5MJ energy storage rate
 
-- [ ] Electric heating, an electric energy interface Reactor, (if possible,) which produces heat, but at something like 80% efficiency.
+- [ ] Giant slow inserter with huge hand size for unloading trains.
 
-- [ ] Boost concrete and stone brick's walkspeed bonus to about double 
-- [ ] Change sulfur ore to be in smaller patches
-- [ ] Oil and uranium in starting area
+## Big tasks
 
-### Minor tweaks
-
-**Earlygame:**
-- [ ] Change starting inventory: remove burner-mining-drill, add shotgun + shotgun shells alongside the pistol
-- [ ] Steam power should take more crafted steel to unlock (10)
-  - [ ] remove steel pickaxe too and just put the mining upgrade under steam power
-- [ ] Burner drills should take steel plate (1) to craft
-- [ ] Make big steel chest slightly cheaper ~ 20 steel
-  - [ ] also make iron chest and steel chest only take 6 plate (six sides to a cube)
+- [ ] Alternate, more complex recipes for all the personal equipment
 
 ## Potential spinoffs
 
 - [ ] Extract big steel chest + hoppers into a standalone mod — self-contained enough to be useful without the rest of FeedsNSpeeds.
 
+- [ ] **Auto-pavement coverage**: Set `auto_require_pavement` on all mod-created entity prototypes (turrets, roboports, electroboiler, mini-reactor, electric-link, hoppers, etc.) and expand `pavement.lua` to assign tiers to relevant vanilla entities beyond mining drills.
+
 ## Necessary tasks
 
+- [ ] Tweak shit related to everything
+  - Recipes
+  - Chest inventory sizes, etc.
+
+- [ ] **Readability refactor**: Audit all mod files for raw ingredient/result arrays and direct prototype assignments that should use `table.merge` and `gadgets.throughputs`. Mostly mechanical find-and-replace work.
 - [ ] Item/recipe ordering cleanup: With all features researched, the in-game crafting menu is cluttered. Review and improve ordering strings across all items and recipes for better organization.
-- [ ] In-game changelog display
 - [ ] In-game documentation (tips and tricks, custom GUI, or factoriopedia integration)
 
 ## Overarching tasks
 
-- [ ] Expand alt-recipes module (`extras/altrecipes/`)
-- [ ] Expand malltech module
+- [ ] Expand malltech module to include late-game structures
 - [ ] Add per-planet surface condition variants for entities
+  - [ ] Mini reactor should not be available on Aquilo, for instance
 - [ ] Add migration scripts for settings changes
 
 # FeedsNSpeeds Development Ergonomics TODO
-
-## Localization stub generator improvements
-
-- [ ] Skip recipe stubs when the recipe has a single result item (Factorio inherits the item's name/description automatically). Check for `results` with one entry, or a `main_product` field set on the prototype.
 
 ## Enhanced Out-of-Game Testing Pipeline
 

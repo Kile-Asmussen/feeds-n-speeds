@@ -161,6 +161,8 @@ local function manhattan_distance(a, b)
     return math.abs(pa.x - pb.x) + math.abs(pa.y - pb.y)
 end
 
+local link, unlink
+
 local function link_cluster(start_entity, exclude_id)
     local hoppers, chests, min_id, min_quality = flood_fill_cluster(start_entity, exclude_id)
 
@@ -185,8 +187,6 @@ local function link_cluster(start_entity, exclude_id)
     end
 end
 
-
-
 local function show_floating_text(entity, text)
     local pos = entity.position
     local text_pos = {pos.x - 0.25, pos.y - 0.25}
@@ -201,7 +201,7 @@ local function show_floating_text(entity, text)
     end
 end
 
-local function link(hopper_entity, chest)
+link = function(hopper_entity, chest)
     local was_unlinked = hopper_entity.proxy_target_entity == nil
 
     hopper_entity.proxy_target_entity = chest
@@ -213,7 +213,7 @@ local function link(hopper_entity, chest)
     end
 end
 
-local function unlink(hopper_entity)
+unlink = function(hopper_entity)
     local was_linked = hopper_entity.proxy_target_entity ~= nil
 
     hopper_entity.proxy_target_entity = nil
