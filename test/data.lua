@@ -56,12 +56,7 @@ function data.extend(self, protos)
 
     assert(table.is_array(protos), "data:extend called with non-array")
 
-    __log("adding " .. #protos .. " prototypes at " .. line)
-    local prev_i = nil
-
     for i, proto in ipairs(protos) do
-
-        if i == prev_i then error("something is terribly wrong") end
 
         assert(fns.identifiers[proto.name], "not an fns-based name: " .. proto.name)
 
@@ -101,8 +96,6 @@ function data.extend(self, protos)
         end
 
         __log("data:extend{{ type = " .. ("%q"):format(proto.type) .. ", name = fns " .. ("%q"):format(proto.name:replace_prefix('feeds-n-speeds-')) .. " }}")
-
-        prev_i = i
 
         localisation.register(proto)
     end

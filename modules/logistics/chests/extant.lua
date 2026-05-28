@@ -1,6 +1,4 @@
 
-if true then return end
-
 local fns = require 'fns'
 local gadgets = require 'gadgets'
 local inputs = gadgets.throughputs
@@ -9,7 +7,7 @@ local merge = fns.table.merge
 local utils = fns.utils
 local set = fns.table.intoset
 
-local upscale = gadgets.scale_vectors_and_numbers(
+local upscale = table.traverse(gadgets.scale_vectors_and_numbers(
   2.0,
   set{
     'scale', 'number', 'volume_multiplier',
@@ -17,11 +15,11 @@ local upscale = gadgets.scale_vectors_and_numbers(
   },
   table.fullset,
   set{ 'circuit_connector' }
-)
+))
 
-local shift_wire = gadgets.shift_vectors(
-  {0.35, 0.30}, set{'shift'}
-)
+local shift_wire = table.traverse(gadgets.shift_vectors(
+  {0.35, 0.30}, set{'shift'}, {}
+))
 
 merge(data.raw.recipe, {
     ['wooden-chest'] = merge{
@@ -31,7 +29,7 @@ merge(data.raw.recipe, {
         ingredients = inputs{ ['iron-plate'] = 6, ['iron-gear-wheel'] = 2, },
     },
     ['steel-chest'] = merge{
-        auto_unlocked_by = 'automation-1',
+        auto_unlocked_by = 'automation',
         ingredients = inputs{
             ['steel-plate'] = 8,
             ['electronic-circuit'] = 8,
@@ -74,7 +72,7 @@ merge(data.raw.recipe, {
 })
 
 merge(data.raw.container, {
-    ['wooden-chest'] = units.call(merge{
+    ['wooden-chest'] = utils.call(merge{
         circuit_connector = nil,
         inventory_size = 10,
         inventory_type = "normal",
@@ -108,7 +106,7 @@ merge(data.raw.container, {
     )
 })
 
-merge(data.raw['logistics-container'], {
+merge(data.raw['logistic-container'], {
     ['passive-provider-chest'] = utils.call(merge{
         inventory_size = 30,
         inventory_type = "with-filters-and-bar",

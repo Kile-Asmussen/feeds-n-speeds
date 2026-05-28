@@ -9,12 +9,13 @@ construction.data = set{
     ['.recipes.crafting-times'] = -1,
     
     '.tiles.collision-layers',
-    ['.tiles.pavement'] = -1
+    ['.tiles.pavement'] = -1,
 
+    ['.recipes.malltech'] = -1,
 }
 
 construction['data-updates'] = set{
-    '.tiles.auto-pavement'
+    '.tiles.auto-pavement',
 }
 
 return construction:seal()

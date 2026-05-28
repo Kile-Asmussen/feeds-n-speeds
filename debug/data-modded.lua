@@ -11,12 +11,10 @@ function _ENV.__log() end
 _ENV.modlist = {}
 
 require('settings')
-require('settings-updates')
-require('settings-final-fixes')
+fns.use()
 data.begin_data_stage()
 require('data')
 require('data-updates')
-require('data-final-fixes')
 
 fns.use()
 
@@ -25,7 +23,7 @@ local debuglib = require 'debuglib'
 local args = { ... }
 table.icollect(args, function(s) return tonumber(s) or s end)
 
-local ix =  string.tablepath('data.raw', args)
+local ix =  utils.tablepath('data.raw', args)
 local result, found = table.descend(data.raw, args)
 
 if #args < 2 then

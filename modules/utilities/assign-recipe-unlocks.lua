@@ -47,11 +47,11 @@ end
 for recipe, unlock in table.opairs(unlocks) do
     for tech, _ in table.opairs(unlock) do
         if not data.raw.technology[tech] then
-            error('no such technology: ' .. tech, 1)
+            error('no such technology: ' .. tech .. " on " .. recipe, 1)
         end
 
         data.raw.technology[tech].effects = data.raw.technology[tech].effects or {}
 
-        table.insert(data.raw.technology[tech].effects, { type='unlock-recipe', recipe=unlock.__recipe })
+        table.insert(data.raw.technology[tech].effects, { type='unlock-recipe', recipe=recipe })
     end
 end

@@ -22,6 +22,7 @@ production.data = set{
 
     '.recipes.casting',
     '.recipes.concrete',
+    '.recipes.sulfur-processing',
     ['.recipes.crafting-categories'] = -1,
     '.recipes.modules',
 
@@ -31,7 +32,8 @@ production.data = set{
 }
 
 production['data-updates'] = set{
-    '.fluids.update-barrels'
+    '.fluids.update-barrels',
+
 }
 
 return production:seal()

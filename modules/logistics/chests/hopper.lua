@@ -20,7 +20,7 @@ table.merge(table.clone(data.raw.item['steel-chest']), {
 local recipe =
 table.merge(table.clone(data.raw.recipe['steel-chest']), {
     name = fns 'hopper',
-    auto_unlock_by = 'automation-1',
+    auto_unlock_by = 'automation',
     ingredients = gadgets.throughputs{ ['steel-chest'] = 1, ['long-handed-inserter'] = 1 },
     results = table.assign{ 1, 'name', val = fns 'hopper' },
 })

@@ -40,12 +40,26 @@ local function __traverse(tbl, func)
             end
         end
     end
+    return tbl
 end
 
-function table.traverse(tbl, func)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(func) == "function", "argument #2 must be a function")
-    __traverse(tbl, func)
+function table.traverse(...)
+    local n = select('#', ...)
+    if n == 1 then
+        local func = ...
+        assert(type(func) == "function", "argument #1 must be a function")
+        return function(tbl)
+            assert(type(tbl) == "table", "argument #1 must be a table")
+            return __traverse(tbl, func)
+        end
+    elseif n == 2 then
+        local tbl, func = ...
+        assert(type(tbl) == "table", "argument #1 must be a table")
+        assert(type(func) == "function", "argument #2 must be a function")
+        return __traverse(tbl, func)
+    else
+        error("wrong number of arguments, expected 1 or 2", 2)
+    end
 end
 
 function table.replace(tbl, a, b)
