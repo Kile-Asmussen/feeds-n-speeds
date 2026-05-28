@@ -3,14 +3,20 @@
 ## Bugs
 
 - [ ] The rust raw data loading library does not seem to adequately reset the state of the mod-list.json back to what it was, leading to changes visible in-game. Further investigation needed to verify it is a current issue.
+
 - [ ] There's something wrong with the electric link.
 
 - [ ] Hopper is still named the same as the steel/smart chest
 
+- [ ] Startup additional resources not working in freeplay
+
 - [ ] Fix visual bugs.
+  - [ ] Basic materials processing looks weird
   - [ ] Contrast problems in overlaid icons (can Tint lighten a sprite?)
   - [ ] Something else for the sleeper roboport's antenna
   - [ ] Overlaid icons look kinda jank
+  - [ ] Chests need to be ever so slightly bigger in collission to prevent clipping
+
 
 ## Fun tasks
 
@@ -33,18 +39,27 @@
 ## Big tasks
 
 - [ ] Alternate, more complex recipes for all the personal equipment
+- [ ] **Auto-pavement coverage**: Set `auto_require_pavement` on all mod-created entity prototypes (turrets, roboports, electroboiler, mini-reactor, electric-link, hoppers, etc.) and expand `pavement.lua` to assign tiers to relevant vanilla entities beyond mining drills.
 
 ## Potential spinoffs
 
 - [ ] Extract big steel chest + hoppers into a standalone mod — self-contained enough to be useful without the rest of FeedsNSpeeds.
 
-- [ ] **Auto-pavement coverage**: Set `auto_require_pavement` on all mod-created entity prototypes (turrets, roboports, electroboiler, mini-reactor, electric-link, hoppers, etc.) and expand `pavement.lua` to assign tiers to relevant vanilla entities beyond mining drills.
 
 ## Necessary tasks
 
 - [ ] Tweak shit related to everything
   - Recipes
+  - Less ore from rocks
   - Chest inventory sizes, etc.
+  - Express transport belts need to depend on fast
+
+- Recipes:
+  - Pipes in recipe for electric drill
+  - Burner inserter needs sticks and bricks
+  - Burner drills should use furnaces
+  - Boilers also
+
 
 - [ ] **Readability refactor**: Audit all mod files for raw ingredient/result arrays and direct prototype assignments that should use `table.merge` and `gadgets.throughputs`. Mostly mechanical find-and-replace work.
 - [ ] Item/recipe ordering cleanup: With all features researched, the in-game crafting menu is cluttered. Review and improve ordering strings across all items and recipes for better organization.
