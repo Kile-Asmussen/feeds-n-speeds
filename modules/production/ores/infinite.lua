@@ -1,0 +1,25 @@
+    
+if not settings['bool-setting'][fns 'infinite-ores'].value then return end
+
+for _, resource in pairs(data.raw.resource) do
+
+    if resource.category == 'basic-solid' or resource.category == 'hard-solid' then
+        
+        resource.infinite_depletion_amount = 1
+        
+        resource.infinite = true
+        
+        resource.normal = 100
+        resource.minimum = 100
+        
+        resource.stage_counts = { 600, 400, 300, 150, 100, 50, 25, 17 }
+
+        local richness_multiplier_setting = "var('control:" .. resource.name .. ":richness')"
+
+        -- Random noise in the 95% to 105% range
+        local random_noise =
+            'floor(random_penalty_between{from=95,to=105.999,seed=42069})'
+        
+        resource.autoplace.richness_expression = random_noise .." * " .. richness_multiplier_setting
+    end
+end

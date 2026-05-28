@@ -15,7 +15,10 @@ production.data = set{
     '.recipes.casting',
     '.recipes.concrete',
     ['.recipes.crafting-categories'] = -1,
-    ['.recipes.machines'] = -1,
+
+    '.ores.starting-patch-shape',
+
+    ['.machines'] = -1,
 }
 
 production['data-updates'] = set{

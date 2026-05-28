@@ -8,6 +8,7 @@ local noise = {
     base_spots_per_km2 = 1.25,
     regular_patch_set_index = "var('" .. fns 'sulfur-ore-regular-index' .. "')",
     starting_patch_set_index = "var('" .. fns 'sulfur-ore-starting-index' .. "')",
+    starting_blob_amplitude_multiplier = 0.125 / 1.5,
     starting_rq_factor=11/70,
 }
 

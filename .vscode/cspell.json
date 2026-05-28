@@ -17,6 +17,7 @@
         "localised",
         "maxn",
         "mlua",
+        "mult",
         "nauvis",
         "num",
         "opairs",
@@ -27,6 +28,7 @@
         "Vec",
         "vecadd",
         "vecmul",
+        "visualisation",
         "zet"
     ],
     "flagWords": [

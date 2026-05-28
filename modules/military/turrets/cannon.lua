@@ -6,7 +6,7 @@ local name = fns 'cannon-turret'
 
 turret.name = name
 turret.icon = '__base__/graphics/icons/gun-turret.png'
-turret.minable = { mining_time = 0.5, result = name }
+turret.minable = { mining_time = 3.0, result = name }
 turret.attack_parameters = table.clone(data.raw.gun['tank-cannon'].attack_parameters)
 turret.fast_replaceable_group = 'ammo-turret'
 turret.max_health = 1000
@@ -24,7 +24,6 @@ turret.rotation_speed = 0.01
 turret.preparing_speed = 0.06
 turret.folding_speed = 0.06
 turret.attacking_speed = 0.3
-
 
 local turret_remnants = table.clone(data.raw.corpse['gun-turret-remnants'])
 turret_remnants.name = fns 'cannon-turret-remnants'
@@ -73,7 +72,7 @@ local turret_item = {
     subgroup = data.raw.item['gun-turret'].subgroup,
     order = 'b[turret]-b[shotgun-turret]',
     place_result = name,
-    stack_size = 50,
+    stack_size = 5,
 }
 
 turret_item.icons = {
@@ -95,6 +94,7 @@ local turret_recipe = {
     type = 'recipe',
     energy_required = 8,
     name = name,
+    auto_unlocked_by = fns 'cannon-turret-tech',
     enabled = false,
     ingredients = {
         { type='item', name='advanced-circuit', amount=2 },
@@ -111,10 +111,12 @@ local turret_recipe = {
 
 local turret_tech = table.clone(data.raw.technology['gun-turret'])
 
+data.raw.recipe['cannon-shell'].auto_unlocked_by = 'cannon-turret'
+
 turret_tech.name = fns 'cannon-turret-tech'
 turret_tech.prerequisites = { 'gun-turret', 'military-3', 'explosives' }
 turret_tech.effects = {
-    { type='unlock-recipe', recipe=fns 'cannon-turret' },
+
     { type='unlock-recipe', recipe='cannon-shell' },
 }
 
@@ -136,10 +138,6 @@ turret_tech.icons = {
     },
 }
 
-data.raw.technology.tank.effects = {
-    { type='unlock-recipe', recipe='tank' },
-    { type='unlock-recipe', recipe='explosive-cannon-shell' },
-}
 data.raw.technology.tank.prerequisites = { fns 'cannon-turret-tech', 'automobilism', 'flammables' }
 
 data:extend{

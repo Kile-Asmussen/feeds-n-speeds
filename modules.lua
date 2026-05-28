@@ -121,11 +121,7 @@ function modules.order_dependencies(dependencies)
     end
 
     table.sort(order, function(a, b)
-        if priorities[a] == priorities[b] then
-            return a < b
-        else
-            return priorities[a] < priorities[b]
-        end
+        return priorities[a] < priorities[b]
     end)
 
     while table.has_assoc(dependencies) do

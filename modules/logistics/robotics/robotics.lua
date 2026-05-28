@@ -120,13 +120,12 @@ local function change_recipe(recipe, name, tech, ingredients)
     })
 end
 
-
 base_recipe.ingredients = inputs{
     ['steel-plate'] = 10,
     radar = 1,
     pipe = 7,
     ['electric-engine'] = 7,
-    ['selector-combinator'] = 5,
+    ['selector-combinator'] = 2,
     accumulator = 2,
     ['passive-provider-chest'] = 1,
     ['storage-chest'] = 1,
@@ -144,10 +143,9 @@ base_recipe.ingredients = inputs{
 change_recipe(sleeper_recipe, sleeper.name, 'logistic-robotics',
     inputs{
         ['steel-plate'] = 10,
-        [fns 'small-radar'] = 1,
         pipe = 15,
         ['electric-engine'] = 3,
-        ['selector-combinator'] = 3,
+        ['selector-combinator'] = 2,
         accumulator = 3,
         ['storage-chest'] = 1
     }
@@ -164,15 +162,13 @@ change_recipe(sleeper_recipe, sleeper.name, 'logistic-robotics',
 change_recipe(log_recipe, log_only.name, 'logistic-system',
     inputs{
         ['steel-plate'] = 10,
-        [fns 'small-radar'] = 2,
+        ['radar'] = 1,
         pipe = 7,
         ['electric-engine'] = 7,
         ['constant-combinator'] = 5,
-        ['selector-combinator'] = 5,
+        ['selector-combinator'] = 2,
         accumulator = 3,
         ['buffer-chest'] = 1,
-        ['requester-chest'] = 1,
-        ['active-provider-chest'] = 1,
     }
 )
 
@@ -190,11 +186,11 @@ change_recipe(log_recipe, log_only.name, 'logistic-system',
 change_recipe(cons_recipe, cons_only.name, 'construction-robotics',
     inputs{
         ['steel-plate'] = 10,
-        radar = 2,
+        radar = 3,
         pipe = 7,
         ['electric-engine'] = 7,
         ['arithmetic-combinator'] = 5,
-        ['selector-combinator'] = 5,
+        ['selector-combinator'] = 2,
         accumulator = 2,
         ['passive-provider-chest'] = 2,
     }

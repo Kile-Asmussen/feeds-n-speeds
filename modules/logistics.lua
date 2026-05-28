@@ -14,6 +14,8 @@ logistics.data = set{
     ['.items.stack-sizes'] = -1,
 
     '.recipes.rails',
+
+    '.tech.worker-robot-battery'
 }
 
 logistics.control = set{

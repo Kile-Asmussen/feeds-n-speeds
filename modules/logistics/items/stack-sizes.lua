@@ -2,25 +2,20 @@
 local fns = require 'fns'
 
 local stack_sizes = {
-    ['rail-planner'] = {
-        ['rail'] = 40,
-        ['rail-ramp'] = 5,
-    },
-
     item = {
         --[==============[
            INTERMEDIARIES
           ]==============]
         
+        ['iron-stick'] = 200,
         
-
         --[=========[
            BUILDINGS
           ]=========]
         
-        -- 1x1 simple
         ['stone-wall']      = 50,
         ['gate']            = 30,
+
 
         ['pipe']             = 50,
         ['pipe-to-ground']   = 20,
@@ -41,10 +36,6 @@ local stack_sizes = {
         ['express-splitter']       = 5,
         ['turbo-splitter']         = 5,
 
-        ['rail-signal']          = 20,
-        ['chain-signal']         = 20,
-        ['rail-station']         = 10,
-
         ['burner-inserter']      = 30,
         ['inserter']             = 30,
         ['fast-inserter']        = 20,
@@ -56,12 +47,11 @@ local stack_sizes = {
         ['medium-electric-pole'] = 20,
         ['big-electric-pole']    = 10,
         ['substation']           = 10,
-        [fns 'electric-link']    = 10,
         ['power-switch']         = 10,
 
         ['small-lamp']           = 20,
         ['accumulator']          = 30,
-        ['solar-panel']          = 40,
+        ['solar-panel']          = 30,
 
         ['constant-combinator']    = 30,
         ['display-panel']          = 30,
@@ -75,7 +65,6 @@ local stack_sizes = {
         ['electric-furnace']     = 10,
         ['recycler']             = 5,
 
-        [fns 'small-radar']      = 20,
         ['radar']                = 10,
 
         ['burner-mining-drill']   = 20,
@@ -83,31 +72,27 @@ local stack_sizes = {
         ['electric-mining-drill'] = 10,
         ['big-mining-drill']      = 5,
         
-        -- 2x2 complex
-
         ['lightning-rod']        = 30,
         ['lightning-collector']  = 20,
 
-        -- 2x3
-        ['boiler']               = 10,
-        [fns 'electroboiler']    = 10,
-        ['heat-exchainger']      = 5,
+        ['boiler']                = 10,
+        ['heat-exchanger']       = 5,
 
-        ['heat-pipe']            = 20,
+        ['heat-pipe']             = 20,
 
-        ['lab']                  = 10,
-        ['biolab']               = 10,
+        ['lab']                   = 10,
+        ['biolab']                = 5,
 
-        ['chemical-plant']        = 20,
-        ['biochamber']            = 10,
+        ['chemical-plant']        = 30,
+        ['biochamber']            = 20,
         ['oil-refinery']          = 10,
         ['assembling-machine-1']  = 30,
         ['assembling-machine-2']  = 20,
         ['assembling-machine-3']  = 10,
+        ['centrifuge']            = 10,
         ['electromagnetic-plant'] = 5,
         ['cryogenic-plant']       = 5,
         ['foundry']               = 5,
-        ['centrifuge']            = 5,
         ['crusher']               = 10,
 
         ['agricultural-tower']    = 5,
@@ -119,25 +104,47 @@ local stack_sizes = {
 
         ['thruster']              = 5,
 
-        ['roboport']                  = 5,
+        ['roboport']              = 5,
         
-        -- 5x5
-        ['heating-tower']     = 5,
-        ['nuclear-reactor']   = 1,
+        ['heating-tower']         = 5,
+        ['nuclear-reactor']       = 1,
 
-        ['asteroid-collector']  = 5,
+        ['asteroid-collector']    = 5,
 
-        ['cargo-wagon']          = 5,
-        ['fluid-wagon']          = 5,
-        ['locomotive']           = 2,
-        ['artillery-wagon']      = 2,
+    
+        ['rail-support']          = 10,
+        ['rail-signal']           = 20,
+        ['rail-chain-signal']     = 20,
+        ['train-stop']            = 10,
+ 
+        ['rocket-silo']           = 1,
+        ['cargo-bay']             = 5,
+        ['cargo-landing-pad']           = 1, 
 
-        -- 8x8 and above
-        ['rocket-silo']          = 1,
-        ['carg-bay']             = 5,
-        ['landing-pad']          = 1, 
+        ['gun-turret'] = 10,
+        ['laser-turret'] = 10,
+        ['tesla-turret'] = 5,
+        ['artillery-turret'] = 5,
+        ['railgun-turret'] = 5,
+        ['rocket-turret'] = 5,
+    },
+    ['item-with-entity-data'] = {
+        ['locomotive']            = 1,
+        ['cargo-wagon']           = 5,
+        ['fluid-wagon']           = 5,
+        ['artillery-wagon']       = 1,
+        ['tank']                  = 1,
+        ['car']                   = 1,
+        ['spidertron']            = 1,
+    },
+    ['rail-planner'] = {
+        ['rail'] = 40,
+        ['rail-ramp'] = 5,
     },
     ammo = {
+
+    },
+    gun = {
 
     },
     capsule = {

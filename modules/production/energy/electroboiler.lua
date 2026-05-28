@@ -20,7 +20,7 @@ for _, picture in pairs(boiler.pictures) do
     picture.fire = nil
     picture.fire_glow = nil
 end
- 
+
 
 -- Keep same energy consumption as vanilla boiler (1.8MW)
 boiler.energy_consumption = '1.8MW'
@@ -49,7 +49,7 @@ local boiler_item = {
     subgroup = 'energy',
     order = 'b[steam-power]-a[electroboiler]',
     place_result = name,
-    stack_size = 50,
+    stack_size = 10,
 }
 
 boiler.icons = table.clone(boiler_item.icons)

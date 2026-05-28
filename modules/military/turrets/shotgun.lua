@@ -23,7 +23,7 @@ local turret_item = {
     subgroup = data.raw.item['gun-turret'].subgroup,
     order = 'b[turret]-b[shotgun-turret]',
     place_result = fns 'shotgun-turret',
-    stack_size = 50,
+    stack_size = 10,
 }
 
 turret.icons = table.clone(turret_item.icons)

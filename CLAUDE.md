@@ -71,6 +71,12 @@ In `fns.lua` a namespace is declared, with functionality to isolate this mod fro
 
 Game object identifiers are generated via `fns.name()` or its alias via operator overloading, `fns()`, which prepends `feeds-n-speeds-` to any given string, making collisions with other mods unlikely.
 
+### Utility functions
+
+The `fns.table` module provides many useful functions, notably `fns.table.merge` defined in `./fns/table/updates.lua`, which is very powerful.
+
+Additionally `gadgets.lua` contains some useful functions, notably `gadgets.throughputs` that creates the arrays used for ingredients and results of recipes.
+
 ### Module Pattern
 
 1. **Coordinator** (`module.lua`) — requires submodules listed in each stage, performs dependency ordering, requires each file in that order.
@@ -78,17 +84,17 @@ Game object identifiers are generated via `fns.name()` or its alias via operator
 3. **Loading system** (`loading.lua`) — calls lifecycle methods across all domains, sorted by `priority`
 
 Each domain module:
-- Declares `local some_domain = namespace 'module.some-domain'`
+- Declares `local some_domain = namespace 'some-domain'`
 - Declares `some_domain.data`, `some_domain['data-updates']` and other properties as dependency graphs of this stage
 - Returns `some_domain:seal()`.
 
-The dependency graphs are declared with the `asset` function, a pun on "as set" since it removes the numbered
-keys from a table and inserts their string values as named keys, set to `true`. This data format is used in `module.lua`.
+The dependency graphs are declared with the `fns.table.intoset` function, usually renamed to `set`. It removes the numbered keys from a table and inserts their string values as named keys, set to `true`. This data format is used in `module.lua`.
 
-Each entry in the dependency graphs are either fully qualified require paths or start with `.` and are assumed to be
-local to the submodule, prefixed with the submodule require path in `module.load_stage`.
+Additionally entries in these dependency graphs may instead map to a numbered priority, or a set of direct dependencies. In the case of priorities, a value of `true` as above counts as 0, and all dependencies without subdependencies are ordered according to priority, lowest to highest. This is to account for submodules that should run before most other submodules.
 
-The individual required files have no special formatting, just execute as lua code.
+Entries that are sets of dependencies are ordered according to a dependency ordering algorithm.
+
+The individual required files have no special formatting, just execute as Lua code.
 
 ### Lifecycle Stages
 

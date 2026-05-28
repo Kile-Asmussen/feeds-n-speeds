@@ -12,8 +12,6 @@
       "Edit(test/localisation.lua)",
       "Edit(slop/**/*)",
       "Edit(src/*)",
-      "Edit(tweaks/*.lua)",
-      "Edit(tweaks/**/*.lua)",
       "Edit(unit-tests/*)",
       "Edit(debug/dump-defines/**/*)",
       "Glob",
@@ -28,11 +26,8 @@
       "WebFetch",
       "WebSearch",
       "Write(debug/dump-defines/**/*)",
-      "Write(extras/*/*.lua)",
       "Write(slop/**/*)",
-      "Write(src/*)",
-      "Write(tweaks/*/*.lua)",
-      "Write(unit-tests/*.lua)"
+      "Write(src/*)"
     ],
     "defaultMode": "dontAsk",
     "deny": [

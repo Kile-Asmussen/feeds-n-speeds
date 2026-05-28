@@ -8,7 +8,5 @@
     "DEPTH=1 lua debug/data-modded.lua *",
     "DEPTH=2 lua debug/data-modded.lua *",
     "DEPTH=3 lua debug/data-modded.lua *",
-    "python .claude/safe-rm.py *",
-    ".claude/factorio-research.sh fetch",
-    ".claude/factorio-research.sh install",
+    "python .claude/safe-rm.py *"
 ]

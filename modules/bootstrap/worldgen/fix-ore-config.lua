@@ -20,3 +20,4 @@ table.merge(data.raw.planet.nauvis.map_gen_settings, {
     autoplace_controls = table.assign{ fns 'sulfur-ore', val = {}},
     autoplace_settings = table.assign{'entity', 'settings', fns 'sulfur-ore', val = {}},
 })
+
