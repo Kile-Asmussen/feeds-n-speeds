@@ -1,13 +1,6 @@
 
 all: test build
 
-ALL_FILES := $(shell find . -name '.git' -prune -o -type f -print)
-CHECK_ATTR := $(shell git check-attr --cached --source=HEAD export-ignore -- $(ALL_FILES) | rg unspecified)
-FILTER_OUT_JUNK := $(filter-out export-ignore: unspecified, $(CHECK_ATTR))
-PATSUBST_COLONS := $(patsubst %:,%,$(FILTER_OUT_JUNK))
-IGNORE_FILES := $(shell git check-ignore -- $(ALL_FILES))
-FILES := $(filter-out $(IGNORE_FILES), $(PATSUBST_COLONS))
-
 FACTORIO_DIR := ~/.steam/steam/steamapps/common/Factorio
 
 export NAME := $(shell jq -r '.name' info.json)
@@ -21,11 +14,8 @@ export OUTPUT_DIR := ./target
 .PHONY: all build clean rawdata grab-base load textplates
 .PHONY: install uninstall clean-reinstall nuke 
 
-build: # $(OUTPUT_DIR)/$(ZIPFILE)
+build: 
 	./build-scripts/build.sh
-
-# $(OUTPUT_DIR)/$(ZIPFILE): $(FILES) ./build-scripts/build.sh
-# ./build-scripts/build.sh
 
 unzip: build
 	rm -rf $(OUTPUT_DIR)/$(NAME_VERSION)

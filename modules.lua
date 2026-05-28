@@ -21,12 +21,6 @@ modules:require 'military'
 modules:require 'logistics'
 modules:require 'utilities'
 
-local function check(...)
-    if data.raw ~= table.null and data.raw.item ~= nil and data.raw.recipe ~= nil then
-        assert(data.raw.item ~= data.raw.recipe, "crossover happened " .. table.concat({...}, " "))
-    end
-end
-
 function modules.load_stage(stage)
 
     assert(modules.stages[stage], "not a valid stage: " .. stage)
@@ -36,13 +30,10 @@ function modules.load_stage(stage)
     deps = modules.order_dependencies(deps)
 
     for _, dep in ipairs(deps) do 
-        __log('# ' .. dep)
-        check("before", stage, dep)
         local val = require(dep)
         if type(val) == 'table' or type(val) == 'function' then
             error('loading module ' .. dep .. ' returned a value of type ' .. type(val) .. ' which is probably unintentional', 2)
         end
-        check("after", stage, dep)
     end
 end
 

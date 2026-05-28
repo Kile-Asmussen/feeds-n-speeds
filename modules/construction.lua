@@ -12,6 +12,8 @@ construction.data = set{
     ['.tiles.pavement'] = -1,
 
     ['.recipes.malltech'] = -1,
+
+    ['.entities.mining-times'] = -1,
 }
 
 construction['data-updates'] = set{
