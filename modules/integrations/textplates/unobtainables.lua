@@ -1,4 +1,6 @@
 
+if not data.raw.item['textplate-iron-small'] then return end
+
 local prefixes = {}
 
 for size in ipairs{"small-", "large-"} do

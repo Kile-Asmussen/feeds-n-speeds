@@ -8,6 +8,24 @@ local assert = fns.assert
 local table = fns.table
 local string = fns.string
 
+function gadgets.remove_unlocks(remove)
+    if table.has_array(remove) then
+        remove = table.set(remove)
+    end
+    for _, tech in pairs(data.raw.technology) do
+        if not tech.effects then goto continue end
+        for i = #tech.effects, 1, -1 do
+            if
+                tech.effects[i].type == 'unlock-recipe' and
+                remove[tech.effects[i].recipe]
+            then
+                table.remove(tech.effects, i)
+            end
+        end
+        ::continue::
+    end
+end
+
 function gadgets.throughputs(throughputs)
     local ingredients = {}
 
@@ -16,12 +34,7 @@ function gadgets.throughputs(throughputs)
 
         if data.raw.fluid[k] then
             t = 'fluid'
-        elseif
-            data.raw.item[k] or
-            data.raw.capsule[k] or
-            data.raw.tool[k] or
-            data.raw.gun[k]
-        then
+        else
             t = 'item'
         end
 
@@ -118,57 +131,6 @@ function gadgets.hexcolor(hex)
     return res
 end
 
-function gadgets.icons(icon, icon2)
-    if not icon.shift then
-        local shift = gadgets.icons_shifts[icon.placement]
-        if shift then
-            icon.shift = math.vecmul(shift, gadgets.icons_shifts[icon.placement], {})
-        end
-    end
-
-    if not icon2.shift then
-        local shift = gadgets.icons_shifts[icon.placement]
-        if shift then
-            icon2.shift = math.vecmul(shift, gadgets.icons_shifts[icon2.placement], {})
-        end
-    end
-
-    table.include{
-        type = 'item',
-    }
-
-    icon.placement = nil
-    icon2.placement = nil
-
-    icon.type = icon.type or 'item'
-    icon2.type = icon2.type or 'item'
-
-    icon.icon = icon.icon or data.raw[icon.type][icon.name].icon
-    icon2.icon = icon2.icon or data.raw[icon2.type][icon2.name].icon
-
-    icon.name = nil
-    icon2.name = nil
-
-    icon.type = nil
-    icon2.type = nil
-
-    icon.icon_size = gadgets.icon_sizes[icon.type]
-    icon2.icon_size = gadgets.icon_sizes[icon2.type]
-
-    icon.tint = icon.tint and gadgets.color(icon.tint)
-    icon2.tint = icon2.tint and gadgets.color(icon2.tint)
-
-    icon.scale = gadgets.icon_scales[icon.scale] or icon.scale
-    icon2.scale = gadgets.icon_scales[icon2.scale] or icon2.scale
-
-    icon.float = true
-    icon2.float = true
-
-    return {
-        icon,
-        icon2
-    }
-end
 
 gadgets.science_pack_tier = {
     ["automation-science-pack"]      = 1,

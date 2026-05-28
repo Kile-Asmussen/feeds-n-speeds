@@ -24,7 +24,6 @@ merge(data.raw['assembling-machine'], {
 })
 
 merge(data.raw.inserter, {
-    __verbose = true,
     ['inserter'] = merge{
         extension_speed = 0.05,
         rotation_speed = 0.03,
@@ -46,5 +45,11 @@ merge(data.raw.inserter, {
         extension_speed = 0.1,
         filter_slots = 4,
         chases_belt_items = false
+    },
+    ['burner-inserter'] = merge{
+        chases_belt_items = false,
+        rotation_speed = 0.025,
+        rotation_speed = 0.015,
+        burner_leech = true
     }
 })

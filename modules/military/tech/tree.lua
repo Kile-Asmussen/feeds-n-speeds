@@ -89,7 +89,7 @@ tech['military-4'].prerequisites = { 'utility-science-pack', 'military-3' }
 tech['military-4'].localised_description = {fns.locale_key('technology-description', 'military-4-mass-production')}
 
 tech['military-4'].effects = {
-    { type='unlock-recipe', recipe=fns 'firearms-magazine-mass-production', },
+    { type='unlock-recipe', recipe=fns 'firearm-magazine-mass-production', },
     { type='unlock-recipe', recipe=fns 'piercing-rounds-magazine-mass-production', },
     { type='unlock-recipe', recipe=fns 'shotgun-shell-mass-production', },
     { type='unlock-recipe', recipe=fns 'piercing-shotgun-shell-mass-production', },

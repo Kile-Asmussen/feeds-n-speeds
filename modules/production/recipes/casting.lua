@@ -1,9 +1,11 @@
 
 local fns = require 'fns'
+local gadgets = require 'gadgets'
 local recipes = data.raw.recipe
 
 recipes['casting-pipe'].allow_productivity = true
 recipes['casting-pipe-to-ground'] = nil
+gadgets.remove_unlocks{'casting-pipe-to-ground'}
 
 table.merge(recipes['casting-iron-stick'], {
     ingredients = {{ type='fluid', name='molten-iron', amount=10 }},
@@ -35,7 +37,7 @@ data:extend{
                 float=true
             },
             {
-                icon='__FeedsNSpeeds__/graphics/icon/iron-casting-icon.png',
+                icon='__FeedsNSpeeds__/graphics/icons/iron-casting-icon.png',
                 scale=0.33,
                 shift={6, -6},
                 float=true
@@ -68,7 +70,7 @@ data:extend{
                 float=true
             },
             {
-                icon='__FeedsNSpeeds__/graphics/icon/copper-casting-icon.png',
+                icon='__FeedsNSpeeds__/graphics/icons/copper-casting-icon.png',
                 scale=0.33,
                 shift={6, -6},
                 float=true
@@ -102,7 +104,7 @@ local function melt_down(item, input, fluid, output)
                 float=true
             },
             {
-                icon='__FeedsNSpeeds__/graphics/icon/iron-casting-icon.png',
+                icon='__FeedsNSpeeds__/graphics/icons/iron-casting-icon.png',
                 scale=0.5,
                 shift={4, 0},
                 float=true,

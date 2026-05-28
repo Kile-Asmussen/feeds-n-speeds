@@ -9,7 +9,7 @@ merge(recipes, {
         ingredients = puts{
             ['explosives'] = 10,
             ['steel-plate'] = 2,
-            [fns 'small-radar'] = 1,
+            ['radar'] = 1,
         }
     },
 

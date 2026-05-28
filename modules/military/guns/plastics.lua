@@ -1,5 +1,4 @@
 local fns = require 'fns'
-local tools = require 'gadgets'
 
 local smg = table.clone(data.raw.recipe['submachine-gun'])
 local shotty = table.clone(data.raw.recipe['combat-shotgun'])
@@ -7,17 +6,15 @@ local shotty = table.clone(data.raw.recipe['combat-shotgun'])
 smg.name = fns 'submachine-gun-plastic-stock'
 shotty.name = fns 'combat-shotgun-plastic-stock'
 
-smg.icons = tools.icons({
-    icon = data.raw.gun['submachine-gun'].icon
-},{
-    icon = data.raw.item['plastic-bar'].icon
-})
+smg.icons = {
+    { icon = data.raw.gun['submachine-gun'].icon, icon_size = 64 },
+    { icon = data.raw.item['plastic-bar'].icon, icon_size = 64, scale = 0.25, shift = { 8, -8 } },
+}
 
-shotty.icons = tools.icons({
-    icon = data.raw.gun['combat-shotgun'].icon
-},{
-    icon = data.raw.item['plastic-bar'].icon,
-})
+shotty.icons = {
+    { icon = data.raw.gun['combat-shotgun'].icon, icon_size = 64 },
+    { icon = data.raw.item['plastic-bar'].icon, icon_size = 64, scale = 0.25, shift = { 8, -8 } },
+}
 
 smg.localised_name = {"item-name.submachine-gun"}
 smg.localised_description = {fns.locale_key("recipe-description", "plastic-furniture")}

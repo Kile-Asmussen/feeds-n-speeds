@@ -11,7 +11,6 @@ local upscale = table.traverse(gadgets.scale_vectors_and_numbers(
   2.0,
   set{
     'scale', 'number', 'volume_multiplier',
-    'inventory_size', 
   },
   table.fullset,
   set{ 'circuit_connector' }
@@ -35,38 +34,37 @@ merge(data.raw.recipe, {
             ['electronic-circuit'] = 8,
         }
     },
-    ['storage-chest'] = {
+    ['storage-chest'] = merge{
         ingredients = inputs{
             ['steel-chest'] = 1,
             ['display-panel'] = 1,
         }
     },
-    ['passive-provider-chest'] = {
+    ['passive-provider-chest'] = merge{
         ingredients = inputs{
             ['storage-chest'] = 1,
             ['display-panel'] = 3,
             ['selector-combinator'] = 1,
         }
     },
-    ['active-provider-chest'] = {
+    ['active-provider-chest'] = merge{
         ingredients = inputs{
             ['passive-provider-chest'] = 1,
             ['selector-combinator'] = 1,
             ['programmable-speaker'] = 1,
         }
     },
-    ['requester-chest'] = {
+    ['requester-chest'] = merge{
         ingredients = inputs{
             ['active-provider-chest'] = 1,
             ['selector-combinator'] = 1,
             ['radar'] = 1,
         }
     },
-    ['buffer-chest'] = {
+    ['buffer-chest'] = merge{
         ingredients = inputs{
             ['requester-chest'] = 1,
             ['selector-combinator'] = 1,
-
         }
     }
 })
@@ -81,7 +79,7 @@ merge(data.raw.container, {
     ['iron-chest'] = utils.call(
         merge{
             circuit_connector = shift_wire,
-            inventory_type = 'with-bar',
+            inventory_type = 'with_bar',
             inventory_size = 40,
             max_health = 250,
             quality_affects_inventory_size = true,
@@ -109,7 +107,7 @@ merge(data.raw.container, {
 merge(data.raw['logistic-container'], {
     ['passive-provider-chest'] = utils.call(merge{
         inventory_size = 30,
-        inventory_type = "with-filters-and-bar",
+        inventory_type = "with_filters_and_bar",
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,
@@ -126,21 +124,21 @@ merge(data.raw['logistic-container'], {
     }, upscale),
     ['active-provider-chest'] = utils.call(merge{
         inventory_size = 30,
-        inventory_type = "with-filters-and-bar",
+        inventory_type = "with_filters_and_bar",
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,
     }, upscale),
     ['requester-chest'] = utils.call(merge{
         inventory_size = 30,
-        inventory_type = "with-bar",
+        inventory_type = "with_bar",
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,
     }, upscale),
     ['buffer-chest'] = utils.call(merge{
         inventory_size = 30,
-        inventory_type = "with-bar",
+        inventory_type = "with_bar",
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,

@@ -14,7 +14,10 @@ local function make_new_ammo_recipe(name, amount, ingredients)
     ammo.results = {
         { type='item', name=name, amount=amount }
     }
-    ammo.icons = tools.icons({icon =  (data.raw.ammo[name] or data.raw.capsule[name]).icon}, { icon = data.raw.item['explosives'].icon })
+    ammo.icons = {
+        { icon = (data.raw.ammo[name] or data.raw.capsule[name]).icon, icon_size = 64 },
+        { icon = data.raw.item['explosives'].icon, icon_size = 64, scale = 0.25, shift = { 8, -8 } },
+    }
     return ammo
 end
 

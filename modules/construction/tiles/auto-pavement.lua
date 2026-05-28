@@ -27,13 +27,13 @@ for _, group in pairs(data.raw) do
             if not tier then
                 error('unknown pavement tier: ' .. tostring(entity.auto_require_pavement), 1)
             end
-            local required_tiles = {{ layers = {
+            local required_tiles = { layers = {
                 [ tier ] = true
-            }}}
+            }}
 
             local colliding_tiles = nil
             if entity.auto_require_pavement == 'dirt' then
-                colliding_tiles = { { layers = { ['stone-path'] = true } } }
+                colliding_tiles = { layers = { [tiers['stone-path']] = true } }
             end
 
             local locale_key = locale_keys[entity.auto_require_pavement]

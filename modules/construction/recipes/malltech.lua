@@ -1,4 +1,4 @@
-
+local fns = require 'fns'
 local recipe = data.raw.recipe
 local tech = data.raw.technology
 
@@ -299,8 +299,19 @@ recipe['artillery-wagon'].ingredients = {
 
 -- Nuclear machines
 
-table.insert(tech['uranium-processing'].prerequisites, 'speed-module')
-table.insert(tech['uranium-processing'].prerequisites, 'electric-engine')
+table.merge(tech['uranium-processing'], {
+    prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack', 'speed-module', 'electric-engine' },
+    research_trigger = utils.null,
+    unit = {
+        count = 100,
+        time = 30,
+        ingredients = {
+            { 'automation-science-pack', 1 },
+            { 'logistic-science-pack', 1 },
+            { 'chemical-science-pack', 1 },
+        },
+    }
+})
 
 recipe['steam-turbine'].ingredients = {
     { type='item', name='electric-engine-unit', amount=10 },

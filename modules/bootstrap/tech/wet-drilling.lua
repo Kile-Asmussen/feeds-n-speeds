@@ -4,21 +4,6 @@ local tech = data.raw.technology
 
 tech['uranium-mining'] = nil
 
-local uranium = tech['uranium-processing']
-
-table.merge(tech['uranium-processing'], {
-    prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack' },
-    research_trigger = utils.null,
-    unit = {
-        count = 100,
-        time = 30,
-        ingredients = {
-            { 'automation-science-pack', 1 },
-            { 'logistic-science-pack', 1 },
-            { 'chemical-science-pack', 1 },
-        },
-    }
-})
 
 local wet = {
     type = 'technology',

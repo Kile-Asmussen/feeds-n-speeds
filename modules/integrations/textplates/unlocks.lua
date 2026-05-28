@@ -1,4 +1,7 @@
 local fns = require 'fns'
+
+if not data.raw.item['textplate-iron-small'] then return end
+
 for _,material in ipairs{
     "wood", "iron", "copper", "stone", "glass"
 } do
@@ -11,6 +14,7 @@ for _,material in ipairs{
             'technology-name.textplate',
             { 'textplates.wood-C' }
         },
+        unit = { count = 1, time = 1, ingredients = { { 'automation-science-pack', 1 } } },
         icon = '__textplates__/graphics/entity/'..material..'/t.png',
         icon_size = 128,
     }}

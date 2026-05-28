@@ -12,6 +12,8 @@
       "Edit(test/localisation.lua)",
       "Edit(slop/**/*)",
       "Edit(src/*)",
+      "Edit(gadgets.lua)",
+      "Edit(modules.lua)",
       "Edit(modules/**/*)",
       "Edit(modules/*)",
       "Edit(debug/dump-defines/**/*)",

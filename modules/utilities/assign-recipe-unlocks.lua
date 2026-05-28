@@ -1,5 +1,5 @@
 
-local gadget = require 'gadgets'
+local gadgets = require 'gadgets'
 local debuglib = require 'debuglib'
 local remove = {}
 local unlocks = {}
@@ -31,18 +31,7 @@ for _, recipe in table.opairs(data.raw.recipe) do
     ::continue::
 end
 
-for _, tech in pairs(data.raw.technology) do
-    if not tech.effects then goto continue end
-    for i = #tech.effects, 1, -1 do
-        if
-            tech.effects[i].type == 'unlock-recipe' and
-            remove[tech.effects[i].recipe]
-        then
-            table.remove(tech.effects, i)
-        end
-    end
-    ::continue::
-end
+gadgets.remove_unlocks(remove)
 
 for recipe, unlock in table.opairs(unlocks) do
     for tech, _ in table.opairs(unlock) do

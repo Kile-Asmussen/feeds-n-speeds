@@ -17,8 +17,8 @@ local turret_item = {
     type = 'item',
     name = fns 'shotgun-turret',
     icons = {
-        { icon = '__base__/graphics/icons/gun-turret.png', size = 64, scale = 0.5 },
-        { icon = data.raw.ammo['shotgun-shell'].icon, size = 64, scale = 0.25, shift = { -8, 8 } }
+        { icon = '__base__/graphics/icons/gun-turret.png', icon_size = 64, scale = 0.5 },
+        { icon = data.raw.ammo['shotgun-shell'].icon, icon_size = 64, scale = 0.25, shift = { -8, 8 } }
     },
     subgroup = data.raw.item['gun-turret'].subgroup,
     order = 'b[turret]-b[shotgun-turret]',
@@ -44,7 +44,6 @@ local turret_recipe = {
         { type = 'item', name = fns 'shotgun-turret', amount = 1 },
     }
 }
-table.insert(turret_recipe.ingredients, {type='item', name='stone-brick', amount=5})
 
 local turret_tech = table.clone(data.raw.technology['gun-turret'])
 turret_tech.name = fns 'shotgun-turret-tech'

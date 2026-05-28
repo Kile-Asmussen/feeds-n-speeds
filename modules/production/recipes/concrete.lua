@@ -1,7 +1,8 @@
 local fns = require 'fns'
 local recipes = data.raw.recipe
+local gadgets = require 'gadgets'
 local tech = data.raw.technology
-local puts = require('gadgets').throughputs
+local puts = gadgets.throughputs
 
 tech.concrete.prerequisites = { 'fluid-handling', 'advanced-material-processing' }
 
@@ -18,6 +19,7 @@ table.merge(recipes['refined-concrete'], {
 })
 
 recipes['concrete-from-molten-iron'] = nil
+gadgets.remove_unlocks{'concrete-from-molten-iron'}
 
 -- recipes.concrete.auto_recycle = false
 -- recipes.refined_concrete.auto_recycle = false

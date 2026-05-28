@@ -13,13 +13,7 @@ merge(data.raw.recipe, {
         'steel-plate',
         'iron-gear-wheel',
         'iron-chest'
-    }] = merge{ auto_unlocked_by = 'steel-processing' }
-})
+    }] = merge{ auto_unlocked_by = 'steel-processing' },
 
-merge(data.raw, {
-    [{
-        'inserter',
-        'item',
-        'recipe',
-    }] = merge{ ['burner-inserter'] = utils.null }
+    ['burner-inserter'] = merge{auto_unlocked_by = 'steam-power'},
 })

@@ -100,7 +100,6 @@ local assignments = {
         'inserter',
         'fast-inserter',
         'long-handed-inserter',
-        fns 'small-radar',
         'rail-signal',
         'rail-chain-signal',
         'rocket',
@@ -114,7 +113,7 @@ local assignments = {
         'steel-chest',
         fns 'barrel-tapper',
 
-        'firearms-magazine',
+        'firearm-magazine',
         'piercing-rounds-magazine',
 
         'shotgun-shell',
@@ -128,7 +127,7 @@ local assignments = {
         'poison-capsule',
     },
     ['metallurgy-or-assembling'] = {
-        fns 'firearms-magazine-mass-production',
+        fns 'firearm-magazine-mass-production',
         fns 'piercing-rounds-magazine-mass-production',
         fns 'shotgun-shell-mass-production',
         fns 'piercing-shotgun-shell-magazine-mass-production',
@@ -170,7 +169,7 @@ local assignments = {
         'bulk-inserter',
         'stack-inserter',
 
-        'electric-engine',
+        'electric-engine-unit',
         'flying-robot-frame',
         'logistic-robot',
         'construction-robot',
