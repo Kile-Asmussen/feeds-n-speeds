@@ -1,5 +1,7 @@
-    
-if not settings['bool-setting'][fns 'infinite-ores'].value then return end
+
+local fns = require 'fns'
+
+if not settings.startup[fns 'infinite-ores'].value then return end
 
 for _, resource in pairs(data.raw.resource) do
 

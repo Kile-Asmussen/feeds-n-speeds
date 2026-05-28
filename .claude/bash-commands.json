@@ -1,5 +1,7 @@
 [
     "lua debug/load.lua",
+    "VERBOSE=1 lua debug/load.lua",
+    "VERBOSE=1 PROXY=1 lua debug/load.lua",
     "DEPTH=1 lua debug/data-raw.lua",
     "DEPTH=1 lua debug/data-raw.lua *",
     "DEPTH=2 lua debug/data-raw.lua *",

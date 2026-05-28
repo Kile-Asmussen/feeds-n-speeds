@@ -1,4 +1,6 @@
 
+local fns = require 'fns'
+
 data:extend{{
     type = 'bool-setting',
     name = fns('infinite-ores'),

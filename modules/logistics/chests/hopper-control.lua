@@ -4,17 +4,17 @@ local fns = require 'fns'
 local fns_hopper = fns 'hopper'
 local fns_chest = 'steel-chest'
 
-normal_link_distance = 10.01
-quality_distance_increase = 2.0
+local normal_link_distance = 10.01
+local quality_distance_increase = 2.0
 
-cardinal_directions = {
+local cardinal_directions = {
     north = { x =  0, y = -2, opposite = 'south' },
     south = { x =  0, y =  2, opposite = 'north' },
     west  = { x = -2, y =  0, opposite = 'east'  },
     east  = { x =  2, y =  0, opposite = 'west'  },
 }
 
-entity_filter = {
+local entity_filter = {
     { filter = "name", name = fns_hopper },
     { filter = "name", name = fns_chest },
 }

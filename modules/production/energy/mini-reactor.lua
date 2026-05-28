@@ -1,12 +1,11 @@
--- Draft: 1x1 electric reactor using iron chest graphics tinted red
--- NOTE: Reactors always output heat, so this still needs heat pipes to be useful.
+local fns = require 'fns'
 
 local mini_reactor = {
     type = "reactor",
-    name = "feeds-n-speeds-mini-reactor",
+    name = fns 'mini-reactor',
     icon = "__base__/graphics/icons/small-lamp.png",
     flags = { "placeable-neutral", "player-creation" },
-    minable = { mining_time = 0.5, result = "feeds-n-speeds-mini-reactor" },
+    minable = { mining_time = 0.5, result = fns 'mini-reactor' },
     max_health = 200,
     collision_box = { { -0.35, -0.35 }, { 0.35, 0.35 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
@@ -57,20 +56,20 @@ local mini_reactor = {
 
 local mini_reactor_item = {
     type = "item",
-    name = "feeds-n-speeds-mini-reactor",
+    name = fns 'mini-reactor',
     icon = "__base__/graphics/icons/small-lamp.png",
     stack_size = 10,
-    place_result = "feeds-n-speeds-mini-reactor",
+    place_result = fns 'mini-reactor',
 }
 
 local mini_reactor_recipe = {
     type = "recipe",
-    name = "feeds-n-speeds-mini-reactor",
+    name = fns 'mini-reactor',
     ingredients = {
         { type = "item", name = "iron-plate", amount = 10 },
     },
     results = {
-        { type = "item", name = "feeds-n-speeds-mini-reactor", amount = 1 },
+        { type = "item", name = fns 'mini-reactor', amount = 1 },
     },
     energy_required = 1,
 }

@@ -1,7 +1,7 @@
 
 local fns = require 'fns'
 
-local function name(l) return fns('worker-robots-battery') .. '-' .. l end
+local function name(l) return fns('worker-robots-battery-' .. l) end
 
 local function worker_robots_battery_tech(level, modifier, count, formula, time, cost, prereq)
     return {
@@ -40,7 +40,7 @@ local function worker_robots_battery_tech(level, modifier, count, formula, time,
     }
 end
 
-data:extend{{
+data:extend{
    worker_robots_battery_tech(1, 0.20, 50, nil, 30,
         {'automation', 'logistic', 'chemical'},
         {'robotics'}),
@@ -62,4 +62,4 @@ data:extend{{
     worker_robots_battery_tech(7, 0.35, nil, "2^(L-6) * 1000", 60,
         {'automation', 'logistic', 'chemical', 'production', 'utility', 'space', 'electromagnetic'},
         { name(6), 'electromagnetic-science-pack' }),
-}}
+}

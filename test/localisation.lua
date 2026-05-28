@@ -117,7 +117,6 @@ function localisation.register(proto)
     local loc_desc = category .. '-description'
 
     localisation.add_key(loc_name, proto_name, proto.localised_name)
-    localisation.add_key(loc_desc, proto_name, proto.localised_description)
 end
 
 localisation.__current_locale_map = table.null
@@ -164,7 +163,6 @@ end
 function localisation.winnow_unneeded_keys()
     local function skip_pair(base_cat, proto_name, reason)
         localisation.skip_key(base_cat .. '-name', proto_name, reason)
-        localisation.skip_key(base_cat .. '-description', proto_name, reason)
     end
 
     local function proto_has_explicit_locale(cat_name, proto_name)

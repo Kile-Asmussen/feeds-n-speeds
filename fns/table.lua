@@ -35,16 +35,22 @@ end
 table_.use()
 
 function table.twoarg(func)
-    return function(tbl1, tbl2)
-        assert(type(tbl1) == "table", "argument #1 must be a table")
-        if tbl2 == nil then
-            return function(tbl2)
-                assert(type(tbl2) == "table", "argument #1 must be a table")
+    return function(...)
+        local n = select('#', ...)
+        if n == 1 then
+            local tbl2 = ...
+            assert(type(tbl2) == "table", "argument #1 must be a table")
+            return function(tbl1)
+                assert(type(tbl1) == "table", "argument #1 must be a table")
                 return func(tbl1, tbl2)
             end
-        else
+        elseif n == 2 then
+            local tbl1, tbl2 = ...
+            assert(type(tbl2) == "table", "argument #1 must be a table")
             assert(type(tbl2) == "table", "argument #2 must be a table")
             return func(tbl1, tbl2)
+        else
+            error("wrong number of arguments, expected 1 or 2")
         end
     end
 end

@@ -9,13 +9,13 @@ logistics.data = set{
 
     '.entities.electric-link',
     '.entities.electric-poles',
-    '.entities.robotics',
 
     ['.items.stack-sizes'] = -1,
 
-    '.recipes.rails',
+    '.railway.concrete-rails',
 
-    '.tech.worker-robot-battery'
+    '.robotics.battery',
+    '.robotics.robotics',
 }
 
 logistics.control = set{

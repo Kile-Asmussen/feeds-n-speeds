@@ -21,7 +21,7 @@ local locale_keys = {
 
 for _, group in pairs(data.raw) do
     for _, entity in pairs(group) do
-        if entity.auto_require_pavement then
+        if type(entity) == 'table' and entity.auto_require_pavement then
             
             local tier = tiers[entity.auto_require_pavement]
             if not tier then

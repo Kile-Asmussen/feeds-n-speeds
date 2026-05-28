@@ -3,8 +3,13 @@ local production = require('namespace')('production')
 
 local set = table.intoset
 
+production.settings = set{
+    '.ores.infinite-setting',
+}
+
 production.data = set{
     '.energy.electroboiler',
+    '.energy.mini-reactor',
     ['.energy.nuclear-energy'] = set{ '.fluids.water' },
 
     '.fluids.barrel-tapper',
@@ -12,11 +17,15 @@ production.data = set{
     '.fluids.water',
     ['.fluids.boil-water'] = set{ '.fluids.water' },
 
+    '.ores.infinite',
+    '.ores.starting-patch-shape',
+
     '.recipes.casting',
     '.recipes.concrete',
     ['.recipes.crafting-categories'] = -1,
+    '.recipes.modules',
 
-    '.ores.starting-patch-shape',
+    '.science.packs',
 
     ['.machines'] = -1,
 }

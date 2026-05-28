@@ -1,4 +1,3 @@
-
 local fns = require 'fns'
 local puts = require('gadgets').throughputs
 
@@ -7,11 +6,11 @@ data.raw.recipe['burner-mining-drill'].auto_unlocked_by = 'steam-power'
 -- Copy burner mining burner_drill and add fluid input on south side (opposite output)
 local burner_drill = table.clone(data.raw['mining-drill']['burner-mining-drill'])
 
-local name = fns 'burner-mining-drill-fluid'
+local name = 'burner-mining-drill-fluid'
 
 table.merge(burner_drill, {
-    name = fns 'burner-mining-drill-fluid',
-    minable = table.assign{'result', val = name},
+    name = fns(name),
+    minable = table.assign{'result', val = fns(name)},
     input_fluid_box = {
         volume = 50,
         filter = 'water',
@@ -43,17 +42,16 @@ table.merge(burner_drill, {
 local burner_drill_item = table.clone(data.raw.item['burner-mining-drill'])
 
 table.merge(burner_drill_item, {
-    name = name,
+    name = fns(name),
     place_result = name,
     icons = table.clone(burner_drill.icons),
     icon = utils.null,
     order = 'a[items]-a[burner-mining-drill]-b[fluid]',
 })
 
-
 local burner_drill_recipe = {
     type = 'recipe',
-    name = burner_drill_item.name,
+    name = fns(name),
     auto_unlocked_by = fns 'wet-drilling',
     enabled = false,
     energy_required = 2.0,
@@ -61,8 +59,8 @@ local burner_drill_recipe = {
     results = puts{ [name] = 1 },
 }
 
-data:extend{
+local protos = {
     burner_drill,
     burner_drill_item,
-    burner_drill_recipe
+    burner_drill_recipe,
 }

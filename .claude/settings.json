@@ -12,7 +12,8 @@
       "Edit(test/localisation.lua)",
       "Edit(slop/**/*)",
       "Edit(src/*)",
-      "Edit(unit-tests/*)",
+      "Edit(modules/**/*)",
+      "Edit(modules/*)",
       "Edit(debug/dump-defines/**/*)",
       "Glob",
       "Grep",
@@ -25,6 +26,8 @@
       "TaskUpdate",
       "WebFetch",
       "WebSearch",
+      "Write(modules/**/*)",
+      "Write(modules/*)",
       "Write(debug/dump-defines/**/*)",
       "Write(slop/**/*)",
       "Write(src/*)"

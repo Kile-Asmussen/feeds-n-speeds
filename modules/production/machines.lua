@@ -15,8 +15,8 @@ merge(data.raw['assembling-machine'], {
             [1] = merge{
                 production_type = 'input',
                 pipe_connections = {
-                    { direction = defines.east, flow_direction = 'input-output', position = {1, 0} },
-                    { direction = defines.west, flow_direction = 'input-output', position = {-1, 0} },
+                    { direction = defines.direction.east, flow_direction = 'input-output', position = {1, 0} },
+                    { direction = defines.direction.west, flow_direction = 'input-output', position = {-1, 0} },
                 }
             }
         }
@@ -24,6 +24,7 @@ merge(data.raw['assembling-machine'], {
 })
 
 merge(data.raw.inserter, {
+    __verbose = true,
     ['inserter'] = merge{
         extension_speed = 0.05,
         rotation_speed = 0.03,

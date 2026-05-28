@@ -111,7 +111,7 @@ local turret_recipe = {
 
 local turret_tech = table.clone(data.raw.technology['gun-turret'])
 
-data.raw.recipe['cannon-shell'].auto_unlocked_by = 'cannon-turret'
+data.raw.recipe['cannon-shell'].auto_unlocked_by = fns 'cannon-turret-tech'
 
 turret_tech.name = fns 'cannon-turret-tech'
 turret_tech.prerequisites = { 'gun-turret', 'military-3', 'explosives' }

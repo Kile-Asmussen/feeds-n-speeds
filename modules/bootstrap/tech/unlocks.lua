@@ -1,17 +1,25 @@
 local fns = require 'fns'
 
-local recipe = data.raw.recipe
+local merge = fns.table.merge
 
-recipe['transport-belt'].auto_unlocked_by = fns 'lab-tech'
-recipe['inserter'].auto_unlocked_by = fns 'lab-tech'
-recipe['lab'].auto_unlocked_by = fns 'lab-tech'
+merge(data.raw.recipe, {
+    [{
+        'transport-belt',
+        'inserter',
+        'lab'
+    }] = merge{ auto_unlocked_by = fns 'lab-tech' },
+    [{
+        'iron-stick',
+        'steel-plate',
+        'iron-gear-wheel',
+        'iron-chest'
+    }] = merge{ auto_unlocked_by = 'steel-processing' }
+})
 
-recipe['iron-stick'].auto_unlocked_by = 'steel-processing'
-recipe['steel-plate'].auto_unlocked_by = 'steel-processing'
-recipe['iron-gear-wheel'].auto_unlocked_by = 'steel-processing'
-recipe['iron-chest'].auto_unlocked_by = 'steel-processing'
-recipe['steel-chest'].auto_unlocked_by = 'steel-processing'
-
-data.raw.inserter['burner-inserter'] = nil
-data.raw.item['burner-inserter'] = nil
-data.raw.recipe['burner-inserter'] = nil
+merge(data.raw, {
+    [{
+        'inserter',
+        'item',
+        'recipe',
+    }] = merge{ ['burner-inserter'] = utils.null }
+})

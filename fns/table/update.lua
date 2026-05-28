@@ -68,21 +68,26 @@ function table.cut(tbl, n)
 end
 
 local function __merge(tbl1, tbl2)
+    
     local spec = {}
-    for k, v in table.pairs(tbl2) do
+    for k, v in pairs(tbl2) do
         if type(k) == 'table' then
             for _, l in ipairs(k) do
-                spec[k] = v
+                spec[l] = v
             end
         else
             spec[k] = v
         end
     end
-    for k, v in table.opairs(spec) do
-        if type(v) ~= 'function' then tbl1[k] = v end
+    for k, v in pairs(spec) do
+        if type(v) ~= 'function' then
+            tbl1[k] = v
+        end
     end
-    for k, f in table.opairs(spec) do
-        if type(f) == 'function' then tbl1[k] = f(tbl1[k]) end
+    for k, f in pairs(spec) do
+        if type(f) == 'function' then
+            tbl1[k] = f(tbl1[k])
+        end
     end
     return tbl1
 end

@@ -36,7 +36,6 @@ local stack_sizes = {
         ['express-splitter']       = 5,
         ['turbo-splitter']         = 5,
 
-        ['burner-inserter']      = 30,
         ['inserter']             = 30,
         ['fast-inserter']        = 20,
         ['long-handed-inserter'] = 20,

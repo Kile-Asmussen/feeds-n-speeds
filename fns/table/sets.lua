@@ -85,28 +85,28 @@ end
 
 function table.sorted_keys(tbl)
     assert(type(tbl) == 'table', "argument #1 must be a table")
-    if not table.has_array(tbl) then
-        local res = {}
-        for k, _ in pairs(tbl) do
-            table.insert(res, k)
+
+    local strings = {}
+    local numbers = {}
+    local other = {}
+
+    for k, _ in pairs(tbl) do
+        if type(k) == 'number' then
+            table.insert(numbers, k)
+        elseif type(k) == 'string' then
+            table.insert(strings, k)
+        else
+            table.insert(other, k)
         end
-        table.sort(res)
-        return res
-    else
-        local res = {}
-        local res2 = {}
-        for k, _ in pairs(tbl) do
-            if type(k) == 'number' then
-                table.insert(res, #integers + 1)
-            else
-                table.insert(res2, k)
-            end
-        end
-        table.sort(res2)
-        table.append(res, res2)
-        return res
     end
 
+    table.sort(numbers)
+    table.sort(strings)
+    local res = {}
+    table.append(res, numbers)
+    table.append(res, strings)
+    table.append(res, other)
+    return res
 end
 
 table.fullset = {}
