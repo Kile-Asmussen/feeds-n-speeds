@@ -1,23 +1,18 @@
 
 local fns = require 'fns'
-local puts = require('gadgets').throughputs
+local gadgets = require 'gadgets'
+local puts = gadgets.throughputs
+local icons = gadgets.icons
 
 local old_recipe = data.raw.recipe['stone-furnace']
 
 table.merge(old_recipe, {
     ingredients = puts{ stone = 20 },
-    icon = utils.null,
-    icons = {
-        {
-            icon = '__base__/graphics/icons/stone-furnace.png',
-            icon_size = 64,
-        },
-        {
-            icon = '__base__/graphics/icons/stone.png',
-            icon_size = 64,
-            scale = 0.25,
-            shift = {-8, -8},
-        },
+    icon = fns.utils.null,
+    icons = icons{
+        type = 'recipe',
+        'icons/stone-furnace.png',
+        { 'icons/stone.png', size = 'tiny', dir = 'tl' },
     },
     energy_required = 6.0,
 })
@@ -34,17 +29,10 @@ local new_recipe = {
     localised_name = {"entity-name.stone-furnace"},
     order = 'a[stone-furnace]-b[stone-brick]',
     energy_required = 3.0,
-    icons = {
-        {
-            icon = '__base__/graphics/icons/stone-furnace.png',
-            icon_size = 64,
-        },
-        {
-            icon = '__base__/graphics/icons/stone-brick.png',
-            icon_size = 64,
-            scale = 0.25,
-            shift = {-8, -8},
-        },
+    icons = icons{
+        type = 'recipe',
+        'icons/stone-furnace.png',
+        { 'icons/stone-brick.png', size = 'tiny', dir = 'tl' },
     },
     ingredients = puts{ ['stone-brick'] = 5 },
     results = puts{ ['stone-furnace'] = 1 },
@@ -54,21 +42,10 @@ local new_recipe = {
 local bmp = {
     type = 'technology',
     name = fns 'basic-materials-processing',
-    icons = {
-        {
-            icon = '__base__/graphics/entity/stone-furnace/stone-furnace.png',
-            icon_size = 146,
-            float=true,
-            scale = 0.5,
-            shift = { 0, -20 }
-        },
-        {
-            icon = '__base__/graphics/technology/steel-axe.png',
-            icon_size = 256,
-            float=true,
-            scale = 0.33,
-            shift = { 0, 5 }
-        },        
+    icons = icons{
+        type = 'technology',
+        { 'entity/stone-furnace/stone-furnace.png', icon_size = 146 },
+        'technology/steel-axe.png',
     },
     research_trigger = {
         type = 'craft-item',

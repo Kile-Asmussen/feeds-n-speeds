@@ -35,6 +35,8 @@ end
 
 function utils.null(...) return nil end
 
+function utils.exists(x) return x ~= nil end
+
 function utils.call(...)
     local args = { ... }
     return function(thing)

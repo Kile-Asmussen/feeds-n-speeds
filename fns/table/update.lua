@@ -52,12 +52,12 @@ local function __keep(tbl1, tbl2)
     end
 end
 
-table.keep = table.twoarg(__keep)
-table.overwrite = table.twoarg(__overwrite)
-table.replace = table.twoarg(__replace)
-table.include = table.twoarg(__include)
-table.transmute = table.twoarg(__transmute)
-table.append = table.twoarg(__append)
+table.twoarg('keep', __keep)
+table.twoarg('overwrite', __overwrite)
+table.twoarg('replace', __replace)
+table.twoarg('include', __include)
+table.twoarg('transmute', __transmute)
+table.twoarg('append', __append)
 
 function table.cut(tbl, n)
     assert(type(tbl) == 'table', "argument #1 must be a table")
@@ -67,13 +67,10 @@ function table.cut(tbl, n)
     end
 end
 
-function table.flatten_keys(tbl, recurse)
+function table.flatten_keys(tbl)
     assert(type(tbl) == 'table', "argument #1 must be a table")
     local res = {}
     for k, v in pairs(tbl) do
-        if recurse and type(v) == 'table' then
-            v = table.flatten_keys(v, true)
-        end
         if type(k) == 'table' then
             for i = 1,#k do res[k[i]] = v end
         else
@@ -83,45 +80,45 @@ function table.flatten_keys(tbl, recurse)
     return res
 end
 
--- more performant as a function, since it precomputes
--- the transformation otherwise done by merge, below
-local function __merge_function(tbl2)
-    assert(type(tbl2) == 'table', "argument #1 must be a table")
-    tbl2 = table.flatten_keys(tbl2)
-    table.traverse(tbl2, function(v)
-        if type(v) == 'table' then
-            return __merge_function(v), true
-        end
-    end)
-    return function(tbl1)
-        assert(type(tbl1) == 'table', "argument #1 must be a table")
-        return __merge(tbl1, tbl2)
-    end
-end
-table.merge_function = __merge_function
-
+--- Merge tbl2 into tbl1
+--- tlb2 and its subtables can have special keys
+---
+--- __rec : boolean?
+--- if __rec is set to true, then merge all subtables instead of overwriting
+--- despite the name 'rec' as in 'recursion', this does not propagate to subtables
+--- it only applies for this single level
+---
+--- __merge : boolean?
+--- if set in a sub-table will override the behavior of __rec set in the containing table
 local function __merge(tbl1, tbl2)
-    tbl2 = table.flatten_keys(tbl, recurse)
+    tbl2 = table.flatten_keys(tbl2)
+
     for k, v in pairs(tbl2) do
-        local t = type(v) 
-        if t ~= 'function' and t ~= 'table' then
+    
+        if k == '__merge' or k == '__rec' then goto continue end
+    
+        local t = type(v)
+    
+        if t == 'function' then
+            tbl1[k] = v(tbl1[k])
+    
+        elseif t == 'table' and type(tbl1[k]) == 'table' then
+
+            if (tbl2.__rec or v.__merge == true) and v.__merge ~= false then
+                __merge(tbl1[k], v)
+            else
+                tbl1[k] = v
+            end
+            
+        else
             tbl1[k] = v
         end
-    end
-    for k, f in pairs(spec) do
-        local t = type(f) 
-        if t == 'function' then
-            tbl1[k] = f(tbl1[k])
-        elseif t == 'table' then
-            __merge(tbl[k], f)
-        end
+    
+        ::continue::
     end
     return tbl1
 end
-table.merge = table.twoarg(__merge)
-
--- useful in merge to replace table with table
-table.just = table.twoarg(function(_, val) return val end, 'any?', 'any?')
+table.twoarg('merge', __merge)
 
 -- maybe useful with functions that aren't made with twoarg?
 function table.with(func, ...)

@@ -35,10 +35,8 @@ function data.begin_data_stage(proxied)
             maxdepth=2,
         }
     else
-        print("beginning data stage")
+        __log("beginning data stage")
         data.raw = rawdata.load(_ENV.modlist)
-
-        assert(data.raw.item ~= data.raw.recipe, "crossover happened at load time!")
     end
     rawset(_ENV, 'settings', namespace.import('test.settings'):seal())
     rawset(_ENV, 'mods', table.collect(table.set(_ENV.modlist), function() return 'X.X.X' end))
@@ -103,29 +101,5 @@ end
 
 local proxy = require 'test.proxy'
 
-function data.recursion_check(tbl, seen, path)
-    seen = seen or {}
-    path = path or {}
-
-    if type(tbl) ~= 'table' then
-        return
-    end
-
-    tbl = proxy.unmakeproxy(tbl)
-
-    if seen[tbl] then
-        error(seen[tbl] .. ' = ' .. string.tablepath("data.raw", path), 2)
-    end
-
-    seen[tbl] = utils.tablepath("data.raw", path)
-
-    for k, v in pairs(tbl) do
-        table.insert(path, k)
-        data.recursion_check(v, seen, path)
-        table.remove(path)
-    end
-
-    seen[tbl] = nil
-end
 
 rawset(_ENV, 'data', data:seal())

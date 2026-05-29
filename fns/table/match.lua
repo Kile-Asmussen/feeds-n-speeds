@@ -35,7 +35,7 @@ local function __match(candidate, reference)
     return candidate
 end
 
-table.match = table.twoarg(__match, 'any?', 'any?')
+table.twoarg('match', __match, 'any?', 'any?')
 
 local function __index_of(array, fn, reverse)
     if not reverse then

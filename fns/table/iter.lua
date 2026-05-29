@@ -20,7 +20,7 @@ local function __imap(tbl, func)
     return tbl
 end
 
-table.imap = table.twoarg(__imap, __function_or_table)
+table.twoarg('imap', __imap, __function_or_table)
 
 local function __map(tbl, func)
     func = __mapper(func)
@@ -29,7 +29,7 @@ local function __map(tbl, func)
     end
     return tbl
 end
-table.map = table.twoarg(__map, __function_or_table)
+table.twoarg('map', __map, __function_or_table)
 
 local function __project(tbl, func)
     local res = {}
@@ -39,7 +39,7 @@ local function __project(tbl, func)
     end
     return res
 end
-table.project = table.twoarg(__project, 'function')
+table.twoarg('project', __project, 'function')
 
 local function __collect(tbl, thing)
     local func = thing
@@ -50,7 +50,7 @@ local function __collect(tbl, thing)
     end
     return res
 end
-table.collect = table.twoarg(__collect, __function_or_table)
+table.twoarg('collect', __collect, __function_or_table)
 
 local function __icollect(tbl, thing)
     local func = thing
@@ -64,7 +64,7 @@ local function __icollect(tbl, thing)
     end
     return res
 end
-table.icollect = table.twoarg(__icollect, __function_or_table)
+table.twoarg('icollect', __icollect, __function_or_table)
 
 local function __opairs_iter(state, x)
     state.i = state.i + 1

@@ -47,8 +47,13 @@ function gadgets.throughputs(throughputs)
             if #v == 1 then
                 v.amount = table.remove(v)
             elseif #v == 2 then
-                v.amount_max = table.remove(v)
-                v.amount_min = table.remove(v)
+                if (0 < v[2]) and (v[2] < 1) then
+                    v.probability = table.remove(v)
+                    v.amount = table.remove(v)
+                else
+                    v.amount_max = table.remove(v)
+                    v.amount_min = table.remove(v)
+                end
             end
         end
         
@@ -205,7 +210,7 @@ gadgets.scale_coefficient = table.with_default(1.0, {
     full   = 1.0, -- technically not needed
 })
 
-gadgets.direction = table.with_default(function(x) return { -x, x } end, {
+gadgets.direction = table.with_default(function(x) return nil end, {
     [true] = function(x) return { 0, 0 } end,
     c = function(x) return { 0, 0 } end, 
     l = function(x) return { -x, 0 } end,
@@ -223,24 +228,28 @@ gadgets.direction = table.with_default(function(x) return { -x, x } end, {
 ---    direction to shift a floating icon in
 --- size : nil or tiny/small/medium/large/full
 ---    how big the icon appears
---- 
+--- type :  item, entity, recipe, etc.
+---    determines icon size in pixels
+--- col : hexadecimal tint color
+--- offset: how far to move the icon in any given direction
 function gadgets.icon(spec)
-    local icon = spec.icon
+    local icon = spec[1] or spec.icon
+    assert(type(icon) == 'string', "gadgets.icon: no icon file")
     if not icon:startswith('__') then
         icon = '__base__/graphics/' .. icon
     end
 
     local icon_type = spec.type or 'item'
-    local expected_icon_size = gadgets.icons_size[spec.type]
+    local expected_icon_size = gadgets.icons_size[icon_type]
     local icon_size = spec.icon_size or expected_icon_size
 
-    local floating = self.floating
-    if floating == nil then floating = (self.dir ~= nil) end
+    local floating = spec.floating
+    if floating == nil and spec.dir ~= nil then floating = true end
 
     local scale_coefficient = nil
-    if self.size then
-        scale_coefficient = gadgets.scale_coefficient[self.size]
-    elseif self.dir then
+    if spec.size then
+        scale_coefficient = gadgets.scale_coefficient[spec.size]
+    elseif spec.dir then
         scale_coefficient = 0.5
     end
 
@@ -250,7 +259,7 @@ function gadgets.icon(spec)
     end
 
     local offset = spec.offset
-    if offset == nil and floating == true then
+    if offset == nil and floating == true and scale_coefficient ~= nil then
         offset = (expected_icon_size / 2) * (1 - scale_coefficient)
     end
 
@@ -268,13 +277,21 @@ function gadgets.icon(spec)
         icon      = icon,
         icon_size = icon_size,
         floating  = floating,
-        shift     = shift
+        shift     = shift,
         scale     = scale,
     }
 end
 
-function gadgets.icons(...)
-    return table.icollect(gadget.icon, { ... })
+function gadgets.icons(array)
+    local merger = table.dup_assoc(array)
+    local res = {}
+    for _, v in ipairs(array) do
+        if type(v) == 'string' then v = { v } end
+        table.merge(v, merger)
+        local icon = gadgets.icon(v)
+        table.insert(res, icon)
+    end
+    return res
 end
 
 function gadgets.scale_vectors_and_numbers(factor, fields, vectors, stop_at)
@@ -320,6 +337,30 @@ function gadgets.shift_vectors(offset, fields, stop_at)
             return true
         end
     end
+end
+
+
+function gadgets.recursion_check(tbl, seen, path, root)
+    tbl = tbl or data.raw.__real or data.raw
+    root = root or 'data.raw'
+    seen = seen or {}
+    path = path or {}
+
+    if seen[tbl] then
+        error(utils.tablepath(root, path) .. ' == ' .. seen[tbl], 2)
+    end
+
+    seen[tbl] = utils.tablepath(root, path)
+
+    for k, v in pairs(tbl) do
+        if type(v) == 'table' then
+            table.insert(path, k)
+            gadgets.recursion_check(v, seen, path, root)
+            table.remove(path)
+        end
+    end
+
+    seen[tbl] = nil
 end
 
 return gadgets:seal()

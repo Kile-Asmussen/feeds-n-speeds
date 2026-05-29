@@ -148,7 +148,7 @@ function debuglib.print_table(buffer, data)
     local restore = {}
     if buffer:small_table(data) then
         restore = { indent = buffer.indent, separator = buffer.separator, depth_limit = buffer.depth_limit }
-        table.overwrite(buffer, buffer.small)
+        table.replace(buffer, buffer.small)
         buffer.depth_limit = buffer.depth_limit + 1
     end
 
@@ -162,17 +162,14 @@ function debuglib.print_table(buffer, data)
         buffer:print_elements(data)
         buffer:print(',', buffer.separator)
         buffer:print_keyval_pairs(data)
-
     elseif has_array then
         buffer:print_elements(data)
-
     elseif has_assoc then 
         buffer:print_keyval_pairs(data)
-
     end
 
     buffer:print(buffer.separator, string.rep(buffer.indent, #buffer.path), "}")
-    table.overwrite(buffer, restore)
+    table.replace(buffer, restore)
 end
 
 function debuglib.print_elements(buffer, data)

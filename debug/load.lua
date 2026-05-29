@@ -32,7 +32,7 @@ print("\nDATA-UPDATES")
 require 'data-updates'
 
 fns.use()
-data.recursion_check(data.raw)
+gadgets.recursion_check()
 fns.restore()
 
 data.begin_control_stage()

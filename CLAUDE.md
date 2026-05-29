@@ -19,8 +19,18 @@ Claude hooks: Python
 ### What I can do without asking
 
 - **Read** anything in this project directory.
-- **Edit** files in  `locale/**/*`, `slop/**/*`, as well as `CLAUDE.md`
-- **Write** (create) files in `slop/**/*`
+- **Edit and write/create** any and all files under the following folders:
+  - `slop/`: notes and progress tracking, temporary files
+  - `locale/`: cfg files with localisation strings
+  - 'modules/`: module structure of the mod, as described below
+  - `src/`: utilities written in Rust with the mlua library
+  - `debug/dump-defines/`: a work in progress diagnostic mini-mod for debugging (unused)
+- **Edit** certain other select files:
+  - `TODO.md`: the to-do list
+  - `CLAUDE.md`: this file
+  - `test/localisation.lua`: tracker for missing localisation strings in the test pipeline
+  - `module.lua`: the module loader
+  - `gadgets.lua`: the utility library
 - **Run** the specific Bash commands listed in `.claude/bash-commands.json` (see below)
 - **WebFetch** from `lua-api.factorio.com`, `wiki.factorio.com`, `forums.factorio.com`, `mods.factorio.com`, `github.com/wube/factorio-data/*`, `raw.githubusercontent.com/wube/factorio-data/*`
 
@@ -37,20 +47,19 @@ Exact patterns:
 
 ```
 lua debug/load.lua
+VERBOSE=1 lua debug/load.lua
+VERBOSE=1 PROXY-1 lua debug/load.lua
 DEPTH=[1-3] lua debug/data-raw.lua [<category> [<name> [<further properties/indexes>]]]
 DEPTH=[1-3] lua debug/data-modded.lua [<category> [<name> [<further properties/indexes>]]] 
-lua unit-tests.lua <module-name>
 python .claude/safe-rm.py <path>
-.claude/factorio-research.sh fetch
-.claude/factorio-research.sh install
 ```
-The debug/data-raw.lua and debug/data-modded.lua scripts will only print DEPTH=1 until a specific prototype is requested, to limit token usage.
+The debug/data-raw.lua and debug/data-modded.lua scripts will only print DEPTH=1 until a specific prototype is requested, to limit token usage. Similarly refrain from using the verbose and proxy (even more verbose) version of debug/load.lua .
 
 **Important:** The bash hook rejects pipes (`|`), redirects (`>`/`<`), chained commands (`&&`, `;`, `||`), subshells, and glob characters in the command string. Commands must match the pattern exactly. When a command is blocked, the error message lists the allowed patterns — use that to self-correct immediately.
 
 ## Architecture
 
-The project built around `module.lua` and the `module/` directory, which contains a full module loading system with dependency ordering, loading specific lua files. Currely a migration is ongoing, with `zzz/` containing the old code.
+The project built around `module.lua` and the `module/` directory, which contains a full module loading system with dependency ordering.
 
 ### Namespace System (`namespace.lua`)
 
@@ -111,19 +120,19 @@ Other stages are unused.
 
 ### Debug scripts
 
-- `lua debug/load.lua` — runs the full settings → data → control pipeline and prints missing localization strings at the end
+- `lua debug/load.lua` — runs the full settings → data → control pipeline and prints missing localisation strings at the end
 - `DEPTH=N lua debug/data-raw.lua [category [name [additional properties]]]` — inspect vanilla `data.raw`
 - `DEPTH=N lua debug/data-modded.lua [category [name [additional properties]]]` — inspect `data.raw` after mod changes
 
 The simulated pipeline is imperfect: it does not include full consistency checks, and does not account for staging of
 the vanilla mods -- for instance auto-generation of recycling and barelling recipes.
 
-## Localization
+## Localisation
 
-- Locale file: `locale/en/localization.cfg`
+- Locale file: `locale/en/localisation.cfg`
 - Run `lua debug/load.lua` to find missing strings — it prints stubs for anything registered via `data:extend` that isn't in the locale file
-- `fns.locale_key(category, name)` registers the name under `category` for localization tracking; `fns(name)` only registers it in `mod_identifiers`, not in any named category — the localization checker finds it via `localization.keys` instead
-- Noise expressions (`noise-expression` type) are internal and their entity-name/description entries are never shown to players, but the localization checker flags them anyway — fill them with internal-facing descriptions
+- `fns.locale_key(category, name)` registers the name under `category` for localizations tracking; `fns(name)` only registers it in `mod_identifiers`, not in any named category — the localisation checker finds it via `localisation.keys` instead
+- Noise expressions (`noise-expression` type) are internal and their entity-name/description entries are never shown to players, but the localisation checker flags them anyway — fill them with internal-facing descriptions
 
 ## Skills
 

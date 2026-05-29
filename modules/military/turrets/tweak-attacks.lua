@@ -49,9 +49,9 @@ for i = 2, 7 do
     end
 end
 
-for n, ammo in pairs(data.raw.ammo) do
+for _, ammo in pairs(data.raw.ammo) do
     if ammo.ammo_category == 'shotgun-shell' then 
-        local proj = table.search(ammo.ammo_type, { type = 'projectile' })
+        local proj = table.search(ammo.ammo_type, table.match{ type = 'projectile' })
 
         proj = data.raw.projectile[proj.projectile]
 

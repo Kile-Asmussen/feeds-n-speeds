@@ -86,10 +86,10 @@ local __quantify = {
 
 
 local __table_func_nil = { table = true, ['function'] = true, ['nil'] = true }
-table.iall = table.twoarg(__quantify.all.v(ipairs), __table_func_nil)
-table.pall = table.twoarg(__quantify.all.kv(pairs), __table_func_nil)
-table.any = table.twoarg(__quantify.any.v(pairs), __table_func_nil)
-table.iany = table.twoarg(__quantify.any.v(ipairs), __table_func_nil)
+table.twoarg('iall', __quantify.all.v(ipairs), __table_func_nil)
+table.twoarg('pall', __quantify.all.kv(pairs), __table_func_nil)
+table.twoarg('any', __quantify.any.v(pairs), __table_func_nil)
+table.twoarg('iany', __quantify.any.v(ipairs), __table_func_nil)
 
 function table.sorted_keys(tbl)
     assert(type(tbl) == 'table', "argument #1 must be a table")

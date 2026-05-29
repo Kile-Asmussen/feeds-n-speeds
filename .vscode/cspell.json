@@ -16,6 +16,7 @@
         "isum",
         "isvec",
         "localised",
+        "lualib",
         "maxn",
         "mlua",
         "mult",
@@ -30,9 +31,10 @@
         "vecadd",
         "vecmul",
         "visualisation",
+        "wube",
         "zet"
     ],
     "flagWords": [
-        "localization"
+        "localization: localisation"
     ]
 }

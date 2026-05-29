@@ -9,24 +9,39 @@ end
 
 function table.has_assoc(tbl)
     assert(type(tbl) == "table", "argument #1 must be a table")
-    local k
-    repeat
-        k = next(tbl, k)
-    until type(k) ~= 'number' or k == nil
-    return k ~= nil and type(k) ~= 'number'
+    for k, v in pairs(tbl) do
+        if type(k) ~= 'number' then return true end
+    end
+    return false
 end
 
 function table.has_array(tbl)
     assert(type(tbl) == "table", "argument #1 must be a table")
-    local n = table.maxn(tbl)
-    return type(n) == 'number' and n ~= 0 
+    for _, v in ipairs(tbl) do return true end
+    return false
 end
 
 function table.is_array(tbl)
     assert(type(tbl) == "table", "argument #1 must be a table")
-    local k
-    repeat
-        k = next(tbl, k)
-    until type(k) ~= 'number'
-    return k == nil
+    return  table.is_empty(tbl) or not table.has_assoc(tbl)
+end
+
+function table.dup_array(tbl)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    local res = {}
+    for _, v in ipairs(tbl) do
+        table.insert(res, v)
+    end
+    return res
+end
+
+function table.dup_assoc(tbl)
+    assert(type(tbl) == "table", "argument #1 must be a table")
+    local res = {}
+    for k, v in pairs(tbl) do
+        if type(k) ~= 'number' then
+            res[k] = v
+        end
+    end
+    return res
 end

@@ -15,17 +15,17 @@ local function inventory()
     remote.call("freeplay", "set_respawn_items", table.clone(outfit))
 
     remote.call("freeplay", "set_ship_items", {
-        ["iron-plate"] = 10,
-        ["pipe"] = 10,
-        ["iron-gear-wheel"] = 5,
-        ["copper-cable"] = 20,
-        ["electronic-circuit"] = 5,
+        { name = "iron-plate",         count = 10 },
+        { name = "pipe",               count = 10 },
+        { name = "iron-gear-wheel",    count = 5  },
+        { name = "copper-cable",       count = 20 },
+        { name = "electronic-circuit", count = 5  },
     })
 
     remote.call("freeplay", "set_debris_items", {
-        ["steel-plate"] = 5,
-        ["iron-stick"] = 20,
-        ["copper-plate"] = 10,
+        { name = "steel-plate",  count = 5  },
+        { name = "iron-stick",   count = 20 },
+        { name = "copper-plate", count = 10 },
     })
 
 end

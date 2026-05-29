@@ -1,5 +1,7 @@
 local fns = require 'fns'
-local puts = require('gadgets').throughputs
+local gadgets = require 'gadgets'
+local puts = gadgets.throughputs
+local icons = gadgets.icons
 
 data.raw.recipe['burner-mining-drill'].auto_unlocked_by = 'steam-power'
 
@@ -10,7 +12,7 @@ local name = 'burner-mining-drill-fluid'
 
 table.merge(burner_drill, {
     name = fns(name),
-    minable = table.assign{'result', val = fns(name)},
+    minable = table.assign{ 'result', val = fns(name) },
     input_fluid_box = {
         volume = 50,
         filter = 'water',
@@ -25,17 +27,9 @@ table.merge(burner_drill, {
         pipe_covers = pipecoverspictures(),
     },
     icon = utils.null,
-    icons = {
-        {
-            icon = '__base__/graphics/icons/burner-mining-drill.png',
-            icon_size = 64,
-        },
-        {
-            icon = '__base__/graphics/icons/water.png',
-            icon_size = 64,
-            scale = 0.25,
-            shift = {-8, -8},
-        },
+    icons = icons{ type = 'entity',
+        'icons/burner-mining-drill.png',
+        { 'icons/water.png', size='small', dir='bl' },
     },
 })
 

@@ -3,18 +3,19 @@ local table = _ENV.table
 local assert = _ENV.assert
 
 local function __search(any, fn)
-    if fn(tbl) then return tbl end
+    if fn(any) then return any end
 
-    if type(tbl) ~= 'table' then return nil end
+    if type(any) ~= 'table' then return nil end
 
-    for k, v in pairs(tbl) do
+    for k, v in pairs(any) do
         local found = __search(v, fn)
+        if found ~= nil then return found end
     end
 
     return nil
 end
 
-table.search = table.twoarg(__search, 'any?', 'any?')
+table.twoarg('search', __search, 'function')
 
 local function __traverse(tbl, func)
     for k, v in pairs(tbl) do
@@ -35,7 +36,7 @@ local function __traverse(tbl, func)
     return tbl
 end
 
-table.traverse = table.twoarg(__traverse, 'function')
+table.twoarg('traverse', __traverse, 'function')
 
 function table.replace(tbl, a, b)
   table.traverse(tbl, function(v)
@@ -61,7 +62,7 @@ local function __access(tbl, keys)
     return tbl
 end
 
-table.access = table.twoarg(__access)
+table.twoarg('access', __access)
 
 local function __assign(tbl, keys)
     if #keys == 0 then
@@ -86,9 +87,9 @@ local function __assign(tbl, keys)
     return tbl
 end
 
-table.assign = table.twoarg(__assign)
+table.twoarg('assign', __assign)
 
-table.index = table.twoarg(function(tbl, k) return tbl[k] end, 'any')
+table.twoarg('index', function(tbl, k) return tbl[k] end, 'any')
 
 function table.newindex(tbl)
     assert(type(tbl) == "table", "argument #1 must be a table")

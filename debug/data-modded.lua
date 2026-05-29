@@ -4,9 +4,7 @@ fns.use()
 
 require 'test'
 
-local __log = _ENV.__log
-function _ENV.log() end
-function _ENV.__log() end
+_ENV.QUIET = true
 
 _ENV.modlist = {}
 
@@ -31,7 +29,7 @@ if #args < 2 then
 end
 
 if result ~= nil then
-    __log(ix .. ' = ' .. debuglib.pp(result, 'data.raw'))
+    print(ix .. ' = ' .. debuglib.pp(result, 'data.raw'))
 else
-    __log('Path not found: ' .. ix)
+    print('Path not found: ' .. ix)
 end
