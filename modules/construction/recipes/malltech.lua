@@ -4,9 +4,15 @@ local tech = data.raw.technology
 
 -- Inserters
 
+recipe['burner-inserter'].ingredients = {
+    { type='item', name='iron-stick', amount=1 },
+    { type='item', name='iron-gear-wheel', amount=1 },
+    { type='item', name='stone-brick', amount=1 },
+}
+
 recipe['inserter'].ingredients = {
     { type='item', name='iron-stick', amount=2 },
-    { type='item', name='iron-gear-wheel', amount=1 },
+    { type='item', name='iron-gear-wheel', amount=2 },
     { type='item', name='electronic-circuit', amount=1 },
 }
 
@@ -18,8 +24,8 @@ recipe['long-handed-inserter'].ingredients = {
 }
 
 recipe['fast-inserter'].ingredients = {
-    { type='item', name='iron-stick', amount=2 },
-    { type='item', name='iron-gear-wheel', amount=1 },
+    { type='item', name='iron-stick', amount=1 },
+    { type='item', name='iron-gear-wheel', amount=2 },
     { type='item', name='electronic-circuit', amount=1 },
     { type='item', name='inserter', amount=1 },
 }

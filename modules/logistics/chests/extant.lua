@@ -30,7 +30,8 @@ merge(data.raw.recipe, {
     ['steel-chest'] = {
         auto_unlocked_by = 'automation',
         ingredients = inputs{
-            ['steel-plate'] = 8,
+            ['iron-chest'] = 1,
+            ['steel-plate'] = 4,
             ['electronic-circuit'] = 8,
         }
     },
@@ -83,7 +84,7 @@ merge(data.raw.container, {
         merge{
             circuit_connector = shift_wire,
             inventory_type = 'with_bar',
-            inventory_size = 40,
+            inventory_size = 20,
             max_health = 250,
             quality_affects_inventory_size = true,
         },
@@ -93,7 +94,7 @@ merge(data.raw.container, {
         merge{
             localised_name = { fns.locale_key('entity-name', 'tweaked-steel-chest') },
             circuit_connector = shift_wire,
-            inventory_size = 80,
+            inventory_size = 50,
             inventory_type = 'with_filters_and_bar',
             max_health = 500,
             quality_affects_inventory_size = true,

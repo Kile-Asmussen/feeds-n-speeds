@@ -1,24 +1,43 @@
-local electric_pole = data.raw['electric-pole']
+local fns = require 'fns'
 
-local small = electric_pole['small-electric-pole']
-local medium = electric_pole['medium-electric-pole']
-local big = electric_pole['big-electric-pole']
-local substation = electric_pole.substation
+local puts = fns.gadgets.throughputs
+local merge = fns.table.merge
 
-big.maximum_wire_distance = 50
-substation.maximum_wire_distance = 18
+merge(data.raw['electric-pole'], {
+    __rec = true,
+    ['small-electric-pole'] = {
+        circuit_connector = fns.utils.null,
+        auto_require_pavement = 'stone-path',
+    },
+    ['big-electric-pole'] = {
+        maximum_wire_distance = 50
+    },
+})
 
-small.circuit_connector = nil
+merge(data.raw.recipe, {
+    __rec = true,
+    ['power-switch'] = {
+        auto_unlocked_by = 'electric-energy-distribution-2',
+        ingredients = puts{
+            ['advanced-circuit'] = 1,
+            ['copper-cable'] = 20,
+            ['iron-gear-wheel'] = 2,
+            ['steel-plate'] = 2,
+        }
+    },
+    ['big-electric-pole'] = {
+        ingredients = puts{
+            ['concrete'] = 4,
+            ['medium-electric-pole'] = 2,
+            ['copper-cable'] = 5,
+        }
+    }
+})
 
-data.raw.recipe['power-switch'].auto_unlocked_by = 'electric-energy-distribution-2'
-data.raw.recipe['power-switch'].ingredients = {
-    { type='item', name='advanced-circuit', amount=1 },
-    { type='item', name='copper-cable', amount=10 },
-    { type='item', name='iron-gear-wheel', amount=5 },
-    { type='item', name='steel-plate', amount=5 },
-}
+merge(data.raw.item['power-switch'], {
+    subgroup = data.raw.item.substation.subgroup,
+    data.raw.item.substation.order .. '-a[switch]',
+})
 
-data.raw.item['power-switch'].subgroup = data.raw.item.substation.subgroup
-data.raw.item['power-switch'].order = data.raw.item.substation.order .. '-a[switch]'
 
-table.insert(data.raw.technology['electric-energy-distribution-1'].prerequisites, 'concrete')
+data.raw.technology['electric-energy-distribution-1'].prerequisites = { 'automation-2' }

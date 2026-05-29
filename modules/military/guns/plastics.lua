@@ -1,28 +1,49 @@
 local fns = require 'fns'
 
-local smg = table.clone(data.raw.recipe['submachine-gun'])
-local shotty = table.clone(data.raw.recipe['combat-shotgun'])
+local icons = fns.gadgets.icons
+local inputs = fns.gadgets.throughputs
 
-smg.name = fns 'submachine-gun-plastic-stock'
-shotty.name = fns 'combat-shotgun-plastic-stock'
+local plasticon = data.raw.item['plastic-bar'].icon
 
-smg.icons = {
-    { icon = data.raw.gun['submachine-gun'].icon, icon_size = 64 },
-    { icon = data.raw.item['plastic-bar'].icon, icon_size = 64, scale = 0.25, shift = { 8, -8 } },
-}
+local guns = fns.table.merge({
+    smg = table.clone(data.raw.recipe['submachine-gun']),
+    shotty = table.clone(data.raw.recipe['combat-shotgun']),
+}, {
+    __rec = true,
+    smg = {
+        name = fns 'submachine-gun-plastic-stock',
+        localised_name = {"item-name.submachine-gun"},
+        localised_description = {fns.locale_key("recipe-description", "plastic-furniture")},
+        icons = icons{
+            type = 'recipe',
+            data.raw.gun['submachine-gun'].icon,
+            { plasticon, size = 'small', dir = 'br' }
+        },
+        ingredients = inputs{
+            ['copper-plate'] = 2,
+            ['iron-plate'] = 4,
+            ['iron-gear-wheel'] = 4,
+            ['steel-plate'] = 1,
+            ['plastic-bar'] = 2,
+        }
+    },
+    shotty = {
+        name = fns 'combat-shotgun-plastic-stock',
+        localised_name = {"item-name.combat-shotgun"},
+        localised_description = {fns.locale_key("recipe-description", "plastic-furniture")},
+        icons = icons{
+            type = 'recipe',
+            data.raw.gun['combat-shotgun'].icon,
+            { plasticon, size = 'small', dir = 'br' }
+        },
+        ingredients = inputs{
+            ['copper-plate'] = 4,
+            ['iron-plate'] = 4,
+            ['iron-gear-wheel'] = 4,
+            ['plastic-bar'] = 2,
+            ['steel-plate'] = 1,
+        }
+    }
+})
 
-shotty.icons = {
-    { icon = data.raw.gun['combat-shotgun'].icon, icon_size = 64 },
-    { icon = data.raw.item['plastic-bar'].icon, icon_size = 64, scale = 0.25, shift = { 8, -8 } },
-}
-
-smg.localised_name = {"item-name.submachine-gun"}
-smg.localised_description = {fns.locale_key("recipe-description", "plastic-furniture")}
-
-shotty.localised_name = {"item-name.combat-shotgun"}
-shotty.localised_description = {fns.locale_key("recipe-description", "plastic-furniture")}
-
-table.find_matching(smg.ingredients, {name='wood'}).name = 'plastic-bar'
-table.find_matching(shotty.ingredients, {name='wood'}).name = 'plastic-bar'
-
-data:extend{ smg, shotty }
+data:extend{ guns.smg, guns.shotty }

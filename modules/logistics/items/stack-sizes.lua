@@ -8,14 +8,27 @@ local stack_sizes = {
           ]==============]
         
         ['iron-stick'] = 200,
+        ['steel-plate'] = 50,
+        ['electronic-circuit'] = 100,
+        ['advanced-circuit'] = 100,
+        ['processing-unit'] = 100,
         
         --[=========[
            BUILDINGS
           ]=========]
         
         ['stone-wall']      = 50,
-        ['gate']            = 30,
+        ['gate']            = 20,
 
+        ['wooden-chest'] = 20,
+        ['iron-chest'] = 20,
+        ['steel-chest'] = 10,
+
+        ['active-provider-chest'] = 10,
+        ['passive-provider-chest'] = 10,
+        ['storage-chest'] = 10,
+        ['requester-chest'] = 10,
+        ['buffer-chest'] = 10,
 
         ['pipe']             = 50,
         ['pipe-to-ground']   = 20,
@@ -118,7 +131,7 @@ local stack_sizes = {
  
         ['rocket-silo']           = 1,
         ['cargo-bay']             = 5,
-        ['cargo-landing-pad']           = 1, 
+        ['cargo-landing-pad']     = 1, 
 
         ['gun-turret'] = 10,
         ['laser-turret'] = 10,
@@ -137,7 +150,7 @@ local stack_sizes = {
         ['spidertron']            = 1,
     },
     ['rail-planner'] = {
-        ['rail'] = 40,
+        ['rail'] = 50,
         ['rail-ramp'] = 5,
     },
     ammo = {

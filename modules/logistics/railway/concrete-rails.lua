@@ -1,59 +1,63 @@
 local fns = require 'fns'
-local rail1 = table.clone(data.raw.recipe.rail)
-local rail2 = table.clone(data.raw.recipe.rail)
-local rail3 = table.clone(data.raw.recipe.rail)
+local puts = fns.gadgets.throughputs
 
-rail1.name = fns 'rail-1'
-rail2.name = fns 'rail-2'
-rail3.name = fns 'rail-3'
-
-rail1.order = 'a[rail]-a[rail]-b[stone-brick]'
-rail2.order = 'a[rail]-a[rail]-c[concrete]'
-rail3.order = 'a[rail]-a[rail]-d[refined-concrete]'
-
-rail1.allow_auto_recycle = false
-rail2.allow_auto_recycle = false
-rail3.allow_auto_recycle = false
-
-rail1.localised_name = {"item-name.rail"}
-rail2.localised_name = {"item-name.rail"}
-rail3.localised_name = {"item-name.rail"}
-
-rail1.auto_unlocked_by = 'railway'
-rail2.auto_unlocked_by = fns 'concrete-rail'
-rail3.auto_unlocked_by = fns 'concrete-rail'
-
-rail1.ingredients = {
-    { amount = 4, name = 'stone-brick', type = 'item' },
-    { amount = 2, name = 'iron-stick', type = 'item' },
-    { amount = 1, name = 'steel-plate', type = 'item' }
+local rails = {
+    table.clone(data.raw.recipe.rail),
+    table.clone(data.raw.recipe.rail),
+    table.clone(data.raw.recipe.rail)
 }
 
-rail2.ingredients = {
-    { amount = 5, name = 'concrete', type = 'item' },
-    { amount = 1, name = 'iron-stick', type = 'item' },
-    { amount = 1, name = 'steel-plate', type = 'item' }
+data.raw.recipe.rail.ingredients = puts{
+    ['stone'] = 8, ['iron-stick'] = 3, ['steel-plate'] = 1
 }
-
-rail3.ingredients = {
-    { amount = 2, name = 'refined-concrete', type = 'item' },
-    { amount = 1, name = 'steel-plate', type = 'item' }
-}
-rail3.allow_productivity = true
 
 local function rail_icons(name)
-    return {
-        { icon = data.raw['rail-planner'].rail.icon, icon_size = 64 },
-        { icon = data.raw.item[name].icon, icon_size = 64, scale = 0.25, shift = { -8, -8 } }
+    return fns.gadgets.icons{
+        type = 'recipe',
+        { data.raw['rail-planner'].rail.icon },
+        { data.raw.item[name].icon, size='small', dir='tl' },
     }
 end
 
-rail1.icons = rail_icons('stone-brick')
-rail2.icons = rail_icons('concrete')
-rail3.icons = rail_icons('refined-concrete')
+local merge = fns.table.merge
 
+merge(rails, { __rec = true,
+    {
+        name = fns 'rail-1',
+        order = 'a[rail]-a[rail]-b[stone-brick]',
+        auto_unlocked_by = 'railway',
+        ingredients = puts{ ['stone-brick'] = 4, ['iron-stick'] = 2, ['steel-plate'] = 1 },
+        icons = rail_icons('stone-brick'),
+    },
+    { 
+        name = fns 'rail-2',
+        order = 'a[rail]-a[rail]-c[concrete]',
+        auto_unlocked_by = fns 'concrete-rail',
+        ingredients = puts{ ['concrete'] = 3, ['steel-plate'] = 1 },
+        icons = rail_icons('stone-brick'),
+    },
+    { 
+        name = fns 'rail-3',
+        order = 'a[rail]-a[rail]-d[refined-concrete]',
+        auto_unlocked_by = fns 'concrete-rail',
+        ingredients = puts{ ['refined-concrete'] = 1, ['steel-plate'] = 1 },
+        allow_productivity = true,
+        icons = rail_icons('stone-brick'),
+    }
+})
 
-local tech = {
+merge(rails, {
+    __rec = true,
+    [{1,2,3}] = {
+        icon = fns.utils.null,
+        allow_auto_recycle = false,
+        localised_name = {"item-name.rail"}
+    }
+})
+
+data:extend(rails)
+
+data:extend{{
     type = 'technology',
     name = fns 'concrete-rail',
     icons = {
@@ -72,20 +76,10 @@ local tech = {
         'concrete',
         'railway',
     },
-    effects = {
-        -- { type = 'unlock-recipe', recipe = fns 'rail-2' },
-        -- { type = 'unlock-recipe', recipe = fns 'rail-3' },
-    },
+    effects = {},
     research_trigger = {
         type = 'craft-item',
         item = 'rail',
         count = 1000,
     },
-}
-
-data:extend{
-    rail1,
-    rail2,
-    rail3,
-    tech
-}
+}}
