@@ -259,7 +259,7 @@ function gadgets.icon(spec)
 
     local offset = spec.offset
     if offset == nil and floating == true and scale_coefficient ~= nil then
-        offset = (expected_icon_size / 2) * (1 - scale_coefficient)
+        offset = (expected_icon_size / 4) * (1 - scale_coefficient / 2)
     end
 
     local shift = spec.shift

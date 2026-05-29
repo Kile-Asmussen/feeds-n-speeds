@@ -27,7 +27,7 @@ merge(data.raw.technology, {
     ['electric-energy-distribution-2'] = {
         prerequisites = append{'electric-energy-accumulators'}
     },
-    ['uranium-processing'], {
+    ['uranium-processing'] = {
         prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack', 'speed-module', 'electric-engine' 
         },
         research_trigger = null,
@@ -45,9 +45,9 @@ merge(data.raw.technology, {
 
 local function ingredients(inputs) return { ingredients = fns.gadgets.throughputs(inputs) } end
 
-merge(recipe, {
+merge(data.raw.recipe, {
     __rec = true,
-    ['display-panel'] = ingredients{ ['small-lamp'] = 1, ['copper-plate'] = 2, }
+    ['display-panel'] = ingredients{ ['small-lamp'] = 1, ['copper-plate'] = 2, },
 
     -- Inserters
     ['burner-inserter'] = ingredients{
@@ -80,7 +80,7 @@ merge(recipe, {
         ingredients = puts{
              ['copper-plate'] = 4, ['engine-unit'] = 2, ['iron-gear-wheel'] = 6
         },
-    }
+    },
         
     ['fast-underground-belt'] = ingredients{
          ['fast-transport-belt'] = 8, ['steel-plate'] = 5, ['copper-plate'] = 10
@@ -93,7 +93,7 @@ merge(recipe, {
         ingredients = puts{
             ['steel-plate'] = 2, ['iron-gear-wheel'] = 10, ['electric-engine-unit'] = 4, ['lubricant'] = 20
         },
-    }
+    },
     ['express-underground-belt'] = ingredients{
          ['express-transport-belt'] = 10, ['concrete'] = 20, ['pump'] = 1, ['water'] = 200
     },
@@ -109,13 +109,13 @@ merge(recipe, {
     },
     ['turbo-underground-belt'] = {
         surface_conditions = null,
-        ingredients = {
+        ingredients = puts{
             ['turbo-transport-belt'] = 12, ['heat-pipe'] = 4, ['refined-concrete'] = 50, ['lubricant'] = 500
         }
     },
     ['turbo-splitter'] = {
         surface_conditions = null,
-        ingredients = {
+        ingredients = puts{
             ['turbo-transport-belt'] = 4, ['speed-module'] = 4, ['processing-unit'] = 1, ['low-density-structure'] = 10
         },
     },
