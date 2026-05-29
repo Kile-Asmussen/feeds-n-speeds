@@ -362,4 +362,22 @@ function gadgets.recursion_check(tbl, seen, path, root)
     seen[tbl] = nil
 end
 
+function gadgets.bad_argument_number_nine(tbl)
+    tbl = tbl or data.raw.__real or data.raw
+    local problems = {}
+    for category, entries in pairs(tbl) do
+        for name, prototype in pairs(entries) do
+            if prototype.type == nil or prototype.name == nil then
+                local missing = prototype.type == nil and prototype.name == nil and "type and name"
+                             or prototype.type == nil and "type"
+                             or "name"
+                table.insert(problems, "data.raw['" .. category .. "']['" .. name .. "'] missing " .. missing)
+            end
+        end
+    end
+    if #problems > 0 then
+        error(table.concat(problems, "\n"), 2)
+    end
+end
+
 return gadgets:seal()

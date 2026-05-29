@@ -33,6 +33,7 @@ require 'data-updates'
 
 fns.use()
 gadgets.recursion_check()
+gadgets.bad_argument_number_nine()
 fns.restore()
 
 data.begin_control_stage()

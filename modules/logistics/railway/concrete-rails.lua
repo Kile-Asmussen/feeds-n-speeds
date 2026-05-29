@@ -11,8 +11,10 @@ data.raw.recipe.rail.ingredients = puts{
     ['stone'] = 8, ['iron-stick'] = 3, ['steel-plate'] = 1
 }
 
+local icons = fns.gadgets.icons
+
 local function rail_icons(name)
-    return fns.gadgets.icons{
+    return icons{
         type = 'recipe',
         { data.raw['rail-planner'].rail.icon },
         { data.raw.item[name].icon, size='small', dir='tl' },
@@ -34,7 +36,7 @@ merge(rails, { __rec = true,
         order = 'a[rail]-a[rail]-c[concrete]',
         auto_unlocked_by = fns 'concrete-rail',
         ingredients = puts{ ['concrete'] = 3, ['steel-plate'] = 1 },
-        icons = rail_icons('stone-brick'),
+        icons = rail_icons('concrete'),
     },
     { 
         name = fns 'rail-3',
@@ -42,7 +44,7 @@ merge(rails, { __rec = true,
         auto_unlocked_by = fns 'concrete-rail',
         ingredients = puts{ ['refined-concrete'] = 1, ['steel-plate'] = 1 },
         allow_productivity = true,
-        icons = rail_icons('stone-brick'),
+        icons = rail_icons('refined-concrete'),
     }
 })
 
@@ -60,17 +62,10 @@ data:extend(rails)
 data:extend{{
     type = 'technology',
     name = fns 'concrete-rail',
-    icons = {
-        {
-            icon = '__base__/graphics/technology/railway.png',
-            icon_size = 256,
-        },
-        {
-            icon = '__base__/graphics/technology/concrete.png',
-            icon_size = 256,
-            scale = 0.33,
-            shift = { 25, 25 },
-        },
+    icons = icons{
+        type = 'technology',
+        'technology/railway.png',
+        { 'technology/concrete.png', size = "small", dir = 'br', },
     },
     prerequisites = {
         'concrete',

@@ -117,7 +117,7 @@ local link_recipe = table.merge(table.clone(data.raw.recipe['accumulator']), {
     auto_unlocked_by = 'electric-energy-distribution-2',
 
     ingredients = puts{ ['iron-plate'] = 20, ['copper-cable'] = 20, ['light-oil'] = 50 },
-    results = puts{ [fns 'electric-line'] = 1 },
+    results = puts{ [fns 'electric-link'] = 1 },
 })
 
 data:extend{
