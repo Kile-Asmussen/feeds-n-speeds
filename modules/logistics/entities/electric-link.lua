@@ -78,7 +78,7 @@ local charge_animation = {
 table.merge(link.chargable_graphics, {
     charge_animation = charge_animation,
     discharge_animation = table.clone(charge_animation),
-}
+})
 
 link.icons = fns.gadgets.icons{
     { switch.icon, tint = { 1.0, 1.0, 0.6 }, },
@@ -112,12 +112,12 @@ local puts = fns.gadgets.throughputs
 
 local link_recipe = table.merge(table.clone(data.raw.recipe['accumulator']), {
 
-    name = fns 'electric-link'
-    category = 'electronics-with-fluid'
-    auto_unlocked_by = 'electric-energy-distribution-2'
+    name = fns 'electric-link',
+    category = 'electronics-with-fluid',
+    auto_unlocked_by = 'electric-energy-distribution-2',
 
     ingredients = puts{ ['iron-plate'] = 20, ['copper-cable'] = 20, ['light-oil'] = 50 },
-    results = puts{ [fns 'electric-line'] = 1 }
+    results = puts{ [fns 'electric-line'] = 1 },
 })
 
 data:extend{
