@@ -1,385 +1,220 @@
 local fns = require 'fns'
-local recipe = data.raw.recipe
-local tech = data.raw.technology
+local puts = fns.gadgets.throughputs
+local merge = fns.table.merge
+local null = fns.utils.null
+local append = fns.table.append
 
--- Inserters
-
-recipe['burner-inserter'].ingredients = {
-    { type='item', name='iron-stick', amount=1 },
-    { type='item', name='iron-gear-wheel', amount=1 },
-    { type='item', name='stone-brick', amount=1 },
-}
-
-recipe['inserter'].ingredients = {
-    { type='item', name='iron-stick', amount=2 },
-    { type='item', name='iron-gear-wheel', amount=2 },
-    { type='item', name='electronic-circuit', amount=1 },
-}
-
-recipe['long-handed-inserter'].ingredients = {
-    { type='item', name='iron-stick', amount=2 },
-    { type='item', name='iron-gear-wheel', amount=1 },
-    { type='item', name='electronic-circuit', amount=1 },
-    { type='item', name='inserter', amount=1 },
-}
-
-recipe['fast-inserter'].ingredients = {
-    { type='item', name='iron-stick', amount=1 },
-    { type='item', name='iron-gear-wheel', amount=2 },
-    { type='item', name='electronic-circuit', amount=1 },
-    { type='item', name='inserter', amount=1 },
-}
-
-recipe['bulk-inserter'].ingredients = {
-    { type='item', name='steel-plate', amount=2 },
-    { type='item', name='advanced-circuit', amount=1 },
-    { type='item', name='engine-unit', amount=2 },
-    { type='item', name='fast-inserter', amount=4 },
-}
-
-recipe['stack-inserter'].ingredients = {
-    { type='item', name='carbon-fiber', amount=2 },
-    { type='item', name='efficiency-module', amount=1 },
-    { type='item', name='electric-engine-unit', amount=4 },
-    { type='item', name='bulk-inserter', amount=2 },
-}
-
--- Belts
-
-recipe['splitter'].ingredients = {
-    { type='item', name='transport-belt', amount=4 },
-    { type='item', name='electronic-circuit', amount=4 },
-    { type='item', name='iron-plate', amount=2 },
-}
-
-recipe['underground-belt'].ingredients = {
-    { type='item', name='iron-plate', amount=10 },
-    { type='item', name='transport-belt', amount=6 },
-}
-
-tech['logistics-2'].prerequisites = { 'circuit-network', 'engine' }
-
-recipe['fast-transport-belt'].ingredients = {
-    { type='item', name='copper-plate', amount=4 },
-    { type='item', name='engine-unit', amount=2 },
-    { type='item', name='iron-gear-wheel', amount=6 },
-}
-recipe['fast-transport-belt'].results[1].amount = 2
-
-recipe['fast-underground-belt'].ingredients = {
-    { type='item', name='fast-transport-belt', amount=8 },
-    { type='item', name='steel-plate', amount=5 },
-    { type='item', name='copper-plate', amount=10 },
-}
-
-recipe['fast-splitter'].ingredients = {
-    { type='item', name='fast-transport-belt', amount=4 },
-    { type='item', name='decider-combinator', amount=2 },
-    { type='item', name='steel-plate', amount=2 },
-}
-
-tech['logistics-3'].prerequisites = { 'production-science-pack', 'electric-engine', 'nuclear-power', 'advanced-combinators' }
-
-recipe['express-transport-belt'].results[1].amount = 2
-recipe['express-transport-belt'].ingredients = {
-    { type='item', name='steel-plate', amount=2 },
-    { type='item', name='iron-gear-wheel', amount=10 },
-    { type='item', name='electric-engine-unit', amount=4 },
-    { type='fluid', name='lubricant', amount=20 },
-}
-
-recipe['express-underground-belt'].ingredients = {
-    { type='item', name='express-transport-belt', amount=10 },
-    { type='item', name='concrete', amount=20 },
-    { type='item', name='pump', amount=1 },
-    { type='fluid', name='water', amount=200 },
-}
-
-recipe['express-splitter'].ingredients = {
-    { type='item', name='express-transport-belt', amount=4 },
-    { type='item', name='selector-combinator', amount=2 },
-    { type='item', name='steel-plate', amount=5 },
-}
-
-recipe['turbo-transport-belt'].surface_conditions = nil
-recipe['turbo-splitter'].surface_conditions = nil
-recipe['turbo-underground-belt'].surface_conditions = nil
-
-recipe['turbo-transport-belt'].results[1].amount = 2
-recipe['turbo-transport-belt'].ingredients = {
-    { type='item', name='tungsten-plate', amount=4 },
-    { type='item', name='iron-gear-wheel', amount=20 },
-    { type='item', name='electric-engine-unit', amount=10 },
-    { type='fluid', name='lubricant', amount=100 },
-}
-
-recipe['turbo-underground-belt'].ingredients = {
-    { type='item', name='turbo-transport-belt', amount=12 },
-    { type='item', name='heat-pipe', amount=4 },
-    { type='item', name='refined-concrete', amount=50 },
-    { type='fluid', name='lubricant', amount=500 },
-}
-
-recipe['turbo-splitter'].ingredients = {
-    { type='item', name='turbo-transport-belt', amount=4 },
-    { type='item', name='speed-module', amount=4 },
-    { type='item', name='processing-unit', amount=1 },
-    { type='item', name='low-density-structure', amount=10 },
-}
-
--- Misc
-
-recipe['lab'].ingredients = {
-    { type='item', name='transport-belt', amount=3 },
-    { type='item', name='inserter', amount=3 },
-    { type='item', name='copper-plate', amount=10 },
-    { type='item', name='electronic-circuit', amount=10 },
-}
-
-recipe['beacon'].ingredients = {
-    { type='item', name='efficiency-module', amount=1 },
-    { type='item', name='advanced-circuit', amount=15 },
-    { type='item', name='electronic-circuit', amount=15 },
-    { type='item', name='steel-plate', amount=5 },
-    { type='item', name='copper-cable', amount=5 },
-}
-
-recipe['electric-furnace'].ingredients = {
-    { type='item', name='advanced-circuit', amount=5 },
-    { type='item', name='engine-unit', amount=2 },
-    { type='item', name='steel-furnace', amount=2 },
-    { type='item', name='copper-plate', amount=10 },
-}
-
-table.insert(tech['effect-transmission'].prerequisites, 'efficiency-module')
-
-recipe['display-panel'].ingredients = table.clone(recipe['small-lamp'].ingredients)
-
-recipe['car'].ingredients = {
-    { type='item', name='engine-unit', amount=8 },
-    { type='item', name='steel-plate', amount=8 },
-    { type='item', name='pipe', amount=2 },
-    { type='item', name='electronic-circuit', amount=5 },
-    { type='item', name='iron-gear-wheel', amount=10 },
-    { type='item', name='small-lamp', amount=2 },
-}
-
--- Mining drills
-
-recipe['burner-mining-drill'].ingredients = {
-    { type='item', name='stone-brick', amount=6 },
-    { type='item', name='iron-gear-wheel', amount=4 },
-    { type='item', name='steel-plate', amount=1 },
-}
-
-recipe['electric-mining-drill'].ingredients = {
-    { type='item', name='electronic-circuit', amount=3 },
-    { type='item', name='iron-gear-wheel', amount=5 },
-    { type='item', name='steel-plate', amount=2 },
-}
-
-recipe['big-mining-drill'].ingredients = {
-    { type='item', name='processing-unit', amount=1 },
-    { type='item', name='productivity-module', amount=2 },
-    { type='item', name='electric-engine-unit', amount=10 },
-    { type='item', name='tungsten-carbide', amount=20 },
-    { type='fluid', name='molten-iron', amount=100 },
-    { type='fluid', name='molten-copper', amount=100 },
-}
-
--- Steam
-
-recipe['boiler'].ingredients = {
-    { type='item', name='stone-brick', amount=8 },
-    { type='item', name='pipe', amount=4 },
-    { type='item', name='copper-plate', amount=2 },
-}
-
-recipe['steam-engine'].ingredients = {
-    { type='item', name='copper-cable', amount=6 },
-    { type='item', name='iron-gear-wheel', amount=4 },
-    { type='item', name='pipe', amount=10 },
-    { type='item', name='steel-plate', amount=1 },
-}
-
-recipe['offshore-pump'].ingredients = {
-    { type='item', name='iron-gear-wheel', amount=4 },
-    { type='item', name='pipe', amount=3 },
-    { type='item', name='electronic-circuit', amount=2 },
-    { type='item', name='steel-plate', amount=1 },
-}
-
--- Assembling machines
-
-table.append(tech['automation-2'].prerequisites, {'fast-inserter', 'engine'})
-table.append(tech['automation-3'].prerequisites, {'bulk-inserter', 'logistic-robotics'})
-
-recipe['assembling-machine-1'].ingredients = {
-    { type='item', name='inserter', amount=3 },
-    { type='item', name='electronic-circuit', amount=3 },
-    { type='item', name='steel-plate', amount=2 },
-    { type='item', name='iron-chest', amount=1 },
-}
-
-recipe['assembling-machine-2'].ingredients = {
-    { type='item', name='fast-inserter', amount=4 },
-    { type='item', name='engine-unit', amount=2 },
-    { type='item', name='electronic-circuit', amount=6 },
-    { type='item', name='pipe', amount=2 },
-    { type='item', name='steel-chest', amount=1 },
-}
-
-recipe['assembling-machine-3'].ingredients = {
-    { type='item', name='bulk-inserter', amount=5 },
-    { type='item', name='speed-module', amount=3 },
-    { type='item', name='electric-engine-unit', amount=10 },
-    { type='item', name='storage-chest', amount=1 },
-    { type='item', name='pump', amount=2 },
-}
-
--- Chemical
-
-recipe['storage-tank'].ingredients = {
-    { type='item', name='steel-plate', amount=10 },
-    { type='item', name='pipe', amount=4 },
-}
-
-recipe['chemical-plant'].ingredients = {
-    { type='item', name='pump', amount=2 },
-    { type='item', name='storage-tank', amount=1 },
-    { type='item', name='pipe', amount=10 },
-    { type='item', name='electronic-circuit', amount=10 },
-    { type='item', name='copper-plate', amount=10 },
-}
-
-recipe['oil-refinery'].ingredients = {
-    { type='item', name='pump', amount=5 },
-    { type='item', name='pipe', amount=20 },
-    { type='item', name='steel-furnace', amount=1 },
-    { type='item', name='storage-tank', amount=1 },
-    { type='item', name='electronic-circuit', amount=10 },
-}
-
-recipe['pumpjack'].ingredients = {
-    { type='item', name='pump', amount=1 },
-    { type='item', name='pipe-to-ground', amount=4 },
-    { type='item', name='electronic-circuit', amount=5 },
-    { type='item', name='steel-plate', amount=5 },
-}
-
--- Rail
-
-tech.railway.prerequisites = { 'circuit-network', 'engine', 'radar' }
-
-recipe.locomotive.ingredients = {
-    { type='item', name='radar', amount=1 },
-    { type='item', name='decider-combinator', amount=3 },
-    { type='item', name='engine-unit', amount=20 },
-    { type='item', name='steel-plate', amount=20 },
-    { type='item', name='small-lamp', amount=3 },
-}
-
-recipe['rail-chain-signal'].ingredients = {
-    { type='item', name='decider-combinator', amount=1 },
-    { type='item', name='arithmetic-combinator', amount=1 },
-    { type='item', name='small-lamp', amount=1 },
-}
-
-recipe['rail-signal'].ingredients = {
-    { type='item', name='decider-combinator', amount=1 },
-    { type='item', name='arithmetic-combinator', amount=1 },
-    { type='item', name='small-lamp', amount=3 },
-}
-
-recipe['train-stop'].ingredients = {
-    { type='item', name='radar', amount=1 },
-    { type='item', name='steel-plate', amount=3 },
-    { type='item', name='small-lamp', amount=2 },
-    { type='item', name='arithmetic-combinator', amount=3 },
-}
-
-recipe['artillery-wagon'].ingredients = {
-    { type='item', name='locomotive', amount=1 },
-    { type='item', name='artillery-turret', amount=1 },
-}
-
--- Nuclear machines
-
-table.merge(tech['uranium-processing'], {
-    prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack', 'speed-module', 'electric-engine' },
-    research_trigger = utils.null,
-    unit = {
-        count = 100,
-        time = 30,
-        ingredients = {
-            { 'automation-science-pack', 1 },
-            { 'logistic-science-pack', 1 },
-            { 'chemical-science-pack', 1 },
+merge(data.raw.technology, {
+    __rec = true,
+    ['logistics-2'] = {
+        prerequisites = { 'circuit-network', 'engine' }
+    },
+    ['logistics-3'] = {
+        prerequisites = { 'production-science-pack', 'electric-engine', 'nuclear-power', 'advanced-combinators' }
+    },
+    ['railway'] = {
+        prerequisites = { 'circuit-network', 'engine', 'radar' }
+    },
+    ['automation-2'] = {
+        prerequisites = append{'fast-inserter', 'engine'},
+    },
+    ['automation-3'] = {
+        prerequisites = append{'bulk-inserter', 'logistic-robotics'},
+    },
+    ['effect-transmission'] = {
+        prerequisites = append{'efficiency-module'}
+    },
+    ['electric-energy-distribution-2'] = {
+        prerequisites = append{'electric-energy-accumulators'}
+    },
+    ['uranium-processing'], {
+        prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack', 'speed-module', 'electric-engine' 
         },
+        research_trigger = null,
+        unit = {
+            count = 100,
+            time = 30,
+            ingredients = {
+                { 'automation-science-pack', 1 },
+                { 'logistic-science-pack', 1 },
+                { 'chemical-science-pack', 1 },
+            },
+        }
     }
 })
 
-recipe['steam-turbine'].ingredients = {
-    { type='item', name='electric-engine-unit', amount=10 },
-    { type='item', name='steel-plate', amount=20 },
-    { type='item', name='pipe', amount=50 },
-}
+local function ingredients(inputs) return { ingredients = fns.gadgets.throughputs(inputs) } end
 
-recipe['heat-exchanger'].ingredients = {
-    { type='item', name='heat-pipe', amount=10 },
-    { type='item', name='engine-unit', amount=20 },
-    { type='item', name='pipe', amount=50 },
-}
+merge(recipe, {
+    __rec = true,
+    ['display-panel'] = ingredients{ ['small-lamp'] = 1, ['copper-plate'] = 2, }
 
-recipe['nuclear-reactor'].ingredients = {
-    { type='item', name='concrete', amount=250 },
-    { type='item', name='uranium-238', amount=100 },
-    { type='item', name='advanced-circuit', amount=500 },
-    { type='item', name='steel-plate', amount=250 },
-    { type='item', name='electric-engine-unit', amount=100 },
-    { type='item', name='heat-pipe', amount=100 },
-}
-
-recipe.centrifuge.ingredients = {
-    { type='item', name='electric-engine-unit', amount=20 },
-    { type='item', name='speed-module', amount=5 },
-    { type='item', name='steel-plate', amount=50 },
-    { type='item', name='iron-gear-wheel', amount=100 },
-}
-
-recipe['heating-tower'].ingredients = {
-    { type='item', name='heat-pipe', amount=5 },
-    { type='item', name='steel-furnace', amount=2 },
-    { type='item', name='concrete', amount=20 },
-}
-
--- Energy
-
-recipe['accumulator'].ingredients = {
-    { type='item', name='battery', amount=5 },
-    { type='item', name='copper-cable', amount=3 },
-    { type='item', name='electronic-circuit', amount=1 },
-    { type='item', name='iron-plate', amount=2 },
-}
-
-recipe['substation'].ingredients = {
-    { type='item', name='big-electric-pole', amount=1 },
-    { type='item', name='accumulator', amount=1 },
-    { type='item', name='advanced-circuit', amount=5 },
-}
-
-table.insert(tech['electric-energy-distribution-2'].prerequisites, 'electric-energy-accumulators')
-
-recipe['power-switch'].ingredients = {
-    { type='item', name='advanced-circuit', amount=1 },
-    { type='item', name='copper-cable', amount=10 },
-    { type='item', name='iron-gear-wheel', amount=5 },
-    { type='item', name='steel-plate', amount=5 },
-}
-
-data.raw.item['power-switch'].subgroup = data.raw.item.substation.subgroup
-data.raw.item['power-switch'].order = data.raw.item.substation.order .. '-a[switch]'
-
-table.insert(tech['electric-energy-distribution-2'].effects,
-    table.remove_matching(tech['circuit-network'].effects, { recipe = 'power-switch' })
-)
+    -- Inserters
+    ['burner-inserter'] = ingredients{
+         ['iron-stick'] = 1, ['iron-gear-wheel'] = 1, ['stone-brick'] = 1
+    },
+    ['inserter'] = ingredients{
+         ['iron-stick'] = 2, ['iron-gear-wheel'] = 2, ['electronic-circuit'] = 1
+    },
+    ['long-handed-inserter'] = ingredients{
+         ['iron-stick'] = 2, ['iron-gear-wheel'] = 1, ['electronic-circuit'] = 1, ['inserter'] = 1
+    },
+    ['fast-inserter'] = ingredients{
+         ['iron-stick'] = 1, ['iron-gear-wheel'] = 2, ['electronic-circuit'] = 1, ['inserter'] = 1
+    },
+    ['bulk-inserter'] = ingredients{
+         ['steel-plate'] = 2, ['advanced-circuit'] = 1, ['engine-unit'] = 2, ['fast-inserter'] = 4
+    },
+    ['stack-inserter'] = ingredients{
+         ['carbon-fiber'] = 2, ['efficiency-module'] = 1, ['electric-engine-unit'] = 4, ['bulk-inserter'] = 2
+    },
+    -- Belts
+    ['splitter'] = ingredients{
+         ['transport-belt'] = 4, ['electronic-circuit'] = 4, ['iron-plate'] = 2
+    },
+    ['underground-belt'] = ingredients{
+         ['iron-plate'] = 10, ['transport-belt'] = 6
+    },
+    ['fast-transport-belt'] = {
+        results = puts{ ['fast-transport-belt'] = 2 },
+        ingredients = puts{
+             ['copper-plate'] = 4, ['engine-unit'] = 2, ['iron-gear-wheel'] = 6
+        },
+    }
+        
+    ['fast-underground-belt'] = ingredients{
+         ['fast-transport-belt'] = 8, ['steel-plate'] = 5, ['copper-plate'] = 10
+    },
+    ['fast-splitter'] = ingredients{
+         ['fast-transport-belt'] = 4, ['decider-combinator'] = 2, ['steel-plate'] = 2
+    },
+    ['express-transport-belt'] = {
+        results = puts{ ['turbo-transport-belt'] = 2 },
+        ingredients = puts{
+            ['steel-plate'] = 2, ['iron-gear-wheel'] = 10, ['electric-engine-unit'] = 4, ['lubricant'] = 20
+        },
+    }
+    ['express-underground-belt'] = ingredients{
+         ['express-transport-belt'] = 10, ['concrete'] = 20, ['pump'] = 1, ['water'] = 200
+    },
+    ['express-splitter'] = ingredients{
+         ['express-transport-belt'] = 4, ['selector-combinator'] = 2, ['steel-plate'] = 5
+    },
+    ['turbo-transport-belt'] = {
+        surface_conditions = null,
+        results = puts{ ['turbo-transport-belt'] = 2 },
+        ingredients = puts {
+            ['tungsten-plate'] = 4, ['iron-gear-wheel'] = 20, ['electric-engine-unit'] = 10, ['lubricant'] = 100
+        },
+    },
+    ['turbo-underground-belt'] = {
+        surface_conditions = null,
+        ingredients = {
+            ['turbo-transport-belt'] = 12, ['heat-pipe'] = 4, ['refined-concrete'] = 50, ['lubricant'] = 500
+        }
+    },
+    ['turbo-splitter'] = {
+        surface_conditions = null,
+        ingredients = {
+            ['turbo-transport-belt'] = 4, ['speed-module'] = 4, ['processing-unit'] = 1, ['low-density-structure'] = 10
+        },
+    },
+    -- Misc
+    ['lab'] = ingredients{
+         ['transport-belt'] = 3, ['inserter'] = 3, ['copper-plate'] = 10, ['electronic-circuit'] = 10
+    },
+    ['beacon'] = ingredients{
+         ['efficiency-module'] = 1, ['advanced-circuit'] = 15, ['electronic-circuit'] = 15, ['steel-plate'] = 5, ['copper-cable'] = 5
+    },
+    ['electric-furnace'] = ingredients{
+         ['advanced-circuit'] = 5, ['engine-unit'] = 2, ['steel-furnace'] = 2, ['copper-plate'] = 10
+    },
+    ['car'] = ingredients{
+         ['engine-unit'] = 8, ['steel-plate'] = 8, ['pipe'] = 2, ['electronic-circuit'] = 5, ['iron-gear-wheel'] = 10, ['small-lamp'] = 2
+    },
+    -- Mining drills
+    ['burner-mining-drill'] = ingredients{
+         ['stone-brick'] = 6, ['iron-gear-wheel'] = 4, ['steel-plate'] = 1
+    },
+    ['electric-mining-drill'] = ingredients{
+         ['electronic-circuit'] = 3, ['iron-gear-wheel'] = 5, ['steel-plate'] = 2
+    },
+    ['big-mining-drill'] = ingredients{
+         ['processing-unit'] = 1, ['productivity-module'] = 2, ['electric-engine-unit'] = 10, ['tungsten-carbide'] = 20, ['molten-iron'] = 100, ['molten-copper'] = 100
+    },
+    -- Steam
+    ['boiler'] = ingredients{
+         ['stone-brick'] = 8, ['pipe'] = 4, ['copper-plate'] = 2
+    },
+    ['steam-engine'] = ingredients{
+         ['copper-cable'] = 6, ['iron-gear-wheel'] = 4, ['pipe'] = 10, ['steel-plate'] = 1
+    },
+    ['offshore-pump'] = ingredients{
+         ['iron-gear-wheel'] = 4, ['pipe'] = 3, ['electronic-circuit'] = 2, ['steel-plate'] = 1
+    },
+    -- Assembling machines
+    ['assembling-machine-1'] = ingredients{
+         ['inserter'] = 3, ['electronic-circuit'] = 3, ['steel-plate'] = 2, ['iron-chest'] = 1
+    },
+    ['assembling-machine-2'] = ingredients{
+         ['fast-inserter'] = 4, ['engine-unit'] = 2, ['electronic-circuit'] = 6, ['pipe'] = 2, ['steel-chest'] = 1
+    },
+    ['assembling-machine-3'] = ingredients{
+         ['bulk-inserter'] = 5, ['speed-module'] = 3, ['electric-engine-unit'] = 10, ['storage-chest'] = 1, ['pump'] = 2
+    },
+    -- Chemical
+    ['storage-tank'] = ingredients{
+         ['steel-plate'] = 10, ['pipe'] = 4
+    },
+    ['chemical-plant'] = ingredients{
+         ['pump'] = 2, ['storage-tank'] = 1, ['pipe'] = 10, ['electronic-circuit'] = 10, ['copper-plate'] = 10
+    },
+    ['oil-refinery'] = ingredients{
+         ['pump'] = 5, ['pipe'] = 20, ['steel-furnace'] = 1, ['storage-tank'] = 1, ['electronic-circuit'] = 10
+    },
+    ['pumpjack'] = ingredients{
+         ['pump'] = 1, ['pipe-to-ground'] = 4, ['electronic-circuit'] = 5, ['steel-plate'] = 5
+    },
+    -- Rail
+    ['locomotive'] = ingredients{
+         ['radar'] = 1, ['decider-combinator'] = 3, ['engine-unit'] = 20, ['steel-plate'] = 20, ['small-lamp'] = 3
+    },
+    ['rail-chain-signal'] = ingredients{
+         ['decider-combinator'] = 1, ['arithmetic-combinator'] = 1, ['small-lamp'] = 1
+    },
+    ['rail-signal'] = ingredients{
+         ['decider-combinator'] = 1, ['arithmetic-combinator'] = 1, ['small-lamp'] = 3
+    },
+    ['train-stop'] = ingredients{
+         ['radar'] = 1, ['steel-plate'] = 3, ['small-lamp'] = 2, ['arithmetic-combinator'] = 3
+    },
+    ['artillery-wagon'] = ingredients{
+         ['locomotive'] = 1, ['artillery-turret'] = 1
+    },
+    -- Nuclear machines
+    ['steam-turbine'] = ingredients{
+         ['electric-engine-unit'] = 10, ['steel-plate'] = 20, ['pipe'] = 50
+    },
+    ['heat-exchanger'] = ingredients{
+         ['heat-pipe'] = 10, ['engine-unit'] = 20, ['pipe'] = 50
+    },
+    ['nuclear-reactor'] = ingredients{
+         ['concrete'] = 250, ['uranium-238'] = 100, ['advanced-circuit'] = 500, ['steel-plate'] = 250, ['electric-engine-unit'] = 100, ['heat-pipe'] = 100
+    },
+    ['centrifuge'] = ingredients{
+         ['electric-engine-unit'] = 20, ['speed-module'] = 5, ['steel-plate'] = 50, ['iron-gear-wheel'] = 100
+    },
+    ['heating-tower'] = ingredients{
+         ['heat-pipe'] = 5, ['steel-furnace'] = 2, ['concrete'] = 20
+    },
+    -- Energy
+    ['accumulator'] = ingredients{
+         ['battery'] = 5, ['copper-cable'] = 3, ['electronic-circuit'] = 1, ['iron-plate'] = 2
+    },
+    ['substation'] = ingredients{
+         ['big-electric-pole'] = 1, ['accumulator'] = 1, ['advanced-circuit'] = 5
+    },
+    ['power-switch'] = ingredients{
+         ['advanced-circuit'] = 1, ['copper-cable'] = 10, ['iron-gear-wheel'] = 5, ['steel-plate'] = 5
+    },
+})
