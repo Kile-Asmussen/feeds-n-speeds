@@ -1,7 +1,7 @@
 
 local fns = require 'fns'
 
-local inputs = require('gadgets').throughputs
+local inputs = fns.gadgets.throughputs
 local merge = fns.table.merge
 local append = fns.table.append
 

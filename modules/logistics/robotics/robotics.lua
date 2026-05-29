@@ -1,6 +1,6 @@
 local fns = require 'fns'
 local base = data.raw.roboport.roboport
-local inputs = require('gadgets').throughputs
+local inputs = fns.gadgets.throughputs
 
 base.charging_station_count_affected_by_quality = true
 

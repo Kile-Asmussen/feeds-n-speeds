@@ -1,5 +1,5 @@
 local fns = require 'fns'
-local puts = require('gadgets').throughputs
+local puts = fns.gadgets.throughputs
 local recipes = data.raw.recipe
 local merge = table.merge
 
