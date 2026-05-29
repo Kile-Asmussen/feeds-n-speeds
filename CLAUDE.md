@@ -30,7 +30,7 @@ Claude hooks: Python
   - `CLAUDE.md`: this file
   - `test/localisation.lua`: tracker for missing localisation strings in the test pipeline
   - `module.lua`: the module loader
-  - `gadgets.lua`: the utility library
+  - `fns/gadgets.lua`: the utility library
 - **Run** the specific Bash commands listed in `.claude/bash-commands.json` (see below)
 - **WebFetch** from `lua-api.factorio.com`, `wiki.factorio.com`, `forums.factorio.com`, `mods.factorio.com`, `github.com/wube/factorio-data/*`, `raw.githubusercontent.com/wube/factorio-data/*`
 

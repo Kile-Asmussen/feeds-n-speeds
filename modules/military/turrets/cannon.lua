@@ -1,5 +1,4 @@
 local fns = require 'fns'
-local gadgets = require 'gadgets'
 
 local turret = table.clone(data.raw['ammo-turret']['gun-turret'])
 local name = fns 'cannon-turret'

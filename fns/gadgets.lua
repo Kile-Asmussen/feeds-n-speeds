@@ -1,12 +1,11 @@
 
-local fns = require 'fns'
 local namespace = require 'namespace'
 local gadgets = namespace 'gadgets'
 
-local assert = fns.assert
+local assert = _ENV.assert
 
-local table = fns.table
-local string = fns.string
+local table = _ENV.table
+local string = _ENV.string
 
 function gadgets.remove_unlocks(remove)
     if table.has_array(remove) then

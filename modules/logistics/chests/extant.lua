@@ -1,13 +1,12 @@
 
 local fns = require 'fns'
-local gadgets = require 'gadgets'
-local inputs = gadgets.throughputs
+local inputs = fns.gadgets.throughputs
 
 local merge = fns.table.merge
 local utils = fns.utils
 local set = fns.table.intoset
 
-local upscale = table.traverse(gadgets.scale_vectors_and_numbers(
+local upscale = table.traverse(fns.gadgets.scale_vectors_and_numbers(
   2.0,
   set{
     'scale', 'number', 'volume_multiplier',
@@ -16,7 +15,7 @@ local upscale = table.traverse(gadgets.scale_vectors_and_numbers(
   set{ 'circuit_connector' }
 ))
 
-local shift_wire = table.traverse(gadgets.shift_vectors(
+local shift_wire = table.traverse(fns.gadgets.shift_vectors(
   {0.35, 0.30}, set{'shift'}, {}
 ))
 

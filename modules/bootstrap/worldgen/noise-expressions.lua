@@ -1,6 +1,5 @@
 
 local fns = require 'fns'
-local gadgets = require 'gadgets'
 
 local noise = {
     name = fns 'sulfur-ore',
@@ -16,7 +15,7 @@ data:extend{
     {
         type = 'noise-expression',
         name = fns 'sulfur-ore-patches',
-        expression = gadgets.resource_autoplace_all_patches(noise)
+        expression = fns.gadgets.resource_autoplace_all_patches(noise)
     },
     {
         type = 'noise-expression',

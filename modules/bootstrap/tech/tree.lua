@@ -1,5 +1,6 @@
 
 local fns = require 'fns'
+local icons = fns.gadgets.icons
 
 local merge = fns.table.merge
 
@@ -8,11 +9,9 @@ data:extend{{
     name = fns 'lab-tech',
     order = 'a-a-z',
     essential = true,
-    icons = {
-        {
-            icon = '__base__/graphics/technology/research-speed.png',
-            icon_size = 256
-        },
+    icons = icons{
+        type = 'technology',
+        '__base__/graphics/technology/research-speed.png',
     },
     effects = { { type = "unlock-circuit-network", modifier = true } },
     prerequisites = { 'steam-power' },
@@ -26,7 +25,8 @@ data:extend{{
 table.remove_matching(data.raw.technology['circuit-network'].effects, { type = "unlock-circuit-network" })
 
 table.merge(data.raw.technology, {
-    ['steel-processing'] = table.merge{
+    __rec = true,
+    ['steel-processing'] = {
         essential = true,
         research_trigger = {
             count = 20,
@@ -38,7 +38,7 @@ table.merge(data.raw.technology, {
         localised_description = {fns.locale_key('technology-description', 'tweaked-steel-processing')}
     },
 
-    ['electronics'] = table.merge{
+    ['electronics'] = {
         localised_description = {fns.locale_key("technology-description", 'tweaked-electronics') },
         essential = true,
         research_trigger = {
@@ -47,7 +47,7 @@ table.merge(data.raw.technology, {
             type = 'craft-item'
         },
     },
-    ['steam-power'] = table.merge{
+    ['steam-power'] = {
         essential = true,
         localised_description = { fns.locale_key('technology-description', 'tweaked-steam-power') },
         research_trigger = {

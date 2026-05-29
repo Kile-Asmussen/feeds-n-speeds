@@ -1,7 +1,7 @@
 
 local fns = require 'fns'
 
-local gadgets = require 'gadgets'
+local gadgets = fns.gadgets
 local puts = gadgets.throughputs
 local merge = fns.table.merge
 

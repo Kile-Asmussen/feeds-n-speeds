@@ -6,7 +6,7 @@ require 'test'
 
 local localisation = require 'test.localisation'
 local debuglib = require 'debuglib'
-local gadgets = require 'gadgets'
+local gadgets = fns.gadgets
 
 if not _ENV.VERBOSE then
     _ENV.__log = function() end

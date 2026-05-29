@@ -1,5 +1,4 @@
 local fns = require 'fns'
-local tools = require 'gadgets'
 
 local boil_water = {
     type='recipe',
@@ -54,9 +53,9 @@ local steam = data.raw.fluid.steam
 local water = data.raw.fluid.water
 
 local plant = data.raw['assembling-machine']['chemical-plant']
-local power = tools.joules_or_watts(plant.energy_usage)
+local power = fns.gadgets.joules_or_watts(plant.energy_usage)
 
-local heat_cap = tools.joules_or_watts(steam.heat_capacity)
+local heat_cap = fns.gadgets.joules_or_watts(steam.heat_capacity)
 
 local zero = steam.default_temperature
 local boil = steam.gas_temperature

@@ -1,7 +1,6 @@
 local fns = require 'fns'
-local gadgets = require 'gadgets'
-local puts = gadgets.throughputs
-local icons = gadgets.icons
+local puts = fns.gadgets.throughputs
+local icons = fns.gadgets.icons
 
 data.raw.recipe['burner-mining-drill'].auto_unlocked_by = 'steam-power'
 

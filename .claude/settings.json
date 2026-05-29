@@ -11,7 +11,7 @@
       "Write(slop/**/*)",
       "Edit(src/*)",
       "Write(src/*)",
-      "Edit(gadgets.lua)",
+      "Edit(fns/gadgets.lua)",
       "Edit(modules.lua)",
       "Edit(modules/**/*)",
       "Write(modules/**/*)",

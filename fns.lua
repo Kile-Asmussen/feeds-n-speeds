@@ -53,6 +53,7 @@ function fns.locale_key(category, name)
 end
 
 function fns.use()
+    _ENV.assert = fns.assert
     fns.string.use()
     fns.table.use()
     fns.utils.use()
@@ -60,11 +61,16 @@ function fns.use()
 end
 
 function fns.restore()
+    _ENV.assert = __env_assert
     fns.string.restore()
     fns.table.restore()
     fns.utils.restore()
     fns.math.restore()
 end
+
+fns.use()
+fns:require 'gadgets'
+fns.restore()
 
 _ENV.assert = __env_assert
 

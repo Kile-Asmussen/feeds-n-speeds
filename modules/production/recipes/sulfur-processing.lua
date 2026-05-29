@@ -1,9 +1,8 @@
 
 local fns = require 'fns'
 
-local gadgets = require 'gadgets'
-local puts = gadgets.throughputs
-local icons = gadgets.icons
+local puts = fns.gadgets.throughputs
+local icons = fns.gadgets.icons
 local merge = fns.table.merge
 
 data:extend{

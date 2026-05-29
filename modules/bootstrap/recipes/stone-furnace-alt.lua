@@ -1,8 +1,7 @@
 
 local fns = require 'fns'
-local gadgets = require 'gadgets'
-local puts = gadgets.throughputs
-local icons = gadgets.icons
+local puts = fns.gadgets.throughputs
+local icons = fns.gadgets.icons
 
 local old_recipe = data.raw.recipe['stone-furnace']
 

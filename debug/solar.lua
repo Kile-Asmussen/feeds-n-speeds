@@ -2,7 +2,7 @@
 local fns = require 'fns'
 fns.use()
 
-local gadgets = require 'gadgets'
+local gadgets = fns.gadgets
 
 local debuglib = require 'debuglib'
 require 'test'

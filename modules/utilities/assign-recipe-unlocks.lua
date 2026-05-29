@@ -1,6 +1,5 @@
 
-local gadgets = require 'gadgets'
-local debuglib = require 'debuglib'
+local fns = require 'fns'
 local remove = {}
 local unlocks = {}
 
@@ -31,7 +30,7 @@ for _, recipe in table.opairs(data.raw.recipe) do
     ::continue::
 end
 
-gadgets.remove_unlocks(remove)
+fns.gadgets.remove_unlocks(remove)
 
 for recipe, unlock in table.opairs(unlocks) do
     for tech, _ in table.opairs(unlock) do

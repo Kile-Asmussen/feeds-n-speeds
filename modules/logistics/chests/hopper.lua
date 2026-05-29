@@ -1,6 +1,6 @@
 
 local fns = require 'fns'
-local gadgets = require 'gadgets'
+local puts = fns.gadgets.throughputs
 
 local hopper =
 table.merge(table.clone(data.raw.container['steel-chest']), {
@@ -21,12 +21,11 @@ table.merge(table.clone(data.raw.item['steel-chest']), {
     place_result = fns 'hopper',
 })
 
-local recipe =
-table.merge(table.clone(data.raw.recipe['steel-chest']), {
+local recipe = table.merge(table.clone(data.raw.recipe['steel-chest']), {
     name = fns 'hopper',
     auto_unlock_by = 'automation',
-    ingredients = gadgets.throughputs{ ['steel-chest'] = 1, ['long-handed-inserter'] = 1 },
-    results = table.assign{ 1, 'name', val = fns 'hopper' },
+    ingredients = puts{ ['steel-chest'] = 1, ['long-handed-inserter'] = 1 },
+    results = puts{ [fns 'hopper'] = 1 },
 })
 
 data:extend{ hopper, item, recipe }

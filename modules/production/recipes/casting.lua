@@ -1,11 +1,10 @@
 
 local fns = require 'fns'
-local gadgets = require 'gadgets'
 local recipes = data.raw.recipe
 
 recipes['casting-pipe'].allow_productivity = true
 recipes['casting-pipe-to-ground'] = nil
-gadgets.remove_unlocks{'casting-pipe-to-ground'}
+fns.gadgets.remove_unlocks{'casting-pipe-to-ground'}
 
 table.merge(recipes['casting-iron-stick'], {
     ingredients = {{ type='fluid', name='molten-iron', amount=10 }},
