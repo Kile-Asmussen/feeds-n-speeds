@@ -131,73 +131,6 @@ function gadgets.hexcolor(hex)
     return res
 end
 
-
-gadgets.science_pack_tier = {
-    ["automation-science-pack"]      = 1,
-    ["logistic-science-pack"]        = 2,
-    ["military-science-pack"]        = 3,
-    ["chemical-science-pack"]        = 3,
-    ["production-science-pack"]      = 4,
-    ["utility-science-pack"]         = 4,
-    ["space-science-pack"]           = 5,
-    ["metallurgic-science-pack"]     = 6,
-    ["electromagnetic-science-pack"] = 6,
-    ["agricultural-science-pack"]    = 6,
-    ["cryogenic-science-pack"]       = 7,
-    ["promethium-science-pack"]      = 8,
-}
-
-local entity_to_techs = table.null
-
-function gadgets.entity_tier(name)
-    if entity_to_techs ~= table.null then goto result end
-
-    entity_to_techs = {}
-
-    for _, tech in pairs(data.raw.technology) do
-        for _, eff in ipairs(tech.effects or table.null) do
-            if eff.type == 'unlock-recipe' then
-                for _, res in pairs(data.raw.recipe[eff.recipe].results) do
-                    if res.type == 'item' then
-                        local place =data.raw.item[res.name].placeable_result
-                        if data.raw.item[res.name].placeable_result then
-                            entity_to_techs[place] = entity_to_techs[place] or {}
-                            table.insert(entity_to_techs[place], tech.name)
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    ::result::
-    if not entity_to_techs[name] then return 0 end
-    return table.max(table.collect(entity_to_techs[name], gadgets.highest_unlock))
-end
-
-function gadgets.highest_tier_pack(name)
-    local technology = data.raw.technology[name]
-    assert(technology, "no such technology: " .. name)
-    if not technology.unit then return 0 end
-
-    local highest = table.max(technology.unit.ingredients, function(u, v)
-        return gadgets.science_pack_tier[u[1]] < gadgets.science_pack_tier[v[1]]
-    end)
-    return gadgets.science_pack_tier[highest[1]]
-end
-
-local highest_unlock = {}
-
-function gadgets.highest_unlock(name)
-    if not highest_unlock[name] then
-        local tech = data.raw.technology[name]
-        local prereqs = table.collect(tech.prerequisites, gadgets.highest_unlock)
-        table.insert(prereqs, gadgets.highest_unlock(name))
-        highest_unlock[name] = table.max(prereqs)
-    end
-    return highest_unlock[name]
-end
-
 gadgets.si_prefixes = {
     'k', 'M', 'G', 'T',
     k = 1000,
@@ -318,21 +251,7 @@ function gadgets.icon(spec)
 
     local offset = spec.offset
     if offset == nil and floating == true then
-        -- the default position of the icon is centered, so
-        -- based on icon_size, scale_coefficient, and expected_icon_size
-        -- calculate how many pixels to shift the icon in any orthogonal direction
-        -- so it hits the edge of the boundary of the image.
-
-        -- assumption: image bounds is a square with side length expected_icon_size 
-        -- assumption: the icon is a square with side length icon_size * scale_coefficient
-        -- assumption: icon_size * scale_coefficient < expected_icon_size
-
-        -- problem is to calculate X-direction distance between centers of two
-        -- squares where one square is inside the other, and they share a corner
-
-        -- I need your help with this one
-
-        offset = ???
+        offset = (expected_icon_size / 2) * (1 - scale_coefficient)
     end
 
     local shift = spec.shift
