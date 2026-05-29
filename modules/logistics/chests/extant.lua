@@ -20,33 +20,34 @@ local shift_wire = table.traverse(fns.gadgets.shift_vectors(
 ))
 
 merge(data.raw.recipe, {
-    ['wooden-chest'] = merge{
+    __rec = true,
+    ['wooden-chest'] = {
         ingredients = inputs{ ['wood'] = 6 },
     },
-    ['iron-chest'] = merge{
+    ['iron-chest'] = {
         ingredients = inputs{ ['iron-plate'] = 6, ['iron-gear-wheel'] = 2, },
     },
-    ['steel-chest'] = merge{
+    ['steel-chest'] = {
         auto_unlocked_by = 'automation',
         ingredients = inputs{
             ['steel-plate'] = 8,
             ['electronic-circuit'] = 8,
         }
     },
-    ['storage-chest'] = merge{
+    ['storage-chest'] = {
         ingredients = inputs{
             ['steel-chest'] = 1,
             ['display-panel'] = 1,
         }
     },
-    ['passive-provider-chest'] = merge{
+    ['passive-provider-chest'] = {
         ingredients = inputs{
             ['storage-chest'] = 1,
             ['display-panel'] = 3,
             ['selector-combinator'] = 1,
         }
     },
-    ['active-provider-chest'] = merge{
+    ['active-provider-chest'] = {
         allow_decomposition = true,
         ingredients = inputs{
             ['passive-provider-chest'] = 1,
@@ -54,7 +55,7 @@ merge(data.raw.recipe, {
             ['programmable-speaker'] = 1,
         }
     },
-    ['requester-chest'] = merge{
+    ['requester-chest'] = {
         allow_decomposition = true,
         ingredients = inputs{
             ['active-provider-chest'] = 1,
@@ -62,7 +63,8 @@ merge(data.raw.recipe, {
             ['radar'] = 1,
         }
     },
-    ['buffer-chest'] = merge{
+    ['buffer-chest'] = {
+        allow_decomposition = true,
         ingredients = inputs{
             ['requester-chest'] = 1,
             ['selector-combinator'] = 1,

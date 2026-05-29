@@ -1,9 +1,22 @@
 local fns = require 'fns'
-local link = table.clone(data.raw.accumulator.accumulator)
+local merge = fns.table.merge
 local switch = data.raw['power-switch']['power-switch']
 
-link.name = fns 'electric-link'
--- link.localised_description = {""}
+local link = table.merge(table.clone(data.raw.accumulator.accumulator), {
+    name = fns 'electric-link',
+    default_output_signal = {
+        name = 'signal-lightning',
+        type = 'virtual',
+    },
+    energy_source = {
+        buffer_capacity = '85kJ', -- ca. 5MW * 1s / 60
+        input_flow_limit = '5MW',
+        output_flow_limit = '5MW',
+        type = 'electric',
+        usage_priority = 'primary-input'
+    },
+    minable = table.assign{'result', val = fns 'electric-link'}
+})
 
 for _, field in ipairs{
     'corpse',
@@ -20,22 +33,6 @@ for _, field in ipairs{
     link[field] = table.clone(switch[field])
 end
 
-link.default_output_signal = {
-    name = 'signal-lightning',
-    type = 'virtual',
-}
-
-link.energy_source = {
-    buffer_capacity = '85kJ', -- ca. 5MW * 1s / 60
-    input_flow_limit = '5MW',
-    output_flow_limit = '5MW',
-    type = 'electric',
-    usage_priority = 'primary-input'
-}
-
--- link.chargeable_graphics.c
-
-link.minable.result = link.name
 
 link.chargable_graphics.picture = {
     layers = {
@@ -68,35 +65,28 @@ link.chargable_graphics.picture = {
     },
 }
 
-local animation_layers = table.clone(link.chargable_graphics.picture.layers)
-animation_layers[1].repeat_count = switch.overlay_loop.frame_count
-animation_layers[2].repeat_count = switch.overlay_loop.frame_count
+local animation_layers = table.merge(table.clone(link.chargable_graphics.picture.layers), {
+    __rec = true,
+    [{1, 2}] = { repeat_count = switch.overlay_loop.frame_count }
+})
 
-link.chargable_graphics.charge_animation = {
-    layers = {
-        {
-            layers = animation_layers
-        },
-        table.clone(switch.overlay_loop)
-    }
+local charge_animation = {
+    layers = { { layers = animation_layers },
+    table.clone(switch.overlay_loop) }
 }
 
-link.chargable_graphics.discharge_animation = table.clone(link.chargable_graphics.charge_animation)
+table.merge(link.chargable_graphics, {
+    charge_animation = charge_animation,
+    discharge_animation = table.clone(charge_animation),
+}
 
-link.icons = {
+link.icons = fns.gadgets.icons{
+    { switch.icon, tint = { 1.0, 1.0, 0.6 }, },
     {
-        icon = switch.icon,
-        icon_size = 64,
-        tint = { 1.0, 1.0, 0.6 },
-        scale = 0.5,
-    },
-    {
-        icon = data.raw['virtual-signal']['signal-rightwards-leftwards-arrow'].icon,
-        floating = true,
-        icon_size = 64,
+        data.raw['virtual-signal']['signal-rightwards-leftwards-arrow'].icon,
         tint = { 0, 1, 0 },
-        scale = 0.33,
-        shift = { 6, -6 },
+        size = 'medium',
+        dir = 'tr',
     },
 }
 
@@ -108,32 +98,27 @@ table.traverse(link.chargable_graphics, function(x)
     end
 end)
 
-local link_item = table.clone(data.raw.item['power-switch'])
+ 
 
-link_item.name = fns 'electric-link'
+local link_item = table.merge(table.clone(data.raw.item['power-switch']), {
+    name = fns 'electric-link',
+    icons = table.clone(link.icons),
+    place_result=fns 'electric-link',
+    subgroup = data.raw.item.substation.subgroup,
+    order = data.raw.item.substation.order .. '-b[link]',
+})
 
-link_item.icons = table.clone(link.icons)
+local puts = fns.gadgets.throughputs
 
-link_item.place_result=fns 'electric-link'
+local link_recipe = table.merge(table.clone(data.raw.recipe['accumulator']), {
 
-link_item.subgroup = data.raw.item.substation.subgroup
-link_item.order = data.raw.item.substation.order .. '-b[link]'
+    name = fns 'electric-link'
+    category = 'electronics-with-fluid'
+    auto_unlocked_by = 'electric-energy-distribution-2'
 
-local link_recipe = table.clone(data.raw.recipe['accumulator'])
-
-link_recipe.name = fns 'electric-link'
-link_recipe.category = 'electronics-with-fluid'
-link_recipe.auto_unlocked_by = 'electric-energy-distribution-2'
-
-link_recipe.ingredients = {
-    { type='item', amount=20, name='iron-plate' },
-    { type='item', amount=20, name='copper-cable' },
-    { type='fluid', amount=50, name='light-oil' },
-}
-
-link_recipe.results = {
-    { type='item', amount=1, name=fns 'electric-link' },
-}
+    ingredients = puts{ ['iron-plate'] = 20, ['copper-cable'] = 20, ['light-oil'] = 50 },
+    results = puts{ [fns 'electric-line'] = 1 }
+})
 
 data:extend{
     link,
