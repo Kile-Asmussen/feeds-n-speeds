@@ -2,27 +2,19 @@
 local table = _ENV.table
 local assert = _ENV.assert
 
-local function __search(tbl, fn)
+local function __search(any, fn)
     if fn(tbl) then return tbl end
 
     if type(tbl) ~= 'table' then return nil end
 
     for k, v in pairs(tbl) do
         local found = __search(v, fn)
-        if found then return found end
     end
 
     return nil
 end
 
-function table.search(tbl, thing)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    if type(thing) ~= 'function' then
-        return __search(tbl, table.pattern(thing))
-    else
-        return __search(tbl, thing)
-    end
-end
+table.search = table.twoarg(__search, 'any?', 'any?')
 
 local function __traverse(tbl, func)
     for k, v in pairs(tbl) do
@@ -43,24 +35,7 @@ local function __traverse(tbl, func)
     return tbl
 end
 
-function table.traverse(...)
-    local n = select('#', ...)
-    if n == 1 then
-        local func = ...
-        assert(type(func) == "function", "argument #1 must be a function")
-        return function(tbl)
-            assert(type(tbl) == "table", "argument #1 must be a table")
-            return __traverse(tbl, func)
-        end
-    elseif n == 2 then
-        local tbl, func = ...
-        assert(type(tbl) == "table", "argument #1 must be a table")
-        assert(type(func) == "function", "argument #2 must be a function")
-        return __traverse(tbl, func)
-    else
-        error("wrong number of arguments, expected 1 or 2", 2)
-    end
-end
+table.traverse = table.twoarg(__traverse, 'function')
 
 function table.replace(tbl, a, b)
   table.traverse(tbl, function(v)
@@ -68,39 +43,6 @@ function table.replace(tbl, a, b)
       return b, true
     end
   end)
-end
-
-local function __descend(tbl, keys)
-    for _, key in ipairs(keys) do
-        if type(tbl) ~= 'table' then
-            return tbl, false
-        end
-
-        if tbl[key] ~= nil then
-            tbl = tbl[key]
-        else
-            return tbl, false
-        end
-    end
-    
-    return tbl, true
-end
-
-function table.descend(...)
-    local n = select('#', ...) 
-    if n == 1 then
-        local keys = ...
-        assert(type(keys) == "table", "argument #1 must be a table", 2)
-        return function(tbl)
-            assert(type(tbl) == "table", "argument #1 must be a table", 2)
-            return __descend(tbl, keys)
-        end
-    else
-        local tbl, keys = ...
-        assert(type(tbl) == "table", "argument #1 must be a table", 2)
-        assert(type(keys) == "table", "argument #2 must be a table", 2)
-        return __descend(tbl, keys)
-    end
 end
 
 local function __access(tbl, keys)
@@ -119,22 +61,7 @@ local function __access(tbl, keys)
     return tbl
 end
 
-function table.access(...)
-    local n = select('#', ...)
-    if n == 1 then
-        local keys = ...
-        assert(type(keys) == "table", "argument #1 must be a table")
-        return function(tbl)
-            assert(type(tbl) == "table", "argument #1 must be a table")
-            return __access(tbl, keys)
-        end
-    else
-        local tbl, keys = ...
-        assert(type(tbl) == "table", "argument #1 must be a table")
-        assert(type(keys) == "table", "argument #2 must be a table")
-        return __access(tbl, keys)
-    end
-end
+table.access = table.twoarg(__access)
 
 local function __assign(tbl, keys)
     if #keys == 0 then
@@ -161,14 +88,55 @@ end
 
 table.assign = table.twoarg(__assign)
 
-function table.index(tbl)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    return function(k) return tbl[k] end
-end
+table.index = table.twoarg(function(tbl, k) return tbl[k] end, 'any')
 
 function table.newindex(tbl)
     assert(type(tbl) == "table", "argument #1 must be a table")
     return function(k, v) tbl[k] = v return tbl end
+end
+
+function table.dup(tbl)
+    local res = {}
+    for k, v in pairs(tbl) do
+        res[k] = v
+    end
+    return res
+end
+
+local function __deepcopy(tbl, res, seen, setmeta)
+    if seen[tbl] then return seen[tbl] end
+    if setmeta then
+        for k, v in pairs(tbl) do
+            if type(v) == 'table' then
+                if seen[v] then
+                    res[k] = seen[v]
+                else
+                    seen[v] = {}
+                    setmetatable(seen[v], getmetatable(v))
+                    res[k] = __deepcopy(v, seen[v], seen)
+                end
+            else
+                res[k] = v
+            end
+        end
+    else
+        for k, v in pairs(tbl) do
+            if type(v) == 'table' then
+                seen[v] = {}
+                res[k] = __deepcopy(v, seen[v], seen)
+            else
+                res[k] = v
+            end
+        end
+    end
+
+    return res
+end
+
+function table.deepcopy(tbl, setmeta)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+    setmeta = setmeta and true or false
+    return __deepcopy(tbl, {}, {}, setmeta)
 end
 
 local function __clone(seen, setmeta)

@@ -24,13 +24,13 @@ local args = { ... }
 table.icollect(args, function(s) return tonumber(s) or s end)
 
 local ix =  utils.tablepath('data.raw', args)
-local result, found = table.descend(data.raw, args)
+local result = table.access(data.raw, args)
 
 if #args < 2 then
     debuglib.recursion_limit = 1
 end
 
-if found then
+if result ~= nil then
     __log(ix .. ' = ' .. debuglib.pp(result, 'data.raw'))
 else
     __log('Path not found: ' .. ix)

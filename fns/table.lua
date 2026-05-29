@@ -2,7 +2,6 @@
 local table_ = require("namespace")("table")
 
 local assert = _ENV.assert
-
 table_.insert = table.insert
 table_.pack = table.pack
 table_.sort = table.sort
@@ -34,43 +33,7 @@ end
 
 table_.use()
 
-function table.twoarg(func)
-    return function(...)
-        local n = select('#', ...)
-        if n == 1 then
-            local tbl2 = ...
-            assert(type(tbl2) == "table", "argument #1 must be a table")
-            return function(tbl1)
-                assert(type(tbl1) == "table", "argument #1 must be a table")
-                return func(tbl1, tbl2)
-            end
-        elseif n == 2 then
-            local tbl1, tbl2 = ...
-            assert(type(tbl2) == "table", "argument #1 must be a table")
-            assert(type(tbl2) == "table", "argument #2 must be a table")
-            return func(tbl1, tbl2)
-        else
-            error("wrong number of arguments, expected 1 or 2")
-        end
-    end
-end
-
-function table.is_empty(tbl)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    return not next(tbl)
-end
-
-table.size = _ENV.table_size or function(tbl)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    local k = next(tbl)
-    local n = 0
-    while k do
-        n = n + 1
-        k = next(tbl, k)
-    end
-    return n
-end
-
+require 'fns.table.base'
 require 'fns.table.iter'
 require 'fns.table.match'
 require 'fns.table.sets'

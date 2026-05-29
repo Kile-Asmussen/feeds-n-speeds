@@ -2,8 +2,6 @@
 
 ## Bugs
 
-- [ ] The rust raw data loading library does not seem to adequately reset the state of the mod-list.json back to what it was, leading to changes visible in-game. Further investigation needed to verify it is a current issue.
-
 - [ ] There's something wrong with the electric link.
 
 - [ ] Hopper is still named the same as the steel/smart chest
@@ -90,6 +88,8 @@ The goal is a three-stage pipeline before ever booting the game:
 - `rawdata.load_defines(mod_src)` / `rawdata.dump_defines(mod_src)` — real `defines` table via headless Factorio scenario (`debug/dump-defines/`), base mods only for fast load
 
 ### What's left
+
+- [ ] The rust raw data loading library does not seem to adequately reset the state of the mod-list.json back to what it was, leading to changes visible in-game. Further investigation needed to verify it is a current issue.
 
 - [ ] Investigate how factorio reports prototype loading errors when using --dump-data mode.
 - [ ] **Wire `load_defines` into the test harness** — replace the hand-rolled `test/defines.lua` with values loaded from the cached `defines.json`; fixes the incomplete 8-direction stub and all made-up event IDs

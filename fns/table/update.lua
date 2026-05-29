@@ -67,33 +67,63 @@ function table.cut(tbl, n)
     end
 end
 
-local function __merge(tbl1, tbl2)
-    
-    local spec = {}
-    for k, v in pairs(tbl2) do
+function table.flatten_keys(tbl, recurse)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+    local res = {}
+    for k, v in pairs(tbl) do
+        if recurse and type(v) == 'table' then
+            v = table.flatten_keys(v, true)
+        end
         if type(k) == 'table' then
-            for _, l in ipairs(k) do
-                spec[l] = v
-            end
+            for i = 1,#k do res[k[i]] = v end
         else
-            spec[k] = v
+            res[k] = v
         end
     end
-    for k, v in pairs(spec) do
-        if type(v) ~= 'function' then
+    return res
+end
+
+-- more performant as a function, since it precomputes
+-- the transformation otherwise done by merge, below
+local function __merge_function(tbl2)
+    assert(type(tbl2) == 'table', "argument #1 must be a table")
+    tbl2 = table.flatten_keys(tbl2)
+    table.traverse(tbl2, function(v)
+        if type(v) == 'table' then
+            return __merge_function(v), true
+        end
+    end)
+    return function(tbl1)
+        assert(type(tbl1) == 'table', "argument #1 must be a table")
+        return __merge(tbl1, tbl2)
+    end
+end
+table.merge_function = __merge_function
+
+local function __merge(tbl1, tbl2)
+    tbl2 = table.flatten_keys(tbl, recurse)
+    for k, v in pairs(tbl2) do
+        local t = type(v) 
+        if t ~= 'function' and t ~= 'table' then
             tbl1[k] = v
         end
     end
     for k, f in pairs(spec) do
-        if type(f) == 'function' then
+        local t = type(f) 
+        if t == 'function' then
             tbl1[k] = f(tbl1[k])
+        elseif t == 'table' then
+            __merge(tbl[k], f)
         end
     end
     return tbl1
 end
-
 table.merge = table.twoarg(__merge)
 
+-- useful in merge to replace table with table
+table.just = table.twoarg(function(_, val) return val end, 'any?', 'any?')
+
+-- maybe useful with functions that aren't made with twoarg?
 function table.with(func, ...)
     assert(type(func) == "function", "argument #1 must be a function")
     local args = { ... }

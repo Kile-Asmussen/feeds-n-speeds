@@ -131,13 +131,23 @@ local function monkeypatch()
     end
 
     local remove = table.remove
-        function table.remove(tbl, ...)
+    function table.remove(tbl, ...)
         if getmetatable(tbl) == __proxy_mt then
             return remove(tbl.__real, ...)
         else
             return remove(tbl, ...) 
         end
     end
+
+    local size = table.size
+    function table.size(tbl)
+        if getmetatable(tbl) == __proxy_mt then
+            return size(tbl.__real)
+        else
+            return size(tbl)
+        end
+    end
+
     monkeypatch = function() end
 end
 

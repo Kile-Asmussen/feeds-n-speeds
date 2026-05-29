@@ -2,110 +2,143 @@
 local table = _ENV.table
 local assert = _ENV.assert
 
+local function __id(...) return ... end
+local function __mapper(pred)
+    if type(pred) == 'table' then
+        return function(k) return pred[k] end
+    elseif pred == nil then
+        return __id
+    else
+        return pred
+    end
+end
+
 local __quantify = {
     any = {
-        kv = function(iter, tbl, pred)
-            for k, v in iter(tbl) do
-                if pred(k, v) then return true end
-            end return false
+        kv = function(iter)
+            return function(tbl, pred)
+                pred = __mapper(pred)
+                for k, v in iter(tbl) do
+                    if pred(k, v) then return true end
+                end return false
+            end
         end,
-        vk = function(iter, tbl, pred)
-            for k, v in iter(tbl) do
-                if pred(v, k) then return true end
-            end return false
+        vk = function(iter)
+            return function(tbl, pred)
+                pred = __mapper(pred)
+                for k, v in iter(tbl) do
+                    if pred(v, k) then return true end
+                end return false
+            end
         end,
-        k = function(iter, tbl, pred)
-            for k, v in iter(tbl) do
-                if pred(k) then return true end
-            end return false
+        k = function(iter)
+            return function(tbl, pred)
+                pred = __mapper(pred)
+                for k, v in iter(tbl) do
+                    if pred(k) then return true end
+                end return false
+            end
         end,
-        v = function(iter, tbl, pred)
-            for k, v in iter(tbl) do
-                if pred(v) then return true end
-            end return false
+        v = function(iter)
+            return function(tbl, pred)
+                pred = __mapper(pred)
+                for k, v in iter(tbl) do
+                    if pred(v) then return true end
+                end return false
+            end
         end,
     },
     all = {
-        kv = function(iter, tbl, pred)
-            for k, v in iter(tbl) do
-                if not pred(k, v) then return false end
-            end return true
+        kv = function(iter)
+            return function(tbl, pred)
+                pred = __mapper(pred)
+                for k, v in iter(tbl) do
+                    if not pred(k, v) then return false end
+                end return true
+            end
         end,
-        vk = function(iter, tbl, pred)
-            for k, v in iter(tbl) do
-                if not pred(v, k) then return false end
-            end return true
+        vk = function(iter)
+            return function(tbl, pred)
+                pred = __mapper(pred)
+                for k, v in iter(tbl) do
+                    if not pred(v, k) then return false end
+                end return true
+            end
         end,
-        k = function(iter, tbl, pred)
-            for k, v in iter(tbl) do
-                if not pred(k) then return false end
-            end return true
+        k = function(iter)
+            return function(tbl, pred)
+                pred = __mapper(pred)
+                for k, v in iter(tbl) do
+                    if not pred(k) then return false end
+                end return true
+            end
         end,
-        v = function(iter, tbl, pred)
-            for k, v in iter(tbl) do
-                if not pred(v) then return false end
-            end return true
+        v = function(iter)
+            return function(tbl, pred)
+                pred = __mapper(pred)
+                for k, v in iter(tbl) do
+                    if not pred(v) then return false end
+                end return true
+            end
         end,
     }
 }
 
-function table.quantify(op, iter, tbl, kv, pred)
-    local quant = __quantify[op]
-    assert(quant, 'argument #1 must be either "any" or "all"')
-    assert(type(tbl) == 'table', "argument #3 must be a table")
-    assert(type(iter) == 'function', "argument #2 must be a function")
-    local loop = q[kv]
-    assert(loop, 'argument #4 must be one of "kv", "vk", "v", "k"')
-    assert(type(pred) == 'function', "argument #5 must be a function")
 
-    return loop(iter, tbl, pred)
-end
-
-function table.iall(tbl, pred)
-    assert(type(tbl) == 'table', "argument #1 must be a table")
-    if type(pred) == 'table' then pred = table.index(pred) end
-    pred = pred or functions.id
-    assert(type(pred) == 'function', "argument #2 must be a function if present")
-    return __quantify.all.v(ipairs, tbl, pred)
-end
-
-function table.pall(tbl, pred)
-    assert(type(tbl) == 'table', "argument #1 must be a table")
-    if type(pred) == 'table' then pred = table.index(pred) end
-    pred = pred or functions.id
-    assert(type(pred) == 'function', "argument #2 must be a function if present")
-    return __quantify.all.kv(pairs, tbl, pred)
-end
-
-function table.any(tbl, pred)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(pred) == "function", "argument #2 must be a function")
-    return __quantify.any.v(ipairs, tbl, pred)
-end
+local __table_func_nil = { table = true, ['function'] = true, ['nil'] = true }
+table.iall = table.twoarg(__quantify.all.v(ipairs), __table_func_nil)
+table.pall = table.twoarg(__quantify.all.kv(pairs), __table_func_nil)
+table.any = table.twoarg(__quantify.any.v(pairs), __table_func_nil)
+table.iany = table.twoarg(__quantify.any.v(ipairs), __table_func_nil)
 
 function table.sorted_keys(tbl)
     assert(type(tbl) == 'table', "argument #1 must be a table")
 
-    local strings = {}
-    local numbers = {}
-    local other = {}
+    local res = {}
 
     for k, _ in pairs(tbl) do
-        if type(k) == 'number' then
-            table.insert(numbers, k)
-        elseif type(k) == 'string' then
-            table.insert(strings, k)
-        else
-            table.insert(other, k)
+        if type(k) == 'string' then
+            table.insert(res, k)
         end
     end
 
-    table.sort(numbers)
-    table.sort(strings)
+    table.sort(res)
+    return res
+end
+
+local function __sort_tostring(a, b)
+    return tostring(a) < tostring(b)
+end
+
+function table.sorted_keys_all(tbl)
+    assert(type(tbl) == 'table', "argument #1 must be a table")
+
+    local types = {
+        number = {},
+        string = {},
+        boolean = {},
+        ['function'] = {},
+        table = {},
+    }
+
+    for k, _ in pairs(tbl) do
+        local t = type(k)
+        types[t] = rtypeses[t] or {}
+        table.insert(types[t], k)
+    end
+
+    table.sort(types.number)
+    table.sort(types.string)
+    table.sort(types.boolean, function(a, b) return not a or b end)
+    table.sort(types['function'], __sort_tostring)
+    table.sort(types.table, __sort_tostring)
+
     local res = {}
-    table.append(res, numbers)
-    table.append(res, strings)
-    table.append(res, other)
+    table.append(res, types.number)
+    table.append(res, types.string)
+    table.append(res, types.boolean)
+    table.append(res, types.table)
+    table.append(res, types['function'])
     return res
 end
 
@@ -113,12 +146,14 @@ table.fullset = {}
 setmetatable(table.fullset, {
     __index = function() return true end,
     __newindex = function() return "fullset cannot be inserted into" end,
+    __metatable = "table.fullset",
 })
 
 table.emptyset = {}
 setmetatable(table.emptyset, {
     __index = function() return false end,
     __newindex = function() return "emptyset cannot be inserted into" end,
+    __metatable = "table.emptyset",
 })
 
 function table.set(tbl)
@@ -127,32 +162,6 @@ function table.set(tbl)
     for _, entry in ipairs(tbl) do
         res[entry] = true
     end
-    return res
-end
-
-function __complement_next(tbl, k)
-    local v
-    k, v = next(tbl, k)
-    return k, not v
-end
-
-function __complement_inext(tbl, i)
-    i = i + 1
-    if i > #tbl then return nil, nil end
-
-    return i, not tbl[i]
-end
-
-
-function table.complementary(tbl)
-    assert(type(tbl) == 'table', "argument #1 must be a table")
-    local res = {}
-    setmetatable(res, {
-        __index = function(_, k) return not tbl[k] end,
-        __newindex = function(_, k, v) tbl[k] = not v end,
-        __pairs = function(res) return __complement_next, tbl, nil end,
-        __ipairs = function(res) return __complement_inext, tbl, 0 end,
-    })
     return res
 end
 
@@ -165,25 +174,9 @@ function table.intoset(tbl)
     return tbl
 end
 
-function table.invert(tbl)
-    assert(type(tbl) == 'table', "argument #1 must be a table")
-    
-    local res = {}
-
-    for k, v in pairs(tbl) do
-        res[v] = res[v] or {}
-        table.insert(res[v], k)
-    end
-
-    for _, v in pairs(res) do
-        table.sort(v)
-    end
-
-    return res
-end
-
 table.null = {}
 setmetatable(table.null, {
     __tostring = function() return "table.null" end,
-    __newindex = function() error("table.null is immutable", 2) end
+    __newindex = function() error("table.null is immutable", 2) end,
+    __metatable = "table.null",
 })

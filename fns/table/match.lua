@@ -2,14 +2,14 @@
 local table = _ENV.table
 local assert = _ENV.assert
 
-function table.match(candidate, reference)
+local function __match(candidate, reference)
+    if candidate == nil and reference == nil then return true end
 
     if type(reference) == 'function' then
         return reference(candidate)
     elseif type(reference) ~= 'table' then
         return reference == candidate
     end
-
 
     if type(candidate) ~= "table" then return nil end
 
@@ -32,50 +32,55 @@ function table.match(candidate, reference)
         end
     end
 
-    return true
+    return candidate
 end
 
-function table.pattern(ref)
-    return function(can)
-        return table.match(can, ref)
-    end
-end
+table.match = table.twoarg(__match, 'any?', 'any?')
 
-local function __index_of(array, fn)
-    local index = nil
-
-    for i, e in ipairs(array) do
-        if fn(e) then
-            index = i
-            break
+local function __index_of(array, fn, reverse)
+    if not reverse then
+        for i = 1, #array do
+            local e = array[i]
+            local m = fn(e)
+            if m then
+                return i, e, m
+            end
+        end
+    else
+        for i = #array, 1, -1 do
+            local e = array[i]
+            local m = fn(e)
+            if m then
+                return i, e, m
+            end
         end
     end
 
-    return index
+    return nil, nil, nil
 end
 
-function table.index_matching(array, thing)
+function table.find(array, thing, last)
     if type(thing) ~= 'function' then
-        thing = table.pattern(thing)
+        thing = table.match(thing)
     end
 
     assert(type(array) == 'table', "argument #1 must be a table")
 
-    return __index_of(array, thing)
+    return __index_of(array, thing, last and true or false)
 end
 
 function table.remove_matching(array, thing, all)
     if type(thing) ~= 'function' then
-        thing = table.pattern(thing)
+        thing = table.match(thing)
     end
     assert(type(array) == 'table', "argument #1 must be a table")
 
     if all then
         local res = {}
-        local ix = __index_of(array, thing)
-        while ix do
-            table.insert(res, table.remove(array, ix))
-            ix = __index_of(array, thing)
+        for ix = #array, 1, -1 do
+            if thing(array[ix]) then
+                table.insert(res, table.remove(array, ix))
+            end
         end
         return res
     else
@@ -90,14 +95,10 @@ end
 
 function table.find_matching(array, thing)
     if type(thing) ~= 'function' then
-        thing = table.pattern(thing)
+        thing = table.match(thing)
     end
     assert(type(array) == 'table', "argument #1 must be a table, not " .. tostring(array))
 
-    local ix = __index_of(array, thing)
-    if ix then 
-        return array[ix]
-    else
-        return nil
-    end
+    local _, e = __index_of(array, thing)
+    return e
 end

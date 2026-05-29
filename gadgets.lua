@@ -256,6 +256,108 @@ function gadgets.main_product(recipe)
 end
 
 
+gadgets.icons_size = table.with_default(64, {
+    ['space-location']  = 512,
+    ['achievement']     = 128,
+    ['technology']      = 256,
+    ['shortcut']        = 32,
+    ['small-shortcut']  = 24,
+})
+
+gadgets.scale_coefficient = table.with_default(1.0, {
+    tiny   = 0.33,
+    small  = 0.5,
+    medium = 0.66,
+    large  = 0.8,
+    full   = 1.0, -- technically not needed
+})
+
+gadgets.direction = table.with_default(function(x) return { -x, x } end, {
+    [true] = function(x) return { 0, 0 } end,
+    c = function(x) return { 0, 0 } end, 
+    l = function(x) return { -x, 0 } end,
+    r = function(x) return { x, 0 } end,
+    t = function(x) return { 0, -x } end,
+    b = function(x) return { 0, x } end,
+    tr = function(x) return { x, -x } end,
+    tl = function(x) return { -x, -x } end,
+    br = function(x) return { x, x } end,
+    bl = function(x) return { -x, x } end, -- technically not needed
+})
+
+--- augmented IconData
+--- dir : nil or c/l/r/t/b/tr/tl/br/br
+---    direction to shift a floating icon in
+--- size : nil or tiny/small/medium/large/full
+---    how big the icon appears
+--- 
+function gadgets.icon(spec)
+    local icon = spec.icon
+    if not icon:startswith('__') then
+        icon = '__base__/graphics/' .. icon
+    end
+
+    local icon_type = spec.type or 'item'
+    local expected_icon_size = gadgets.icons_size[spec.type]
+    local icon_size = spec.icon_size or expected_icon_size
+
+    local floating = self.floating
+    if floating == nil then floating = (self.dir ~= nil) end
+
+    local scale_coefficient = nil
+    if self.size then
+        scale_coefficient = gadgets.scale_coefficient[self.size]
+    elseif self.dir then
+        scale_coefficient = 0.5
+    end
+
+    local scale = spec.scale
+    if scale == nil and floating then
+        scale = ((expected_icon_size / 2) / icon_size) * scale_coefficient
+    end
+
+    local offset = spec.offset
+    if offset == nil and floating == true then
+        -- the default position of the icon is centered, so
+        -- based on icon_size, scale_coefficient, and expected_icon_size
+        -- calculate how many pixels to shift the icon in any orthogonal direction
+        -- so it hits the edge of the boundary of the image.
+
+        -- assumption: image bounds is a square with side length expected_icon_size 
+        -- assumption: the icon is a square with side length icon_size * scale_coefficient
+        -- assumption: icon_size * scale_coefficient < expected_icon_size
+
+        -- problem is to calculate X-direction distance between centers of two
+        -- squares where one square is inside the other, and they share a corner
+
+        -- I need your help with this one
+
+        offset = ???
+    end
+
+    local shift = spec.shift
+    if shift == nil and spec.dir then
+        shift = gadgets.direction[spec.dir](offset)
+    end
+
+    local tint = spec.tint
+    if tint == nil and spec.col then
+        tint = gadgets.hexcolor(spec.col)
+    end
+
+    return {
+        icon      = icon,
+        icon_size = icon_size,
+        floating  = floating,
+        shift     = shift
+        scale     = scale,
+    }
+end
+
+function gadgets.icons(...)
+    return table.icollect(gadget.icon, { ... })
+end
+
 function gadgets.scale_vectors_and_numbers(factor, fields, vectors, stop_at)
     assert(type(factor) == 'number', "argument #1 must be a number")
     assert(type(fields) == 'table', "argument #2 must be a table")

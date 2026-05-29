@@ -59,6 +59,10 @@ function debuglib.p(data, root)
     return tostring(buffer)
 end
 
+local __buffer_mt = { __index = debuglib, __tostring = table.concat,
+    __newindex = function() error("buffer can't be changed", 2) end
+}
+__buffer_mt.__metatable = __buffer_mt.__metatable
 
 
 function debuglib.new_buffer(settings)
@@ -71,25 +75,27 @@ function debuglib.new_buffer(settings)
 
      local res = table.overwrite({
              seen_tables = { [_ENV] = '_ENV', [table.null] = 'table.null' },
-             path = {}
+             path = {},
+             count = 0,
      }, settings)
 
-     setmetatable(res, debuglib.__buffer_mt)
+     setmetatable(res, __buffer_mt)
      return res
 end
 
 function debuglib.print(buffer, ...)
-     local args = { ... }
-     table.append(buffer, args)
+    local args = { ... }
+    table.append(buffer, args)
 end
-
-debuglib.__buffer_mt = { __index = debuglib, __tostring = table.concat }
-debuglib.__buffer_mt.__metatable = debuglib.__buffer_mt.__metatable
-
 
 local function print_tostring(buffer, data)
-     buffer:print(tostring(data))
+    buffer:print(tostring(data))
 end
+
+debuglib.print_number = print_tostring
+debuglib.print_boolean = print_tostring
+debuglib.print_nil = print_tostring
+debuglib.print_nil = print_tostring
 
 function debuglib.print_any(buffer, data, name)  
 
@@ -97,7 +103,7 @@ function debuglib.print_any(buffer, data, name)
         table.insert(buffer.path, name)
     end
 
-    (debuglib / ('print_' .. type(data)) or print_tostring)(buffer, data)
+    debuglib['print_' .. type(data)](buffer, data)
 
     if name ~= nil then
         table.remove(buffer.path)
@@ -105,11 +111,117 @@ function debuglib.print_any(buffer, data, name)
 end
 
 function debuglib.print_string(buffer, data)
-     buffer:print(string.format("%q", data))
+    buffer.count = buffer.count + 1
+    buffer:print(string.format("%q", data))
 end
 
 
-debuglib.IDENTIFIER = '[a-zA-Z_][a-zA-Z0-9_.]*'
+function debuglib.print_function(buffer, data) 
+    buffer.count = buffer.count + 1
+    if buffer.serialize then
+        buffer:print("function() end")
+    else
+        buffer:print(debuglib.function_signature(data))
+    end
+end
+
+function debuglib.print_table(buffer, data)
+    buffer.count = buffer.count + 1
+
+    if buffer.seen_tables[data] then
+        buffer:print(buffer.seen_tables[data])
+        return
+    else
+        buffer.seen_tables[data] = utils.tablepath(buffer.root, buffer.path)
+    end
+
+    if table.is_empty(data) then
+        buffer:print("{}")
+        return
+    end
+
+    if #buffer.path >= buffer.depth_limit then
+        buffer:print('{ --[[ ... ]] }')
+        return
+    end
+
+    local restore = {}
+    if buffer:small_table(data) then
+        restore = { indent = buffer.indent, separator = buffer.separator, depth_limit = buffer.depth_limit }
+        table.overwrite(buffer, buffer.small)
+        buffer.depth_limit = buffer.depth_limit + 1
+    end
+
+
+    local has_array = table.has_array(data)
+    local has_assoc = table.has_assoc(data)
+
+    buffer:print('{', buffer.separator)
+
+    if has_array and has_assoc then
+        buffer:print_elements(data)
+        buffer:print(',', buffer.separator)
+        buffer:print_keyval_pairs(data)
+
+    elseif has_array then
+        buffer:print_elements(data)
+
+    elseif has_assoc then 
+        buffer:print_keyval_pairs(data)
+
+    end
+
+    buffer:print(buffer.separator, string.rep(buffer.indent, #buffer.path), "}")
+    table.overwrite(buffer, restore)
+end
+
+function debuglib.print_elements(buffer, data)
+
+    local first = true
+    for i, v in ipairs(data) do
+        if not first then
+            buffer:print(',', buffer.separator)
+        end
+
+        buffer:print(string.rep(buffer.indent, #buffer.path + 1))
+
+        buffer:print_any(v, i)
+
+        first = false
+    end
+end
+
+function debuglib.print_keyval_pairs(buffer, data)
+
+    local first = true
+
+    for k, v in table.opairs(data) do
+        if not first then
+            buffer:print(',', buffer.separator)
+        end
+
+        buffer:print(string.rep(buffer.indent, #buffer.path + 1), utils.tableindex(k, true), ' = ')
+        buffer:print_any(v, k)
+
+        first = false
+    end
+
+end
+
+function debuglib.small_table(buffer, tbl)
+
+    if not rawget(buffer, 'small') then return false end
+
+    return
+        table.size(tbl) <= buffer.small.size and
+        table.pall(tbl, function(v, k) return
+            (type(v) == 'string' or type(v) == 'number') and
+            (type(k) == 'string' or type(k) == 'number')
+        end) and
+        math.sum(table.collect(tbl, function(v, k)
+            return #tostring(k) + #tostring(v)
+        end)) <= buffer.small.length
+end
 
 local read_files = {}
 local seen_functions = {}
@@ -145,7 +257,7 @@ function debuglib.function_signature(func, short)
     if read_files[info.short_src] then
         local line = read_files[info.short_src][info.linedefined]
         local args = string.match(line, '%(.*%)') or '()'
-        local arg_count = #(string.gsub(string.gsub(line, debuglib.IDENTIFIER, 'x'), '[^x]', ''))
+        local arg_count = #(string.gsub(string.gsub(line, '[a-zA-Z_][a-zA-Z0-9_.]*', 'x'), '[^x]', ''))
 
         local decl_as = string.match(line, 'local%s+function%s*') or string.match(line, 'function%s*')
         local name = string.sub(line, string.find(line, decl_as) + #decl_as, (string.find(line, '%s*%(') or #line + 1) - 1)
@@ -179,116 +291,5 @@ function debuglib.function_signature(func, short)
      
 end
 
-function debuglib.print_function(buffer, data) 
-    if buffer.serialize then
-        buffer:print("function() end")
-    else
-        buffer:print(debuglib.function_signature(data))
-    end
-end
-
-function debuglib.print_table(buffer, data)
-
-    if buffer.seen_tables[data] then
-        buffer:print(buffer.seen_tables[data])
-        return
-    else
-        buffer.seen_tables[data] = utils.tablepath(buffer.root, buffer.path)
-    end
-
-    if table.is_empty(data) then
-        buffer:print("{}")
-        return
-    end
-
-    if #buffer.path >= buffer.depth_limit then
-        buffer:print('{ --[[ ... ]] }')
-        return
-    end
-
-    local restore = {}
-    if buffer:small_table(data) then
-        restore = { indent = buffer.indent, separator = buffer.separator, depth_limit = buffer.depth_limit }
-        table.overwrite(buffer, buffer.small)
-        buffer.depth_limit = buffer.depth_limit + 1
-    end
-
-
-    local has_array = table.has_array(data)
-    local has_assoc = table.has_assoc(data)
-
-    buffer:print('{', buffer.separator)
-
-    if has_array and has_assoc then
-        
-        debuglib.print_elements(buffer, data)
-        
-        buffer:print(',', buffer.separator)
-        
-        debuglib.print_keyval_pairs(buffer, data)
-
-    elseif has_array then
-
-        debuglib.print_elements(buffer, data)
-
-    elseif has_assoc then 
-        
-        debuglib.print_keyval_pairs(buffer, data)
-
-    end
-
-    buffer:print(buffer.separator, string.rep(buffer.indent, #buffer.path), "}")
-    table.overwrite(buffer, restore)
-end
-
-function debuglib.print_elements(buffer, data)
-
-    local first = true
-    for i, v in ipairs(data) do
-
-        if not first then
-            buffer:print(',', buffer.separator)
-        end
-
-        buffer:print(string.rep(buffer.indent, #buffer.path + 1))
-
-        buffer:print_any(v, i)
-
-        first = false
-    end
-end
-
-function debuglib.print_keyval_pairs(buffer, data)
-
-    local first = true
-
-    for k, v in fns.table.opairs(data) do
-
-        if not first then
-            buffer:print(',', buffer.separator)
-        end
-
-        buffer:print(string.rep(buffer.indent, #buffer.path + 1), utils.tableindex(k, true), ' = ')
-        buffer:print_any(v, k)
-
-        first = false
-    end
-
-end
-
-function debuglib.small_table(buffer, tbl)
-
-    if not rawget(buffer, 'small') then return false end
-
-    return
-        table.size(tbl) <= buffer.small.size and
-        table.pall(tbl, function(v, k) return
-            (type(v) == 'string' or type(v) == 'number') and
-            (type(k) == 'string' or type(k) == 'number')
-        end) and
-        math.sum(table.collect(tbl, function(v, k)
-            return #tostring(k) + #tostring(v)
-        end)) <= buffer.small.length
-end
 
 return debuglib:seal()

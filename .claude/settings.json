@@ -31,6 +31,7 @@
       "Write(modules/**/*)",
       "Write(modules/*)",
       "Write(debug/dump-defines/**/*)",
+      "Edit(TODO.md)",
       "Write(slop/**/*)",
       "Write(src/*)"
     ],

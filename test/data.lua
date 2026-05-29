@@ -27,7 +27,7 @@ end
 
 function data.begin_data_stage(proxied)
     if proxied then
-        print("beginning data stage proxied")
+        __log("beginning data stage proxied")
         data.raw = proxy.makeproxy{
             tbl=rawdata.load(_ENV.modlist),
             rootname='data.raw',

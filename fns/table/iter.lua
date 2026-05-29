@@ -2,50 +2,59 @@
 local table = _ENV.table
 local assert = _ENV.assert
 
-function table.imap(tbl, func)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(func) == "function", "argument #2 must be a function")
+local function __mapper(func)
+    if type(func) == 'table' then
+        return function(k) return func[k] end
+    else
+        return func
+    end
+end
+
+local __function_or_table = { ['function'] = true, table = true }
+
+local function __imap(tbl, func)
+    func = __mapper(func)
     for i, v in ipairs(tbl) do
         tbl[i] = func(v)
     end
     return tbl
 end
 
-function table.map(tbl, func)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(func) == "function", "argument #2 must be a function")
+table.imap = table.twoarg(__imap, __function_or_table)
+
+local function __map(tbl, func)
+    func = __mapper(func)
     for k, v in pairs(tbl) do
         tbl[k] = func(v)
     end
     return tbl
 end
+table.map = table.twoarg(__map, __function_or_table)
 
-function table.project(tbl, func)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    assert(type(func) == "function", "argument #2 must be a function")
+local function __project(tbl, func)
     local res = {}
     for k, v in pairs(tbl) do
-        local kk, vv = func(k, v)
-        res[kk] = vv
+        local k_, v_ = func(k, v)
+        if k_ ~= nil then res[k_] = v_ end
     end
     return res
 end
+table.project = table.twoarg(__project, 'function')
 
-function table.collect(tbl, func)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    if type(func) == 'table' then func = table.index(func) end
-    assert(type(func) == "function", "argument #2 must be a function or table")
+local function __collect(tbl, thing)
+    local func = thing
+    if type(thing) == 'table' then func = function(k) return thing[k] end end
     local res = {}
     for k, v in pairs(tbl) do
         res[k] = func(v)
     end
     return res
 end
+table.collect = table.twoarg(__collect, __function_or_table)
 
-function table.icollect(tbl, func)
-    assert(type(tbl) == "table", "argument #1 must be a table")
-    if type(func) == 'table' then func = table.index(func) end
-    assert(type(func) == "function", "argument #2 must be a function")
+local function __icollect(tbl, thing)
+    local func = thing
+    if type(thing) == 'table' then func = function(k) return thing[k] end end
     local res = {}
     for i, v in ipairs(tbl) do
         local v2 = func(v)
@@ -55,6 +64,7 @@ function table.icollect(tbl, func)
     end
     return res
 end
+table.icollect = table.twoarg(__icollect, __function_or_table)
 
 local function __opairs_iter(state, x)
     state.i = state.i + 1
@@ -64,6 +74,6 @@ local function __opairs_iter(state, x)
     end
 end
 
-function table.opairs(tbl)
-    return __opairs_iter, { i=0, keys=table.sorted_keys(tbl), tbl=tbl }, nil
+function table.opairs(tbl, strings)
+    return __opairs_iter, { i=0, keys=table.sorted_keys(tbl, 'string'), tbl=tbl }, nil
 end
