@@ -7,8 +7,10 @@ merge(data.raw['electric-pole'], {
     __rec = true,
     ['small-electric-pole'] = {
         circuit_connector = fns.utils.null,
-        auto_require_pavement = 'stone-path',
     },
+    ['medium-electric-pole'] = {
+        auto_require_pavement = 'stone-path',
+    }
     ['big-electric-pole'] = {
         maximum_wire_distance = 50
     },
