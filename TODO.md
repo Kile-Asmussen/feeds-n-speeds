@@ -4,9 +4,9 @@
 
 - [ ] There's something wrong with the electric link.
 
-- [ ] Hopper is still named the same as the steel/smart chest
+- [x] Hopper is still named the same as the steel/smart chest
 
-- [ ] Startup additional resources not working in freeplay
+- [x] Startup additional resources not working in freeplay
 
 - [ ] Fix visual bugs.
   - [ ] Basic materials processing looks weird

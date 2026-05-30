@@ -277,7 +277,7 @@ local function on_entity_destroyed(event)
     end
 end
 
-script.on_init(init_storage)
+fns.gadgets.on_init(init_storage)
 
 script.on_load(on_load)
 

@@ -380,4 +380,16 @@ function gadgets.bad_argument_number_nine(tbl)
     end
 end
 
+gadgets.on_init_handlers = {}
+
+function gadgets.on_init(handler)
+    table.insert(gadgets.on_init_handlers, handler)
+end
+
+function gadgets.on_init_hook()
+    for _, f in ipairs(gadgets.on_init_handlers) do
+        f()
+    end
+end
+
 return gadgets:seal()

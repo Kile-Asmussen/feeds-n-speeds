@@ -1,3 +1,4 @@
+local fns = require 'fns'
 
 local function outfit()
     return {
@@ -35,4 +36,4 @@ local function inventory()
 
 end
 
-script.on_init(inventory)
+fns.gadgets.on_init(inventory)

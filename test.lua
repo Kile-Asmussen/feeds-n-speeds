@@ -31,19 +31,19 @@ function debug.getline(n, msg)
     local traceback = debug.traceback(nil, n + 1)
     traceback = string.replace_prefix(traceback, "stack traceback:\n\t")
     traceback = string.before(traceback, ': ', msg and true)
-    return traceback .. ('' or msg)
+    return traceback .. (msg or '')
 end
 
 local function test_log(str)
     assert(type(str) == 'string', "argument #1 must be a string, not " .. type(str))
-    print(debug.getline(2, str))
+    print(debug.getline(3, str))
 end
 
 rawset(_ENV, 'log', function(str)
     if not _ENV.QUIET then test_log(str) end
 end)
 rawset(_ENV, '__log', function(str)
-    if _ENV.VERBOSE then test_log(str) end
+    if _ENV.VERBOSE then print(str) end
 end)
 
 rawset(_ENV, 'io', nil)
