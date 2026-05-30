@@ -21,18 +21,23 @@ merge(data.raw.recipe, {
             ['plastic-bar'] = 1
         }
     },
-
     [{
         'speed-module',
         'efficiency-module',
         'productivity-module',
         'quality-module',
     }] = {
-        __merge = true,
         ingredients = inputs{
             ['battery'] = 2,
             ['electronic-circuit'] = 5,
             ['advanced-circuit'] = 5,
         }
     },
+    ['beacon'] = {
+        ingredients = inputs{
+          ['efficiency-module'] = 2,
+          ['copper-cable'] = 40,
+          ['substation'] = 1,
+        }
+    }
 })

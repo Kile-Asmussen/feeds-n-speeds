@@ -16,8 +16,11 @@ merge(data.raw.technology, {
     ['railway'] = {
         prerequisites = { 'circuit-network', 'engine', 'radar' }
     },
+     ['automation'] = {
+        prerequisites = append{'repair-pack'},
+    },
     ['automation-2'] = {
-        prerequisites = append{'fast-inserter', 'engine'},
+        prerequisites = append{'fast-inserter', 'circuit-network'},
     },
     ['automation-3'] = {
         prerequisites = append{'bulk-inserter', 'logistic-robotics'},
@@ -31,16 +34,6 @@ merge(data.raw.technology, {
     ['uranium-processing'] = {
         prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack', 'speed-module', 'electric-engine' 
         },
-        research_trigger = null,
-        unit = {
-            count = 100,
-            time = 30,
-            ingredients = {
-                { 'automation-science-pack', 1 },
-                { 'logistic-science-pack', 1 },
-                { 'chemical-science-pack', 1 },
-            },
-        }
     }
 })
 
@@ -69,26 +62,29 @@ merge(data.raw.recipe, {
     ['stack-inserter'] = ingredients{
          ['carbon-fiber'] = 2, ['efficiency-module'] = 1, ['electric-engine-unit'] = 4, ['bulk-inserter'] = 2
     },
+
     -- Belts
+    ['transport-belt'] = {},
     ['splitter'] = ingredients{
-         ['transport-belt'] = 4, ['electronic-circuit'] = 4, ['iron-plate'] = 2
+         ['transport-belt'] = 4, ['electronic-circuit'] = 4, ['iron-gear-wheel'] = 2
     },
     ['underground-belt'] = ingredients{
          ['iron-plate'] = 10, ['transport-belt'] = 6
     },
+
     ['fast-transport-belt'] = {
         results = puts{ ['fast-transport-belt'] = 2 },
         ingredients = puts{
-             ['copper-plate'] = 4, ['engine-unit'] = 2, ['iron-gear-wheel'] = 6
+             ['copper-plate'] = 4, ['engine-unit'] = 2, ['iron-gear-wheel'] = 5
         },
     },
-        
     ['fast-underground-belt'] = ingredients{
          ['fast-transport-belt'] = 8, ['steel-plate'] = 5, ['copper-plate'] = 10
     },
     ['fast-splitter'] = ingredients{
          ['fast-transport-belt'] = 4, ['decider-combinator'] = 2, ['steel-plate'] = 2
     },
+
     ['express-transport-belt'] = {
         results = puts{ ['turbo-transport-belt'] = 2 },
         ingredients = puts{
@@ -101,6 +97,7 @@ merge(data.raw.recipe, {
     ['express-splitter'] = ingredients{
          ['express-transport-belt'] = 4, ['selector-combinator'] = 2, ['steel-plate'] = 5
     },
+
     ['turbo-transport-belt'] = {
         surface_conditions = null,
         results = puts{ ['turbo-transport-belt'] = 2 },
@@ -120,49 +117,53 @@ merge(data.raw.recipe, {
             ['turbo-transport-belt'] = 4, ['speed-module'] = 4, ['processing-unit'] = 1, ['low-density-structure'] = 10
         },
     },
+
     -- Misc
-    ['lab'] = ingredients{
-         ['transport-belt'] = 3, ['inserter'] = 3, ['copper-plate'] = 10, ['electronic-circuit'] = 10
-    },
-    ['beacon'] = ingredients{
-         ['efficiency-module'] = 1, ['advanced-circuit'] = 15, ['electronic-circuit'] = 15, ['steel-plate'] = 5, ['copper-cable'] = 5
-    },
-    ['electric-furnace'] = ingredients{
-         ['advanced-circuit'] = 5, ['engine-unit'] = 2, ['steel-furnace'] = 2, ['copper-plate'] = 10
-    },
-    ['car'] = ingredients{
-         ['engine-unit'] = 8, ['steel-plate'] = 8, ['pipe'] = 2, ['electronic-circuit'] = 5, ['iron-gear-wheel'] = 10, ['small-lamp'] = 2
-    },
+     ['lab'] = ingredients{
+          ['engine-unit'] = 1, ['electronic-circuit'] = 10, ['stone-furnace'] = 1, ['transport-belt'] = 3, ['inserter'] = 3,
+     },
+     ['electric-furnace'] = ingredients{
+          ['advanced-circuit'] = 5, ['engine-unit'] = 2, ['steel-furnace'] = 2, ['copper-plate'] = 10
+     },
+     ['car'] = ingredients{
+          ['engine-unit'] = 8, ['steel-plate'] = 8, ['pipe'] = 2, ['electronic-circuit'] = 5, ['iron-gear-wheel'] = 10, ['small-lamp'] = 2
+     },
+
     -- Mining drills
     ['burner-mining-drill'] = ingredients{
-         ['stone-brick'] = 6, ['iron-gear-wheel'] = 4, ['steel-plate'] = 1
+         ['stone-furnace'] = 1, ['engine-unit'] = 1, ['steel-plate'] = 1, ['pipe'] = 1,
     },
     ['electric-mining-drill'] = ingredients{
-         ['electronic-circuit'] = 3, ['iron-gear-wheel'] = 5, ['steel-plate'] = 2
+         ['electronic-circuit'] = 3,
+         ['engine-unit'] = 1, ['iron-gear-wheel'] = 10,
+         ['steel-plate'] = 2, ['pipe'] = 3,
     },
     ['big-mining-drill'] = ingredients{
          ['processing-unit'] = 1, ['productivity-module'] = 2, ['electric-engine-unit'] = 10, ['tungsten-carbide'] = 20, ['molten-iron'] = 100, ['molten-copper'] = 100
     },
+
     -- Steam
     ['boiler'] = ingredients{
-         ['stone-brick'] = 8, ['pipe'] = 4, ['copper-plate'] = 2
+         ['stone-furnace'] = 1, ['pipe'] = 3, ['copper-plate'] = 5
     },
     ['steam-engine'] = ingredients{
-         ['copper-cable'] = 6, ['iron-gear-wheel'] = 4, ['pipe'] = 10, ['steel-plate'] = 1
+         ['engine-unit'] = 3, ['iron-gear-wheel'] = 4, ['pipe'] = 10, ['copper-cable'] = 10,
     },
     ['offshore-pump'] = ingredients{
-         ['iron-gear-wheel'] = 4, ['pipe'] = 3, ['electronic-circuit'] = 2, ['steel-plate'] = 1
+         ['engine-unit'] = 1, ['pipe'] = 1, ['stone-brick'] = 4
     },
+
     -- Assembling machines
     ['assembling-machine-1'] = ingredients{
-         ['inserter'] = 3, ['electronic-circuit'] = 3, ['steel-plate'] = 2, ['iron-chest'] = 1
+         ['inserter'] = 3, ['repair-pack'] = 2, ['iron-chest'] = 1
     },
     ['assembling-machine-2'] = ingredients{
-         ['fast-inserter'] = 4, ['engine-unit'] = 2, ['electronic-circuit'] = 6, ['pipe'] = 2, ['steel-chest'] = 1
+         ['fast-inserter'] = 4, ['decider-combinator'] = 2, ['pipe'] = 2, ['steel-chest'] = 1
     },
     ['assembling-machine-3'] = ingredients{
-         ['bulk-inserter'] = 5, ['speed-module'] = 3, ['electric-engine-unit'] = 10, ['storage-chest'] = 1, ['pump'] = 2
+         ['bulk-inserter'] = 5, ['speed-module'] = 3, ['storage-chest'] = 1, ['pump'] = 2
     },
+
     -- Chemical
     ['storage-tank'] = ingredients{
          ['steel-plate'] = 10, ['pipe'] = 4

@@ -10,8 +10,6 @@ end
 for _, recipe in table.opairs(data.raw.recipe) do
     if recipe.auto_unlocked_by == nil then goto continue end
 
-    local unlock = {}
-
     remove[recipe.name] = true
 
     if recipe.hidden then goto continue end
@@ -26,7 +24,7 @@ for _, recipe in table.opairs(data.raw.recipe) do
         auto = { auto }
     end
 
-    if type(auto) == 'table' then
+    if type(auto) == 'table' and table.iall(auto, utils.is_a('string')) then
 
         if #auto == 0 then
             recipe.enabled = true
@@ -35,29 +33,7 @@ for _, recipe in table.opairs(data.raw.recipe) do
             recipe.enabled = false
         end
 
-        local basic = {
-            type = 'unlock-recipe',
-            recipe = recipe.name,
-        }
-
-        local default = table.merge(table.dup_assoc(auto), basic)
-
-        unlock = {}
-        for _, tech in ipairs(auto) do
-            if type(tech) == 'string' then
-                unlock[tech] = table.clone(default)
-            elseif type(tech) == 'table' then
-                if type(tech[1]) == 'string' then
-                    unlock[tech[1]] = table.merge(tabel.dup_assoc(tech), basic)
-                else
-                    malformed(recipe)
-                end
-            else
-                malformed(recipe)
-            end
-        end
-
-        unlocks[recipe.name] = unlock
+         unlocks[recipe.name] = auto
     else
         malformed(recipe)
     end
@@ -68,7 +44,7 @@ end
 fns.gadgets.remove_unlocks(remove)
 
 for recipe, unlock in table.opairs(unlocks) do
-    for tech, _ in table.opairs(unlock) do
+    for _, tech in ipairs(unlock) do
 
         if not data.raw.technology[tech] then
             error('no such technology: ' .. tech .. " on " .. recipe, 1)
@@ -76,8 +52,7 @@ for recipe, unlock in table.opairs(unlocks) do
 
         data.raw.technology[tech].effects = data.raw.technology[tech].effects or {}
 
-        local effect = { type='unlock-recipe', recipe=recipe }
-        table.include(effect, unlock[tech])
+        local effect = table.include({ type='unlock-recipe', recipe=recipe }, table.dup_assoc(unlock))
 
         table.insert(data.raw.technology[tech].effects, effect)
     end

@@ -9,9 +9,9 @@ production.settings = set{
 }
 
 production.data = set{
-    '.energy.electroboiler',
-    '.energy.mini-reactor',
+    ['.energy.electroboiler'] = set { '.fluids.boil-water' },
     ['.energy.nuclear-energy'] = set{ '.fluids.water' },
+    ['.energy.mini-reactor'] = set{ '.energy.nuclear-energy' },
 
     '.fluids.barrel-tapper',
     '.fluids.oil-processing',
@@ -22,9 +22,9 @@ production.data = set{
     '.ores.starting-patch-shape',
 
     '.recipes.crafting-times',
-    '.recipes.hand-engine',
     '.recipes.casting',
     '.recipes.concrete',
+    '.recipes.misc',
     '.recipes.sulfur-processing',
     ['.recipes.crafting-categories'] = -1,
     '.recipes.batteries-and-modules',

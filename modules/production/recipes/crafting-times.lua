@@ -4,8 +4,6 @@ local times = {
     ['electric-engine-unit'] = 5.0,
 }
 
-data.raw.recipe['engine-unit'].auto_unlocked_by = 'automation'
-
 for recipe_name, energy_required in pairs(times) do
     local recipe = data.raw.recipe[recipe_name]
     if recipe then

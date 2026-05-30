@@ -37,19 +37,34 @@ heat_exchanger.energy_source.min_working_temperature = high_temperature
 steam_turbine.maximum_temperature = high_temperature
 steam_turbine.energy_source.max_temperature = high_temperature
 
-heating_tower.localised_description = {fns.locale_key('entity-description', 'tweaked-heating-tower')}
-
-nuclear_reactor.localised_description = {fns.locale_key('entity-description', 'tweaked-nuclear-reactor')}
+-- heating_tower.localised_description = {fns.locale_key('entity-description', 'tweaked-heating-tower')}
+-- nuclear_reactor.localised_description = {fns.locale_key('entity-description', 'tweaked-nuclear-reactor')}
 
 nuclear_reactor.neighbour_bonus = 0.5
 
-data.raw.technology['heating-tower'].localised_description = {fns.locale_key('technology-description', 'tweaked-heating-tower')}
+-- data.raw.technology['heating-tower'].localised_description = {fns.locale_key('technology-description', 'tweaked-heating-tower')}
 
 data.raw.recipe['acid-neutralisation'].results[1].temperature = high_temperature
 
+table.merge( data.raw.technology, {
+    __rec = true,
+    ['nuclear-power'] = {
+        unit = { __merge = true, ingredients = {
+            { 'automation-science-pack', 1 },
+            { 'logistic-science-pack', 1 },
+            { 'chemical-science-pack', 1 },
+            { 'production-science-pack', 1 },
+        }},
+        prerequisites = table.append{ fns 'electric-heater' },
+    },
 
-table.insert(data.raw.technology['production-science-pack'].prerequisites, 'nuclear-power')
+    ['heating-tower'] = {
+        prerequisites = table.append{ fns 'electric-heater' },
+    }
+})
 
-data.raw.technology['heating-tower'].effects = {
-    { type = 'unlock-recipe', recipe='heating-tower' }
-}
+table.merge(data.raw.recipe, {
+    __rec = true,
+    ['heat-exchanger'] = { auto_unlocked_by = { 'nuclear-power', 'heating-tower' } },
+    ['steam-turbine'] = { auto_unlocked_by = { 'nuclear-power', 'heating-tower' } },
+})

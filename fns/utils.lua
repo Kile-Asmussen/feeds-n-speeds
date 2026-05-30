@@ -38,6 +38,9 @@ function utils.null(...) return nil end
 
 function utils.exists(x) return x ~= nil end
 
+local type = type
+function utils.is_a(t) return function(x) return type(x) == t end end
+
 function utils.call(...)
     local args = { ... }
     return function(thing)

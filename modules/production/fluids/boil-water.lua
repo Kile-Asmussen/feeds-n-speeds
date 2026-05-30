@@ -70,6 +70,9 @@ local time = proper_time / plant.crafting_speed
 boil_water.results[1].temperature = boil
 boil_water.energy_required = math.ceil(time)
 
+data.raw.boiler.boiler.target_temperature = 150
+data.raw.generator['steam-engine'].maximum_temperature = 150
+
 data.raw.recipe['chemical-plant'].auto_unlocked_by = 'fluid-handling'
 
 data:extend{

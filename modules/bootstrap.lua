@@ -6,9 +6,10 @@ local set = table.intoset
 
 bootstrap.data = set{
     '.entities.enrich-rocks',
-    '.entities.miners',
+    '.miners',
 
     '.recipes.stone-furnace-alt',
+    '.recipes.hand-engine',
 
     '.tech.tree',
     '.tech.wet-drilling',

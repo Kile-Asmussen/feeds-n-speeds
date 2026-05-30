@@ -1,34 +1,25 @@
 --! data: boiler variant using electric power
 
 local fns = require 'fns'
+local merge = fns.table.merge
 local name = fns 'electroboiler'
 
--- Clone vanilla boiler and convert to electric energy source
-local base = data.raw.boiler.boiler
-local boiler = table.clone(base)
-
-boiler.name = name
-boiler.minable.result = name
-
--- Replace burner energy source with electric
-boiler.energy_source = {
-    type = 'electric',
-    usage_priority = 'tertiary',
-    emissions_per_minute = { pollution = 0 },
-    drain = '18kW'
-}
+local boiler = merge(table.clone(data.raw.boiler.boiler), {
+    name = name,
+    minable = { __merge = true, result = name },
+    energy_source = {
+        type = 'electric',
+        usage_priority = 'tertiary',
+        emissions_per_minute = { pollution = 0 },
+        drain = '18kW'
+    },
+    energy_consumption = '1.8MW'
+})
 
 for _, picture in pairs(boiler.pictures) do
     picture.fire = nil
     picture.fire_glow = nil
 end
-
-
--- Keep same energy consumption as vanilla boiler (1.8MW)
-boiler.energy_consumption = '1.8MW'
-
--- Put in same fast-replace group as regular boiler
-boiler.fast_replaceable_group = 'boiler'
 
 local boiler_item = {
     type = 'item',
@@ -40,7 +31,7 @@ local boiler_item = {
             scale = 0.5
         },
         {
-            icon = '__base__/graphics/icons/signal/signal-lightning.png',
+            icon = '__core__/graphics/icons/alerts/electricity-icon-unplugged.png',
             floating = true,
             icon_size = 64,
             scale = 0.33,
@@ -60,10 +51,10 @@ local boiler_recipe = {
     type = 'recipe',
     name = name,
     enabled = false,
-    auto_unlocked_by = 'fluid-handling',
+    auto_unlocked_by = 'advanced-oil-processing',
     ingredients = {
         { type = 'item', name = 'boiler', amount = 1 },
-        { type = 'item', name = 'electronic-circuit', amount = 2 },
+        { type = 'item', name = 'copper-cable', amount = 10 },
     },
     results = {
         { type = 'item', name = name, amount = 1 },

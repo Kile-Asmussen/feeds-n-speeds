@@ -115,7 +115,7 @@ local link_recipe = table.merge(table.clone(data.raw.recipe['accumulator']), {
 
     name = fns 'electric-link',
     category = 'electronics-with-fluid',
-    auto_unlocked_by = 'electric-energy-distribution-2',
+    auto_unlocked_by = fns 'electric-heater',
 
     ingredients = puts{ ['iron-plate'] = 20, ['copper-cable'] = 20, ['light-oil'] = 50 },
     results = puts{ [fns 'electric-link'] = 1 },

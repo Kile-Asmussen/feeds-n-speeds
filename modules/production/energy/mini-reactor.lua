@@ -2,28 +2,48 @@
 
 local fns = require 'fns'
 
-local mini_reactor = {
-    type = "reactor",
-    name = fns 'mini-reactor',
-    icon = "__base__/graphics/icons/small-lamp.png",
-    flags = { "placeable-neutral", "player-creation" },
-    minable = { mining_time = 0.5, result = fns 'mini-reactor' },
+local mini_reactor = table.merge(table.clone(data.raw.reactor['nuclear-reactor']), {
+    name = fns 'electric-heater',
+
+    icon = fns.utils.null,
+    icons = fns.gadgets.icons{
+        { "icons/small-lamp.png", tint = { 1, 0, 0 } } ,
+        { "icons/heat-pipe.png", size="medium", dir="b" }
+    },
+
+    minable = { mining_time = 1.0, result = fns 'electric-heater' },
     max_health = 200,
     collision_box = { { -0.35, -0.35 }, { 0.35, 0.35 } },
     selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } },
 
-    consumption = "1MW",
+    surface_conditions = {
+        {
+            property = 'magenetic-field',
+            min = 25,
+        },
+        {
+            property = 'pressure-field',
+            min = 500,
+            max = 2000,
+        }
+    },
+
+    corpse = 'heat-pipe-remnants',
+
+    working_sound = fns.utils.null,
+
+    consumption = "10MW",
 
     energy_source = {
         type = "electric",
         usage_priority = "secondary-input",
-        input_flow_limit = "1MW",
+        input_flow_limit = "10MW",
     },
 
     heat_buffer = {
-        max_temperature = 1000,
-        specific_heat = "1MJ",
-        max_transfer = "1MW",
+        max_temperature = 500,
+        specific_heat = "4MJ",
+        max_transfer = "4GW",
         connections = {
             { position = { 0, -0.5 }, direction = defines.direction.north },
             { position = { 0.5,  0 }, direction = defines.direction.east },
@@ -54,26 +74,88 @@ local mini_reactor = {
             },
         },
     },
-}
+})
 
-local mini_reactor_item = {
+local mini_reactor_item = table.merge(table.clone(data.raw.item['small-lamp']), {
     type = "item",
-    name = fns 'mini-reactor',
-    icon = "__base__/graphics/icons/small-lamp.png",
+    name = mini_reactor.name,
+    icons =  table.clone(mini_reactor.icons),
     stack_size = 10,
-    place_result = fns 'mini-reactor',
-}
+    place_result = mini_reactor.name,
+})
+
+local puts = fns.gadgets.throughputs
 
 local mini_reactor_recipe = {
     type = "recipe",
-    name = fns 'mini-reactor',
-    ingredients = {
-        { type = "item", name = "iron-plate", amount = 10 },
-    },
-    results = {
-        { type = "item", name = fns 'mini-reactor', amount = 1 },
-    },
-    energy_required = 1,
+    name = mini_reactor.name,
+    auto_unlocked_by = mini_reactor.name,
+    ingredients = puts{ ['refined-concrete'] = 10, ['heat-pipe'] = 4 },
+    results = puts{ [mini_reactor.name] = 1 },
+    energy_required = 5,
 }
 
-data:extend{ mini_reactor, mini_reactor_item, mini_reactor_recipe }
+local mini_reactor_tech = {
+    type = 'technology',
+    name = mini_reactor.name,
+    prerequisites = { 'electric-energy-accumulators', 'advanced-material-processing-2' },
+    unit = {
+        count = 200,
+        ingredients = { 
+            { 'automation-science-pack', 1 }, 
+            { 'logistic-science-pack', 1 }, 
+            { 'chemical-science-pack', 1 }, 
+        },
+    },
+    icons = fns.gadgets.icons{
+        type = 'technology',
+        'technology/steam-power.png',
+        'technology/electric-energy-distribution-1.png',
+    }
+}
+
+data.raw.recipe['heat-pipe'].auto_unlocked_by = mini_reactor.name
+
+local boiler = data.raw.boiler.boiler
+
+local heat_boiler = table.merge(table.clone(data.raw.boiler['heat-exchanger']), {
+    name = fns 'heat-boiler',
+    energy_consumption = boiler.energy_consumption,
+    target_temperature = boiler.target_temperature,
+    icon = utils.null,
+    icons = {
+        {
+            icon = '__base__/graphics/icons/boiler.png',
+            icon_size = 64,
+            scale = 0.5
+        },
+        {
+            icon = '__core__/graphics/arrows/heat-exchange-indicator.png',
+            floating = true,
+            icon_size = 48,
+            scale = 0.5,
+            shift = { -6, 6 },
+            tint = { r = 0, g = 1, b = 0 },
+        }
+    },
+})
+
+local heat_boiler_item = table.merge(table.clone(data.raw.item.boiler), {
+    type = "item",
+    name = heat_boiler.name,
+    icons = table.clone(heat_boiler.icons),
+    stack_size = 10,
+    place_result = heat_boiler.name,
+})
+
+local heat_boiler_recipe = {
+    type = "recipe",
+    name = heat_boiler.name,
+    auto_unlocked_by = mini_reactor_tech.name,
+    ingredients = puts{ ['boiler'] = 1, ['heat-pipe'] = 1 },
+    results = puts{ [mini_reactor.name] = 1 },
+    energy_required = 2,
+}
+
+
+data:extend{ mini_reactor, mini_reactor_item, mini_reactor_recipe, mini_reactor_tech, heat_boiler, heat_boiler_item, heat_boiler_recipe }
