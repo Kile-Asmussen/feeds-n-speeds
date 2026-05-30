@@ -117,6 +117,7 @@ function localisation.register(proto)
     local loc_desc = category .. '-description'
 
     localisation.add_key(loc_name, proto_name, proto.localised_name)
+    localisation.add_key(loc_desc, proto_name, proto.localised_description)
 end
 
 localisation.__current_locale_map = table.null
@@ -276,6 +277,7 @@ function localisation.list_missing_locale_keys()
 
         local skipped = localisation.skipped_keys[cat] or {}
 
+        if not cat:match('%-description$') then
         for _, key in ipairs(keys_in_cat) do
             if not skipped[key] and (not locale_map[cat] or not locale_map[cat][key]) then
                 if not any then
@@ -284,6 +286,7 @@ function localisation.list_missing_locale_keys()
                 end
                 table.insert(res, key .. '=')
             end
+        end
         end
     end
 

@@ -11,18 +11,30 @@ local tiers = {
 }
 
 local locale_keys = {
-    ['dirt'] = 'bare-ground-machinery',
-    ['stone-path'] = 'simple-machinery',
-    ['concrete'] = 'machinery',
-    ['hazard-concrete'] = 'dangerous-machinery',
-    ['refined-concrete'] = 'heavy-machinery',
-    ['refined-hazard-concrete'] = 'dangerous-heavy-machinery',
+    ['dirt'] = fns.locale_key("entity-description", 'bare-ground-machinery'),
+    ['stone-path'] = fns.locale_key("entity-description",'simple-machinery'),
+    ['concrete'] = fns.locale_key("entity-description",'machinery'),
+    ['hazard-concrete'] = fns.locale_key("entity-description",'dangerous-machinery'),
+    ['refined-concrete'] = fns.locale_key("entity-description",'heavy-machinery'),
+    ['refined-hazard-concrete'] = fns.locale_key("entity-description",'dangerous-heavy-machinery'),
 }
+
+
+local function is_placeable(entity)
+    if entity.minable and entity.minable.result then
+        return data.raw.item[entity.minable.result] ~= nil
+    else
+        return false
+    end
+end
 
 for _, group in pairs(data.raw) do
     for _, entity in pairs(group) do
-        if type(entity) == 'table' and entity.auto_require_pavement then
-            
+        if
+            type(entity) == 'table' and
+            entity.auto_require_pavement and
+            is_placeable(entity)
+        then
             local tier = tiers[entity.auto_require_pavement]
             if not tier then
                 error('unknown pavement tier: ' .. tostring(entity.auto_require_pavement), 1)
@@ -48,9 +60,7 @@ for _, group in pairs(data.raw) do
                     }
                 },
                 localised_description = {"", 
-                    {"?", {"", {"entity-description." .. entity.name}, " "}, ""},
-                    {fns.locale_key("entity-description", locale_key)},
-                }
+                    {"?", {"", {"entity-description." .. entity.name}, " "}, ""}, {locale_key} }
             })
         end
     end

@@ -52,8 +52,12 @@ if #keys > 0 then
     print(keys)
 end
 
-print('\nSUPERFLUOUS LOCALISATION')
+print('\nUNNEEDED LOCALISATION')
 keys = localisation.list_superfluous_locale_keys()
+if #keys > 0 then
+    print(keys)
+end
+keys = localisation.list_dead_locale_keys()
 if #keys > 0 then
     print(keys)
 end

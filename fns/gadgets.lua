@@ -380,6 +380,80 @@ function gadgets.bad_argument_number_nine(tbl)
     end
 end
 
+local function is_glob(s)
+    return s == '-'
+end
+
+-- use:  
+-- local path, subtree = build_tree(args, data.raw)
+-- print(utils.tablepath('data.raw', path) .. ' = ' .. debuglib.pp(subtree))
+local function build_tree(path, node)
+    if #path == 0 then
+        if type(node) == 'table' then
+            node = table.clone(node)
+            node.__buffer_bare_keys = false
+        end
+        return {}, node
+    end
+
+    if is_glob(path[1]) then
+        local res = { __buffer_bare_keys = true }
+        local tail = { table.unpack(path, 2) }
+
+        for key, subnode in pairs(node) do
+            local subpath, subvalue = build_tree(tail, subnode)
+            res[utils.tablepath(nil, table.append({ key }, subpath))] = subvalue
+        end
+
+        return {}, res
+    else
+        local new_path = table.clone(path)
+        local key = table.remove(new_path, 1)
+        local subpath, subnode = build_tree(new_path, node[key])
+
+        return table.append({ key }, subpath), subnode
+    end
+end
+
+function gadgets.descend_into_data_raw(args, depth_limit)
+    local debuglib = require 'debuglib'
+
+    args = table.icollect(args, function(s) return tonumber(s) or s end)
+
+    local early_globs = (is_glob(args[1]) and 1 or 0) + (is_glob(args[2]) and 1 or 0)
+
+    if early_globs > 1 then
+        error("at most one __all glob allowed in the first two arguments", 2)
+    end
+
+    local glob_count = early_globs
+    for i = 3, #args do
+        if is_glob(args[i]) then glob_count = glob_count + 1 end
+    end
+
+    if #args < 2 or glob_count > 0 then
+        depth_limit = glob_count
+    end
+
+    local path, subtree = build_tree(args, data.raw)
+
+    if subtree == nil then
+        _ENV.print('Path not found: ' .. utils.tablepath('data.raw', args))
+        return
+    end
+
+    local ix = utils.tablepath('data.raw', path)
+    local buffer = debuglib.new_buffer{
+        depth_limit = depth_limit,
+        separator = '\n',
+        indent = '  ',
+        bare_keys = false,
+        root = ix,
+    }
+    buffer:print_any(subtree)
+    _ENV.print(ix .. ' = ' .. tostring(buffer))
+end
+
 gadgets.on_init_handlers = {}
 
 function gadgets.on_init(handler)

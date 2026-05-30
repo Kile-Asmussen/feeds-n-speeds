@@ -11,3 +11,4 @@ log~
 /slop/scratch
 
 .claude/read-grep-glob-paths.json
+.claude/skills/factorio-research/SKILL.md

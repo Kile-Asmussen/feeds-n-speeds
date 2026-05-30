@@ -20,6 +20,7 @@ function debuglib.pp(data, root)
         func_names = debuglib.serialize,
         indent = '  ',
         separator = '\n',
+        bare_keys = false,
         small = { size = 4, length = 50, indent = '', separator = ' ' },
         root = root,
     }
@@ -74,7 +75,11 @@ function debuglib.new_buffer(settings)
      assert(type(settings.root) == 'string', "argument #1's root field must be a string")
 
      local res = table.overwrite({
-             seen_tables = { [_ENV] = '_ENV', [table.null] = 'table.null' },
+             seen_tables = {
+                [_ENV] = '_ENV', 
+                [table.null] = 'table.null',
+                [table.emptyset] = 'table.emptyset',
+            },
              path = {},
              count = 0,
      }, settings)
@@ -176,6 +181,7 @@ function debuglib.print_elements(buffer, data)
 
     local first = true
     for i, v in ipairs(data) do
+
         if not first then
             buffer:print(',', buffer.separator)
         end
@@ -185,6 +191,7 @@ function debuglib.print_elements(buffer, data)
         buffer:print_any(v, i)
 
         first = false
+        ::continue::
     end
 end
 
@@ -193,14 +200,20 @@ function debuglib.print_keyval_pairs(buffer, data)
     local first = true
 
     for k, v in table.opairs(data) do
+        if k == '__buffer_bare_keys' then goto continue end
         if not first then
             buffer:print(',', buffer.separator)
         end
 
-        buffer:print(string.rep(buffer.indent, #buffer.path + 1), utils.tableindex(k, true), ' = ')
+        if not data.__buffer_bare_keys then
+            k = utils.tableindex(k, true)
+        end
+
+        buffer:print(string.rep(buffer.indent, #buffer.path + 1), k, ' = ')
         buffer:print_any(v, k)
 
         first = false
+        ::continue::
     end
 
 end

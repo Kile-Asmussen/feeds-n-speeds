@@ -22,15 +22,16 @@ function utils.tableindex(value, first)
 end
 
 function utils.tablepath(base, path)
-    base = base or ''
     assert(type(path) == 'table', "argument #2 must be a table")
-    local res = { tostring(base) }
+    local res = base ~= nil and { tostring(base) } or {}
     if path ~= nil then
         for _, v in ipairs(path) do
             table.insert(res, utils.tableindex(v))
         end
     end
-    return table.concat(res)
+    res = table.concat(res)
+    if base == nil and res:startswith('.') then res = res:sub(2) end
+    return res
 end
 
 function utils.null(...) return nil end
