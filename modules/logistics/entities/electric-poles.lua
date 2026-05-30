@@ -10,7 +10,7 @@ merge(data.raw['electric-pole'], {
     },
     ['medium-electric-pole'] = {
         auto_require_pavement = 'stone-path',
-    }
+    },
     ['big-electric-pole'] = {
         maximum_wire_distance = 50
     },
