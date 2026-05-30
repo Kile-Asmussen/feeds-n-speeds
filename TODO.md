@@ -4,6 +4,8 @@
 
 - [ ] There's something wrong with the electric link.
 
+- [ ] Fluid-capable burner mining drill not correctly unlocked by wet-drilling tech.
+
 - [x] Hopper is still named the same as the steel/smart chest
 
 - [x] Startup additional resources not working in freeplay
