@@ -1,4 +1,4 @@
--- data-updates: change water barrels to be unlocked by automation-2, together with the barrel-tapper
+--! data-updates: change water barrels to be unlocked by automation-2, together with the barrel-tapper
 local fns = require 'fns'
 
 for _, fl in pairs(data.raw.fluid) do

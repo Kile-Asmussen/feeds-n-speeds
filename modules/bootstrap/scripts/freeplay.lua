@@ -1,4 +1,4 @@
--- control: freeplay starting inventory
+--! control: freeplay starting inventory
 local fns = require 'fns'
 
 local function outfit()

@@ -1,4 +1,4 @@
--- Integrations with other mods, currently only the textplates family
+--! data, data-updates: submodule governing integrations with other mods, currently only the textplates family
 
 local integrations = require('namespace')('integrations')
 

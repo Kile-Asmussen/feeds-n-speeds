@@ -1,4 +1,4 @@
--- data-updates: find entities with auto_require_pavement set, and make them require paved ground to be placed
+--! data-updates: find entities with auto_require_pavement set, and make them require paved ground to be placed
 
 local fns = require 'fns'
 

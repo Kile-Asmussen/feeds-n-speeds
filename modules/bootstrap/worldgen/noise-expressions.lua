@@ -1,4 +1,4 @@
--- data: sulfur ore-related noise expressions and autoplace control
+--! data: sulfur ore-related noise expressions and autoplace control
 local fns = require 'fns'
 
 local noise = {

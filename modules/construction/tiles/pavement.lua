@@ -1,4 +1,4 @@
--- data: add auto_require_pavement field to vanilla entities
+--! data: add auto_require_pavement field to vanilla entities
 local pavement = {
     ['mining-drill'] = 'dirt',
     ['accumulator'] = {},

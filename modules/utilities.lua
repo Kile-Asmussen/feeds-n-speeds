@@ -1,4 +1,4 @@
--- Utility scripts that don't fit other categories, such as the auto_unlocked_by field for recipes
+--! settings, data-updates, control: submodule of utility scripts that don't fit other categories, such as the auto_unlocked_by field for recipes
 
 local utilities = require('namespace')('utilities')
 

@@ -1,4 +1,4 @@
--- data: change mining times for most buildable entities
+--! data: change mining times for most buildable entities
 
 local times = {
     ['generator'] = {

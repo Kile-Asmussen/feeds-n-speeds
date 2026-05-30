@@ -61,6 +61,10 @@ The debug/data-raw.lua and debug/data-modded.lua scripts will only print DEPTH=1
 
 The project built around `module.lua` and the `module/` directory, which contains a full module loading system with dependency ordering.
 
+Every file contains a toplevel doc-comments (prefix: `--!`) as the first line(s) of the file, telling what stage the file is loaded at (if any), and what the contents of the file does.
+
+Use Grep tool with pattern `^--!` in `module/**/*.lua` for a concise overview of the entire project, or read the first line of an individual file to check whether it is relevant.
+
 ### Namespace System (`namespace.lua`)
 
 - `let foo = namespace('foo')` — declares a new namespace; errors on duplicate
@@ -138,7 +142,7 @@ the vanilla mods -- for instance auto-generation of recycling and barelling reci
 
 ### /factorio-research
 
-Inspects live `data.raw` structures from the installed game.
+Inspects live `data.raw` structures from the installed game and researches the prototypes and scripting utility of the game via the online API documentation.
 
 Use before modifying or creating prototypes, or when unsure about field names/types/valid values.
 
@@ -152,7 +156,7 @@ Cross-reference with WebFetch to `lua-api.factorio.com` or `wiki.factorio.com`.
 
 See `.claude/skills/factorio-research/SKILL.md` for full documentation.
 
-The skill file can be edited through symbolic link in `slop/scratch/factorio-research.md`.
+The skill file can be edited through symbolic link in `slop/SKILLS/factorio-research.md`.
 
 ## Safety Harness Notes
 

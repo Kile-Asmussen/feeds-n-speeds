@@ -1,4 +1,4 @@
--- control: console command to reset all technology effects
+--! control: console command to reset all technology effects
 local fns = require 'fns'
 
 commands.add_command("reset-tech-effects",

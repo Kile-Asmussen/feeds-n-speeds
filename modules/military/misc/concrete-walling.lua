@@ -1,4 +1,4 @@
--- data: alternate higher-yield recipe for walls
+--! data: alternate higher-yield recipe for walls
 local fns = require 'fns'
 local puts = fns.gadgets.throughputs
 local icons = fns.gadgets.icons

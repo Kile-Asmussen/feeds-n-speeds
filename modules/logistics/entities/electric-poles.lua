@@ -1,4 +1,4 @@
--- data: tweaks to vanilla electric poles
+--! data: tweaks to vanilla electric poles
 local fns = require 'fns'
 
 local puts = fns.gadgets.throughputs

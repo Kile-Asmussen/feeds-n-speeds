@@ -1,4 +1,4 @@
--- data: create new collision layers for pavement types
+--! data: create new collision layers for pavement types
 
 local fns = require 'fns'
 

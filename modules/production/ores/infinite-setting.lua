@@ -1,4 +1,4 @@
--- settings: setting to enable/disable infinite ores
+--! settings: setting to enable/disable infinite ores
 local fns = require 'fns'
 
 data:extend{{

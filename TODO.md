@@ -63,6 +63,7 @@
 
 - [ ] **Readability refactor**: Audit all mod files for raw ingredient/result arrays and direct prototype assignments that should use `table.merge` and `gadgets.throughputs`. Mostly mechanical find-and-replace work.
 - [ ] Item/recipe ordering cleanup: With all features researched, the in-game crafting menu is cluttered. Review and improve ordering strings across all items and recipes for better organization.
+- [ ] **Tech unlock ordering** (low priority): `assign-recipe-unlocks` appends effects to technologies in arbitrary iteration order. A sorting pass by group → subgroup → order string after all effects are inserted would make the in-game technology screen tidier.
 - [ ] In-game documentation (tips and tricks, custom GUI, or factoriopedia integration)
 
 ## Overarching tasks

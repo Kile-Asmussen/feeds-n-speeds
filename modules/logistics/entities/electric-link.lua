@@ -1,4 +1,4 @@
--- data: electrical infrastructure entity that can limit power transfer between unconnected networks
+--! data: electrical infrastructure entity that can limit power transfer between unconnected networks
 local fns = require 'fns'
 local merge = fns.table.merge
 local switch = data.raw['power-switch']['power-switch']

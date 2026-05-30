@@ -1,4 +1,4 @@
--- control: mechanics for the hopper entity
+--! control: mechanics for the hopper entity
 local fns = require 'fns'
 
 local fns_hopper = fns 'hopper'

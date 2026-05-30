@@ -1,4 +1,4 @@
--- data: changes to ammo recipes to require sulfur
+--! data: changes to ammo recipes to require sulfur
 
 local fns = require 'fns'
 local puts = fns.gadgets.throughputs

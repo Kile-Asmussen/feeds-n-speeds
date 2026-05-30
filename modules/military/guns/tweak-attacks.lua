@@ -1,4 +1,4 @@
--- data: balance tweaks for guns
+--! data: balance tweaks for guns
 local gun = data.raw.gun
 
 gun.pistol.attack_parameters.cooldown = 20

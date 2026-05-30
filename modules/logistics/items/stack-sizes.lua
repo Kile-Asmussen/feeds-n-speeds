@@ -1,4 +1,4 @@
--- data: lowering the stack sizes of most building items
+--! data: lowering the stack sizes of most building items
 local fns = require 'fns'
 
 local stack_sizes = {

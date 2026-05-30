@@ -1,4 +1,4 @@
--- data: major changes to robotics recipes
+--! data: major changes to robotics recipes
 local fns = require 'fns'
 local base = data.raw.roboport.roboport
 local inputs = fns.gadgets.throughputs

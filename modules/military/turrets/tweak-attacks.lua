@@ -1,4 +1,4 @@
--- data: balance changes to damage output of turrets
+--! data: balance changes to damage output of turrets
 local fns = require 'fns'
 local turrets = data.raw['ammo-turret']
 

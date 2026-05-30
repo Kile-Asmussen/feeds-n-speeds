@@ -1,4 +1,4 @@
--- data: make chests twice as big and more expensive to build but smaller in inventory size
+--! data: make chests twice as big and more expensive to build but smaller in inventory size
 local fns = require 'fns'
 local inputs = fns.gadgets.throughputs
 

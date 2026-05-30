@@ -1,4 +1,4 @@
--- data: balance changes to rocket weaponry
+--! data: balance changes to rocket weaponry
 local rocket = data.raw.projectile.rocket 
 rocket.acceleration = 0.02
 local eff = rocket.action.action_delivery.target_effects

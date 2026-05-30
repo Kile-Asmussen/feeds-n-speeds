@@ -1,4 +1,4 @@
--- data: change recipes for all science packs
+--! data: change recipes for all science packs
 local tech = data.raw.technology
 local recipes = data.raw.recipe
 

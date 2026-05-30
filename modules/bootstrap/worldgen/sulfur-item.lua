@@ -1,4 +1,4 @@
--- data: sprite variants for sulfur item to mimic variations for other ores
+--! data: sprite variants for sulfur item to mimic variations for other ores
 data.raw.item.sulfur.pictures = table.imap(
     {
         '__base__/graphics/icons/sulfur.png',

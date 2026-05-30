@@ -1,4 +1,4 @@
--- data: joke recipe to boil water in a chemical plant
+--! data: joke recipe to boil water in a chemical plant
 
 local fns = require 'fns'
 

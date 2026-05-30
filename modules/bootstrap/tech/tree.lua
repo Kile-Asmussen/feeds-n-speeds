@@ -1,4 +1,4 @@
--- data: move pre-science tech tree around
+--! data: move pre-science tech tree around
 
 local fns = require 'fns'
 local icons = fns.gadgets.icons

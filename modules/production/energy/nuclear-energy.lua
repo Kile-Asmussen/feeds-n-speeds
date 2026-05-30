@@ -1,4 +1,4 @@
--- data: changes to ratios and potency of nuclear power
+--! data: changes to ratios and potency of nuclear power
 
 local fns = require 'fns'
 

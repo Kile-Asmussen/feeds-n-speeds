@@ -1,4 +1,4 @@
--- data: alterations to the military tech tree, chiefly making powerful weapons available earlier
+--! data: alterations to the military tech tree, chiefly making powerful weapons available earlier
 local fns = require 'fns'
 local tech = data.raw.technology
 
@@ -95,7 +95,11 @@ tech['military-4'].effects = {
     { type='unlock-recipe', recipe=fns 'shotgun-shell-mass-production', },
     { type='unlock-recipe', recipe=fns 'piercing-shotgun-shell-mass-production', },
     { type='unlock-recipe', recipe=fns 'grenade-mass-production', },
+    { type='unlock-recipe', recipe='destroyer-capsule' },
 }
+
+tech['destroyer'].prerequisites = { 'military-4', 'distractor' }
+tech['destroyer'].effects = {}
 
 tech['discharge-defense-equipment'].prerequisites = {
     'military-3', 'solar-panel-equipment', 'power-armor', 'energy-shield-equipment'

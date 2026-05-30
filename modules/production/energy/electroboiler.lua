@@ -1,4 +1,4 @@
--- data: boiler variant using electric power
+--! data: boiler variant using electric power
 
 local fns = require 'fns'
 local name = fns 'electroboiler'

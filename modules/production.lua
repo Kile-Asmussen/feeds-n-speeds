@@ -1,4 +1,4 @@
--- Changes to production mechanics including new altered/recipes for intermediary products, rebalancing of crafting, 
+--! settings, data, data-updates: submodule governing changes to production mechanics including new altered/recipes for intermediary products, rebalancing of crafting, etc.
 
 local production = require('namespace')('production')
 
@@ -25,7 +25,7 @@ production.data = set{
     '.recipes.concrete',
     '.recipes.sulfur-processing',
     ['.recipes.crafting-categories'] = -1,
-    '.recipes.modules',
+    '.recipes.batteries-and-modules',
 
     '.science.packs',
 

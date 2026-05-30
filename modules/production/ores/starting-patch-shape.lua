@@ -1,4 +1,4 @@
--- data: change the shapes of starting ore patches to not be so jagged
+--! data: change the shapes of starting ore patches to not be so jagged
 
 local blob_amplitude_scale_factor = 0.66
 

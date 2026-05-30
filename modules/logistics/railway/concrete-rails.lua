@@ -1,4 +1,4 @@
--- data: extra better recipes for rails using concrete
+--! data: extra better recipes for rails using concrete
 local fns = require 'fns'
 local puts = fns.gadgets.throughputs
 

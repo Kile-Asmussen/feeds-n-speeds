@@ -1,4 +1,4 @@
--- data: gun recipe variants using plastic instead of wood, since the guns are used in construction of turrets and wood is a scarce resource
+--! data: gun recipe variants using plastic instead of wood, since the guns are used in construction of turrets and wood is a scarce resource
 
 local fns = require 'fns'
 

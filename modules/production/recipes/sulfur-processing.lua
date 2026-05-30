@@ -1,4 +1,4 @@
--- data: changes to sulfur-related recipes and new sulfur-producing oil processing variants
+--! data: changes to sulfur-related recipes and new sulfur-producing oil processing variants
 local fns = require 'fns'
 
 local puts = fns.gadgets.throughputs

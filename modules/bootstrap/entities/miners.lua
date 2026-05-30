@@ -1,4 +1,4 @@
--- data: add a mew burner miner that can mine with liquid, for sulfur ore
+--! data: add a new burner miner that can mine with liquid, for sulfur ore
 local fns = require 'fns'
 local puts = fns.gadgets.throughputs
 local icons = fns.gadgets.icons
@@ -8,11 +8,11 @@ data.raw.recipe['burner-mining-drill'].auto_unlocked_by = 'steam-power'
 -- Copy burner mining burner_drill and add fluid input on south side (opposite output)
 local burner_drill = table.clone(data.raw['mining-drill']['burner-mining-drill'])
 
-local name = 'burner-mining-drill-fluid'
+local name = fns 'burner-mining-drill-fluid'
 
 table.merge(burner_drill, {
-    name = fns(name),
-    minable = table.assign{ 'result', val = fns(name) },
+    name = name,
+    minable = table.assign{ 'result', val = name },
     input_fluid_box = {
         volume = 50,
         filter = 'water',
@@ -36,7 +36,7 @@ table.merge(burner_drill, {
 local burner_drill_item = table.clone(data.raw.item['burner-mining-drill'])
 
 table.merge(burner_drill_item, {
-    name = fns(name),
+    name = name,
     place_result = name,
     icons = table.clone(burner_drill.icons),
     icon = utils.null,
@@ -45,7 +45,7 @@ table.merge(burner_drill_item, {
 
 local burner_drill_recipe = {
     type = 'recipe',
-    name = fns(name),
+    name = name,
     auto_unlocked_by = fns 'wet-drilling',
     enabled = false,
     energy_required = 2.0,
@@ -58,3 +58,5 @@ local protos = {
     burner_drill_item,
     burner_drill_recipe,
 }
+
+data:extend(protos)

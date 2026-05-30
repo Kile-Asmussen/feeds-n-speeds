@@ -1,4 +1,4 @@
--- data: new crafting categories that prohibit/solely allow handcrafting plus reassignment of crafting category to a bunch of recipes
+--! data: new crafting categories that prohibit/solely allow handcrafting plus reassignment of crafting category to a bunch of recipes
 local fns = require 'fns'
 
 data:extend{

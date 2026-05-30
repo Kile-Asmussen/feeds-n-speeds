@@ -1,4 +1,4 @@
--- Changes to the early game
+--! data, control: submodule governing changes to the early game stage of play
 
 local bootstrap = require('namespace')('bootstrap')
 
@@ -11,7 +11,6 @@ bootstrap.data = set{
     '.recipes.stone-furnace-alt',
 
     '.tech.tree',
-    '.tech.unlocks',
     '.tech.wet-drilling',
 
     '.worldgen.sulfur-ore',

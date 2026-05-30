@@ -1,4 +1,4 @@
--- Changes to the logistics 
+--! data, control: submodule governing changes to the logistics 
 
 local logistics = require('namespace')('logistics')
 

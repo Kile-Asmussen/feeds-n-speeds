@@ -1,4 +1,4 @@
--- Changes to construction/deconstruction of entities, their recipes, and other properties
+--! data, data-updates: submodule governing changes to construction/deconstruction of entities, their recipes, and other properties
 
 local construction = require('namespace')('construction')
 

@@ -1,4 +1,4 @@
--- data: make ores infinite
+--! data: make ores infinite
 local fns = require 'fns'
 
 if not settings.startup[fns 'infinite-ores'].value then return end

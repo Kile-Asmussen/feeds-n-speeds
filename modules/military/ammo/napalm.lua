@@ -1,4 +1,4 @@
--- data: better flamethrower ammo
+--! data: better flamethrower ammo
 
 local fns = require 'fns'
 local napalm = table.clone(data.raw.fluid['light-oil'])

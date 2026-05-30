@@ -1,4 +1,4 @@
--- data: better ammo recipes unlocked by military-4
+--! data: better ammo recipes unlocked by military-4
 
 local fns = require 'fns'
 
