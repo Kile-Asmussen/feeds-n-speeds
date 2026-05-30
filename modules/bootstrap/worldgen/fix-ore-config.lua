@@ -1,4 +1,4 @@
-
+-- data: dynamically add sulfur ore to resource patch sets
 local fns = require 'fns'
 local name = fns 'sulfur-ore'
 local merge = fns.table.merge

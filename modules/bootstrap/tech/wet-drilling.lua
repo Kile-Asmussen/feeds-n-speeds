@@ -1,4 +1,4 @@
-
+-- data: earlygame tech for mining with fluid, to allow sulfur mining
 local fns = require 'fns'
 local merge = fns.table.merge
 local icons = fns.gadgets.icons

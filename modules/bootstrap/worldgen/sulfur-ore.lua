@@ -1,4 +1,4 @@
-
+--data: sulfur ore resource entitie
 local fns = require 'fns'
 
 data:extend{{
