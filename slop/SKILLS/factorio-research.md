@@ -113,6 +113,31 @@ DEPTH=2 lua debug-data-raw.lua reactor nuclear-reactor heat_buffer
 DEPTH=3 lua debug-data-modded.lua container feeds-n-speeds-big-steel-chest picture
 ```
 
+### Wildcard queries with `-`
+
+Use `-` as a wildcard segment to match all keys at that level. This produces a flat pseudo-literal grouping all results under the nearest non-wildcard prefix. At most one wildcard is allowed in the first two arguments (category and name); further wildcards deeper in the path are unrestricted.
+
+```bash
+# All entities in a category at a specific field
+DEPTH=1 lua debug/data-raw.lua electric-pole - minable
+
+# All values of a nested array field across all entities (two wildcards)
+DEPTH=1 lua debug/data-modded.lua electric-pole - selection_box -
+```
+
+Example output:
+```
+data.raw["electric-pole"] = {
+  substation.minable = { mining_time = 0.8, result = "substation" },
+  ["medium-electric-pole"].minable = { mining_time = 0.3, result = "medium-electric-pole" },
+  ...
+}
+```
+
+Notes:
+- DEPTH is overridden to `(number of wildcards)` when wildcards are present — the env var is ignored
+- Error if both category and name (first two args) are wildcards
+
 ### Step 5: Cross-Reference API Documentation
 
 Fetch type definitions from the Factorio Lua API:

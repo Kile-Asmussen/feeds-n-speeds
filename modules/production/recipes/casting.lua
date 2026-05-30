@@ -1,4 +1,4 @@
-
+-- data: new recipes for casting including recycling-like recipes for scrap metal
 local fns = require 'fns'
 local recipes = data.raw.recipe
 

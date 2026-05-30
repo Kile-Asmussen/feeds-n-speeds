@@ -1,3 +1,5 @@
+-- data: better ammo recipes unlocked by military-4
+
 local fns = require 'fns'
 
 local function make_new_ammo_recipe(name, amount, ingredients)

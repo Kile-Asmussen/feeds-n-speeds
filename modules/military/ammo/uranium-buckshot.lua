@@ -1,3 +1,4 @@
+-- data: recipe for uranium-empowere shotgun ammo
 
 local fns = require 'fns'
 local ushell = table.clone(data.raw.ammo['piercing-shotgun-shell'])

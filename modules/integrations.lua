@@ -1,3 +1,4 @@
+-- Integrations with other mods, currently only the textplates family
 
 local integrations = require('namespace')('integrations')
 

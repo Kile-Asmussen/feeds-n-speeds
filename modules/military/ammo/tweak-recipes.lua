@@ -1,3 +1,5 @@
+-- data: changes to ammo recipes to require sulfur
+
 local fns = require 'fns'
 local puts = fns.gadgets.throughputs
 local recipes = data.raw.recipe

@@ -1,3 +1,4 @@
+-- Changes to the logistics 
 
 local logistics = require('namespace')('logistics')
 
@@ -11,6 +12,7 @@ logistics.data = set{
     '.entities.electric-poles',
 
     ['.items.stack-sizes'] = -1,
+    ['.inserters'] = -1,
 
     '.railway.concrete-rails',
 

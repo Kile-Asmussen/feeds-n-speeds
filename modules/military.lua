@@ -1,3 +1,4 @@
+-- Changes to military mechanics including recipes, tech tree, new buildings, and stats
 
 local military = require('namespace')('military')
 

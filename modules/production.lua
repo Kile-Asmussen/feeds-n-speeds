@@ -1,3 +1,4 @@
+-- Changes to production mechanics including new altered/recipes for intermediary products, rebalancing of crafting, 
 
 local production = require('namespace')('production')
 

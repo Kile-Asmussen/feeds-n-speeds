@@ -1,3 +1,4 @@
+-- data: new assembling machine solely responsible for manipulating barrels
 local fns = require 'fns'
 local iron_chest =  data.raw.container['iron-chest']
 local tap = table.clone(data.raw.furnace['stone-furnace'])

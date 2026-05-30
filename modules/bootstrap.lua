@@ -1,3 +1,4 @@
+-- Changes to the early game
 
 local bootstrap = require('namespace')('bootstrap')
 

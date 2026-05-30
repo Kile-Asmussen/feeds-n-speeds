@@ -1,4 +1,4 @@
-
+-- data: changes to sulfur-related recipes and new sulfur-producing oil processing variants
 local fns = require 'fns'
 
 local puts = fns.gadgets.throughputs
@@ -44,7 +44,7 @@ data:extend{
             '__base__/graphics/icons/fluid/advanced-oil-processing.png',
             { '__base__/graphics/icons/sulfur.png', size='small', dir = 'tl' },
         },
-        ingredients = puts{ ['water'] = 50, ['crude-oil'] = 100 },
+        ingredients = puts{ ['steam'] = 50, ['crude-oil'] = 100 },
         results = puts{ ['heavy-oil'] = 30, ['light-oil'] = 55, ['petroleum-gas'] = 70, ['sulfur'] = 2, },
         main_product = '',
         subgroup = 'fluid-recipes',
@@ -67,7 +67,7 @@ data:extend{
             '__base__/graphics/icons/fluid/heavy-oil-cracking.png',
             { '__base__/graphics/icons/sulfur.png', size='small', dir='tl', },
         },
-        ingredients = puts{ ['water'] = 30, ['heavy-oil'] = 50 },
+        ingredients = puts{ ['steam'] = 30, ['heavy-oil'] = 50 },
         results = puts{ ['light-oil'] = 40, ['sulfur'] = 1 },
         main_product = '',
         subgroup = 'fluid-recipes',

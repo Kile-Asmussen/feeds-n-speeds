@@ -1,3 +1,4 @@
+-- data: tweaks to the recipes for guns
 
 local fns = require 'fns'
 local recipes = data.raw.recipe

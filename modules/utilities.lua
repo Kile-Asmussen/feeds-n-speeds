@@ -1,3 +1,4 @@
+-- Utility scripts that don't fit other categories, such as the auto_unlocked_by field for recipes
 
 local utilities = require('namespace')('utilities')
 

@@ -1,3 +1,5 @@
+-- data: joke recipe to boil water in a chemical plant
+
 local fns = require 'fns'
 
 local boil_water = {

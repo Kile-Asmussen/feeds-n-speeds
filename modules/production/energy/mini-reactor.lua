@@ -1,3 +1,5 @@
+-- data: tiny heat-producing machine that uses electricity
+
 local fns = require 'fns'
 
 local mini_reactor = {
