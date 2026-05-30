@@ -1,4 +1,4 @@
-
+-- data: make rock entities give more resources when mined
 local fns = require 'fns'
 
 local gadgets = fns.gadgets

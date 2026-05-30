@@ -1,3 +1,4 @@
+-- data: add a mew burner miner that can mine with liquid, for sulfur ore
 local fns = require 'fns'
 local puts = fns.gadgets.throughputs
 local icons = fns.gadgets.icons

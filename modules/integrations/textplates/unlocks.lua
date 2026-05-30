@@ -1,3 +1,4 @@
+-- data: alter the way textplates are unlocked
 local fns = require 'fns'
 
 if not data.raw.item['textplate-iron-small'] then return end

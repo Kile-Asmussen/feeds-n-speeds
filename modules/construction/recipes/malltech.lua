@@ -1,3 +1,4 @@
+-- data: change recipe ingredients of most buildable entities
 local fns = require 'fns'
 local puts = fns.gadgets.throughputs
 local merge = fns.table.merge

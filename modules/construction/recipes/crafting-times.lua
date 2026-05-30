@@ -1,4 +1,4 @@
-
+-- data: change crafting times of vanilla entities
 local times = {
     -- Power generation
     ['steam-engine'] = 5.0,

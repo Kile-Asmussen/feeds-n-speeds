@@ -1,4 +1,4 @@
-
+-- data: hopper that links to steel chests
 local fns = require 'fns'
 local puts = fns.gadgets.throughputs
 

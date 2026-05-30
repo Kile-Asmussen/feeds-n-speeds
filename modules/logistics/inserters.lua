@@ -1,4 +1,4 @@
-
+-- data: tweaks to inserter speeds
 local fns = require 'fns'
 
 local merge = table.merge
