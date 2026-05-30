@@ -1,3 +1,4 @@
+-- data: alterations to the military tech tree, chiefly making powerful weapons available earlier
 local fns = require 'fns'
 local tech = data.raw.technology
 

@@ -1,4 +1,5 @@
 
+-- data: changes to recipes for turrets to make them more difficult to build
 local recipes = data.raw.recipe
 
 recipes['gun-turret'].ingredients = {

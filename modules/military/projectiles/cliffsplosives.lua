@@ -1,4 +1,4 @@
-
+-- data: move availability of cliff-explosives to nauvis
 local fns = require 'fns'
 
 fns.table.merge(data.raw.technology['cliff-explosives'], {

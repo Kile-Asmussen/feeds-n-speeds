@@ -1,4 +1,4 @@
-
+-- data: changed recipe for radars
 local fns = require 'fns'
 local inputs = fns.gadgets.throughputs
 

@@ -1,3 +1,4 @@
+-- data: shotgun turret with high power at close range
 local fns = require 'fns'
 local turret = table.clone(data.raw['ammo-turret']['gun-turret'])
 
