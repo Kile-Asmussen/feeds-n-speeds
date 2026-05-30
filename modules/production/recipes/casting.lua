@@ -66,19 +66,18 @@ data:extend{
                 icon=data.raw.item['heat-pipe'].icon,
                 scale=0.5,
                 shift={-4, 4},
-                float=true
             },
             {
                 icon='__FeedsNSpeeds__/graphics/icons/copper-casting-icon.png',
-                scale=0.33,
-                shift={6, -6},
-                float=true
+                scale=0.5,
+                shift={4, -4},
+                floating=true
             },
         },
         category = 'metallurgy',
         ingredients = {
-            { type='fluid', name='molten-copper', amount=200 },
-            { type='item', name='steel-plate', amount=10 },
+            { type='fluid', name='molten-copper', amount=100 },
+            { type='fluid', name='molten-iron', amount=60 },
         },
         energy_required = 8,
         results = {

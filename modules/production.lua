@@ -11,7 +11,7 @@ production.settings = set{
 production.data = set{
     ['.energy.electroboiler'] = set { '.fluids.boil-water' },
     ['.energy.nuclear-energy'] = set{ '.fluids.water' },
-    ['.energy.mini-reactor'] = set{ '.energy.nuclear-energy' },
+    ['.energy.mini-reactor'] = set{ '.energy.electroboiler', '.energy.nuclear-energy' },
 
     '.fluids.barrel-tapper',
     '.fluids.oil-processing',

@@ -22,10 +22,12 @@ local tap = merge(table.clone(data.raw.furnace['stone-furnace']), {
     next_upgrade = nil,
     show_recipe_icon = false,
     effects_receiver = {},
+    next_upgrade = fns.utils.null,
     graphics_set = {
         animation = merge(table.clone(iron_chest.picture), {
             __rec = true,
             layers = {
+                __rec = true,
                 { tint = {0.7, 0.65, 0.6}, scale = 0.6 },
                 { scale = 0.6 },
             }

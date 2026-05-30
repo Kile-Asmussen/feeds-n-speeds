@@ -68,3 +68,14 @@ table.merge(data.raw.recipe, {
     ['heat-exchanger'] = { auto_unlocked_by = { 'nuclear-power', 'heating-tower' } },
     ['steam-turbine'] = { auto_unlocked_by = { 'nuclear-power', 'heating-tower' } },
 })
+
+data.raw['heat-pipe']['heat-pipe'].heat_buffer.specific_heat = "25kJ"
+data.raw['heat-pipe']['heat-pipe'].heat_buffer.max_transfer = "1GW"
+
+data.raw.boiler['heat-exchanger'].energy_source.specific_heat = "250kJ"
+data.raw.reactor['heating-tower'].heat_buffer.specific_heat = "1MJ"
+data.raw.reactor['nuclear-reactor'].heat_buffer.specific_heat = "2MJ"
+
+data.raw.boiler['heat-exchanger'].energy_source.max_transfer = "2GW"
+data.raw.reactor['heating-tower'].heat_buffer.max_transfer = "4GW"
+data.raw.reactor['nuclear-reactor'].heat_buffer.max_transfer = "8GW"

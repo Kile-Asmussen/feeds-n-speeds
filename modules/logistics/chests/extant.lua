@@ -126,7 +126,6 @@ make_new_ones(data.raw.container, upscale, {
         quality_affects_inventory_size = true,
     },
     ['steel-chest'] = {
-        circuit_connector = utils.null,
         circuit_connector = shift_wire,
         localised_name = utils.null,
         inventory_size = 50,
@@ -150,10 +149,10 @@ make_new_ones(data.raw['logistic-container'], upscale, {
         quality_affects_inventory_size = true,
     },
     ['storage-chest'] = {
-        inventory_size = 1,
+        inventory_size = 4,
         inventory_type = "with_custom_stack_size",
         inventory_properties = {
-            stack_size_multiplier = 30
+            stack_size_multiplier = 10
         },
         circuit_connector = shift_wire,
         max_health = 300,

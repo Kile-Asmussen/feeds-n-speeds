@@ -217,6 +217,9 @@ merge(data.raw.recipe, {
          ['big-electric-pole'] = 1, ['accumulator'] = 1, ['advanced-circuit'] = 5
     },
     ['power-switch'] = ingredients{
-         ['advanced-circuit'] = 1, ['copper-cable'] = 10, ['iron-gear-wheel'] = 5, ['steel-plate'] = 5
+         ['electronic-circuit'] = 1, ['copper-cable'] = 10, ['electric-engine'] = 1, ['steel-plate'] = 5
     },
+     ['heat-pipe'] = ingredients{
+          ['copper-plate'] = 10, ['steel-plate'] = 2
+     }
 })

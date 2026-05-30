@@ -2,16 +2,9 @@
 
 ## Bugs
 
-- [ ] There's something wrong with the electric link.
-
-- [ ] Fluid-capable burner mining drill not correctly unlocked by wet-drilling tech.
-
-- [x] Hopper is still named the same as the steel/smart chest
-
-- [x] Startup additional resources not working in freeplay
+- [ ] Fix resource breakdowns for recipes.
 
 - [ ] Fix visual bugs.
-  - [ ] Basic materials processing looks weird
   - [ ] Contrast problems in overlaid icons (can Tint lighten a sprite?)
   - [ ] Something else for the sleeper roboport's antenna
   - [ ] Overlaid icons look kinda jank

@@ -23,6 +23,6 @@ table.merge(data.raw.technology.engine, {
         time = 10,
         count = 10,
     },
-    prerequisites = 'automation',
+    prerequisites = { 'automation' },
 })
 
