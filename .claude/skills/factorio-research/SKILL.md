@@ -1,1 +1,0 @@
-/home/qeela/factsandoreos/FeedsNSpeeds/slop/SKILLS/factorio-research.md
