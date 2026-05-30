@@ -3,6 +3,10 @@ local fns = require 'fns'
 local remove = {}
 local unlocks = {}
 
+local function malformed(recipe)
+    error("malformed auto_unlocked_by on recipe " .. recipe.name, 2)
+end
+
 for _, recipe in table.opairs(data.raw.recipe) do
     if recipe.auto_unlocked_by == nil then goto continue end
 
@@ -12,19 +16,50 @@ for _, recipe in table.opairs(data.raw.recipe) do
 
     if recipe.hidden then goto continue end
 
-    if type(recipe.auto_unlocked_by) == 'table' then
-        unlock = table.set(recipe.auto_unlocked_by)
-    elseif type(recipe.auto_unlocked_by) == 'string' then
-        unlock = { [recipe.auto_unlocked_by] = true }
-    else
-        error("recipe " .. recipe.name .. " can't be unlocked by " .. tostring(recipe.auto_unlocked_by), 1)
+    local auto = recipe.auto_unlocked_by
+
+    if type(auto) == 'string' then
+        if auto == '' then
+            recipe.enable = true
+            goto continue
+        end
+        auto = { auto }
     end
 
-    if table.is_empty(unlock) then
-        recipe.enabled = true
-    else
-        recipe.enabled = false
+    if type(auto) == 'table' then
+
+        if #auto == 0 then
+            recipe.enabled = true
+            goto continue
+        else
+            recipe.enabled = false
+        end
+
+        local basic = {
+            type = 'unlock-recipe',
+            recipe = recipe.name,
+        }
+
+        local default = table.merge(table.dup_assoc(auto), basic)
+
+        unlock = {}
+        for _, tech in ipairs(auto) do
+            if type(tech) == 'string' then
+                unlock[tech] = table.clone(default)
+            elseif type(tech) == 'table' then
+                if type(tech[1]) == 'string' then
+                    unlock[tech[1]] = table.merge(tabel.dup_assoc(tech), basic)
+                else
+                    malformed(recipe)
+                end
+            else
+                malformed(recipe)
+            end
+        end
+
         unlocks[recipe.name] = unlock
+    else
+        malformed(recipe)
     end
 
     ::continue::
@@ -34,12 +69,16 @@ fns.gadgets.remove_unlocks(remove)
 
 for recipe, unlock in table.opairs(unlocks) do
     for tech, _ in table.opairs(unlock) do
+
         if not data.raw.technology[tech] then
             error('no such technology: ' .. tech .. " on " .. recipe, 1)
         end
 
         data.raw.technology[tech].effects = data.raw.technology[tech].effects or {}
 
-        table.insert(data.raw.technology[tech].effects, { type='unlock-recipe', recipe=recipe })
+        local effect = { type='unlock-recipe', recipe=recipe }
+        table.include(effect, unlock[tech])
+
+        table.insert(data.raw.technology[tech].effects, effect)
     end
 end

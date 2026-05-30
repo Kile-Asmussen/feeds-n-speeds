@@ -32,8 +32,7 @@ print("\nDATA-UPDATES")
 require 'data-updates'
 
 fns.use()
-gadgets.recursion_check()
-gadgets.bad_argument_number_nine()
+gadgets.master_check()
 fns.restore()
 
 data.begin_control_stage()
@@ -46,19 +45,21 @@ localisation.finalize()
 
 local keys
 
-print('\nNEEDED LOCALISATION')
 keys = localisation.list_missing_locale_keys()
 if #keys > 0 then
+    print('\nLOCALISATION NEEDED')
     print(keys)
 end
 
-print('\nUNNEEDED LOCALISATION')
 keys = localisation.list_superfluous_locale_keys()
 if #keys > 0 then
+    print('\nLOCALISATION COVERED BY DEFAULTS')
     print(keys)
 end
+
 keys = localisation.list_dead_locale_keys()
 if #keys > 0 then
+    print('\nLOCALISATION NO LONGER USED')
     print(keys)
 end
 

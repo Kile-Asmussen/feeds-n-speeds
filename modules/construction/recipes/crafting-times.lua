@@ -1,4 +1,4 @@
---! data: change crafting times of vanilla entities
+--! data: change crafting times of vanilla entity recipes
 local times = {
     -- Power generation
     ['steam-engine'] = 5.0,
@@ -51,8 +51,6 @@ local times = {
     ['fluid-wagon'] = 8.0,
     ['artillery-wagon'] = 8.0,
 
-    ['engine-unit'] = 5.0,
-    ['electric-engine-unit'] = 5.0,
 }
 
 for recipe_name, energy_required in pairs(times) do

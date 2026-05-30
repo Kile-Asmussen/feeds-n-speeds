@@ -9,11 +9,20 @@ local set = fns.table.intoset
 local upscale = table.traverse(fns.gadgets.scale_vectors_and_numbers(
   2.0,
   set{
-    'scale', 'number', 'volume_multiplier',
+    'scale',
+    'number',
+    'initial_height',
+    'initial_height_deviation',
+    'initial_vertical_speed',
+    'initial_vertical_speed_deviation',
+    'speed_from_center',
+    'speed_from_center_deviation',
   },
   table.fullset,
-  set{ 'circuit_connector' }
+  set{ 'circuit_connector', 'sound', 'frame_count' }
 ))
+
+-- local soundscale = table.traverse(
 
 local shift_wire = table.traverse(fns.gadgets.shift_vectors(
   {0.35, 0.30}, set{'shift'}, {}
@@ -73,50 +82,74 @@ merge(data.raw.recipe, {
     }
 })
 
-merge(data.raw.container, {
-    ['wooden-chest'] = utils.call(merge{
-        circuit_connector = nil,
+local function make_new_ones(prototype, all, entities)
+    all = all or function(x) return x end
+    local res = {}
+    for k, f in pairs(entities) do
+        local new = table.clone(prototype[k])
+
+        new.name = fns(k)
+        new.localised_name = new.localised_name or { "entity-name." .. k }
+        new.dying_explosion = new.dying_explosion and fns(k .. '-explosion') or nil
+        new.corpse = new.corpse and fns(k .. '-remnants') or nil
+
+        if type(f) == 'table' then f = merge(f) end
+
+        if type(f) == 'function' then
+            new = f(new)
+        end
+        new = all(new)
+
+        if data.raw.item[k] then
+           data.raw.item[k].place_result = new.name
+        end
+
+        table.insert(res, new)
+    end
+    data:extend(res)
+end
+
+make_new_ones(data.raw.container, upscale, {
+    ['wooden-chest'] = {
+        circuit_connector = utils.null,
         inventory_size = 10,
+        localised_name = utils.null,
         inventory_type = "normal",
         max_health = 100,
-    }, upscale),
-    ['iron-chest'] = utils.call(
-        merge{
-            circuit_connector = shift_wire,
-            inventory_type = 'with_bar',
-            inventory_size = 20,
-            max_health = 250,
-            quality_affects_inventory_size = true,
-        },
-        upscale
-    ),
-    ['steel-chest'] = utils.call(
-        merge{
-            localised_name = { fns.locale_key('entity-name', 'tweaked-steel-chest') },
-            circuit_connector = shift_wire,
-            inventory_size = 50,
-            inventory_type = 'with_filters_and_bar',
-            max_health = 500,
-            quality_affects_inventory_size = true,
-            flags = {
-                'placeable-neutral',
-                'player-creation',
-                'get-by-unit-number',
-            }
-        },
-        upscale
-    )
+    },
+    ['iron-chest'] = {
+        circuit_connector = shift_wire,
+        inventory_type = 'with_bar',
+        localised_name = utils.null,
+        inventory_size = 20,
+        max_health = 250,
+        quality_affects_inventory_size = true,
+    },
+    ['steel-chest'] = {
+        circuit_connector = utils.null,
+        circuit_connector = shift_wire,
+        localised_name = utils.null,
+        inventory_size = 50,
+        inventory_type = 'with_filters_and_bar',
+        max_health = 500,
+        quality_affects_inventory_size = true,
+        flags = {
+            'placeable-neutral',
+            'player-creation',
+            'get-by-unit-number',
+        }
+    }
 })
 
-merge(data.raw['logistic-container'], {
-    ['passive-provider-chest'] = utils.call(merge{
+make_new_ones(data.raw['logistic-container'], upscale, {
+    ['passive-provider-chest'] = {
         inventory_size = 30,
         inventory_type = "with_filters_and_bar",
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,
-    }, upscale),
-    ['storage-chest'] = utils.call(merge{
+    },
+    ['storage-chest'] = {
         inventory_size = 1,
         inventory_type = "with_custom_stack_size",
         inventory_properties = {
@@ -125,48 +158,62 @@ merge(data.raw['logistic-container'], {
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,
-    }, upscale),
-    ['active-provider-chest'] = utils.call(merge{
-        inventory_size = 30,
+    },
+    ['active-provider-chest'] = {
+        inventory_size = 20,
         inventory_type = "with_filters_and_bar",
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,
-    }, upscale),
-    ['requester-chest'] = utils.call(merge{
-        inventory_size = 30,
+    },
+    ['requester-chest'] = {
+        inventory_size = 20,
         inventory_type = "with_bar",
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,
-    }, upscale),
-    ['buffer-chest'] = utils.call(merge{
-        inventory_size = 30,
+    },
+    ['buffer-chest'] = {
+        inventory_size = 20,
         inventory_type = "with_bar",
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,
-    }, upscale),
+    },
 })
 
-merge(data.raw.explosion, {
-    ['steel-chest-explosion'] = upscale,
-    ['iron-chest-explosion'] = upscale,
-    ['wooden-chest-explosion'] = upscale,
-    ['active-provider-chest-explosion'] = upscale,
-    ['passive-provider-chest-explosion'] = upscale,
-    ['storage-chest-explosion'] = upscale,
-    ['requester-chest-explosion'] = upscale,
-    ['buffer-chest-explosion'] = upscale,
+local splosions = {
+    'steel-chest-explosion',
+    'iron-chest-explosion',
+    'wooden-chest-explosion',
+    'active-provider-chest-explosion',
+    'passive-provider-chest-explosion',
+    'storage-chest-explosion',
+    'requester-chest-explosion',
+    'buffer-chest-explosion',
+}
+
+make_new_ones(data.raw.explosion, upscale, table.set(splosions))
+
+make_new_ones(data.raw.corpse, upscale, table.set{
+    'steel-chest-remnants',
+    'iron-chest-remnants',
+    'wooden-chest-remnants',
+    'active-provider-chest-remnants',
+    'passive-provider-chest-remnants',
+    'storage-chest-remnants',
+    'requester-chest-remnants',
+    'buffer-chest-remnants',
 })
 
-merge(data.raw.corpse, {
-    ['steel-chest-remnants'] = upscale,
-    ['iron-chest-remnants'] = upscale,
-    ['wooden-chest-remnants'] = upscale,
-    ['active-provider-chest-remnants'] = upscale,
-    ['passive-provider-chest-remnants'] = upscale,
-    ['storage-chest-remnants'] = upscale,
-    ['requester-chest-remnants'] = upscale,
-    ['buffer-chest-remnants'] = upscale,
-})
+for _, explo in ipairs(splosions) do
+
+    local particles = table.icollect(
+        data.raw['explosion'][explo].created_effect.action_delivery.target_effects,
+        table.access{'particle_name'})
+
+    for _, particle in ipairs(particles) do
+        table.merge(data.raw['optimized-particle'][particle].pictures.sheet,
+            { scale = function(n) return n * 2 end })
+    end
+end

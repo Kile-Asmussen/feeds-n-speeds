@@ -7,6 +7,25 @@ local assert = _ENV.assert
 local table = _ENV.table
 local string = _ENV.string
 
+function gadgets.remove_technologies(remove)
+    if type(remove) == 'string' then
+        remove = { [remove] = true }
+    end
+
+    if table.has_array(remove) then
+        remove = table.set(remove)
+    end
+
+    for _, tech in pairs(data.raw.technology) do
+        if not tech.prerequisites then goto continue end
+        table.remove_matching(tech.prerequisites, table.lookup(remove))
+        ::continue::
+    end
+    for name in pairs(remove) do
+        data.raw.technology[name] = nil
+    end
+end
+
 function gadgets.remove_unlocks(remove)
     if table.has_array(remove) then
         remove = table.set(remove)
@@ -313,6 +332,12 @@ function gadgets.scale_vectors_and_numbers(factor, fields, vectors, stop_at)
         if vectors[k] and math.isvec(v) then
             math.vecmul(v, factor)
             return true
+        elseif
+            vectors[k] and type(v) == 'table' and
+            table.is_array(v) and table.iall(v, math.isvec)
+        then
+            table.map(v, function(v) return math.vecmul(v, factor) end)
+            return true
         elseif fields[k] and type(v) == 'number' then
             return v * factor, true
         end
@@ -409,6 +434,9 @@ local function build_tree(path, node)
     else
         local new_path = table.clone(path)
         local key = table.remove(new_path, 1)
+        if node[key] == nil then
+            return { key }, nil
+        end
         local subpath, subnode = build_tree(new_path, node[key])
 
         return table.append({ key }, subpath), subnode
@@ -452,6 +480,83 @@ function gadgets.descend_into_data_raw(args, depth_limit)
     }
     buffer:print_any(subtree)
     _ENV.print(ix .. ' = ' .. tostring(buffer))
+end
+
+-- gadgets.check_refs(source_cat, accessor, check_cat)
+-- For every prototype in data.raw[source_cat], applies accessor(proto) to get a
+-- name or array of names, then errors for any that don't exist in data.raw[check_cat].
+-- check_cat may be a string or an array of strings; a ref is valid if found in any.
+function gadgets.check_refs(source_cat, accessor, check_cat)
+    local source = data.raw[source_cat]
+    assert(source, "no prototype category: " .. tostring(source_cat))
+
+    local check_cats = type(check_cat) == 'table' and check_cat or { check_cat }
+    local checks = {}
+    for _, cat in ipairs(check_cats) do
+        if data.raw[cat] then checks[cat] = data.raw[cat] end
+    end
+
+    local function exists_in_any(ref)
+        for _, cat in pairs(checks) do
+            if cat[ref] then return true end
+        end
+        return false
+    end
+
+    local problems = {}
+    for name, proto in pairs(source) do
+        local val = accessor(proto)
+        if val == nil then goto continue end
+
+        local names = type(val) == 'table' and val or { val }
+        for _, ref in ipairs(names) do
+            if type(ref) == 'string' and not exists_in_any(ref) then
+                table.insert(problems,
+                    "data.raw['" .. source_cat .. "']['" .. name .. "']: " ..
+                    "references missing " .. table.concat(check_cats, '/') .. " '" .. ref .. "'")
+            end
+        end
+        ::continue::
+    end
+
+    if #problems > 0 then
+        error(table.concat(problems, '\n'), 2)
+    end
+end
+
+function gadgets.collect_from_list(test, access)
+    return function(list)
+        if type(list) ~= 'table' then return nil end
+        local res = {}
+        for _, v in ipairs(list) do
+            if test(v) then
+                local val = access(v)
+                if val ~= nil then table.insert(res, val) end
+            end
+        end
+        return #res > 0 and res or nil
+    end
+end
+
+local fluid_names = gadgets.collect_from_list(table.match{type='fluid'}, table.access{'name'})
+local item_names  = gadgets.collect_from_list(table.match{type='item'},  table.access{'name'})
+
+local ITEM_CATS = {
+    'ammo', 'armor', 'blueprint', 'blueprint-book', 'capsule',
+    'deconstruction-item', 'gun', 'item', 'item-with-entity-data',
+    'item-with-inventory', 'module', 'rail-planner', 'repair-tool',
+    'selection-tool', 'space-platform-starter-pack', 'tool', 'upgrade-item',
+}
+
+function gadgets.master_check()
+    gadgets.recursion_check()
+    gadgets.bad_argument_number_nine()
+    gadgets.check_refs('recipe', table.access{'category'}, 'recipe-category')
+    gadgets.check_refs('recipe', function(p) return fluid_names(p.ingredients) end, 'fluid')
+    gadgets.check_refs('recipe', function(p) return fluid_names(p.results) end, 'fluid')
+    gadgets.check_refs('recipe', function(p) return item_names(p.ingredients) end, ITEM_CATS)
+    gadgets.check_refs('recipe', function(p) return item_names(p.results) end, ITEM_CATS)
+    gadgets.check_refs('technology', table.access{'prerequisites'}, 'technology')
 end
 
 gadgets.on_init_handlers = {}

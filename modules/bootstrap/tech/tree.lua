@@ -23,6 +23,8 @@ data:extend{{
     },
 }}
 
+data.raw.technology['automation-science-pack'].prerequisites = { fns 'lab-tech' }
+
 table.remove_matching(data.raw.technology['circuit-network'].effects, { type = "unlock-circuit-network" })
 
 table.merge(data.raw.technology, {

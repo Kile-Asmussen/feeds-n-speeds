@@ -29,7 +29,7 @@ table.merge(burner_drill, {
     icon = utils.null,
     icons = icons{ type = 'entity',
         'icons/burner-mining-drill.png',
-        { 'icons/water.png', size='small', dir='bl' },
+        { 'icons/fluid/water.png', size='small', dir='bl' },
     },
 })
 

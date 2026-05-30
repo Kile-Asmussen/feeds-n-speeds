@@ -21,6 +21,8 @@ production.data = set{
     '.ores.infinite',
     '.ores.starting-patch-shape',
 
+    '.recipes.crafting-times',
+    '.recipes.hand-engine',
     '.recipes.casting',
     '.recipes.concrete',
     '.recipes.sulfur-processing',

@@ -44,12 +44,15 @@ end
 getmetatable(fns).__call = fns.name
 
 fns.extra_localsation_keys = {}
+fns.explicit_localisation_keys = {}
 
 function fns.locale_key(category, name)
     if not fns.identifiers[name] then name = fns(name) end
     fns.extra_localsation_keys[category] = fns.extra_localsation_keys[category] or {}
     fns.extra_localsation_keys[category][name] = true
-    return category .. '.' .. name
+    local res = category .. '.' .. name
+    fns.explicit_localisation_keys[res] = true
+    return res
 end
 
 function fns.use()

@@ -9,6 +9,7 @@ for _, fl in pairs(data.raw.fluid) do
         empty = data.raw.recipe[empty]
         if barrel and empty then
             barrel.category = fns'barrelling'
+            barrel.ingredients[1], barrel.ingredients[2] = barrel.ingredients[2], barrel.ingredients[1]
             empty.category = fns'barrelling'
         end
     end

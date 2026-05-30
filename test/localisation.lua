@@ -71,8 +71,6 @@ function localisation.key_category(proto)
         return 'recipe'
     elseif proto.type == 'technology' then
         return 'technology'
-    elseif proto.type == 'autoplace-control' then
-        return 'autoplace-control'
     elseif proto.type:match('%-setting$') then
         return 'mod-setting'
     elseif proto.type == 'noise-expression'
@@ -155,7 +153,7 @@ function localisation.add_manual_keys()
     local manual = fns.extra_localsation_keys
 
     for cat, list in pairs(manual) do
-        for _, name in ipairs(list) do
+        for name, _ in pairs(list) do
             localisation.add_key(cat, name)
         end
     end
@@ -171,11 +169,23 @@ function localisation.winnow_unneeded_keys()
         return cat and cat[proto_name] and not table.is_empty(cat[proto_name])
     end
 
+    local function references_explicit_key(content)
+        if type(content) == 'string' then
+            return fns.explicit_localisation_keys[content] or false
+        elseif type(content) == 'table' then
+            for _, v in ipairs(content) do
+                if references_explicit_key(v) then return true end
+            end
+            return false
+        end
+    end
+
     -- General pass: a non-empty localised_name/description on the prototype means
     -- Factorio uses it directly and never consults the locale file for that key.
+    -- Exception: if the content references an explicitly generated locale key, it is needed.
     for cat_name, keys in pairs(localisation.keys) do
         for proto_name, content in pairs(keys) do
-            if not table.is_empty(content) then
+            if not table.is_empty(content) and not references_explicit_key(content) then
                 localisation.skip_key(cat_name, proto_name, 'prototype provides localised string directly')
             end
         end
@@ -333,9 +343,11 @@ function localisation.list_dead_locale_keys()
         local any = false
         for _, key in ipairs(table.sorted_keys(locale_map[cat])) do
             if not key:match('^feeds%-n%-speeds%-') then goto next_key end
-            -- A key is "dead" if it isn't tracked in localisation.keys at all
+            -- A key is "dead" if it isn't tracked in localisation.keys at all,
+            -- unless it was explicitly generated via fns.locale_key.
             if not (localisation.keys[cat] and localisation.keys[cat][key])
             and not (localisation.skipped_keys[cat] and localisation.skipped_keys[cat][key])
+            and not fns.explicit_localisation_keys[cat .. '.' .. key]
             then
                 if not any then
                     any = true

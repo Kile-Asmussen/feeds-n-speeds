@@ -2,7 +2,7 @@
 local fns = require 'fns'
 
 local fns_hopper = fns 'hopper'
-local fns_chest = 'steel-chest'
+local fns_chest = fns 'steel-chest'
 
 local normal_link_distance = 10.01
 local quality_distance_increase = 2.0

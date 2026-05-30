@@ -17,6 +17,29 @@ end
 
 table.twoarg('search', __search, 'function')
 
+local function __search_all(any, fn, hits)
+
+    hits = hits or {}
+
+    if fn(any) then
+        table.insert(hits, any)
+        return hits
+    end
+
+    if type(any) ~= 'table' then
+        return hits
+    end
+
+    for k, v in pairs(any) do
+        __search(v, fn, hits)
+    end
+
+    return hits
+end
+
+table.twoarg('search_all', __search_all, 'function')
+
+
 local function __traverse(tbl, func)
     for k, v in pairs(tbl) do
         if type(v) == 'table' then
@@ -88,6 +111,31 @@ local function __assign(tbl, keys)
 end
 
 table.twoarg('assign', __assign)
+
+local function __apply(tbl, keys)
+    if #keys == 0 then
+        error("cannot apply to empty path", 3)
+    end
+
+    local last = table.remove(keys)
+    local down = tbl
+    
+    for _, key in ipairs(keys) do
+        if down[key] == nil then down[key] = {} end
+
+        if type(down[key]) ~= 'table' then
+            down[key] = { __old = down[key] }
+        end
+
+        down = down[key]
+    end
+    
+    down[last] = keys.op(down[last])
+
+    return tbl
+end
+
+table.twoarg('apply', __apply)
 
 table.twoarg('index', function(tbl, k) return tbl[k] end, 'any')
 
@@ -177,4 +225,8 @@ function table.clone(tbl, setmeta)
     setmeta = setmeta and true or false
     if type(tbl) ~= 'table' then return tbl end
     return __clone({}, setmeta)(tbl)
+end
+
+function table.lookup(tbl)
+    return function(val) return tbl[val] end
 end

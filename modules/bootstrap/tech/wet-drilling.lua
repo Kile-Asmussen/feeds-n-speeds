@@ -5,13 +5,9 @@ local icons = fns.gadgets.icons
 
 local tech = data.raw.technology
 
-merge(data.raw.technology, {
-    ['uranium-mining'] = fns.utils.null,
-    ['electric-mining-drill'] = {
-        __merge=true,
-        prerequisites = { 'automation-science-pack', fns 'wet-drilling' }
-    }
-})
+fns.gadgets.remove_technologies('uranium-mining')
+
+data.raw.technology['electric-mining-drill'].prerequisites = { 'automation-science-pack', fns 'wet-drilling' }
 
 
 local wet = {

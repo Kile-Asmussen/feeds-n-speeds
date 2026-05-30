@@ -41,6 +41,10 @@
 - [ ] Alternate, more complex recipes for all the personal equipment
 - [ ] **Auto-pavement coverage**: Set `auto_require_pavement` on all mod-created entity prototypes (turrets, roboports, electroboiler, mini-reactor, electric-link, hoppers, etc.) and expand `pavement.lua` to assign tiers to relevant vanilla entities beyond mining drills.
 
+## Design considerations
+
+- [ ] Consider splitting the barrel tapper into separate barrel filler and barrel emptier machines.
+
 ## Potential spinoffs
 
 - [ ] Extract big steel chest + hoppers into a standalone mod — self-contained enough to be useful without the rest of FeedsNSpeeds.

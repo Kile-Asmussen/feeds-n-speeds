@@ -6,6 +6,7 @@
       "Edit(TODO.md)",
       "Edit(locale/**/*)",
       "Edit(debug/data-raw.lua)",
+      "Edit(debug/load.lua)",
       "Edit(debuglib.lua)",
       "Edit(debug/data-modded.lua)",
       "Write(locale/**/*)",
