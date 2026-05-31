@@ -76,7 +76,7 @@ local pavement = {
 }
 
 for entity_type, entities in pairs(pavement) do
-    if type(entities) == 'string' then
+    if type(entities) == 'string' or entities == false then
         for _, entity in pairs(data.raw[entity_type] or {}) do
             entity.auto_require_pavement = entities
         end
