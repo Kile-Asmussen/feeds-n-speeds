@@ -82,3 +82,6 @@ merge(data.raw.recipe, {
 
     ['burner-inserter'] = {auto_unlocked_by = 'steam-power'},
 })
+
+data.raw.recipe['repair-pack'].auto_unlocked_by = fns 'lab-tech'
+data.raw.technology['repair-pack'] = nil

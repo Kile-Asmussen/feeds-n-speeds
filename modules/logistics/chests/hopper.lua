@@ -24,6 +24,7 @@ table.merge(table.clone(data.raw.item['steel-chest']), {
 local recipe = table.merge(table.clone(data.raw.recipe['steel-chest']), {
     name = fns 'hopper',
     localised_name = fns.utils.null,
+    auto_require_pavement = 'stone-path',
     auto_unlock_by = 'automation',
     ingredients = puts{ ['steel-chest'] = 1, ['long-handed-inserter'] = 1 },
     results = puts{ [fns 'hopper'] = 1 },

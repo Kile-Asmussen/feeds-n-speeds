@@ -12,7 +12,7 @@ merge(data.raw['assembling-machine'], {
         crafting_speed = 1.0
     },
     ['assembling-machine-3'] = merge{
-        auto_require_pavement = 'refined-hazard-concrete',
+        auto_require_pavement = 'refined-concrete',
         crafting_speed = 1.5,
         fluid_boxes = merge{
             [1] = merge{

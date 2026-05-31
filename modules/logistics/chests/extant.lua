@@ -129,6 +129,7 @@ make_new_ones(data.raw.container, upscale, {
         circuit_connector = shift_wire,
         localised_name = utils.null,
         inventory_size = 50,
+        auto_require_pavement = 'stone-path',
         inventory_type = 'with_filters_and_bar',
         max_health = 500,
         quality_affects_inventory_size = true,
@@ -144,6 +145,7 @@ make_new_ones(data.raw['logistic-container'], upscale, {
     ['passive-provider-chest'] = {
         inventory_size = 30,
         inventory_type = "with_filters_and_bar",
+        auto_require_pavement = 'concrete',
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,
@@ -151,6 +153,7 @@ make_new_ones(data.raw['logistic-container'], upscale, {
     ['storage-chest'] = {
         inventory_size = 4,
         inventory_type = "with_custom_stack_size",
+        auto_require_pavement = 'concrete',
         inventory_properties = {
             stack_size_multiplier = 10
         },
@@ -161,6 +164,7 @@ make_new_ones(data.raw['logistic-container'], upscale, {
     ['active-provider-chest'] = {
         inventory_size = 20,
         inventory_type = "with_filters_and_bar",
+        auto_require_pavement = 'hazard-concrete',
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,
@@ -168,6 +172,7 @@ make_new_ones(data.raw['logistic-container'], upscale, {
     ['requester-chest'] = {
         inventory_size = 20,
         inventory_type = "with_bar",
+        auto_require_pavement = 'hazard-concrete',
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,
@@ -175,6 +180,7 @@ make_new_ones(data.raw['logistic-container'], upscale, {
     ['buffer-chest'] = {
         inventory_size = 20,
         inventory_type = "with_bar",
+        auto_require_pavement = 'hazard-concrete',
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,

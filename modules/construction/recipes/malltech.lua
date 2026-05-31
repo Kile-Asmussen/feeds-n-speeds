@@ -16,9 +16,6 @@ merge(data.raw.technology, {
     ['railway'] = {
         prerequisites = { 'circuit-network', 'engine', 'radar' }
     },
-     ['automation'] = {
-        prerequisites = append{'repair-pack'},
-    },
     ['automation-2'] = {
         prerequisites = append{'fast-inserter', 'circuit-network'},
     },

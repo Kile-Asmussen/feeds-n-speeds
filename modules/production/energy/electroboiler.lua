@@ -13,6 +13,7 @@ local boiler = merge(table.clone(data.raw.boiler.boiler), {
         emissions_per_minute = { pollution = 0 },
         drain = '18kW'
     },
+    auto_require_pavement = 'stone-path',
     energy_consumption = '1.8MW'
 })
 
