@@ -147,7 +147,7 @@ merge(data.raw.recipe, {
          ['stone-furnace'] = 1, ['pipe'] = 3, ['copper-plate'] = 5
     },
     ['steam-engine'] = ingredients{
-         ['engine-unit'] = 3, ['iron-gear-wheel'] = 4, ['pipe'] = 10, ['copper-cable'] = 10,
+         ['engine-unit'] = 3, ['iron-gear-wheel'] = 2, ['pipe'] = 4, ['copper-cable'] = 10,
     },
     ['offshore-pump'] = ingredients{
          ['engine-unit'] = 1, ['pipe'] = 1, ['stone-brick'] = 4

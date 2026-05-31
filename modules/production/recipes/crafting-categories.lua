@@ -10,6 +10,8 @@ data:extend{
     { type='recipe-category', name=fns 'tier-3-crafting' },
 }
 
+table.insert(data.raw.character.character.crafting_categories, fns 'hand-crafting')
+
 local assignments = {
     ['advanced-crafting'] = {
         fns 'big-steel-chest',
@@ -39,8 +41,6 @@ local assignments = {
         'heat-exchanger',
 
         'flamethrower-turret',
-
-        'pipe-to-ground',
 
         'roboport',
         fns 'construction-roboport',

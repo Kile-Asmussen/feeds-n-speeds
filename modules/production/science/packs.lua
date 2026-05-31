@@ -2,6 +2,11 @@
 local tech = data.raw.technology
 local recipes = data.raw.recipe
 
+tech['automation-science-pack'].research_trigger = {
+    type = 'build-entity',
+    entity = 'lab'
+}
+
 table.append(tech['logistic-science-pack'].prerequisites, {'logistics', 'automation', 'lamp'})
 table.append(tech['chemical-science-pack'].prerequisites, {'automation-2'})
 table.append(tech['military-science-pack'].prerequisites, {'automation-2', 'oil-gathering'})
