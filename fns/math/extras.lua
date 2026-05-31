@@ -43,7 +43,7 @@ function math.sum(tbl, res)
     return res
 end
 
-function math.max(tbl)
+function math.find_max(tbl)
     assert(type(tbl) == 'table', "argument #1 must be a table")
     local ix = 0
     local max = -math.huge

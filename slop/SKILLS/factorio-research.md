@@ -10,13 +10,12 @@ Research Factorio prototypes by inspecting data.raw structures and cross-referen
 - To find examples of how vanilla Factorio implements features
 - To verify mod prototypes are defined correctly
 
-## Available Scripts
+## Available Lua Scripts
 
-| Script | Contents | Use Case |
-|--------|----------|----------|
-| `debug/data-raw.lua` | Vanilla prototypes only | Reference vanilla implementations |
-| `debug/data-modded.lua` | Vanilla + mod prototypes | Verify mod additions, check merged state |
-| `debug/load.lua` | Mod loading simulation | Debug obvious module loading issues, list missing localization keys |
+- `debug/load.lua` : mod loading simulation to debug module loading issues, will also list missing localization keys
+- `debug/data-raw.lua` : reference lookup of vanilla prototypes
+- `debug/data-modded.lua` : reference lookup of prototypes altered/added/left as-is by this mod
+- `debug/search.lua` : text search of prototype categories, names, and fields
 
 There is a filter in place which restricts bash commands. Check `.claude/bash-commands.json` for
 the exact forms these commands can take. DO NOT attempt to use `cd` to change to the project directory as
@@ -25,37 +24,27 @@ extract only part of the output.
 
 ## Factorio Source Data Access
 
-Direct read access is available to the Factorio installation's data directories via Read, Grep, and Glob tools:
+A copy of factorio's vanilla data is available in the `./target/` directory (under .gitignore):
 
-| Path | Contents |
-|------|----------|
-| `~/.steam/.../Factorio/data/base` | Base game prototypes, graphics, locale |
-| `~/.steam/.../Factorio/data/quality` | Quality mod |
-| `~/.steam/.../Factorio/data/space-age` | Space Age expansion |
-| `~/.steam/.../Factorio/data/elevated-rails` | Elevated rails |
-
-Full path: `/home/qeela/.steam/steam/steamapps/common/Factorio/data/*`
+- `./target/base`: Base game prototypes, graphics, locale
+- `./target/elevated-rails`: Elevated rails (small)
+- `./target/quality`: Quality mod (small)
+- `./target/space-age`: Space Age expansion
 
 ### Use Cases
 
 - **Locale strings**: Find vanilla descriptions to override or reference
-  ```bash
-  Grep: pattern="nuclear-reactor" path=".../data/base/locale/en"
+  ```
+  Grep: pattern="nuclear-reactor" path="./target/base/locale/en"
   ```
 - **Graphics paths**: Discover sprite filenames for reuse
-  ```bash
-  Glob: pattern="**/nuclear-reactor*.png" path=".../data/base/graphics"
   ```
-- **Prototype definitions**: Read actual Lua source for complex entities
-  ```bash
-  Read: .../data/base/prototypes/entity/reactor.lua
+  Glob: pattern="**/nuclear-reactor*.png" path="./target/base/graphics"
   ```
-
-### Notes
-
-- These paths are configured in `.claude/read-grep-glob-paths.json`
-- Read-only access; cannot modify base game files
-- Useful for finding exact field names, graphic dimensions, and locale keys
+- **Prototype definitions**: Read actual Lua source for game mechanics
+  ```
+  Read: ./target/base/scenarios/freeplay/control.lua
+  ```
 
 ## Workflow
 
@@ -63,6 +52,7 @@ Full path: `/home/qeela/.steam/steam/steamapps/common/Factorio/data/*`
 
 - **Inspecting vanilla prototypes:** Use `debug/data-raw.lua`
 - **Inspecting mod prototypes:** Use `debug/data-modded.lua`
+- **Unsure about exact names:** Use `debug/search.lua`
 
 ### Step 2: List Instances in Category
 
@@ -97,7 +87,7 @@ DEPTH=3 lua debug-data-modded.lua <category> <name>
 Example:
 ```bash
 DEPTH=3 lua debug-data-raw.lua inserter inserter
-DEPTH=3 lua debug-data-modded.lua container feeds-n-speeds-big-steel-chest
+DEPTH=3 lua debug-data-modded.lua container feeds-n-speeds-steel-chest
 ```
 
 ### Step 4: Inspect Nested Fields
@@ -110,12 +100,12 @@ DEPTH=3 lua debug-data-modded.lua <category> <name> <field> <subfield>
 Example:
 ```bash
 DEPTH=2 lua debug-data-raw.lua reactor nuclear-reactor heat_buffer
-DEPTH=3 lua debug-data-modded.lua container feeds-n-speeds-big-steel-chest picture
+DEPTH=3 lua debug-data-modded.lua container feeds-n-speeds-steel-chest picture
 ```
 
 ### Wildcard queries with `-`
 
-Use `-` as a wildcard segment to match all keys at that level. This produces a flat pseudo-literal grouping all results under the nearest non-wildcard prefix. At most one wildcard is allowed in the first two arguments (category and name); further wildcards deeper in the path are unrestricted.
+Use `-` as a wildcard segment to match all keys at that level. This produces groupings of all results under the nearest non-wildcard prefix. At most one wildcard is allowed in the first two arguments (category and name); further wildcards deeper in the path are unrestricted.
 
 ```bash
 # All entities in a category at a specific field
@@ -160,35 +150,23 @@ Example:
 
 ## Depth Guidelines
 
-| DEPTH | Use Case |
-|-------|----------|
-| 1 | List keys only, category overview |
-| 2 | See immediate field values, identify structure |
-| 3 | Standard inspection, most fields visible |
-| 4 | Deep nested structures (sprites, circuit connectors) |
-| 5 | Maximum detail, use sparingly |
+DEPTH = 1  List keys only, category overview
+DEPTH = 2  See immediate field values, identify structure
+DEPTH = 3  Standard inspection, most fields visible, large printouts
 
 ## Common Patterns
 
-### Entity-Item-Recipe Chain
+### Entity-Item-Recipe-Technology Chain
+
 Most placeable entities require:
 1. Entity prototype (e.g., `data.raw.container['steel-chest']`)
 2. Item prototype (e.g., `data.raw.item['steel-chest']`)
 3. Recipe prototype (e.g., `data.raw.recipe['steel-chest']`)
-4. Technology unlock (added to `data.raw.technology[...].effects`)
+4. Technology unlock for precipe (added to `data.raw.technology[...].effects`)
 
-### Energy Sources
-Entities with power consumption have `energy_source`:
-- `type = "electric"` - uses electricity
-- `type = "burner"` - burns fuel
-- `type = "heat"` - uses heat pipes
-- `type = "void"` - no power (free)
+This mod has a helper for recipe unlocks: pseudo prototype field `recipe.auto_unlocked_by`, see ./modules/utilities/assign-recipe-unlocks.lua for implementation
 
-### Graphics Layers
-Entity graphics typically have:
-- `picture` or `pictures` - main sprite
-- `shadow` - drop shadow
-- `animation` - animated sprites
+Usually recipes will take the name of their main product, items will take the name of their placeable entity, meaning only entities have localised names in most cases. Same is true of icons.
 
 ## Output Format
 
@@ -198,15 +176,57 @@ When reporting findings, include:
 3. API documentation reference if consulted
 4. Recommended approach for modification
 
-## Limitations
+## Factorio mod loading stages
 
-- `debug-data-modded.lua` includes this mod's prototypes; other third-party mods are not loaded
-- Deep inspection (DEPTH=4+) produces verbose output
-- Some fields are computed/inherited and not visible in raw data
+### Settings stage
 
-## Skill Maintenance
+Configuration of mods. Runs first during startup.
 
-This skill can be edited via the fetch/install workflow:
-1. `.claude/fetch-factorio-research.sh` - copies skill to `slop/factorio-research.md`
-2. Edit `slop/factorio-research.md`
-3. `.claude/install-factorio-research.sh` - installs edited skill (backs up original)
+data.raw is not available, data:extend only to create settings
+
+settings.lua:
+Create settings
+startup, per-player, per-game, boolean, string, number
+many mods use this
+
+settings-updates.lua:
+modify other mod's settings, generate settings dynamically
+rarely needed
+
+settings-final-fixes.lua:
+modify other mod's modifications of settings
+extremly rarely needed
+
+### Data stage
+
+Mod content. Runs second during startup.
+
+data.lua:
+create prototypes, change vanilla prototypes, edit the prototypes of mods this mod depends on
+most mods use this
+
+data-updates.lua:
+dynamically generate prototypes based on requests from other mods (remote, pseudo-prototype fields)
+vanilla examples: `item/recipe.auto_recycling :: boolean`, `fluid.auto_barrel :: boolean`
+this mod: `recipe.auto_unlocked_by`, `entity.auto_reuquire_pavement`
+
+rarely needed but has legitimate usecases
+
+data-final-fixes.lua:
+modify other mod's dynamically generated prototypes
+basically never needed
+
+### Control stage
+
+Runs when a map is loaded in-game and play begins.
+
+control.lua:
+Allows registering event hooks for runtime behavior
+
+### Ordering
+
+All mods are loaded in dependency order, for each stage.
+
+Ordering is determined first by dependency resolution, then by alphabetical ordering of mod names.
+
+First ALL the settings.lua are loaded, then ALL the settings-updates.lua and so on.

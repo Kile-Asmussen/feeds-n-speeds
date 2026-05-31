@@ -4,6 +4,7 @@ local gadgets = namespace 'gadgets'
 
 local assert = _ENV.assert
 
+local utils = _ENV.utils
 local table = _ENV.table
 local string = _ENV.string
 
@@ -387,19 +388,43 @@ function gadgets.recursion_check(tbl, seen, path, root)
     seen[tbl] = nil
 end
 
+local function bad_arg_9(problems, expected_type, val, path)
+    if type(val) ~= expected_type then
+        table.insert(problems, utils.tablepath('data.raw', path) .. " :: "
+            .. type(val) .. "(expected " .. expected_type .. ")")
+        return true
+    else
+        return false
+    end
+end
+
 function gadgets.bad_argument_number_nine(tbl)
     tbl = tbl or data.raw.__real or data.raw
     local problems = {}
     for category, entries in pairs(tbl) do
+        if bad_arg_9(problems, 'table', entries, { category }) then goto continue end
+        
         for name, prototype in pairs(entries) do
-            if prototype.type == nil or prototype.name == nil then
-                local missing = prototype.type == nil and prototype.name == nil and "type and name"
-                             or prototype.type == nil and "type"
-                             or "name"
-                table.insert(problems, "data.raw['" .. category .. "']['" .. name .. "'] missing " .. missing)
+            if bad_arg_9(problems, 'table', prototype, { category, name }) then goto continue end
+
+            if
+                not bad_arg_9(problems, 'string', prototype.name, { category, name, 'name'})
+                and prototype.name ~= name
+            then
+                table.insert(problems, utils.tablepath('data.raw', {category, name, 'name'}) .. string.format(" ~= %q (was %q)", name, prototype.name))
+            end
+
+            if
+                not bad_arg_9(problems, 'string', prototype.type, { category, name, 'type'})
+                and prototype.type ~= category
+            then
+                table.insert(problems, utils.tablepath('data.raw', {category, name, 'type'}) .. string.format(" ~= %q (was %q)", category, prototype.type))
             end
         end
+
+        ::continue::
     end
+
     if #problems > 0 then
         error(table.concat(problems, "\n"), 2)
     end
@@ -418,6 +443,10 @@ local function build_tree(path, node)
             node = table.clone(node)
             node.__buffer_bare_keys = false
         end
+        return {}, node
+    end
+
+    if type(node) ~= 'table' then
         return {}, node
     end
 
@@ -448,18 +477,23 @@ function gadgets.descend_into_data_raw(args, depth_limit)
 
     args = table.icollect(args, function(s) return tonumber(s) or s end)
 
-    local early_globs = (is_glob(args[1]) and 1 or 0) + (is_glob(args[2]) and 1 or 0)
-
-    if early_globs > 1 then
-        error("at most one __all glob allowed in the first two arguments", 2)
+    
+    if is_glob(args[1]) and is_glob(args[2]) then
+        error("at most one '-' glob allowed in the first two arguments", 2)
     end
 
-    local glob_count = early_globs
-    for i = 3, #args do
-        if is_glob(args[i]) then glob_count = glob_count + 1 end
+    local glob_count = 0
+    local last_glob = 0
+    for i = 1, #args do
+        if is_glob(args[i]) then
+            glob_count = glob_count + 1
+            last_glob = i
+        end
     end
 
-    if #args < 2 or glob_count > 0 then
+    if #args <= 1 then
+        depth_limit = 1
+    elseif glob_count >= 1 then
         depth_limit = glob_count
     end
 
@@ -557,6 +591,45 @@ function gadgets.master_check()
     gadgets.check_refs('recipe', function(p) return item_names(p.ingredients) end, ITEM_CATS)
     gadgets.check_refs('recipe', function(p) return item_names(p.results) end, ITEM_CATS)
     gadgets.check_refs('technology', table.access{'prerequisites'}, 'technology')
+end
+
+local function parse(needle)
+    if type(needle) ~= 'string' then error("expected all arguments to be strings", 3) end
+
+    if needle == '-' then return utils.null else return string.pattern(needle, 1, true) end
+end
+
+function gadgets.text_search_data_raw(...)
+    assert(select('#', ...) == 3, "exactly 3 arguments expected")
+    local cat, prot, field = ...
+    cat = parse(cat)
+    prot = parse(prot)
+    field = parse(field)
+
+    local categories = {}
+    local prototypes = {}
+    local fields = {}
+    for cat_name, category in pairs(data.raw) do
+        if cat(cat_name) then
+            table.insert(categories,
+                utils.tablepath('data.raw', {cat_name}))
+        end
+        for proto_name, prototype in pairs(category) do
+            if prot(proto_name) then
+                table.insert(prototypes,
+                    utils.tablepath('data.raw', {cat_name, proto_name}))
+            end
+            if type(prototype) == 'table' then
+                for field_name, _ in pairs(prototype) do
+                    if field(field_name) then
+                        table.insert(fields,
+                            utils.tablepath('data.raw', { cat_name, proto_name, field_name }))
+                    end
+                end
+            end
+        end
+    end
+    return categories, prototypes, fields
 end
 
 gadgets.on_init_handlers = {}

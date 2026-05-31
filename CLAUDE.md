@@ -146,13 +146,17 @@ Inspects live `data.raw` structures from the installed game and researches the p
 
 Use before modifying or creating prototypes, or when unsure about field names/types/valid values.
 
+The following lua scripts are available:
+
 ```
-DEPTH=1 lua debug/data-raw.lua                    # list all prototype categories
-DEPTH=1 lua debug/data-raw.lua <category>         # list entries in a category
-DEPTH=3 lua debug/data-raw.lua <category> <name>  # drill into a specific prototype
+lua debug/data-raw.lua ...    # inspect vanilla prototypes directly
+lua debug/data-modded.lua ... # inspect prototypes 
+lua debug/search.lua ...      # search for prototypes/components by name
 ```
 
-Cross-reference with WebFetch to `lua-api.factorio.com` or `wiki.factorio.com`.
+Use `--help` flag to be reminded of how they work.
+
+Cross-reference with WebFetch to `lua-api.factorio.com` as needed.
 
 See `.claude/skills/factorio-research/SKILL.md` for full documentation.
 

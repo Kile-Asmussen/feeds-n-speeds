@@ -9,7 +9,7 @@ local __log = _ENV.__log
 function _ENV.log() end
 function _ENV.__log() end
 
-_ENV.modlist = {"textplates", "even-more-text-plates"}
+_ENV.modlist = {"textplates", "even-more-text-plates", "arrowplates"}
 
 require('settings')
 data.begin_data_stage()
