@@ -1,0 +1,10 @@
+_ENV.util = {}
+gram = 1
+grams = gram
+kg = 1000*grams
+tons = 1000*kg
+second = 60
+minute = 60 * second
+hour = 60 * minute
+meter = 1
+kilometer = 1000

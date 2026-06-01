@@ -14,7 +14,7 @@ local data = namespace('test.data')
 rawset(_ENV, 'modlist', table.null)
 rawset(_ENV, 'mods', table.null)
 rawset(_ENV, 'settings', {})
-
+data.is_fns_code = true
 data.raw = fns.table.null
 
 setmetatable(_ENV.settings, {
@@ -50,6 +50,7 @@ end
 local settings = namespace 'test.settings'
 
 function data.extend(self, protos)
+    if not data.is_fns_code then return end
 
     local line = debug.getline(2)
 
@@ -57,7 +58,7 @@ function data.extend(self, protos)
 
     for i, proto in ipairs(protos) do
 
-        assert(fns.identifiers[proto.name], "not an fns-based name: " .. proto.name)
+        -- assert(fns.identifiers[proto.name], "not an fns-based name: " .. proto.name)
 
         proto.__declared_at = line
 

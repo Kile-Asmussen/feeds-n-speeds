@@ -3,15 +3,29 @@ local defines = require('namespace')('defines')
 
 -- Direction constants (defines.direction)
 defines.direction = {
-    north = 0,
-    northeast = 1,
-    east = 2,
-    southeast = 3,
-    south = 4,
-    southwest = 5,
-    west = 6,
-    northwest = 7,
+
+north = 0,
+northnortheast = 1,
+northeast = 2,
+eastnortheast = 3,
+east = 4,
+eastsoutheast = 5,
+southeast = 6,
+southsoutheast = 7,
+south = 8,
+southsouthwest = 9,
+southwest = 10,
+westsouthwest = 11,
+west = 12,
+westnorthwest = 13,
+northwest = 14,
+northnorthwest = 15,
+
 }
+
+
+
+defines.default_icon_size = 64
 
 -- Reverse lookup for direction names
 defines.direction_names = {}

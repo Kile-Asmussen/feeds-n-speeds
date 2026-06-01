@@ -6,20 +6,23 @@ _ENV.PROXIED = os.getenv("PROXIED") and true or false
 
 _ENV.table_size = require('test.rawdata').table_size
 
+require 'test.stupid'
+
 setmetatable(_ENV, {
     __index = function(_, name) error('_ENV.' .. name .. ' undefined', 2) end,
     __newindex = function(_, name, val) error('_ENV.' .. name .. ' = ' .. tostring(val), 2) end,
 })
-
-local fns = require 'fns'
-
-local table = fns.table
 
 require 'test.data'
 require 'test.defines'
 require 'test.utils'
 require 'test.script'
 require 'test.localisation'
+
+
+local fns = require 'fns'
+local table = fns.table
+_ENV.table.deepcopy = fns.table.deepcopy
 
 local debuglib = require 'debuglib'
 debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 2
