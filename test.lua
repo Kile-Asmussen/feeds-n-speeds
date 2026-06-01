@@ -4,6 +4,8 @@ _ENV.QUIET = os.getenv("QUIET") and true or false
 _ENV.VERBOSE = os.getenv("VERBOSE") and true or false
 _ENV.PROXIED = os.getenv("PROXIED") and true or false
 
+_ENV.table_size = require('test.rawdata').table_size
+
 setmetatable(_ENV, {
     __index = function(_, name) error('_ENV.' .. name .. ' undefined', 2) end,
     __newindex = function(_, name, val) error('_ENV.' .. name .. ' = ' .. tostring(val), 2) end,
@@ -11,10 +13,7 @@ setmetatable(_ENV, {
 
 local fns = require 'fns'
 
-fns.use()
-
 local table = fns.table
-local string = fns.string
 
 require 'test.data'
 require 'test.defines'
@@ -29,8 +28,8 @@ local __exit = _ENV.os.exit
 
 function debug.getline(n, msg)
     local traceback = debug.traceback(nil, n + 1)
-    traceback = string.replace_prefix(traceback, "stack traceback:\n\t")
-    traceback = string.before(traceback, ': ', msg and true)
+    traceback = traceback:replace_prefix("stack traceback:\n\t")
+    traceback = traceback:before(': ', msg and true)
     return traceback .. (msg or '')
 end
 
@@ -59,18 +58,3 @@ rawset(_ENV, 'debug', {
     getline = debug.getline,
     debug = debug.debug,
 })
-
-local function __lock_mt(name, index, newindex)
-    index = index or function() end
-    newindex = newindex or index
-    return {
-        __index = function(_, key)
-            die(fns.utils.tablepath(name, { key }) .. ' not found' .. (index(key) or ''))
-        end,
-        __newindex = function(_, key)
-            die(fns.utils.tablepath(name, { key })  .. ' cannot be set' .. (newindex(key) or ''))
-        end,
-    }
-end
-
-setmetatable(_ENV.debug, __lock_mt('debug'))

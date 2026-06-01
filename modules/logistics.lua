@@ -1,5 +1,7 @@
 --! data, control: submodule governing changes to the logistics 
 
+local fns = require 'fns'
+local table = fns.table
 local logistics = require('namespace')('logistics')
 
 local set = table.intoset

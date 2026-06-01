@@ -1,5 +1,6 @@
 --! data: make chests twice as big and more expensive to build but smaller in inventory size
 local fns = require 'fns'
+local table = fns.table
 local inputs = fns.gadgets.throughputs
 
 local merge = fns.table.merge
@@ -86,12 +87,15 @@ local function make_new_ones(prototype, all, entities)
     all = all or function(x) return x end
     local res = {}
     for k, f in pairs(entities) do
-        local new = table.clone(prototype[k])
+        local new = table.deepcopy(prototype[k])
 
         new.name = fns(k)
         new.localised_name = new.localised_name or { "entity-name." .. k }
         new.dying_explosion = new.dying_explosion and fns(k .. '-explosion') or nil
         new.corpse = new.corpse and fns(k .. '-remnants') or nil
+
+        new.icon_draw_specification = new.icon_draw_specification or {}
+        new.icon_draw_specification.scale = 0.4
 
         if type(f) == 'table' then f = merge(f) end
 

@@ -6,15 +6,13 @@ if help == '--help' then
     print("handles integer keys too, for arrays, and use '-' as a wildcard (though it is a bit janky with the printout)")
 end
 
-local fns = require 'fns'
-
-fns.use()
-
+local fns = require('fns')
+local depth = tonumber(os.getenv("DEPTH")) or 2
+require 'test'
 local debuglib = require 'debuglib'
 
-debuglib.recursion_limit = tonumber(os.getenv("DEPTH")) or 2
+debuglib.recursion_limit = depth
 
-require 'test'
 
 _ENV.modlist = {"textplates", "even-more-text-plates", "arrowplates"}
 

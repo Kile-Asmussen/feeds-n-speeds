@@ -59,6 +59,8 @@
 
 
 - [ ] **Readability refactor**: Audit all mod files for raw ingredient/result arrays and direct prototype assignments that should use `table.merge` and `gadgets.throughputs`. Mostly mechanical find-and-replace work.
+- [ ] **Migrate away from global table instancing**: Module files should use `local table = fns.table` (and similarly for `string`, `math`, `utils`) rather than relying on the global namespace being in an instanced state. Global variable access is slower than local in Lua, and depending on global state is fragile — `fns.restore()` at the wrong scope strips the custom functions for all subsequent modules. Mostly mechanical, but touch every module file.
+  - For `string` specifically, a safer alternative to replacing `_ENV.string` is to set a metatable on `_ENV.string` with `__index` pointing to the extra methods. Since `getmetatable("").__index` is `_ENV.string`, the chain becomes: string literal → string metatable → `_ENV.string` → its metatable → extra methods. This extends string methods non-destructively without replacing anything. Unclear whether Factorio permits `setmetatable` on `_ENV.string` (it disallows metatables on `_ENV` itself) — worth testing.
 - [ ] Item/recipe ordering cleanup: With all features researched, the in-game crafting menu is cluttered. Review and improve ordering strings across all items and recipes for better organization.
 - [ ] **Tech unlock ordering** (low priority): `assign-recipe-unlocks` appends effects to technologies in arbitrary iteration order. A sorting pass by group → subgroup → order string after all effects are inserted would make the in-game technology screen tidier.
 - [ ] In-game documentation (tips and tricks, custom GUI, or factoriopedia integration)
@@ -87,7 +89,33 @@ The goal is a three-stage pipeline before ever booting the game:
 - `rawdata.load(mod_names)` — `data.raw` from any mod combination, cached, invalidated by explicit `rawdata.dump()` call
 - `rawdata.load_defines(mod_src)` / `rawdata.dump_defines(mod_src)` — real `defines` table via headless Factorio scenario (`debug/dump-defines/`), base mods only for fast load
 
+### Feature proposal: multi-mod script execution
+
+Currently `debug/load.lua` loads a pre-dumped `data.raw` snapshot for vanilla content and only executes FeedsNSpeeds's own scripts on top of it. This means cross-mod interactions (load order, prototype mutations by other mods, `data-updates.lua` interleaving) are invisible to the pipeline. A higher-fidelity approach would execute the actual Lua scripts of all installed mods in proper dependency/alphabetical order, the same way Factorio does.
+
+**What this would look like:**
+- A Rust tool (in `src/`) that reads all enabled mods' `info.json` files, resolves the full dependency graph, and outputs a sorted load order (dependency sort + alphabetical tiebreak) — this is a prerequisite for everything else
+- For each enabled mod, locate its source directory (Steam install, mods folder, or local dev path)
+- Execute each mod's `data.lua`, then all `data-updates.lua`, etc. in the resolved order, inside the same sandboxed environment `debug/load.lua` already provides
+- FeedsNSpeeds scripts slot into this sequence at their natural position
+
+**Benefits:**
+- Catches bugs caused by other mods mutating prototypes before or after FeedsNSpeeds runs
+- No need to manually re-dump `data.raw` after vanilla updates — snapshot becomes unnecessary
+- The `PROXY=1` log becomes meaningful across the full pipeline, not just our own mutations
+
+**Challenges:**
+- Other mods may use Factorio-specific APIs not shimmed in the test harness — but this is largely a non-issue: running `core`'s scripts first (exactly as Factorio does) provides `dataloader.lua`, which sets up `data`/`data:extend`/`data.raw` for real, replacing the hand-rolled shim. The lualib (`util.lua`, `meld.lua`, etc.) also becomes available to all subsequent mods for free. What remains unshimmable are things backed by C++ (e.g. noise expression evaluation, sprite loading), but those don't affect prototype table correctness.
+- `require` isolation between mods: Factorio uses a prefixed path convention — `require("__mod-name__.file")` resolves relative to that mod's directory, while an unprefixed `require "util"` resolves relative to the current mod. The harness can implement this by replacing `require` with a custom resolver that parses the `__mod-name__` prefix to look up the mod's directory, falling back to the current mod's directory for unprefixed paths. `package.loaded` should be keyed by the resolved absolute path to avoid cross-mod cache collisions. No `package.path` manipulation needed. Note: `io`, `os`, `coroutine`, and `loadfile`/`dofile` are stripped in Factorio's Lua — the harness should either nil these out or leave them available behind a flag for debugging convenience. Additionally, Factorio adds `string.pack`, `string.packsize`, and `string.unpack` from Lua 5.4, and a global `table_size()` — none of these are present in Lua 5.2 and will need Rust implementations (via mlua) added to `src/`.
+- Mods with C extensions or bundled binaries can't be simulated
+- Adds a hard dependency on the local game install being present and up to date
+- May significantly slow down the fast-iteration loop — could be gated behind a flag (e.g. `FULL_MODS=1 lua debug/load.lua`)
+
+**Relation to existing work:** This would subsume the `rawdata.load(mod_names)` Rust library for `debug/load.lua` purposes, but `debug/data-raw.lua` would still benefit from loading a pre-dumped snapshot — it's faster and has no dependency on the Lua shim surface being complete for vanilla scripts. The headless correctness gate (stage 2) would remain valuable for catching type errors the Lua sandbox can't enforce.
+
 ### What's left
+
+- [ ] **Rename `test_rawdata` / `rawdata` library**: As the Rust library grows to cover shimming (`table_size`, future `string.pack` etc.) and eventually multi-mod script execution, the name `rawdata` will no longer reflect its scope. Consider a broader name like `factorio_shim` or `test_harness`.
 
 - [ ] The rust raw data loading library does not seem to adequately reset the state of the mod-list.json back to what it was, leading to changes visible in-game. Further investigation needed to verify it is a current issue.
 

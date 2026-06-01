@@ -1,4 +1,8 @@
 --! data: change recipes for all science packs
+
+local fns = require 'fns'
+local table = fns.table
+
 local tech = data.raw.technology
 local recipes = data.raw.recipe
 
@@ -12,7 +16,7 @@ table.append(tech['chemical-science-pack'].prerequisites, {'automation-2'})
 table.append(tech['military-science-pack'].prerequisites, {'automation-2', 'oil-gathering'})
 table.append(tech['utility-science-pack'].prerequisites, {'automation-2'})
 table.append(tech['production-science-pack'].prerequisites, {'automation-2', 'electric-energy-distribution-2'})
-table.remove_matching(tech['production-science-pack'].prerequisites, 'advanced-material-processing-2')
+table.remove_matching(tech['production-science-pack'].prerequisites, fns.utils.eq'advanced-material-processing-2')
 
 recipes['automation-science-pack'].ingredients = {
     { type = 'item', name = 'iron-plate', amount = 2 },

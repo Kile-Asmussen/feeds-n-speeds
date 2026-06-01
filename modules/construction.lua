@@ -1,5 +1,7 @@
 --! data, data-updates: submodule governing changes to construction/deconstruction of entities, their recipes, and other properties
 
+local fns = require 'fns'
+local table = fns.table
 local construction = require('namespace')('construction')
 
 local set = table.intoset

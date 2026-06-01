@@ -1,10 +1,11 @@
 --! data: boiler variant using electric power
 
 local fns = require 'fns'
+local table = fns.table
 local merge = fns.table.merge
 local name = fns 'electroboiler'
 
-local boiler = merge(table.clone(data.raw.boiler.boiler), {
+local boiler = merge(table.deepcopy(data.raw.boiler.boiler), {
     name = name,
     minable = { __merge = true, result = name },
     energy_source = {
@@ -46,7 +47,7 @@ local boiler_item = {
     stack_size = 10,
 }
 
-boiler.icons = table.clone(boiler_item.icons)
+boiler.icons = table.deepcopy(boiler_item.icons)
 
 local boiler_recipe = {
     type = 'recipe',

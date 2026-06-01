@@ -1,5 +1,6 @@
 --! control: mechanics for the hopper entity
 local fns = require 'fns'
+local table = fns.table
 
 local fns_hopper = fns 'hopper'
 local fns_chest = fns 'steel-chest'

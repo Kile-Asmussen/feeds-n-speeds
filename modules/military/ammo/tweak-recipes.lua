@@ -1,6 +1,7 @@
 --! data: changes to ammo recipes to require sulfur
 
 local fns = require 'fns'
+local table = fns.table
 local puts = fns.gadgets.throughputs
 local recipes = data.raw.recipe
 local merge = table.merge

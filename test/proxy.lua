@@ -1,6 +1,7 @@
 local proxy = require('namespace')('proxy')
 local fns = require 'fns'
 local utils = fns.utils
+local table = fns.table
 
 local function __proxy_mt_newindex(tbl, key, val)
     tbl.__real[key] = val
@@ -58,7 +59,7 @@ local function __proxy_mt_len(tbl)
 end
 
 local function __proxy_mt_tostring(tbl)
-    return utils.tablepath(tbl.__rootname, tbl.__path) .. '=' .. tostring(tbl.__real)
+    return utils.tablepath(tbl.__rootname, tbl.__path) .. '=' .. fns.string.tostring(tbl.__real)
 end
 
 local __proxy_mt = {
@@ -76,86 +77,86 @@ local __proxy_mt = {
 __proxy_mt.__metatable = __proxy_mt
 
 local function monkeypatch()
-    local next = _ENV.next
-    function _ENV.next(tbl, k)
-        if getmetatable(tbl) == __proxy_mt then
-            return next(tbl.__real, k)
-        else
-            return next(tbl, k)
-        end
-    end
+    -- local next = _ENV.next
+    -- function _ENV.next(tbl, k)
+    --     if getmetatable(tbl) == __proxy_mt then
+    --         return next(tbl.__real, k)
+    --     else
+    --         return next(tbl, k)
+    --     end
+    -- end
 
-    local unpack = table.unpack
-    function table.unpack(tbl)
-        if getmetatable(tbl) == __proxy_mt then
-            return unpack(tbl.__real)
-        else
-            return unpack(tbl) 
-        end
-    end
+    -- local unpack = table.unpack
+    -- function table.unpack(tbl)
+    --     if getmetatable(tbl) == __proxy_mt then
+    --         return unpack(tbl.__real)
+    --     else
+    --         return unpack(tbl) 
+    --     end
+    -- end
 
-    local concat = table.concat
-    function table.concat(tbl, ...)
-        if getmetatable(tbl) == __proxy_mt then
-            return concat(tbl.__real, ...)
-        else
-            return concat(tbl, ...) 
-        end
-    end
+    -- local concat = table.concat
+    -- function table.concat(tbl, ...)
+    --     if getmetatable(tbl) == __proxy_mt then
+    --         return concat(tbl.__real, ...)
+    --     else
+    --         return concat(tbl, ...) 
+    --     end
+    -- end
 
-    local sort = table.sort
-    function table.sort(tbl, ...)
-        if getmetatable(tbl) == __proxy_mt then
-            return sort(tbl.__real, ...)
-        else
-            return sort(tbl, ...) 
-        end
-    end
+    -- local sort = table.sort
+    -- function table.sort(tbl, ...)
+    --     if getmetatable(tbl) == __proxy_mt then
+    --         return sort(tbl.__real, ...)
+    --     else
+    --         return sort(tbl, ...) 
+    --     end
+    -- end
 
-    local maxn = table.maxn
-    function table.maxn(tbl, ...)
-        if getmetatable(tbl) == __proxy_mt then
-            return maxn(tbl.__real, ...)
-        else
-            return maxn(tbl, ...) 
-        end
-    end
+    -- local maxn = table.maxn
+    -- function table.maxn(tbl, ...)
+    --     if getmetatable(tbl) == __proxy_mt then
+    --         return maxn(tbl.__real, ...)
+    --     else
+    --         return maxn(tbl, ...) 
+    --     end
+    -- end
 
-    local insert = table.insert
-    function table.insert(tbl, ...)
-        if getmetatable(tbl) == __proxy_mt then
-            return insert(tbl.__real, ...)
-        else
-            return insert(tbl, ...) 
-        end
-    end
+    -- local insert = table.insert
+    -- function table.insert(tbl, ...)
+    --     if getmetatable(tbl) == __proxy_mt then
+    --         return insert(tbl.__real, ...)
+    --     else
+    --         return insert(tbl, ...) 
+    --     end
+    -- end
 
-    local remove = table.remove
-    function table.remove(tbl, ...)
-        if getmetatable(tbl) == __proxy_mt then
-            return remove(tbl.__real, ...)
-        else
-            return remove(tbl, ...) 
-        end
-    end
+    -- local remove = table.remove
+    -- function table.remove(tbl, ...)
+    --     if getmetatable(tbl) == __proxy_mt then
+    --         return remove(tbl.__real, ...)
+    --     else
+    --         return remove(tbl, ...) 
+    --     end
+    -- end
 
-    local size = table.size
-    function table.size(tbl)
-        if getmetatable(tbl) == __proxy_mt then
-            return size(tbl.__real)
-        else
-            return size(tbl)
-        end
-    end
+    -- local size = table.size
+    -- function table.size(tbl)
+    --     if getmetatable(tbl) == __proxy_mt then
+    --         return size(tbl.__real)
+    --     else
+    --         return size(tbl)
+    --     end
+    -- end
 
-    monkeypatch = function() end
+    -- monkeypatch = function() end
 end
 
 
 function proxy.makeproxy(args)
     assert(type(args) == "table", "table.proxy expects a table with up to six keys: tbl, [rootname, path, hook, changes, maxdepth]")
     assert(type(args.tbl) == "table", "table.proxy mandatory key tbl must be a table")
-    monkeypatch()
+    -- monkeypatch()
     args.rootname = args.rootname or tostring(args.tbl)
     args.root = args.root or args.tbl
     args.path = args.path or {}

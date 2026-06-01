@@ -1,5 +1,7 @@
 --! data: submodule governing changes to military mechanics including recipes, tech tree, new buildings, and stats
 
+local fns = require 'fns'
+local table = fns.table
 local military = require('namespace')('military')
 
 local set = table.intoset

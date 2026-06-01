@@ -1,13 +1,15 @@
 --! data: big expensive powerful turret that fires cannon shell
 local fns = require 'fns'
+local table = fns.table
+local math = fns.math
 
-local turret = table.clone(data.raw['ammo-turret']['gun-turret'])
+local turret = table.deepcopy(data.raw['ammo-turret']['gun-turret'])
 local name = fns 'cannon-turret'
 
 turret.name = name
 turret.icon = '__base__/graphics/icons/gun-turret.png'
 turret.minable = { mining_time = 3.0, result = name }
-turret.attack_parameters = table.clone(data.raw.gun['tank-cannon'].attack_parameters)
+turret.attack_parameters = table.deepcopy(data.raw.gun['tank-cannon'].attack_parameters)
 turret.fast_replaceable_group = 'ammo-turret'
 turret.max_health = 1000
 
@@ -25,7 +27,7 @@ turret.preparing_speed = 0.06
 turret.folding_speed = 0.06
 turret.attacking_speed = 0.3
 
-local turret_remnants = table.clone(data.raw.corpse['gun-turret-remnants'])
+local turret_remnants = table.deepcopy(data.raw.corpse['gun-turret-remnants'])
 turret_remnants.name = fns 'cannon-turret-remnants'
 turret_remnants.selection_box = { { -2, -2 }, { 2, 2 } }
 turret_remnants.tile_width = 4
@@ -88,7 +90,7 @@ turret_item.icons = {
     }
 }
 
-turret.icons = table.clone(turret_item.icons)
+turret.icons = table.deepcopy(turret_item.icons)
 
 local turret_recipe = {
     type = 'recipe',
@@ -109,7 +111,7 @@ local turret_recipe = {
     }
 }
 
-local turret_tech = table.clone(data.raw.technology['gun-turret'])
+local turret_tech = table.deepcopy(data.raw.technology['gun-turret'])
 
 data.raw.recipe['cannon-shell'].auto_unlocked_by = fns 'cannon-turret-tech'
 
@@ -120,7 +122,7 @@ turret_tech.effects = {
     { type='unlock-recipe', recipe='cannon-shell' },
 }
 
-turret_tech.unit = table.clone(data.raw.technology.tank.unit)
+turret_tech.unit = table.deepcopy(data.raw.technology.tank.unit)
 
 turret_tech.icons = {
     { 

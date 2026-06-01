@@ -5,6 +5,7 @@ local rawdata = require 'test.rawdata'
 
 local namespace = require 'namespace'
 local utils = fns.utils
+local table = fns.table
 
 local proxy = require 'test.proxy'
 

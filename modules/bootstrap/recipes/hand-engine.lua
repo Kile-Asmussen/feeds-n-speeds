@@ -1,7 +1,8 @@
 --! data: hand-craftable engine unit recipe for early game
 local fns = require 'fns'
+local table = fns.table
 
-local hand_engine = table.merge(table.clone(data.raw.recipe['engine-unit']), {
+local hand_engine = table.merge(table.deepcopy(data.raw.recipe['engine-unit']), {
     name = fns 'hand-engine-unit',
     localised_name = {'item-name.engine-unit'},
     category = fns 'hand-crafting',
@@ -18,6 +19,7 @@ local hand_engine = table.merge(table.clone(data.raw.recipe['engine-unit']), {
 data:extend{ hand_engine }
 
 table.merge(data.raw.technology.engine, {
+    localised_description = {fns.locale_key('technology-description', 'engine')},
     unit = {
         ingredients = { { 'automation-science-pack', 1 } },
         time = 10,

@@ -1,10 +1,11 @@
 --! data: new assembling machine solely responsible for manipulating barrels
 local fns = require 'fns'
+local table = fns.table
 local merge = fns.table.merge
 local puts = fns.gadgets.throughputs
 local iron_chest = data.raw.container['iron-chest']
 
-local tap = merge(table.clone(data.raw.furnace['stone-furnace']), {
+local tap = merge(table.deepcopy(data.raw.furnace['stone-furnace']), {
     name = fns 'barrel-tapper',
     crafting_categories = { fns 'barrelling' },
     crafting_speed = 0.2,
@@ -24,7 +25,7 @@ local tap = merge(table.clone(data.raw.furnace['stone-furnace']), {
     effects_receiver = {},
     next_upgrade = fns.utils.null,
     graphics_set = {
-        animation = merge(table.clone(iron_chest.picture), {
+        animation = merge(table.deepcopy(iron_chest.picture), {
             __rec = true,
             layers = {
                 __rec = true,
@@ -33,8 +34,8 @@ local tap = merge(table.clone(data.raw.furnace['stone-furnace']), {
             }
         }),
     },
-    close_sound = table.clone(data.raw['assembling-machine']['assembling-machine-1'].close_sound),
-    open_sound  = table.clone(data.raw['assembling-machine']['assembling-machine-1'].open_sound),
+    close_sound = table.deepcopy(data.raw['assembling-machine']['assembling-machine-1'].close_sound),
+    open_sound  = table.deepcopy(data.raw['assembling-machine']['assembling-machine-1'].open_sound),
     fluid_boxes = {
         {
             volume = 500,
@@ -63,17 +64,17 @@ local tap = merge(table.clone(data.raw.furnace['stone-furnace']), {
     },
 })
 
-local tap_corpse = merge(table.clone(data.raw.corpse[iron_chest.corpse]), {
+local tap_corpse = merge(table.deepcopy(data.raw.corpse[iron_chest.corpse]), {
     name = tap.corpse,
-    selection_box = table.clone(tap.selection_box),
+    selection_box = table.deepcopy(tap.selection_box),
     animation = { __merge = true, scale = 0.6, tint = {0.7, 0.65, 0.6} },
 })
 
-local tap_item = merge(table.clone(data.raw.item[iron_chest.name]), {
+local tap_item = merge(table.deepcopy(data.raw.item[iron_chest.name]), {
     name = tap.name,
     place_result = tap.name,
     icon = nil,
-    icons = table.clone(tap.icons),
+    icons = table.deepcopy(tap.icons),
     order = data.raw.item.pump.order .. '-a[tapper]',
 })
 

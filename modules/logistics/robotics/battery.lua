@@ -1,5 +1,6 @@
 --! data: infinitely researchable technology that increases robot travel range
 local fns = require 'fns'
+local table = fns.table
 
 local function name(l) return fns('worker-robots-battery-' .. l) end
 

@@ -12,7 +12,7 @@ local commands = namespace 'commands'
 
 function script.__reset()
     script.__handlers = {
-        on_init = {},
+        on_init = function() end,
         on_load = {},
         on_configuration_changed = {},
         events = {},
@@ -28,7 +28,7 @@ end
 function script.on_init(handler)
     assert(type(handler) == 'function', "argument #1 must be a function")
     __log('on_init ' .. func(handler))
-    table.insert(script.__handlers.on_init, handler)
+    script.__handlers.on_init = handler
 end
 
 function script.on_load(handler)

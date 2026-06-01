@@ -1,5 +1,7 @@
 --! data, data-updates: submodule governing integrations with other mods, currently only the textplates family
 
+local fns = require 'fns'
+local table = fns.table
 local integrations = require('namespace')('integrations')
 
 local set = table.intoset

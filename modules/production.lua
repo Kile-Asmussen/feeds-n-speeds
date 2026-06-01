@@ -1,5 +1,7 @@
 --! settings, data, data-updates: submodule governing changes to production mechanics including new altered/recipes for intermediary products, rebalancing of crafting, etc.
 
+local fns = require 'fns'
+local table = fns.table
 local production = require('namespace')('production')
 
 local set = table.intoset

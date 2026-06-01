@@ -1,7 +1,8 @@
 --! data: better flamethrower ammo
 
 local fns = require 'fns'
-local napalm = table.clone(data.raw.fluid['light-oil'])
+local table = fns.table
+local napalm = table.deepcopy(data.raw.fluid['light-oil'])
 napalm.name = fns 'napalm'
 napalm.base_color = { 0.77, 0.33, 0 }
 napalm.flow_color = { 0.77, 0, 0.3 }
@@ -41,7 +42,7 @@ local napalm_recipe = {
     }
 }
 
-local napalm_ammo = table.clone(data.raw.ammo['flamethrower-ammo'])
+local napalm_ammo = table.deepcopy(data.raw.ammo['flamethrower-ammo'])
 napalm_ammo.name = fns 'flamethrower-ammo'
 napalm_ammo.icons = {
     {
@@ -53,7 +54,7 @@ napalm_ammo.icons = {
 }
 
 data.raw.recipe['flamethrower-ammo'].category = 'crafting-with-fluid'
-local napalm_ammo_recipe = table.clone(data.raw.recipe['flamethrower-ammo'])
+local napalm_ammo_recipe = table.deepcopy(data.raw.recipe['flamethrower-ammo'])
 napalm_ammo_recipe.name = fns 'flamethrower-ammo'
 napalm_ammo_recipe.results = {
     { type='item', name= fns 'flamethrower-ammo', amount=1}
@@ -63,7 +64,7 @@ napalm_ammo_recipe.ingredients = {
     { type='item', name='barrel', amount=1 },
 }
 
-local napalm_steam = table.clone(data.raw.stream['handheld-flamethrower-fire-stream'])
+local napalm_steam = table.deepcopy(data.raw.stream['handheld-flamethrower-fire-stream'])
 
 napalm_steam.name = fns(napalm_steam.name)
 local area = 1
@@ -82,7 +83,7 @@ napalm_steam.action[area].action_delivery.target_effects[damage].damage.amount =
 
 napalm_steam.action[direct].action_delivery.target_effects[1].initial_ground_flame_count = 4
 
-local tank_napalm_steam = table.clone(data.raw.stream['tank-flamethrower-fire-stream'])
+local tank_napalm_steam = table.deepcopy(data.raw.stream['tank-flamethrower-fire-stream'])
 tank_napalm_steam.name = fns(tank_napalm_steam.name)
 tank_napalm_steam.action[1].action_delivery.target_effects[1].damage.amount=15
 

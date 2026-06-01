@@ -1,6 +1,7 @@
 --! data: gun recipe variants using plastic instead of wood, since the guns are used in construction of turrets and wood is a scarce resource
 
 local fns = require 'fns'
+local table = fns.table
 
 local icons = fns.gadgets.icons
 local inputs = fns.gadgets.throughputs
@@ -8,8 +9,8 @@ local inputs = fns.gadgets.throughputs
 local plasticon = data.raw.item['plastic-bar'].icon
 
 local guns = fns.table.merge({
-    smg = table.clone(data.raw.recipe['submachine-gun']),
-    shotty = table.clone(data.raw.recipe['combat-shotgun']),
+    smg = table.deepcopy(data.raw.recipe['submachine-gun']),
+    shotty = table.deepcopy(data.raw.recipe['combat-shotgun']),
 }, {
     __rec = true,
     smg = {

@@ -1,9 +1,10 @@
 --! data: electrical infrastructure entity that can limit power transfer between unconnected networks
 local fns = require 'fns'
+local table = fns.table
 local merge = fns.table.merge
 local switch = data.raw['power-switch']['power-switch']
 
-local link = table.merge(table.clone(data.raw.accumulator.accumulator), {
+local link = table.merge(table.deepcopy(data.raw.accumulator.accumulator), {
     name = fns 'electric-link',
     default_output_signal = {
         name = 'signal-lightning',
@@ -31,7 +32,7 @@ for _, field in ipairs{
     'working_sound',
 } do
     assert(link[field] and switch[field], "no such field: " .. field)
-    link[field] = table.clone(switch[field])
+    link[field] = table.deepcopy(switch[field])
 end
 
 
@@ -66,19 +67,19 @@ link.chargable_graphics.picture = {
     },
 }
 
-local animation_layers = table.merge(table.clone(link.chargable_graphics.picture.layers), {
+local animation_layers = table.merge(table.deepcopy(link.chargable_graphics.picture.layers), {
     __rec = true,
     [{1, 2}] = { repeat_count = switch.overlay_loop.frame_count }
 })
 
 local charge_animation = {
     layers = { { layers = animation_layers },
-    table.clone(switch.overlay_loop) }
+    table.deepcopy(switch.overlay_loop) }
 }
 
 table.merge(link.chargable_graphics, {
     charge_animation = charge_animation,
-    discharge_animation = table.clone(charge_animation),
+    discharge_animation = table.deepcopy(charge_animation),
 })
 
 link.icons = fns.gadgets.icons{
@@ -101,9 +102,9 @@ end)
 
  
 
-local link_item = table.merge(table.clone(data.raw.item['power-switch']), {
+local link_item = table.merge(table.deepcopy(data.raw.item['power-switch']), {
     name = fns 'electric-link',
-    icons = table.clone(link.icons),
+    icons = table.deepcopy(link.icons),
     place_result=fns 'electric-link',
     subgroup = data.raw.item.substation.subgroup,
     order = data.raw.item.substation.order .. '-b[link]',
@@ -111,7 +112,7 @@ local link_item = table.merge(table.clone(data.raw.item['power-switch']), {
 
 local puts = fns.gadgets.throughputs
 
-local link_recipe = table.merge(table.clone(data.raw.recipe['accumulator']), {
+local link_recipe = table.merge(table.deepcopy(data.raw.recipe['accumulator']), {
 
     name = fns 'electric-link',
     category = 'electronics-with-fluid',

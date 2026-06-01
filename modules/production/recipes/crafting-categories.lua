@@ -1,5 +1,6 @@
 --! data: new crafting categories that prohibit/solely allow handcrafting plus reassignment of crafting category to a bunch of recipes
 local fns = require 'fns'
+local table = fns.table
 
 data:extend{
     { type='recipe-category', name=fns 'hand-crafting' },

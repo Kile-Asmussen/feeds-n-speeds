@@ -1,5 +1,8 @@
 --! data: changes to recipes for turrets to make them more difficult to build
 
+local fns = require'fns'
+local table = fns.table
+
 local recipes = data.raw.recipe
 
 recipes['gun-turret'].ingredients = {

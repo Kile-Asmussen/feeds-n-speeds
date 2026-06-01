@@ -2,17 +2,18 @@
 local fns = require 'fns'
 local recipes = data.raw.recipe
 local tech = data.raw.technology
+local merge = fns.table.merge
 local puts = fns.gadgets.throughputs
 
 tech.concrete.prerequisites = { 'fluid-handling', 'advanced-material-processing' }
 
-table.merge(recipes.concrete, {
+merge(recipes.concrete, {
     ingredients = puts{ ['stone-brick'] = 5, ['iron-stick'] = 2, ['water'] = 100 },
     category = 'chemistry',
     auto_recycle = false
 })
 
-table.merge(recipes['refined-concrete'], {
+merge(recipes['refined-concrete'], {
     ingredients = puts{ ['concrete'] = 20, ['steel-plate'] = 2, ['water'] = 100 },
     category = 'chemistry',
     auto_recycle = false

@@ -1,5 +1,6 @@
 --! data: tweaks to inserter speeds
 local fns = require 'fns'
+local table = fns.table
 
 local merge = table.merge
 
@@ -28,8 +29,7 @@ merge(data.raw.inserter, {
     },
     ['burner-inserter'] = merge{
         chases_belt_items = false,
-        rotation_speed = 0.025,
         rotation_speed = 0.015,
-        burner_leech = true
+        allow_burner_leech = true
     }
 })

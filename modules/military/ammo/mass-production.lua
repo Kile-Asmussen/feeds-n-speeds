@@ -1,9 +1,10 @@
 --! data: better ammo recipes unlocked by military-4
 
 local fns = require 'fns'
+local table = fns.table
 
 local function make_new_ammo_recipe(name, amount, ingredients)
-    local ammo = table.clone(data.raw.recipe[name])
+    local ammo = table.deepcopy(data.raw.recipe[name])
     ammo.name = fns(name .. '-mass-production')
     ammo.localised_name = { "item-name." .. name }
     ammo.localised_description = { fns.locale_key('recipe-description', 'weapon-mass-production') }

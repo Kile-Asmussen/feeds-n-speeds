@@ -1,19 +1,28 @@
 local namespace = require 'namespace'
 local fns = namespace 'fns'
 
-local function assert(cond, msg)
+fns.error = _ENV.error
+local error = fns.error
+
+function fns.assert(cond, msg)
     if not cond then error(msg, 3) end
 end
+local assert = fns.assert
 
-fns.assert = assert
-local __env_assert = _ENV.assert
-_ENV.assert = assert
+local type = _ENV.type
+fns.type = type
 
+fns.select = _ENV.select
+fns.print = _ENV.print
+
+
+fns.tostring = _ENV.tostring
 fns:require 'table'
-fns:require 'math'
 fns:require 'string'
+fns:require 'math'
 fns:require 'utils'
 
+fns.tostring = nil
 fns.identifiers = {}
 
 fns.names_ = {}
@@ -21,8 +30,8 @@ fns.names_ = {}
 function fns.name_(name)
     local memo = fns.names_[name]
     if memo then return memo end
-    assert(type(name) == 'string', "argument #1 must be a string")
-    memo = 'feeds_n_speeds_' .. string.gsub(name, '[^a-zA-Z0-9]', '_')
+    assert(type(name) == 'string', "fns.name_: argument #1 must be a string")
+    memo = 'feeds_n_speeds_' .. name:gsub('[^a-zA-Z0-9]', '_')
     fns.names_[name] = memo
     fns.identifiers[memo] = true
     return memo
@@ -34,14 +43,14 @@ function fns.name(name, _)
     if name == fns then name = _ end
     local memo = fns.names[name]
     if memo then return memo end
-    assert(type(name) == 'string', "argument #1 must be a string")
-    memo = 'feeds-n-speeds-' .. string.gsub(name, '[^a-zA-Z0-9]', '-')
+    assert(type(name) == 'string', "fns.name: argument #1 must be a string")
+    memo = 'feeds-n-speeds-' .. name:gsub('[^a-zA-Z0-9]', '-')
     fns.names[name] = memo
     fns.identifiers[memo] = true
     return memo
 end
 
-getmetatable(fns).__call = fns.name
+fns.table.getmetatable(fns).__call = fns.name
 
 fns.extra_localsation_keys = {}
 fns.explicit_localisation_keys = {}
@@ -55,26 +64,6 @@ function fns.locale_key(category, name)
     return res
 end
 
-function fns.use()
-    _ENV.assert = fns.assert
-    fns.string.use()
-    fns.table.use()
-    fns.utils.use()
-    fns.math.use()
-end
-
-function fns.restore()
-    _ENV.assert = __env_assert
-    fns.string.restore()
-    fns.table.restore()
-    fns.utils.restore()
-    fns.math.restore()
-end
-
-fns.use()
 fns:require 'gadgets'
-fns.restore()
-
-_ENV.assert = __env_assert
 
 return fns:seal()

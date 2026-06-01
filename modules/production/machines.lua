@@ -1,6 +1,7 @@
 --! data: change some properties of certain assembly machines
 
 local fns = require 'fns'
+local table = fns.table
 
 local merge = table.merge
 

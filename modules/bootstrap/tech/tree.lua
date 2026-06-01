@@ -1,6 +1,8 @@
 --! data: move pre-science tech tree around
 
 local fns = require 'fns'
+local table = fns.table
+local utils = fns.utils
 local icons = fns.gadgets.icons
 
 local merge = fns.table.merge
@@ -25,9 +27,9 @@ data:extend{{
 
 data.raw.technology['automation-science-pack'].prerequisites = { fns 'lab-tech' }
 
-table.remove_matching(data.raw.technology['circuit-network'].effects, { type = "unlock-circuit-network" })
+table.remove_matching(data.raw.technology['circuit-network'].effects, table.match{ type = "unlock-circuit-network" })
 
-table.merge(data.raw.technology, {
+merge(data.raw.technology, {
     __rec = true,
     ['steel-processing'] = {
         essential = true,

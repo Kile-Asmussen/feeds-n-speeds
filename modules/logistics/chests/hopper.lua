@@ -1,11 +1,13 @@
 --! data: hopper that links to steel chests
 local fns = require 'fns'
+local table = fns.table
 local puts = fns.gadgets.throughputs
 
 local hopper =
-table.merge(table.clone(data.raw.container['steel-chest']), {
+table.merge(table.deepcopy(data.raw.container['steel-chest']), {
     type = 'proxy-container',
     name = fns 'hopper',
+    icon_draw_specification = { __merge=true, scale = 0.4 },
     localised_name = fns.utils.null,
     icon = '__FeedsNSpeeds__/graphics/icons/hopper.png',
     picture = table.assign{ 'layers', 1, 'filename',
@@ -13,7 +15,7 @@ table.merge(table.clone(data.raw.container['steel-chest']), {
 })
 
 local item =
-table.merge(table.clone(data.raw.item['steel-chest']), {
+table.merge(table.deepcopy(data.raw.item['steel-chest']), {
     name = fns 'hopper',
     localised_name = fns.utils.null,
     icon = '__FeedsNSpeeds__/graphics/icons/hopper.png',
@@ -21,7 +23,7 @@ table.merge(table.clone(data.raw.item['steel-chest']), {
     place_result = fns 'hopper',
 })
 
-local recipe = table.merge(table.clone(data.raw.recipe['steel-chest']), {
+local recipe = table.merge(table.deepcopy(data.raw.recipe['steel-chest']), {
     name = fns 'hopper',
     localised_name = fns.utils.null,
     auto_require_pavement = 'stone-path',

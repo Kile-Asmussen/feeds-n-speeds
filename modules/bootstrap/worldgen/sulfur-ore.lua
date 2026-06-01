@@ -1,5 +1,6 @@
 --! data: sulfur ore resource entity
 local fns = require 'fns'
+local table = fns.table
 
 data:extend{{
     type = 'resource',

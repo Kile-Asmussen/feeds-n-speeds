@@ -1,6 +1,7 @@
 --! data: changes to ratios and potency of nuclear power
 
 local fns = require 'fns'
+local table = fns.table
 
 local steam = data.raw.fluid.steam
 local water = data.raw.fluid.water

@@ -3,18 +3,11 @@ local fns = require 'fns'
 local localisation = require('namespace')('test.localisation')
 local debuglib = require 'debuglib'
 
-localisation.keys = {
+local table = fns.table
 
-}
-
-localisation.skipped_keys = {
-
-}
-
-localisation.dead_types = {
-
-}
-
+localisation.keys = { }
+localisation.skipped_keys = { }
+localisation.dead_types = { }
 localisation.require_descriptions = false
 
 function localisation.add_key(cat, key, content)

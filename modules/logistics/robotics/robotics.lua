@@ -1,5 +1,7 @@
 --! data: major changes to robotics recipes
 local fns = require 'fns'
+local table = fns.table
+local utils = fns.utils
 local base = data.raw.roboport.roboport
 local inputs = fns.gadgets.throughputs
 
@@ -7,9 +9,9 @@ base.charging_station_count_affected_by_quality = true
 
 table.insert(data.raw.technology['robotics'].prerequisites, 'advanced-combinators')
 
-local sleeper = table.clone(base)
-local log_only = table.clone(base)
-local cons_only = table.clone(base)
+local sleeper = table.deepcopy(base)
+local log_only = table.deepcopy(base)
+local cons_only = table.deepcopy(base)
 
 table.merge(sleeper, {
     material_slots_count = 0,
@@ -100,9 +102,9 @@ local base_item = data.raw.item.roboport
 
 base_item.order = 'c[signal]-a[roboport]-a[vanilla]'
 
-local sleeper_item = table.clone(base_item)
-local log_item = table.clone(base_item)
-local cons_item = table.clone(base_item)
+local sleeper_item = table.deepcopy(base_item)
+local log_item = table.deepcopy(base_item)
+local cons_item = table.deepcopy(base_item)
 
 for _, val in ipairs{
     { sleeper_item, sleeper, 'b[sleeper]' },
@@ -111,7 +113,7 @@ for _, val in ipairs{
 } do
     table.merge(val[1], {
         icon = utils.null,
-        icons = table.clone(val[2].icons),
+        icons = table.deepcopy(val[2].icons),
         name = val[2].name,
         place_result = val[2].name,
         order = 'c[signal]-a[roboport]-' .. val[3],
@@ -119,9 +121,9 @@ for _, val in ipairs{
 end
 
 local base_recipe = data.raw.recipe.roboport
-local sleeper_recipe = table.clone(base_recipe)
-local log_recipe = table.clone(base_recipe)
-local cons_recipe = table.clone(base_recipe)
+local sleeper_recipe = table.deepcopy(base_recipe)
+local log_recipe = table.deepcopy(base_recipe)
+local cons_recipe = table.deepcopy(base_recipe)
 
 
 local function change_recipe(recipe, name, tech, ingredients)

@@ -2,7 +2,8 @@ local fns = require 'fns'
 local namespace = require 'namespace'
 local debuglib = namespace 'debuglib'
 
-fns.use()
+local table = fns.table
+local string = fns.string
 
 debuglib.recursion_limit = 2
 debuglib.serialize = false
@@ -224,7 +225,7 @@ function debuglib.small_table(buffer, tbl)
 
     return
         table.size(tbl) <= buffer.small.size and
-        table.pall(tbl, function(v, k) return
+        table.all(tbl, function(v, k) return
             (type(v) == 'string' or type(v) == 'number') and
             (type(k) == 'string' or type(k) == 'number')
         end) and
@@ -300,6 +301,5 @@ function debuglib.function_signature(func, short)
     return signature
      
 end
-
 
 return debuglib:seal()

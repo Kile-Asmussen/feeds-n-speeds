@@ -1,11 +1,12 @@
 --! data: shotgun turret with high power at close range
 local fns = require 'fns'
-local turret = table.clone(data.raw['ammo-turret']['gun-turret'])
+local table = fns.table
+local turret = table.deepcopy(data.raw['ammo-turret']['gun-turret'])
 
 turret.name = fns 'shotgun-turret'
 turret.icon = nil
 turret.minable = { mining_time = 0.5, result = fns 'shotgun-turret' }
-turret.attack_parameters = table.clone(data.raw.gun['combat-shotgun'].attack_parameters)
+turret.attack_parameters = table.deepcopy(data.raw.gun['combat-shotgun'].attack_parameters)
 turret.attack_parameters.damage_modifier = nil
 turret.fast_replaceable_group = 'ammo-turret'
 turret.max_health = 900
@@ -27,7 +28,7 @@ local turret_item = {
     stack_size = 10,
 }
 
-turret.icons = table.clone(turret_item.icons)
+turret.icons = table.deepcopy(turret_item.icons)
 
 local turret_recipe = {
     type = 'recipe',
@@ -46,7 +47,7 @@ local turret_recipe = {
     }
 }
 
-local turret_tech = table.clone(data.raw.technology['gun-turret'])
+local turret_tech = table.deepcopy(data.raw.technology['gun-turret'])
 turret_tech.name = fns 'shotgun-turret-tech'
 turret_tech.prerequisites = { 'gun-turret', 'military-2' }
 turret_tech.effects = {

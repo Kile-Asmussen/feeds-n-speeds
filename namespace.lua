@@ -5,6 +5,16 @@ local sealed = {}
 local parents = {}
 local calls = {}
 
+local type = _ENV.type
+local error = _ENV.error
+local setmetatable = _ENV.setmetatable
+local getmetatable = _ENV.getmetatable
+local tostring = _ENV.tostring
+local rawget = _ENV.rawget
+local rawset = _ENV.rawset
+local pairs = _ENV.pairs
+local unpack = _ENV.table.unpack
+
 local function assert(cond, msg)
     if not cond then error(msg, 3) end
 end
@@ -48,12 +58,30 @@ end
 
 local function get_namespace_path(self) return paths[self] end
 
+local function list_parents(ns)
+    assert(isnamespace(ns), "argument #1 must be a namespace, not " .. tostring(ns))
+    
+    if parents[ns] then
+        return ns, list_parents(parents[ns])
+    else
+        return ns
+    end
+end
+
 local function require_namespace(self, modname)
     assert(type(modname) == 'string', "argument #1 must be a string")
         
     local name = modname:gsub('[^a-zA-Z0-9]', '_')
 
-    self[name] = require(tostring(self) .. '.' .. modname)
+    local sub = require(tostring(self) .. '.' .. modname)
+
+    if type(sub) == 'table' and not isnamespace(sub) then
+        for k, v in pairs(sub) do self[k] = v end
+    elseif type(sub) == 'function' then
+        sub(list_parents(self))
+    else
+        self[name] = sub
+    end
 end
 
 local function seal_namespace(ns)
@@ -109,7 +137,11 @@ end
 
 local function list_namespaces()
     local keys = {}
-    for k, _ in pairs(namespaces) do table.insert(keys, k) end
+    local n = 1
+    for k, _ in pairs(namespaces) do 
+        keys[n] = k
+        n = n + 1
+    end
     return keys
 end
 

@@ -1,5 +1,6 @@
 --! data: alternate recipe for stone furnaces
 local fns = require 'fns'
+local table = fns.table
 local puts = fns.gadgets.throughputs
 local icons = fns.gadgets.icons
 

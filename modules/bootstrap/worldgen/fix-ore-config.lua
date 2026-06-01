@@ -2,6 +2,7 @@
 local fns = require 'fns'
 local name = fns 'sulfur-ore'
 local merge = fns.table.merge
+local assign = fns.table.assign
 
 local noise_expressions = data.raw['noise-expression']
 
@@ -18,7 +19,7 @@ merge(noise_expressions, {
 })
 
 merge(data.raw.planet.nauvis.map_gen_settings, {
-    autoplace_controls = table.assign{ fns 'sulfur-ore', val = {}},
-    autoplace_settings = table.assign{'entity', 'settings', fns 'sulfur-ore', val = {}},
+    autoplace_controls = assign{ fns 'sulfur-ore', val = {}},
+    autoplace_settings = assign{'entity', 'settings', fns 'sulfur-ore', val = {}},
 })
 

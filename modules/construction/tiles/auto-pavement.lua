@@ -1,6 +1,7 @@
 --! data-updates: find entities with auto_require_pavement set, and make them require paved ground to be placed
 
 local fns = require 'fns'
+local table = fns.table
 
 local tiers = {
     ['dirt'] = 'ground_tile',
@@ -54,7 +55,7 @@ for _, group in pairs(data.raw) do
             table.merge(entity, {
                 tile_buildability_rules = {
                     {
-                        area = table.clone(entity.collision_box),
+                        area = table.deepcopy(entity.collision_box),
                         required_tiles = required_tiles,
                         colliding_tiles = colliding_tiles,
                         remove_on_collision = true,

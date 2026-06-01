@@ -25,7 +25,7 @@ local planets = {}
 local daytime_parameters = { dawn = 0.75, dusk = 0.25, evening = 0.45, morning = 0.55 }
 
 for name, planet in pairs(data.raw.planet) do
-    planet = table.clone(planet.surface_properties)
+    planet = table.deepcopy(planet.surface_properties)
     planets[name] = planet
     table.include(planet, default)
 

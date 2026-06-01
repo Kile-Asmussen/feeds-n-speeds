@@ -1,5 +1,7 @@
 --! data, control: submodule governing changes to the early game stage of play
 
+local fns = require 'fns'
+local table = fns.table
 local bootstrap = require('namespace')('bootstrap')
 
 local set = table.intoset

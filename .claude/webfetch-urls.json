@@ -6,5 +6,6 @@
   "github.com/yokaze/custom-inventory-start/*",
   "github.com/wube/factorio-data/*",
   "raw.githubusercontent.com/wube/factorio-data/*",
-  "docs.rs/mlua/latest/mlua/*"
+  "docs.rs/mlua/latest/mlua/*",
+  "www.lua.org"
 ]

@@ -1,5 +1,6 @@
 --! data: alterations to the military tech tree, chiefly making powerful weapons available earlier
 local fns = require 'fns'
+local table = fns.table
 local tech = data.raw.technology
 
 table.insert(tech['gun-turret'].prerequisites, 'military')
@@ -116,8 +117,8 @@ tech['railgun'].unit.ingredients = table.icollect(
     function(s) return { s..'-science-pack', 1 } end
 )
 
-tech['railgun-shooting-speed-1'].unit.ingredients = table.clone(tech['railgun'].unit.ingredients)
-tech['railgun-damage-1'].unit.ingredients = table.clone(tech['railgun'].unit.ingredients)
+tech['railgun-shooting-speed-1'].unit.ingredients = table.deepcopy(tech['railgun'].unit.ingredients)
+tech['railgun-damage-1'].unit.ingredients = table.deepcopy(tech['railgun'].unit.ingredients)
 
 fns.locale_key("modifier-description", "rocket-turret-attack-bonus")
 

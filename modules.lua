@@ -1,8 +1,11 @@
-
+local fns = require 'fns'
 local namespace = require 'namespace'
 local modules = namespace 'modules'
 
-local set = table.intoset
+local table = fns.table
+local assert = fns.assert
+
+local set = fns.table.intoset
 
 modules.stages = set{
     'settings',
@@ -30,15 +33,11 @@ function modules.load_stage(stage)
     deps = modules.order_dependencies(deps)
 
     for _, dep in ipairs(deps) do 
-        local val = require(dep)
-        if type(val) == 'table' or type(val) == 'function' then
-            error('loading module ' .. dep .. ' returned a value of type ' .. type(val) .. ' which is probably unintentional', 2)
-        end
+        require(dep)
     end
 end
 
 function modules.name(mod, name)
-    string.replace_prefix(name, '^')
     if string.startswith(name, '.') then
         return tostring(mod) .. name
     else
@@ -59,17 +58,12 @@ function modules.stage_dependencies(stage)
                     for dep, val in table.opairs(deps) do
                         
                         assert(type(val) == 'boolean', 'dependencies of a module '
-                            .. 'may not themselves have dependencies: ' .. utils.tablepath(mod, { stage, dep }))
+                            .. 'may not themselves have dependencies: ' .. fns.utils.tablepath(mod, { stage, dep }))
 
                         local depname = modules.name(mod, dep)
 
-                        if string.startswith(dep, '^') then
-                            dependencies[depname] = dependencies[depname] or {}
-                            dependencies[depname][name] = val
-                        else
-                            dependencies[name] = dependencies[name] or {}
-                            dependencies[name][depname] = val
-                        end
+                        dependencies[name] = dependencies[name] or {}
+                        dependencies[name][depname] = val
                     end
                 else
                     dependencies[name] = true
@@ -81,10 +75,12 @@ function modules.stage_dependencies(stage)
     return dependencies
 end
 
+local debuglib = require 'debuglib'
+
 function modules.order_dependencies(dependencies)
     assert(type(dependencies) == 'table', "argument #1 must be a table")
 
-    dependencies = table.clone(dependencies)
+    dependencies = table.deepcopy(dependencies)
 
     local problems = {}
 
@@ -100,9 +96,7 @@ function modules.order_dependencies(dependencies)
         end
     end
 
-    if #problems > 0 then
-        error("not all dependencies can be fulfilled:\n" .. table.concat(problems, "\n"), 2)
-    end
+    assert(#problems == 0, "not all dependencies can be fulfilled:\n" .. table.concat(problems, "\n"), 2)
 
     local priorities = {}
     local order = {}
@@ -115,7 +109,7 @@ function modules.order_dependencies(dependencies)
             ordered[k] = true
             dependencies[k] = nil
             priorities[k] = deps
-            table.insert(order, k)           
+            table.insert(order, k)
         end
     end
 
@@ -123,16 +117,20 @@ function modules.order_dependencies(dependencies)
         return priorities[a] < priorities[b]
     end)
 
+    local progress = false
     while table.has_assoc(dependencies) do
+        progress = false
+
         for k, deps in table.opairs(dependencies) do
             if type(deps) == 'table' then
                 for x, _ in table.opairs(deps) do
                     if ordered[x] then
                         deps[x] = nil
+                        progress = true
                     end
                 end
                 if table.is_empty(deps) then
-                    table.insert(order, k)
+                    progress = true
                     ordered[k] = true
                     dependencies[k] = nil
                 end
@@ -140,6 +138,8 @@ function modules.order_dependencies(dependencies)
                 error("bad dependency: " .. tostring(dep) , 2)
             end
         end
+
+        assert(progress, "no progress was made in dependency resolution")
     end
 
     return order

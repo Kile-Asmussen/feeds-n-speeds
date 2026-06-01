@@ -1,9 +1,10 @@
 --! data: recipe for uranium-empowere shotgun ammo
 
 local fns = require 'fns'
-local ushell = table.clone(data.raw.ammo['piercing-shotgun-shell'])
-local ushell_proj = table.clone(data.raw.projectile['piercing-shotgun-pellet'])
-local ushell_recipe = table.clone(data.raw.recipe['uranium-rounds-magazine'])
+local table = fns.table
+local ushell = table.deepcopy(data.raw.ammo['piercing-shotgun-shell'])
+local ushell_proj = table.deepcopy(data.raw.projectile['piercing-shotgun-pellet'])
+local ushell_recipe = table.deepcopy(data.raw.recipe['uranium-rounds-magazine'])
 
 ushell_proj.name = fns 'uranium-shotgun-pellet'
 ushell_proj.action.action_delivery.target_effects.damage.amount = 16

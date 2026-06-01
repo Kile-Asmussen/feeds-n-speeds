@@ -1,5 +1,6 @@
 --! data: new recipes for casting including recycling-like recipes for scrap metal
 local fns = require 'fns'
+local table = fns.table
 local recipes = data.raw.recipe
 
 recipes['casting-pipe'].allow_productivity = true

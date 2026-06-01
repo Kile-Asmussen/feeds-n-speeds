@@ -8,23 +8,17 @@ if help == '--help' then
 end
 
 
-local fns = require 'fns'
-
-fns.use()
-
 require 'test'
+local fns = require 'fns'
 
 _ENV.QUIET = true
 
 _ENV.modlist = {}
 
 require('settings')
-fns.use()
 data.begin_data_stage()
 require('data')
 require('data-updates')
-
-fns.use()
 
 local debuglib = require 'debuglib'
 

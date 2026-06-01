@@ -1,5 +1,6 @@
 --! data-updates: find all recipes with auto_unlocked_by set, and update the tech tree to have those technologies unlock those recipes.
 local fns = require 'fns'
+local table = fns.table
 local remove = {}
 local unlocks = {}
 

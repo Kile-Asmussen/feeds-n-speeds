@@ -79,7 +79,7 @@ data:extend{
 
 local sulfuric_acid = data.raw.recipe['sulfuric-acid']
 
-table.merge(data.raw.recipe, {
+merge(data.raw.recipe, {
     __rec = true, -- recurse one level
     ['sulfuric-acid'] = {
         main_product = 'sulfuric-acid',

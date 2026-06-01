@@ -1,16 +1,17 @@
 --! data: tiny heat-producing machine that uses electricity
 
 local fns = require 'fns'
+local table = fns.table
 
 local pipe = data.raw['heat-pipe']['heat-pipe']
 
 local function sh(shift, tbl)
-    tbl = table.clone(tbl)
+    tbl = table.deepcopy(tbl)
     tbl.shift = shift
     return tbl
 end
 
-local mini_reactor = table.merge(table.clone(data.raw.reactor['heating-tower']), {
+local mini_reactor = table.merge(table.deepcopy(data.raw.reactor['heating-tower']), {
     name = fns 'electric-heater',
 
     connection_patches_connected = table.clone{
@@ -106,10 +107,10 @@ local mini_reactor = table.merge(table.clone(data.raw.reactor['heating-tower']),
     },
 })
 
-local mini_reactor_item = table.merge(table.clone(data.raw.item['small-lamp']), {
+local mini_reactor_item = table.merge(table.deepcopy(data.raw.item['small-lamp']), {
     type = "item",
     name = mini_reactor.name,
-    icons =  table.clone(mini_reactor.icons),
+    icons =  table.deepcopy(mini_reactor.icons),
     stack_size = 10,
     place_result = mini_reactor.name,
 })
@@ -151,7 +152,7 @@ data.raw.recipe['heat-pipe'].auto_unlocked_by = mini_reactor.name
 
 
 local boiler = data.raw.boiler.boiler
-local heat_boiler = table.merge(table.clone(data.raw.boiler['heat-exchanger']), {
+local heat_boiler = table.merge(table.deepcopy(data.raw.boiler['heat-exchanger']), {
     name = fns 'heat-boiler',
     energy_consumption = boiler.energy_consumption,
     target_temperature = boiler.target_temperature,
@@ -180,13 +181,13 @@ local heat_boiler = table.merge(table.clone(data.raw.boiler['heat-exchanger']), 
             tint = { r = 0, g = 1, b = 0 },
         }
     },
-    picture = table.clone(data.raw.boiler[fns 'electroboiler'])
+    picture = table.deepcopy(data.raw.boiler[fns 'electroboiler'])
 })
 
-local heat_boiler_item = table.merge(table.clone(data.raw.item.boiler), {
+local heat_boiler_item = table.merge(table.deepcopy(data.raw.item.boiler), {
     type = "item",
     name = heat_boiler.name,
-    icons = table.clone(heat_boiler.icons),
+    icons = table.deepcopy(heat_boiler.icons),
     stack_size = 10,
     place_result = heat_boiler.name,
 })
@@ -204,9 +205,9 @@ data:extend{ heat_boiler, heat_boiler_item, heat_boiler_recipe }
 
 local tank = data.raw['storage-tank']['storage-tank']
 
-local tank_o_sand = table.merge(table.clone(data.raw.reactor['heating-tower']), {
+local tank_o_sand = table.merge(table.deepcopy(data.raw.reactor['heating-tower']), {
     name = fns 'tank-o-sand',
-    minable = table.merge(table.clone(tank.minable), { result = fns 'tank-o-sand' }),
+    minable = table.merge(table.deepcopy(tank.minable), { result = fns 'tank-o-sand' }),
     energy_source = { type = "void" },
     consumption = "0.001W",
     heat_buffer = {
@@ -228,7 +229,7 @@ local tank_o_sand = table.merge(table.clone(data.raw.reactor['heating-tower']), 
 })
 
 tank_o_sand.picture.layers = {
-    table.merge(table.clone(tank.pictures.window_background), { shift = { 0, 1 } }),
+    table.merge(table.deepcopy(tank.pictures.window_background), { shift = { 0, 1 } }),
     tank.pictures.picture.sheets[1],
     tank.pictures.picture.sheets[2],
 }
@@ -236,8 +237,8 @@ tank_o_sand.picture.layers = {
 local function pipe_cover(direction, shift)
     local pipes = tank.fluid_box.pipe_covers[direction].layers
     return {
-        table.merge(table.clone(pipes[1]), { shift = shift }),
-        table.merge(table.clone(pipes[2]), { shift = shift }),
+        table.merge(table.deepcopy(pipes[1]), { shift = shift }),
+        table.merge(table.deepcopy(pipes[2]), { shift = shift }),
     }
 end
 
@@ -246,10 +247,10 @@ table.append(tank_o_sand.picture.layers, pipe_cover('west', { -2, -1 }))
 table.append(tank_o_sand.picture.layers, pipe_cover('east', { 2, 1 }))
 table.append(tank_o_sand.picture.layers, pipe_cover('south', { 1, 2 }))
 
-local tank_o_sand_item = table.merge(table.clone(data.raw.item['storage-tank']), {
+local tank_o_sand_item = table.merge(table.deepcopy(data.raw.item['storage-tank']), {
     type = "item",
     name = tank_o_sand.name,
-    icons =  table.clone(tank_o_sand.icons),
+    icons =  table.deepcopy(tank_o_sand.icons),
     stack_size = 5,
     place_result = tank_o_sand.name,
 })

@@ -7,7 +7,7 @@ use std::path::PathBuf;
 use std::time::{Duration, Instant};
 use std::{process, sync::Arc};
 
-mod prototypes;
+mod string_pack;
 
 const DUMP_POLL_INTERVAL: Duration = Duration::from_secs(2);
 const DUMP_TIMEOUT: Duration = Duration::from_secs(120);
@@ -361,6 +361,18 @@ fn test_rawdata(lua: &Lua) -> LuaResult<LuaTable> {
                 factorio_dump_defines(std::path::Path::new(&mod_src))?;
             }
             load_defines(lua)
+        })?,
+    )?;
+
+    string_pack::register(lua, &exports)?;
+
+    // table_size(t) -> integer — counts all key-value pairs including the hash part
+    exports.set(
+        "table_size",
+        lua.create_function(|_lua, t: LuaTable| {
+            let mut n: i64 = 0;
+            t.for_each(|_k: LuaValue, _v: LuaValue| { n += 1; Ok(()) })?;
+            Ok(n)
         })?,
     )?;
 

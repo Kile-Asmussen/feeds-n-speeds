@@ -1,11 +1,12 @@
 --! data: extra better recipes for rails using concrete
 local fns = require 'fns'
+local table = fns.table
 local puts = fns.gadgets.throughputs
 
 local rails = {
-    table.clone(data.raw.recipe.rail),
-    table.clone(data.raw.recipe.rail),
-    table.clone(data.raw.recipe.rail)
+    table.deepcopy(data.raw.recipe.rail),
+    table.deepcopy(data.raw.recipe.rail),
+    table.deepcopy(data.raw.recipe.rail)
 }
 
 data.raw.recipe.rail.ingredients = puts{

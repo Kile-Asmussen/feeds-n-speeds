@@ -10,7 +10,9 @@
     "DEPTH=1 lua debug/data-modded.lua *",
     "DEPTH=2 lua debug/data-modded.lua *",
     "DEPTH=3 lua debug/data-modded.lua *",
+    "lua debug/is-table-size-there.lua",
     "lua debug/search.lua *",
     "python .claude/safe-rm.py *",
-    "make build"
+    "make build",
+    "make rawdata"
 ]

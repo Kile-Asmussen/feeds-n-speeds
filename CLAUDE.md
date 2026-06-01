@@ -47,23 +47,28 @@ Exact patterns:
 
 ```
 lua debug/load.lua
+lua debug/search.lua
 VERBOSE=1 lua debug/load.lua
-VERBOSE=1 PROXY-1 lua debug/load.lua
+VERBOSE=1 PROXY=1 lua debug/load.lua
 DEPTH=[1-3] lua debug/data-raw.lua [<category> [<name> [<further properties/indexes>]]]
 DEPTH=[1-3] lua debug/data-modded.lua [<category> [<name> [<further properties/indexes>]]] 
 python .claude/safe-rm.py <path>
 ```
-The debug/data-raw.lua and debug/data-modded.lua scripts will only print DEPTH=1 until a specific prototype is requested, to limit token usage. Similarly refrain from using the verbose and proxy (even more verbose) version of debug/load.lua .
+
+Lua scripts accepts a `--help` parameter to print usage guide. safe-rm.py is for deleting files in ./slop/ directory.
 
 **Important:** The bash hook rejects pipes (`|`), redirects (`>`/`<`), chained commands (`&&`, `;`, `||`), subshells, and glob characters in the command string. Commands must match the pattern exactly. When a command is blocked, the error message lists the allowed patterns — use that to self-correct immediately.
 
 ## Architecture
 
-The project built around `module.lua` and the `module/` directory, which contains a full module loading system with dependency ordering.
+The project built around `module.lua` and the `module/` directory, which contains a loading system with dependency ordering.
 
-Every file contains a toplevel doc-comments (prefix: `--!`) as the first line(s) of the file, telling what stage the file is loaded at (if any), and what the contents of the file does.
+The `module/*.lua` files which are called 'submodules' for lists of each submodule's components and their dependency graph. They are `require` paths, but a leading '.' is a shorthand that means it is local to the submodule.
+
+Every lua file contains a toplevel doc-comments (prefix: `--!`) as the first line(s) of the file, telling what stage the file is loaded at (if any), and what the contents of the file does.
 
 Use Grep tool with pattern `^--!` in `module/**/*.lua` for a concise overview of the entire project, or read the first line of an individual file to check whether it is relevant.
+
 
 ### Namespace System (`namespace.lua`)
 

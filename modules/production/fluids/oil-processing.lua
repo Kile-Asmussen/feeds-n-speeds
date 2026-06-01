@@ -1,4 +1,6 @@
 --! data: changes to oil recipes
+local fns = require 'fns'
+local table = fns.table
 
 for _, rec in ipairs{
     'heavy-oil-cracking',
@@ -7,9 +9,9 @@ for _, rec in ipairs{
 } do
     rec = data.raw.recipe[rec]
     if rec then
-        table.find_matching(
+        table.find(
             rec.ingredients,
-            {type='fluid',name='water'}
+            table.match{type='fluid',name='water'}
         ).name='steam'
     end
 end

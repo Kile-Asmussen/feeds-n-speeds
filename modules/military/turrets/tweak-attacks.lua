@@ -1,5 +1,6 @@
 --! data: balance changes to damage output of turrets
 local fns = require 'fns'
+local table = fns.table
 local turrets = data.raw['ammo-turret']
 
 turrets['gun-turret'].max_health = 800
