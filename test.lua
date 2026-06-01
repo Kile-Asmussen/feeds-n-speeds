@@ -6,7 +6,6 @@ _ENV.PROXIED = os.getenv("PROXIED") and true or false
 
 _ENV.table_size = require('test.rawdata').table_size
 
-require 'test.stupid'
 
 setmetatable(_ENV, {
     __index = function(_, name) error('_ENV.' .. name .. ' undefined', 2) end,

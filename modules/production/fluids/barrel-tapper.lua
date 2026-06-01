@@ -76,14 +76,9 @@ local tap_item = merge(table.deepcopy(data.raw.item[iron_chest.name]), {
     icon = nil,
     icons = table.deepcopy(tap.icons),
     order = data.raw.item.pump.order .. '-a[tapper]',
-    drop_sound = {
-        aggregation = {
-            max_count = 1,
-            remove = true
-        },
-        filename = "__base__/sound/item/metal-chest-inventory-move.ogg",
-        volume = 0.6
-    }
+    
+    drop_sound = table.deepcopy(data.raw.item[iron_chest.name].drop_sound)
+    -- WHY THE FUCK IS THIS NECESSARY?!
 })
 
 local tap_recipe = {

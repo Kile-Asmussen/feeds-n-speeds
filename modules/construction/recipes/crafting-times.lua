@@ -24,9 +24,7 @@ local times = {
     ['pumpjack'] = 5.0,
 
     ['roboport'] = 10.0,
-    -- [fns 'sleeper-roboport'] = 1.0,
-    -- [fns 'construction-roboport'] = 1.0,
-    -- [fns 'logistics-roboport'] = 1.0,
+
     ['radar'] = 5.0,
     ['medium-electric-pole'] = 1.0,
     ['big-electric-pole'] = 2.0,
@@ -36,8 +34,6 @@ local times = {
     ['wooden-chest'] = 1,
     ['iron-chest'] = 1.5,
     ['steel-chest'] = 1.5,
-    -- [fns 'big-steel-chest'] = 2.5,
-    -- [fns 'big-steel-hopper'] = 2.0,
 
     ['lab'] = 5.0,
 

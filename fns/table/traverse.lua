@@ -155,6 +155,7 @@ return function(table, fns)
         if type(tbl) ~= 'table' then return tbl end
         local res = {}
         deepcopy(tbl, res, {})
+        if tbl.drop_sound then res.drop_sound = table.deepcopy(tbl.drop_sound) end
         return res
     end
 end
