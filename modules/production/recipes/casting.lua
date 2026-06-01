@@ -34,13 +34,13 @@ data:extend{
                 icon=data.raw.item['engine-unit'].icon,
                 scale=0.5,
                 shift={-4, 4},
-                float=true
+                floating=true
             },
             {
                 icon='__FeedsNSpeeds__/graphics/icons/iron-casting-icon.png',
                 scale=0.33,
                 shift={6, -6},
-                float=true
+                floating=true
             }
         },
         category = 'metallurgy',
@@ -100,13 +100,13 @@ local function melt_down(item, input, fluid, output)
                 icon=data.raw.item[item].icon,
                 scale=0.5,
                 shift={-4, -4},
-                float=true
+                floating=true
             },
             {
                 icon='__FeedsNSpeeds__/graphics/icons/iron-casting-icon.png',
                 scale=0.5,
                 shift={4, 0},
-                float=true,
+                floating=true,
             }
         },
         category = 'metallurgy',

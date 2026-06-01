@@ -15,7 +15,16 @@ for _, resource in pairs(data.raw.resource) do
         resource.normal = 25000
         resource.minimum = 10000
 
-        resource.stage_counts = { 1500, 1200, 600, 400, 300, 150, 100, 50 }
+        resource.stage_counts = fns.table.icollect({
+            10,
+            7,
+            5,
+            3.5,
+            2.5,
+            1.5,
+            1.0,
+            0.5
+         }, function(n) return resource.minimum * n end)
 
         local richness_multiplier_setting = "var('control:" .. resource.name .. ":richness')"
 
@@ -23,7 +32,7 @@ for _, resource in pairs(data.raw.resource) do
             '(floor(random_penalty_between{from=90,to=110.999,seed=42069}) / 100)'
 
         local distance_start = 350   -- distance (tiles) where richness begins increasing
-        local distance_full  = 2200  -- distance (tiles) where richness reaches cap
+        local distance_full  = 1000  -- distance (tiles) where richness reaches cap
         local distance_max   = 2.5     -- richness multiplier cap
         local distance_scale = (distance_full - distance_start) / (distance_max - 1)
         local distance_term  = "clamp((distance - " .. distance_start .. ") / " .. distance_scale .. " + 1, 1, " .. distance_max .. ")"

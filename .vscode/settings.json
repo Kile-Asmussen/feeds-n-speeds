@@ -18,8 +18,9 @@
         "README.md": "CLAUDE.md, LICENSE",
         ".gitignore": ".gitattributes",
         "hook-restrict-*.py": "${capture}.json",
+        "init.lua": "*.lua, */",
         "*.json": "${capture}.*.json",
-        "*": "${capture}~",
+        "*": "${capture}~"
     },
     "explorer.sortOrder": "mixed",
 }

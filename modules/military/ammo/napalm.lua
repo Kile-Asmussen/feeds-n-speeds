@@ -15,7 +15,7 @@ napalm.icons = {
     },
     {
         icon = data.raw.item['plastic-bar'].icon,
-        float=true,
+        floating=true,
         icon_size = 64,
         shift={ 0, 4 },
         tint = { 1, 1, 1, 0.5 },
