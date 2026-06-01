@@ -26,24 +26,40 @@ for _, resource in pairs(data.raw.resource) do
             0.5
          }, function(n) return resource.minimum * n end)
 
-        local richness_multiplier_setting = "var('control:" .. resource.name .. ":richness')"
-
-        local random_noise =
-            '(floor(random_penalty_between{from=90,to=110.999,seed=42069}) / 100)'
-
-        local distance_start = 350   -- distance (tiles) where richness begins increasing
-        local distance_full  = 1000  -- distance (tiles) where richness reaches cap
-        local distance_max   = 2.5     -- richness multiplier cap
+        local distance_start = 300   -- distance (tiles) where richness begins increasing
+        local distance_full  = 1500  -- distance (tiles) where richness reaches cap
+        local distance_max   = 3     -- richness multiplier cap
         local distance_scale = (distance_full - distance_start) / (distance_max - 1)
         local distance_term  = "clamp((distance - " .. distance_start .. ") / " .. distance_scale .. " + 1, 1, " .. distance_max .. ")"
-        
-        resource.autoplace.richness_expression =
-            table.concat({
-                resource.normal,
-                richness_multiplier_setting,
-                random_noise,
-                distance_term
-            }, " * ")
+
+        if resource.autoplace.richness_expression then
+            local richness_multiplier_setting = "var('control:" .. resource.name .. ":richness')"
+            local random_noise = '(floor(random_penalty_between{from=90,to=110.999,seed=42069}) / 100)'
+
+            resource.autoplace.richness_expression =
+                table.concat({
+                    resource.normal,
+                    richness_multiplier_setting,
+                    random_noise,
+                    distance_term
+                }, " * ")
+        else
+            -- Scale factors align planet expression output with resource.normal = 25000.
+            -- Derived from the scalar constants in each planet's richness noise expression.
+            local planet_scale = {
+                vulcanus_calcite_richness     = 25000 / 24000,
+                vulcanus_tungsten_ore_richness = 25000 / 10000,
+                gleba_stone_richness           = 25000 / 4000,
+            }
+            local planet_expr_suffix = resource.name:gsub('-', '_') .. "_richness"
+            for name in pairs(data.raw['noise-expression']) do
+                if name:sub(-#planet_expr_suffix) == planet_expr_suffix then
+                    local scale = planet_scale[name] or 1
+                    resource.autoplace.richness_expression = name .. " * " .. scale .. " * " .. distance_term
+                    break
+                end
+            end
+        end
     end
 
     if resource.category == 'basic-fluid' then

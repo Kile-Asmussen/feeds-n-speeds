@@ -38,6 +38,8 @@
 
 - [ ] Consider splitting the barrel tapper into separate barrel filler and barrel emptier machines.
 
+- [ ] **Infinite ores — planet richness scaling**: Currently the planet-specific richness expressions (calcite, tungsten, gleba stone) are wrapped with a hardcoded scale factor (`25000 / vanilla_baseline`) to align generated amounts with `resource.normal`. This is fragile and doesn't generalise to other mods' resources. A proper solution would derive the scale factor dynamically — either by parsing the baseline constant out of the planet noise expression, or by moving this logic to `data-updates` and inspecting the autoplace control settings to infer intended spawn richness. The latter would also make the infinite ores feature compatible with planet-aware resource mods.
+
 ## Potential spinoffs
 
 - [ ] Extract big steel chest + hoppers into a standalone mod — self-contained enough to be useful without the rest of FeedsNSpeeds.
