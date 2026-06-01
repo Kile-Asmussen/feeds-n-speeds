@@ -19,9 +19,8 @@ data:extend{{
     effects = { { type = "unlock-circuit-network", modifier = true } },
     prerequisites = { 'steam-power' },
     research_trigger = {
-        type = 'craft-item',
-        item = 'steam-engine',
-        amount = 1
+        type = 'build-entity',
+        entity = 'steam-engine',
     },
 }}
 

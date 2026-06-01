@@ -4,6 +4,7 @@ local fns = require 'fns'
 local noise = {
     name = fns 'sulfur-ore',
     has_starting_area_placement = 1,
+    base_density = 3,
     base_spots_per_km2 = 1.25,
     regular_patch_set_index = "var('" .. fns 'sulfur-ore-regular-index' .. "')",
     starting_patch_set_index = "var('" .. fns 'sulfur-ore-starting-index' .. "')",

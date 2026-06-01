@@ -32,38 +32,39 @@ for _, resource in pairs(data.raw.resource) do
         local distance_scale = (distance_full - distance_start) / (distance_max - 1)
         local distance_term  = "clamp((distance - " .. distance_start .. ") / " .. distance_scale .. " + 1, 1, " .. distance_max .. ")"
 
-        if resource.autoplace.richness_expression then
-            local richness_multiplier_setting = "var('control:" .. resource.name .. ":richness')"
-            local random_noise = '(floor(random_penalty_between{from=90,to=110.999,seed=42069}) / 100)'
+        local richness_multiplier_setting = "var('control:" .. resource.name .. ":richness')"
+        local random_noise = '(floor(random_penalty_between{from=90,to=110.999,seed=42069}) / 100)'
 
-            resource.autoplace.richness_expression =
-                table.concat({
-                    resource.normal,
-                    richness_multiplier_setting,
-                    random_noise,
-                    distance_term
-                }, " * ")
-        else
-            -- Scale factors align planet expression output with resource.normal = 25000.
-            -- Derived from the scalar constants in each planet's richness noise expression.
-            local planet_scale = {
-                vulcanus_calcite_richness     = 25000 / 24000,
-                vulcanus_tungsten_ore_richness = 25000 / 10000,
-                gleba_stone_richness           = 25000 / 4000,
-            }
-            local planet_expr_suffix = resource.name:gsub('-', '_') .. "_richness"
-            for name in pairs(data.raw['noise-expression']) do
-                if name:sub(-#planet_expr_suffix) == planet_expr_suffix then
-                    local scale = planet_scale[name] or 1
-                    resource.autoplace.richness_expression = name .. " * " .. scale .. " * " .. distance_term
-                    break
-                end
-            end
-        end
+        resource.autoplace.richness_expression =
+            table.concat({
+                resource.normal,
+                richness_multiplier_setting,
+                random_noise,
+                distance_term
+            }, " * ")
     end
 
     if resource.category == 'basic-fluid' then
         resource.infinite = true
+        -- Fluid resources are left at vanilla richness (flow rate yield). Notes:
+        -- - fluorine-vent, lithium-brine: richness via aquilo_flourine/lithium_brine_richness,
+        --   referenced directly in autoplace.richness_expression; prototype field is authoritative.
+        -- - crude-oil on Aquilo: overridden via property_expression_names["entity:crude-oil:richness"]
+        --   → aquilo_crude_oil_richness. Nauvis crude-oil uses the prototype field directly.
+        -- - sulfuric-acid-geyser on Vulcanus: overridden via property_expression_names, uses
+        --   vulcanus_starting_area_multiplier (same low-spawn suppression as calcite/tungsten).
+        --   Left as vanilla intentionally for now.
+    end
+end
+
+for _, planet in pairs(data.raw.planet) do
+    local exprs = planet.map_gen_settings and planet.map_gen_settings.property_expression_names
+    if exprs then
+        for key in pairs(exprs) do
+            if key:sub(1, 7) == 'entity:' and key:sub(-9) == ':richness' then
+                exprs[key] = nil
+            end
+        end
     end
 end
 

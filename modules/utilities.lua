@@ -16,6 +16,7 @@ utilities.control = set{
 
 utilities.data = set{
     ['.tech-tweaks'] = -1,
+    '.map-gen-presets',
 }
 
 utilities['data-updates'] = set{

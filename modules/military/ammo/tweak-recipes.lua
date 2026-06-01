@@ -59,8 +59,8 @@ merge(recipes, {
         energy_required = 2,
         results = puts { ['firearm-magazine'] = 2 },
         ingredients = puts{
-            ['iron-plate'] = 2,
-            ['copper-plate'] = 2,
+            ['iron-plate'] = 1,
+            ['copper-plate'] = 1,
             ['sulfur'] = 1,
             ['coal'] = 1,
         }
@@ -83,9 +83,9 @@ merge(recipes, {
 
     ['shotgun-shell'] = merge{
         ingredients = puts{
-            ['copper-plate'] = 2,
-            ['iron-plate'] = 2,
-            ['sulfur'] = 1,
+            ['copper-plate'] = 1,
+            ['iron-plate'] = 1,
+            ['sulfur'] = 2,
             ['coal'] = 2,
         },
         results = puts { ['shotgun-shell'] = 2 },
