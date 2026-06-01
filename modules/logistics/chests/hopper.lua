@@ -4,7 +4,7 @@ local table = fns.table
 local puts = fns.gadgets.throughputs
 
 local hopper =
-table.merge(table.deepcopy(data.raw.container['steel-chest']), {
+table.merge(table.deepcopy(data.raw.container[fns 'steel-chest']), {
     type = 'proxy-container',
     name = fns 'hopper',
     icon_draw_specification = { __merge=true, scale = 0.4 },

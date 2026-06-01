@@ -6,5 +6,5 @@ data:extend{{
     name = fns('infinite-ores'),
     order='b',
     setting_type = 'startup',
-    default_value = false,
+    default_value = true,
 }}

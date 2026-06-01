@@ -20,7 +20,7 @@ production.data = set{
     '.fluids.water',
     ['.fluids.boil-water'] = set{ '.fluids.water' },
 
-    '.ores.infinite',
+    ['.ores.infinite'] = set{ 'modules.bootstrap.worldgen.sulfur-ore' },
     '.ores.starting-patch-shape',
 
     '.recipes.crafting-times',
