@@ -14,13 +14,13 @@ end
 local mini_reactor = table.merge(table.deepcopy(data.raw.reactor['heating-tower']), {
     name = fns 'electric-heater',
 
-    connection_patches_connected = table.clone{
+    connection_patches_connected = table.deepcopy{
         sh({ 0, -0.2 }, pipe.connection_sprites.straight_vertical[1]),
         sh({ 0.2, 0 }, pipe.connection_sprites.straight_horizontal[1]),
         sh({ 0, 0.2 }, pipe.connection_sprites.straight_vertical[2]),
         sh({ -0.2, 0 }, pipe.connection_sprites.straight_horizontal[2]),
     },
-    connection_patches_disconnected = table.clone{
+    connection_patches_disconnected = table.deepcopy{
         sh({ 0, -0.5 }, pipe.connection_sprites.ending_down[1]),
         sh({ 0.6, 0 }, pipe.connection_sprites.ending_left[1]),
         sh({ 0, 0.4 }, pipe.connection_sprites.ending_up[1]),
@@ -165,7 +165,7 @@ local heat_boiler = table.merge(table.deepcopy(data.raw.boiler['heat-exchanger']
     },
     auto_require_pavement = 'stone-path',
     energy_consumption = "3.6MW",
-    icon = utils.null,
+    icon = fns.utils.null,
     icons = {
         {
             icon = '__base__/graphics/icons/boiler.png',

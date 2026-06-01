@@ -138,13 +138,11 @@ return function(table, fns)
         return res
     end
 
-    local function deepcopy(tbl, res, seen)
-        if seen[tbl] then return seen[tbl] end
+    local function deepcopy(tbl, res)
         for k, v in pairs(tbl) do
             if type(v) == 'table' then
                 res[k] = {}
-                deepcopy(v, res[k], seen)
-                seen[v] = res[k]
+                deepcopy(v, res[k])
             else
                 res[k] = v
             end
@@ -154,8 +152,7 @@ return function(table, fns)
     function table.deepcopy(tbl)
         if type(tbl) ~= 'table' then return tbl end
         local res = {}
-        deepcopy(tbl, res, {})
-        if tbl.drop_sound then res.drop_sound = table.deepcopy(tbl.drop_sound) end
+        deepcopy(tbl, res)
         return res
     end
 end

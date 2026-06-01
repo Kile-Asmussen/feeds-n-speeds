@@ -24,7 +24,8 @@ local table = fns.table
 _ENV.table.deepcopy = fns.table.deepcopy
 
 local debuglib = require 'debuglib'
-debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 2
+rawset(_ENV, 'serpent', { line = debuglib.p, block = debuglib.pp })
+debuglib.recursion_limit = tonumber(os and os.getenv('DEPTH')) or 4
 
 local __exit = _ENV.os.exit
 

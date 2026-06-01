@@ -83,8 +83,6 @@ tech['military-3'].effects = {
     { type='unlock-recipe', recipe='cluster-grenade' },
     { type='unlock-recipe', recipe='slowdown-capsule' },
     { type='unlock-recipe', recipe='poison-capsule' },
-    { type='unlock-recipe', recipe=fns'submachine-gun-plastic-stock' },
-    { type='unlock-recipe', recipe=fns'combat-shotgun-plastic-stock' },
 }
 
 tech['military-4'].prerequisites = { 'utility-science-pack', 'military-3' }

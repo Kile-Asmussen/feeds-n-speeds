@@ -133,6 +133,7 @@ function modules.order_dependencies(dependencies)
                     progress = true
                     ordered[k] = true
                     dependencies[k] = nil
+                    table.insert(order, k)
                 end
             else
                 error("bad dependency: " .. tostring(dep) , 2)

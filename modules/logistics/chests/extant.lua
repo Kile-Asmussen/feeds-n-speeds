@@ -23,8 +23,6 @@ local upscale = table.traverse(fns.gadgets.scale_vectors_and_numbers(
   set{ 'circuit_connector', 'sound', 'frame_count' }
 ))
 
--- local soundscale = table.traverse(
-
 local shift_wire = table.traverse(fns.gadgets.shift_vectors(
   {0.35, 0.30}, set{'shift'}, {}
 ))

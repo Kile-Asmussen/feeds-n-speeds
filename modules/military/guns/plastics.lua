@@ -17,6 +17,7 @@ local guns = fns.table.merge({
         name = fns 'submachine-gun-plastic-stock',
         localised_name = {"item-name.submachine-gun"},
         localised_description = {fns.locale_key("recipe-description", "plastic-furniture")},
+        auto_unlocked_by = "military-3",
         icons = icons{
             type = 'recipe',
             data.raw.gun['submachine-gun'].icon,
@@ -34,6 +35,7 @@ local guns = fns.table.merge({
         name = fns 'combat-shotgun-plastic-stock',
         localised_name = {"item-name.combat-shotgun"},
         localised_description = {fns.locale_key("recipe-description", "plastic-furniture")},
+        auto_unlocked_by = "military-3",
         icons = icons{
             type = 'recipe',
             data.raw.gun['combat-shotgun'].icon,

@@ -25,7 +25,7 @@ for _, recipe in table.opairs(data.raw.recipe) do
         auto = { auto }
     end
 
-    if type(auto) == 'table' and table.iall(auto, utils.is_a('string')) then
+    if type(auto) == 'table' and table.iall(auto, fns.utils.is_a('string')) then
 
         if #auto == 0 then
             recipe.enabled = true
