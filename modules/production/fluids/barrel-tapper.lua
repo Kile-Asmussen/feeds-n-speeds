@@ -19,7 +19,8 @@ local tap = merge(table.deepcopy(data.raw.furnace['stone-furnace']), {
     impact_category = 'metal',
     vector_to_place_result = { -0.95, 0 },
     energy_source = { type = 'void' },
-    energy_usage = '5kW',
+    energy_usage = '1W',
+    heating_energy = '1kW',
     next_upgrade = nil,
     show_recipe_icon = false,
     effects_receiver = {},
@@ -76,9 +77,6 @@ local tap_item = merge(table.deepcopy(data.raw.item[iron_chest.name]), {
     icon = nil,
     icons = table.deepcopy(tap.icons),
     order = data.raw.item.pump.order .. '-a[tapper]',
-    
-    drop_sound = table.deepcopy(data.raw.item[iron_chest.name].drop_sound)
-    -- WHY THE FUCK IS THIS NECESSARY?!
 })
 
 local tap_recipe = {

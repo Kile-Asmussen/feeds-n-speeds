@@ -18,10 +18,13 @@ for _, resource in pairs(data.raw.resource) do
 
         local richness_multiplier_setting = "var('control:" .. resource.name .. ":richness')"
 
-        -- Random noise in the 95% to 105% range
         local random_noise =
-            'floor(random_penalty_between{from=95,to=105.999,seed=42069})'
+            'floor(random_penalty_between{from=90,to=110.999,seed=42069})'
         
         resource.autoplace.richness_expression = random_noise .." * " .. richness_multiplier_setting
+    end
+
+    if resource.category == 'basic-fluid' then
+        resource.infinite = true
     end
 end

@@ -28,8 +28,8 @@ return function(fns)
 
     fns.table.setmetatable(fns.table.getmetatable("").__index, fns.string.metatable)
 
-    fns.string.icon = "__core__/graphics/cancel.png"
-    fns.string.icon_size = 64
+    fns.string.icon = false
+    fns.string.icon_size = false
 
     fns.string:seal()
 end
