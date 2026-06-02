@@ -7,6 +7,7 @@ if help == '--help' then
 end
 
 local fns = require('fns')
+local tools = require('test.tools')
 local depth = tonumber(os.getenv("DEPTH")) or 2
 require 'test'
 local debuglib = require 'debuglib'
@@ -17,6 +18,6 @@ debuglib.recursion_limit = depth
 _ENV.modlist = {"textplates", "even-more-text-plates", "arrowplates"}
 
 _ENV.QUIET = true
-data.begin_data_stage()
+begin_data_stage()
 
-fns.gadgets.descend_into_data_raw({ ... }, debuglib.recursion_limit)
+tools.descend_into_data_raw({ ... }, debuglib.recursion_limit)

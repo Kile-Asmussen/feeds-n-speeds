@@ -1,13 +1,13 @@
 --! data: change crafting times of vanilla entity recipes
 local times = {
     -- Power generation
-    ['steam-engine'] = 5.0,
+    ['steam-engine'] = 2.0,
     ['steam-turbine'] = 10.0,
-    ['boiler'] = 3.0,
+    ['boiler'] = 2.0,
     ['heat-exchanger'] = 8.0,
     ['nuclear-reactor'] = 30.0,
-    ['solar-panel'] = 5.0,
-    ['accumulator'] = 4.0,
+    ['solar-panel'] = 3.0,
+    ['accumulator'] = 3.0,
 
     -- Production
     ['assembling-machine-1'] = 2.0,

@@ -10,16 +10,17 @@ end
 
 require 'test'
 local fns = require 'fns'
+local tools = require 'test.tools'
 
 _ENV.QUIET = true
 
 _ENV.modlist = {}
 
 require('settings')
-data.begin_data_stage()
+begin_data_stage()
 require('data')
 require('data-updates')
 
 local debuglib = require 'debuglib'
 
-fns.gadgets.descend_into_data_raw({ ... }, debuglib.recursion_limit)
+tools.descend_into_data_raw({ ... }, debuglib.recursion_limit)

@@ -34,11 +34,15 @@ merge(data.raw.technology, {
     }
 })
 
-local function ingredients(inputs) return { ingredients = fns.gadgets.throughputs(inputs) } end
+local function ingredients(inputs) return
+     local energy = inputs.time
+     inputs.time = nil
+     return { ingredients = fns.gadgets.throughputs(inputs), energy_required = energy }
+end
 
 merge(data.raw.recipe, {
     __rec = true,
-    ['display-panel'] = ingredients{ ['small-lamp'] = 1, ['copper-plate'] = 2, },
+    ['display-panel'] = ingredients{ ['small-lamp'] = 1, ['copper-plate'] = 2, time = 1 },
 
     -- Inserters
     ['burner-inserter'] = ingredients{

@@ -18,7 +18,6 @@ require 'test.utils'
 require 'test.script'
 require 'test.localisation'
 
-
 local fns = require 'fns'
 local table = fns.table
 _ENV.table.deepcopy = fns.table.deepcopy

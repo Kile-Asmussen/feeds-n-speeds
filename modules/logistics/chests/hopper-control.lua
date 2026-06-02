@@ -25,10 +25,6 @@ local function init_storage()
     storage.hopper_links = storage.hopper_links or {}
 end
 
-local function on_load()
-    -- nothing so far
-end
-
 local function is_tracked_entity(entity)
     local name = entity.name
     return name == fns_hopper
@@ -279,10 +275,6 @@ local function on_entity_destroyed(event)
 end
 
 fns.gadgets.on_init(init_storage)
-
-script.on_load(on_load)
-
-script.on_configuration_changed(init_storage)
 
 script.on_event(defines.events.on_built_entity, on_entity_built, entity_filter)
 script.on_event(defines.events.on_robot_built_entity, on_entity_built, entity_filter)

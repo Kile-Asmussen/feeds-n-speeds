@@ -13,8 +13,6 @@ local data = namespace('test.data')
 
 rawset(_ENV, 'modlist', table.null)
 rawset(_ENV, 'mods', table.null)
-rawset(_ENV, 'settings', {})
-data.is_fns_code = true
 data.raw = fns.table.null
 
 setmetatable(_ENV.settings, {
@@ -26,7 +24,14 @@ local function log_change(new, cutpath, fullpath, value)
     if new then __log(cutpath:replace_prefix('data.raw'):replace_prefix('.') .. ' = ...') end
 end
 
-function data.begin_data_stage(proxied)
+local settings = namespace 'test.settings'
+
+local function begin_settings_stage()
+    rawset(_ENV, 'settings', settings)
+    rawset(_ENV, 'mods', table.collect(table.set(_ENV.modlist), function() return 'X.X.X' end))
+end
+
+local function begin_data_stage(proxied)
     if proxied then
         __log("beginning data stage proxied")
         data.raw = proxy.makeproxy{
@@ -39,15 +44,10 @@ function data.begin_data_stage(proxied)
         __log("beginning data stage")
         data.raw = rawdata.load(_ENV.modlist)
     end
-    rawset(_ENV, 'settings', namespace.import('test.settings'):seal())
-    rawset(_ENV, 'mods', table.collect(table.set(_ENV.modlist), function() return 'X.X.X' end))
 end
 
-function data.begin_control_stage()
-    rawset(_ENV, 'storage', {})
-end
+rawset(_ENV, 'begin_data_stage', begin_data_stage)
 
-local settings = namespace 'test.settings'
 
 function data.extend(self, protos)
     if not data.is_fns_code then return end
@@ -100,8 +100,6 @@ function data.extend(self, protos)
         localisation.register(proto)
     end
 end
-
-local proxy = require 'test.proxy'
 
 
 rawset(_ENV, 'data', data:seal())

@@ -7,8 +7,9 @@ local loadstring = loadstring
 require 'test'
 
 _ENV.modlist = {}
+begin_settings_stage()
 
-data.begin_data_stage()
+begin_data_stage()
 
 local debuglib = require 'debuglib'
 
@@ -18,4 +19,4 @@ if err then
     error(err)
 end
 
-__log(debuglib.pp(fn()))
+print(debuglib.pp(fn()))

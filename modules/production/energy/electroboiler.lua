@@ -36,8 +36,8 @@ local boiler_item = {
             icon = '__core__/graphics/icons/alerts/electricity-icon-unplugged.png',
             floating = true,
             icon_size = 64,
-            scale = 0.33,
-            shift = { -6, 6 },
+            scale = 0.25,
+            shift = { -8, 8 },
             tint = { r = 0, g = 1, b = 0 },
         }
     },

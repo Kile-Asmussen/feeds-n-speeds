@@ -178,10 +178,10 @@ local heat_boiler = table.merge(table.deepcopy(data.raw.boiler['heat-exchanger']
             icon_size = 48,
             scale = 0.5,
             shift = { -6, 6 },
-            tint = { r = 0, g = 1, b = 0 },
         }
     },
-    pictures = table.deepcopy(data.raw.boiler[fns 'electroboiler'].pictures)
+    pictures = table.deepcopy(data.raw.boiler[fns 'electroboiler'].pictures),
+    working_light_picture = fns.utils.null,
 })
 
 local heat_boiler_item = table.merge(table.deepcopy(data.raw.item.boiler), {
