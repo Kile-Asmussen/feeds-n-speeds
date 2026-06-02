@@ -127,7 +127,7 @@ merge(recipes, {
     ['poison-capsule'] = merge{
         category = 'crafting-with-fluid',
         ingredients = puts{
-            ['solid-fuel'] = 5,
+            ['solid-fuel'] = 1,
             ['copper-cable'] = 5,
             ['sulfuric-acid'] = 50,
             ['grenade'] = 1

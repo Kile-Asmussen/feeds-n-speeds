@@ -56,6 +56,14 @@ return function(table, fns)
     local find = table.find
     table.declare_twoarg('find', 'function')
 
+    function table.reverse_lookup(tbl, value)
+        for k, v in pairs(tbl) do
+            if v == value then return k end
+        end
+        return nil
+    end
+    table.declare_twoarg('reverse_lookup', 'any')
+
     function table.remove_matching(array, pred, all)
         if all then
             local res = {}

@@ -86,6 +86,7 @@ local function make_new_ones(prototype, all, entities)
     local res = {}
     for k, f in pairs(entities) do
         local new = table.deepcopy(prototype[k])
+        prototype[k].hidden = true
 
         new.name = fns(k)
         new.localised_name = new.localised_name or { "entity-name." .. k }

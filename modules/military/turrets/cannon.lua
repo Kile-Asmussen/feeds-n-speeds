@@ -29,13 +29,13 @@ turret.attacking_speed = 0.3
 
 local turret_remnants = table.deepcopy(data.raw.corpse['gun-turret-remnants'])
 turret_remnants.name = fns 'cannon-turret-remnants'
-turret_remnants.selection_box = { { -2, -2 }, { 2, 2 } }
-turret_remnants.tile_width = 4
-turret_remnants.tile_height = 4
+turret_remnants.selection_box = { { -1.5, -1.5 }, { 1.5, 1.5 } }
+turret_remnants.tile_width = 3
+turret_remnants.tile_height = 3
 
 turret.corpse = turret_remnants.name
-turret.collision_box = { { -1.8, -1.8 }, { 1.8, 1.8 } }
-turret.selection_box = { { -2, -2 }, { 2, 2 } }
+turret.collision_box = { { -1.2, -1.2 }, { 1.2, 1.2 } }
+turret.selection_box = { { -1.5, -1.5 }, { 1.5, 1.5 } }
 
 local layers_list = {
     turret.graphics_set.base_visualisation.animation.layers,
@@ -52,17 +52,15 @@ for _, layers in ipairs(layers_list) do
         if not layer.draw_as_shadow then
             layer.tint = { 0.3, 0.3, 0.3 }
         end
-        layer.scale = layer.scale * 2
-        math.vecmul(layer.shift, 2)
+        layer.scale = layer.scale * 1.5
+        math.vecmul(layer.shift, 1.5)
     end
 end
-turret.water_reflection.pictures.scale = 10
+turret.water_reflection.pictures.scale = 7.5
 
 table.traverse(turret.circuit_connector, function(v)
-    if type(v) ~= 'table' then return end
-    if #v == 2 and type(v[1]) == 'number' and type(v[2]) == 'number' then
-        v[1] = v[1] - 0.3
-        v[2] = v[2] + 0.3
+    if math.isvec(v) then
+        math.vecadd(v, { -0.3, 0.3 })
         return true
     end
 end)
@@ -100,10 +98,10 @@ local turret_recipe = {
     enabled = false,
     ingredients = {
         { type='item', name='advanced-circuit', amount=2 },
-        { type='item', name='arithmetic-combinator', amount=5 },
-        { type='item', name='engine-unit', amount=5 },
-        { type='item', name='iron-gear-wheel', amount=20 },
-        { type='item', name='steel-plate', amount=20 },
+        { type='item', name='arithmetic-combinator', amount=1 },
+        { type='item', name='engine-unit', amount=2 },
+        { type='item', name='iron-gear-wheel', amount=10 },
+        { type='item', name='steel-plate', amount=10 },
         { type='item', name='hazard-concrete', amount=20 },
     },
     results = {
@@ -141,6 +139,13 @@ turret_tech.icons = {
 }
 
 data.raw.technology.tank.prerequisites = { fns 'cannon-turret-tech', 'automobilism', 'flammables' }
+
+table.merge(data.raw.recipe['tank'], {
+    ingredients = fns.gadgets.throughputs{
+        ['engine-unit'] = 24, ['steel-plate'] = 80, ['pipe'] = 8, ['advanced-circuit'] = 10,
+        [fns 'cannon-turret'] = 1, ['submachine-gun'] = 1, ['flamethrower'] = 1,
+    }
+})
 
 data:extend{
     turret,

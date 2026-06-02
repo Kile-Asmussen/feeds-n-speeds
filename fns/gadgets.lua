@@ -300,6 +300,7 @@ return function(fns)
             floating  = floating,
             shift     = shift,
             scale     = scale,
+            tint      = tint,
         }
     end
 

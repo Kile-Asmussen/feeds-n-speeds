@@ -88,7 +88,7 @@ link.icons = fns.gadgets.icons{
         data.raw['virtual-signal']['signal-rightwards-leftwards-arrow'].icon,
         tint = { 0, 1, 0 },
         size = 'medium',
-        dir = 'tr',
+        dir = 'c',
     },
 }
 
