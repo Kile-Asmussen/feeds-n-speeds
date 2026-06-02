@@ -8,6 +8,7 @@ data:extend{{
     icon = '__base__/graphics/icons/sulfur.png',
     icon_size = 64,
     flags = { 'placeable-neutral' },
+    localised_name = { "item-name.sulfur" },
     order = 'a-b-f',
     minable = {
         mining_time = 2,

@@ -13,6 +13,10 @@ local hand_engine = table.merge(table.deepcopy(data.raw.recipe['engine-unit']), 
         ['copper-plate'] = 2,
         ['pipe'] = 2,
     },
+    icons = fns.gadgets.icons{
+        'icons/engine-unit.png',
+        { '__base__/graphics/technology/steel-axe.png', type='technology', size='medium', dir='bl' }
+    },
     auto_unlocked_by = 'steam-power',
 })
 

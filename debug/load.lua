@@ -3,7 +3,6 @@ local fns = require 'fns'
 
 local print = _ENV.print
 
-
 local localisation = require 'test.localisation'
 local debuglib = require 'debuglib'
 local gadgets = fns.gadgets
@@ -16,12 +15,14 @@ if _ENV.QUIET then
 end
 
 rawset(_ENV, 'modlist', {})
-local ok, err 
+
+begin_settings_stage()
+
 
 print("\nSETTINGS")
 require 'settings'
 
-data.begin_data_stage(_ENV.PROXIED)
+begin_data_stage(_ENV.PROXIED)
 
 print("\nDATA")
 require 'data'
@@ -29,8 +30,9 @@ require 'data'
 print("\nDATA-UPDATES")
 require 'data-updates'
 
-gadgets.master_check()
-data.begin_control_stage()
+require('test.tools').master_check()
+
+begin_control_stage()
 
 print("\nCONTROL")
 require 'control'

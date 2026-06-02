@@ -69,24 +69,32 @@ __buffer_mt.__metatable = __buffer_mt.__metatable
 
 function debuglib.new_buffer(settings)
 
-     assert(type(settings) == 'table', "argument #1 must be a table")
-     assert(type(settings.depth_limit) == 'number', "argument #1's depth_limit field must be a number")
-     assert(type(settings.separator) == 'string', "argument #1's separator field must be a string")
-     assert(type(settings.indent) == 'string', "argument #1's indent field must be a string")
-     assert(type(settings.root) == 'string', "argument #1's root field must be a string")
+    assert(type(settings) == 'table', "argument #1 must be a table")
 
-     local res = table.overwrite({
-             seen_tables = {
-                [_ENV] = '_ENV', 
-                [table.null] = 'table.null',
-                [table.emptyset] = 'table.emptyset',
-            },
-             path = {},
-             count = 0,
-     }, settings)
+    table.include(settings, {
+        depth_limit = debuglib.recursion_limit,
+        separator = ' ',
+        indent = '',
+        root = '_'
+    })
 
-     setmetatable(res, __buffer_mt)
-     return res
+    assert(type(settings.depth_limit) == 'number', "argument #1's depth_limit field must be a number")
+    assert(type(settings.separator) == 'string', "argument #1's separator field must be a string")
+    assert(type(settings.indent) == 'string', "argument #1's indent field must be a string")
+    assert(type(settings.root) == 'string', "argument #1's root field must be a string")
+
+    local res = table.overwrite({
+        seen_tables = {
+            [_ENV] = '_ENV', 
+            [table.null] = 'table.null',
+            [table.emptyset] = 'table.emptyset',
+        },
+        path = {},
+        count = 0,
+    }, settings)
+
+    setmetatable(res, __buffer_mt)
+    return res
 end
 
 function debuglib.print(buffer, ...)
@@ -139,6 +147,7 @@ function debuglib.print_table(buffer, data)
         return
     else
         buffer.seen_tables[data] = utils.tablepath(buffer.root, buffer.path)
+        utils.tablepath(buffer.root, buffer.path)
     end
 
     if table.is_empty(data) then
@@ -174,7 +183,7 @@ function debuglib.print_table(buffer, data)
         buffer:print_keyval_pairs(data)
     end
 
-    buffer:print(buffer.separator, string.rep(buffer.indent, #buffer.path), "}")
+    buffer:print(buffer.separator, buffer.indent:rep(#buffer.path), "}")
     table.replace(buffer, restore)
 end
 
@@ -187,7 +196,7 @@ function debuglib.print_elements(buffer, data)
             buffer:print(',', buffer.separator)
         end
 
-        buffer:print(string.rep(buffer.indent, #buffer.path + 1))
+        buffer:print(buffer.indent:rep(#buffer.path + 1))
 
         buffer:print_any(v, i)
 
@@ -200,17 +209,19 @@ function debuglib.print_keyval_pairs(buffer, data)
 
     local first = true
 
-    for k, v in table.opairs(data) do
+    for k, v in table.opairs(data, buffer.seen_tables) do
         if k == '__buffer_bare_keys' then goto continue end
         if not first then
             buffer:print(',', buffer.separator)
         end
 
-        if not data.__buffer_bare_keys then
-            k = utils.tableindex(k, true)
+        buffer:print(buffer.indent:rep(#buffer.path + 1))
+        if not rawget(data, '__buffer_bare_keys') then
+            buffer:print(utils.tableindex(k, true), ' = ')
+        else
+            buffer:print(k, ' = ')
         end
 
-        buffer:print(string.rep(buffer.indent, #buffer.path + 1), k, ' = ')
         buffer:print_any(v, k)
 
         first = false

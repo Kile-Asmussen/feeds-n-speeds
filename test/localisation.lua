@@ -1,6 +1,7 @@
 
 local fns = require 'fns'
-local localisation = require('namespace')('test.localisation')
+local namespace = require 'namespace'
+local localisation = namespace 'test.localisation'
 local debuglib = require 'debuglib'
 
 local table = fns.table
@@ -51,36 +52,37 @@ local EQUIPMENT_TYPES = table.set{
     'night-vision-equipment', 'roboport-equipment', 'solar-panel-equipment',
 }
 
+local HIDDEN_TYPES = table.set{
+    'noise-expression',
+    'noise-function',
+    'recipe-category',
+    'resource-category',
+    'fuel-category',
+    'ammo-category',
+    'damage-type',
+    'collision-layer',
+    'deliver-category',
+    'module-category',
+    'equipment-category',
+    'burner-usage',
+    'projectile',
+    'stream',
+}
+
+local ITSELF = table.set{
+    'fluid', 'tile', 'recipe', 'technology', 'autoplace-control'
+}
+
 function localisation.key_category(proto)
     if ITEM_TYPES[proto.type] then
         return 'item'
     elseif EQUIPMENT_TYPES[proto.type] then
         return 'equipment'
-    elseif proto.type == 'fluid' then
-        return 'fluid'
-    elseif proto.type == 'tile' then
-        return 'tile'
-    elseif proto.type == 'recipe' then
-        return 'recipe'
-    elseif proto.type == 'technology' then
-        return 'technology'
+    elseif ITSELF[proto.type] then
+        return proto.type
     elseif proto.type:match('%-setting$') then
         return 'mod-setting'
-    elseif proto.type == 'noise-expression'
-        or proto.type == 'noise-function'
-        or proto.type == 'recipe-category'
-        or proto.type == 'resource-category'
-        or proto.type == 'fuel-category'
-        or proto.type == 'ammo-category'
-        or proto.type == 'damage-type'
-        or proto.type == 'collision-layer'
-        or proto.type == 'deliver-category'
-        or proto.type == 'module-category'
-        or proto.type == 'equipment-category'
-        or proto.type == 'burner-usage'
-        or proto.type == 'projectile'
-        or proto.type == 'stream'
-    then
+    elseif HIDDEN_TYPES[proto.type] then
         return nil
     else
         return 'entity'
@@ -161,24 +163,13 @@ function localisation.winnow_unneeded_keys()
         local cat = localisation.keys[cat_name]
         return cat and cat[proto_name] and not table.is_empty(cat[proto_name])
     end
-
-    local function references_explicit_key(content)
-        if type(content) == 'string' then
-            return fns.explicit_localisation_keys[content] or false
-        elseif type(content) == 'table' then
-            for _, v in ipairs(content) do
-                if references_explicit_key(v) then return true end
-            end
-            return false
-        end
-    end
-
+    
     -- General pass: a non-empty localised_name/description on the prototype means
     -- Factorio uses it directly and never consults the locale file for that key.
     -- Exception: if the content references an explicitly generated locale key, it is needed.
     for cat_name, keys in pairs(localisation.keys) do
         for proto_name, content in pairs(keys) do
-            if not table.is_empty(content) and not references_explicit_key(content) then
+            if not table.is_empty(content) then
                 localisation.skip_key(cat_name, proto_name, 'prototype provides localised string directly')
             end
         end
@@ -264,7 +255,6 @@ function localisation.finalize()
     localisation.add_manual_keys()
 
     localisation.winnow_unneeded_keys()
-
 end
 
 function localisation.list_missing_locale_keys()

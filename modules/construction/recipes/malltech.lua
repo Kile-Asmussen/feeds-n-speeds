@@ -34,7 +34,7 @@ merge(data.raw.technology, {
     }
 })
 
-local function ingredients(inputs) return
+local function ingredients(inputs)
      local energy = inputs.time
      inputs.time = nil
      return { ingredients = fns.gadgets.throughputs(inputs), energy_required = energy }
@@ -182,7 +182,7 @@ merge(data.raw.recipe, {
           ['copper-plate'] = 10
      },
      ['oil-refinery'] = ingredients{
-          ['pipe'] = 10, ['storage-tank'] = 1, ['constant-combinator'] = 1, ['boiler'] = 3, ['steel-plate'] = 10,
+          ['pipe'] = 10, ['storage-tank'] = 1, ['boiler'] = 3, ['steel-plate'] = 10,
      },
      ['pumpjack'] = ingredients{
           ['pump'] = 1, ['pipe-to-ground'] = 2, ['engine-unit'] = 1, ['steel-plate'] = 5

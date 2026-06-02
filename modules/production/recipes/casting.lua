@@ -28,16 +28,17 @@ data:extend{
         allow_productivity = true,
         allow_auto_recycle = false,
         auto_unlocked_by = 'foundry',
+        subgroup = 'intermediate-product',
+        order = data.raw.item['engine-unit'].order .. '-a[casting]',
         enabled = false,
         icons = {
             {
                 icon=data.raw.item['engine-unit'].icon,
-                scale=0.5,
+                scale=0.33,
                 shift={-4, 4},
-                floating=true
             },
             {
-                icon='__FeedsNSpeeds__/graphics/icons/iron-casting-icon.png',
+                icon='__space-age__/graphics/icons/fluid/molten-iron.png',
                 scale=0.33,
                 shift={6, -6},
                 floating=true
@@ -61,6 +62,8 @@ data:extend{
         allow_productivity = true,
         enabled = false,
         allow_auto_recycle = false,
+        order = data.raw.item['heat-pipe'].order .. '-a[casting]',
+        subgroup = data.raw.item['heat-pipe'].subgroup,
         auto_unlocked_by = 'foundry',
         icons = {
             {
@@ -69,9 +72,9 @@ data:extend{
                 shift={-4, 4},
             },
             {
-                icon='__FeedsNSpeeds__/graphics/icons/copper-casting-icon.png',
-                scale=0.5,
-                shift={4, -4},
+                icon='__space-age__/graphics/icons/fluid/molten-copper.png',
+                scale=0.33,
+                shift={6, -6},
                 floating=true
             },
         },
@@ -88,24 +91,27 @@ data:extend{
 }
 
 local function melt_down(item, input, fluid, output)
-    local name = fns ('melt-scrap-' .. item);
+    data.raw.item[item].allow_auto_recycle = false,
     data:extend{{
         type = 'recipe',
-        name = name,
+        name = fns ('melt-scrap-' .. item),
         enabled = false,
         allow_productivity = false,
         auto_unlocked_by = 'foundry',
+        group = 'intermediate-products',
+        localised_name = { fns.locale_key('recipe-name', 'melt-scrap'), 'item-name.' .. item },
+    
         icons = {
             {
                 icon=data.raw.item[item].icon,
-                scale=0.5,
-                shift={-4, -4},
+                scale=0.4,
+                shift={ 0, -3 },
                 floating=true
             },
             {
-                icon='__FeedsNSpeeds__/graphics/icons/iron-casting-icon.png',
-                scale=0.5,
-                shift={4, 0},
+                icon='__space-age__/graphics/icons/fluid/' .. fluid .. '.png',
+                scale=0.4,
+                shift={0, 0},
                 floating=true,
             }
         },

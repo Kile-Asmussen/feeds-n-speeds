@@ -113,14 +113,18 @@ return function(table, fns)
     table.iany()
     table.declare_twoarg('iany', 'function?')
 
-    function table.sorted_keys(tbl)
+    function table.sorted_keys(tbl, mapper)
+        mapper = mapper or {}
         assert(type(tbl) == 'table', "fns.table.sorted_keys: argument #1 must be a table")
+        assert(type(mapper) == 'table', "fns.table.sorted_keys: argument #2 must be a table")
 
         local res = {}
 
         for k, _ in pairs(tbl) do
             if type(k) == 'string' then
                 table.insert(res, k)
+            elseif type(mapper[k]) == 'string' then
+                table.insert(res, mapper[k])
             end
         end
 

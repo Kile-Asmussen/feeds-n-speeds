@@ -15,11 +15,6 @@ rawset(_ENV, 'modlist', table.null)
 rawset(_ENV, 'mods', table.null)
 data.raw = fns.table.null
 
-setmetatable(_ENV.settings, {
-    __index = function() die("_ENV.settings is not available at this time") end,
-    __newindex = function() die("_ENV.settings is not available at this time") end,
-})
-
 local function log_change(new, cutpath, fullpath, value)
     if new then __log(cutpath:replace_prefix('data.raw'):replace_prefix('.') .. ' = ...') end
 end
@@ -27,11 +22,17 @@ end
 local settings = namespace 'test.settings'
 
 local function begin_settings_stage()
-    rawset(_ENV, 'settings', settings)
+    rawset(_ENV, 'settings', {})
+    setmetatable(_ENV.settings, {
+        __index = function() die("_ENV.settings is not available at this time") end,
+        __newindex = function() die("_ENV.settings is not available at this time") end,
+    })
     rawset(_ENV, 'mods', table.collect(table.set(_ENV.modlist), function() return 'X.X.X' end))
 end
+rawset(_ENV, 'begin_settings_stage', begin_settings_stage)
 
 local function begin_data_stage(proxied)
+    rawset(_ENV, 'settings', settings:seal())
     if proxied then
         __log("beginning data stage proxied")
         data.raw = proxy.makeproxy{
@@ -50,7 +51,6 @@ rawset(_ENV, 'begin_data_stage', begin_data_stage)
 
 
 function data.extend(self, protos)
-    if not data.is_fns_code then return end
 
     local line = debug.getline(2)
 

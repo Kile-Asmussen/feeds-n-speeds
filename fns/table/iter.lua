@@ -76,9 +76,11 @@ return function(table, fns)
         end
     end
 
-    function table.opairs(tbl)
+    function table.opairs(tbl, mapper)
+        mapper = mapper or {}
         assert(type(tbl) == 'table', "fns.table.opairs: argument #1 must be a table")
-        return opairs_iter, { i=0, keys=table.sorted_keys(tbl, 'string'), tbl=tbl }, nil
+        assert(type(mapper) == 'table', "fns.table.opairs: argument #1 must be a table")
+        return opairs_iter, { i=0, keys=table.sorted_keys(tbl, mapper), tbl=tbl }, nil
     end
 
 end
