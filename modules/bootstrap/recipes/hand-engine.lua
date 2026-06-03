@@ -7,15 +7,19 @@ local hand_engine = table.merge(table.deepcopy(data.raw.recipe['engine-unit']), 
     localised_name = {'item-name.engine-unit'},
     category = fns 'hand-crafting',
     energy_required = 10,
+    localised_description = {fns.locale_key('recipe-description', 'engine-unit')},
     ingredients = fns.gadgets.throughputs{
         ['steel-plate'] = 1,
         ['iron-gear-wheel'] = 1,
         ['copper-plate'] = 2,
         ['pipe'] = 2,
     },
-    icons = fns.gadgets.icons{
-        'icons/engine-unit.png',
-        { '__base__/graphics/technology/steel-axe.png', type='technology', size='medium', dir='bl' }
+    icons = {
+        { icon = 'icons/engine-unit.png' },
+        { icon = "__core__/graphics/icons/technology/constants/constant-equipment.png",
+            icon_size=128, scale = 0.125,
+            shift = { -4, 4 }, 
+        }
     },
     auto_unlocked_by = 'steam-power',
 })

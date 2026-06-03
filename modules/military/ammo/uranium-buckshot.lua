@@ -31,7 +31,7 @@ else
     ushell.ammo_type.action[2].action_delivery.projectile = ushell_proj.name
 end
 
-ushell.auto_unlocked_by = 'uranium-ammo'
+ushell_recipe.auto_unlocked_by = 'uranium-ammo'
 
 data:extend{
     ushell,

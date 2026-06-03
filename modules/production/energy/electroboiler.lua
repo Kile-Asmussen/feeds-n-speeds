@@ -10,9 +10,8 @@ local boiler = merge(table.deepcopy(data.raw.boiler.boiler), {
     minable = { __merge = true, result = name },
     energy_source = {
         type = 'electric',
-        usage_priority = 'tertiary',
+        usage_priority = 'secondary-input',
         emissions_per_minute = { pollution = 0 },
-        drain = '18kW'
     },
     auto_require_pavement = 'stone-path',
     energy_consumption = '1.8MW'

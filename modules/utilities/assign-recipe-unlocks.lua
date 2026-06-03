@@ -44,6 +44,8 @@ end
 
 fns.gadgets.remove_unlocks(remove)
 
+local modified_techs = {}
+
 for recipe, unlock in table.opairs(unlocks) do
     for _, tech in ipairs(unlock) do
 
@@ -56,5 +58,10 @@ for recipe, unlock in table.opairs(unlocks) do
         local effect = table.include({ type='unlock-recipe', recipe=recipe }, table.dup_assoc(unlock))
 
         table.insert(data.raw.technology[tech].effects, effect)
+        modified_techs[tech] = true
     end
+end
+
+for tech in table.opairs(modified_techs) do
+    data.raw.technology[tech].effects = fns.gadgets.sort_tech_effects(data.raw.technology[tech].effects)
 end

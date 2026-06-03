@@ -2,6 +2,7 @@
 
 local fns = require 'fns'
 local table = fns.table
+local gadgets = fns.gadgets
 
 local function make_new_ammo_recipe(name, amount, ingredients)
     local ammo = table.deepcopy(data.raw.recipe[name])
@@ -10,6 +11,7 @@ local function make_new_ammo_recipe(name, amount, ingredients)
     ammo.localised_description = { fns.locale_key('recipe-description', 'weapon-mass-production') }
     ammo.category = 'crafting-with-fluid'
     ammo.auto_unlocked_by = 'military-4'
+    ammo.order = gadgets.recipe_order(ammo) .. "-b[chemistry]"
     ammo.energy_required = 2
     ammo.enabled = false
     ammo.ingredients = ingredients
@@ -18,7 +20,7 @@ local function make_new_ammo_recipe(name, amount, ingredients)
     }
     ammo.icons = {
         { icon = (data.raw.ammo[name] or data.raw.capsule[name]).icon, icon_size = 64 },
-        { icon = data.raw.item['explosives'].icon, icon_size = 64, scale = 0.25, shift = { 8, -8 } },
+        { icon = data.raw.item['explosives'].icon, icon_size = 64, scale = 0.33, shift = { -5, -5 } },
     }
     return ammo
 end

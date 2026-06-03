@@ -32,11 +32,7 @@ data:extend{
         order = data.raw.item['engine-unit'].order .. '-a[casting]',
         enabled = false,
         icons = {
-            {
-                icon=data.raw.item['engine-unit'].icon,
-                scale=0.33,
-                shift={-4, 4},
-            },
+            { icon=data.raw.item['engine-unit'].icon, },
             {
                 icon='__space-age__/graphics/icons/fluid/molten-iron.png',
                 scale=0.33,

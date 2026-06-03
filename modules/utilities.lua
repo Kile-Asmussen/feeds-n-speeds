@@ -1,4 +1,4 @@
---! settings, data-updates, control: submodule of utility scripts that don't fit other categories, such as the auto_unlocked_by field for recipes
+--! settings, data, data-updates, control: submodule of utility scripts that don't fit other categories, such as the auto_unlocked_by field for recipes
 
 local fns = require 'fns'
 local table = fns.table
@@ -17,13 +17,14 @@ utilities.control = set{
 utilities.data = set{
     ['.tech-tweaks'] = -1,
     '.map-gen-presets',
+    ['.recipe-ordering'] = -1,
 }
 
 utilities['data-updates'] = set{
     ['.assign-recipe-unlocks'] = set{
         'modules.production.fluids.update-barrels',
         'modules.integrations.textplates.unlocks',
-    }
+    },
 }
 
 return utilities:seal()

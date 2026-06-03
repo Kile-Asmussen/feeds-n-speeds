@@ -1,17 +1,17 @@
 local fns = require 'fns'
+local table = fns.table
+local tools = require 'test.tools'
 
-fns.use()
 local debuglib = require 'debuglib'
 
 debuglib.recursion_limit = tonumber(os.getenv("DEPTH")) or 2
 
 require 'test'
 
-rawset(_ENV, 'modlist', {})
+_ENV.modlist = {}
 
 _ENV.QUIET = true
-data.begin_data_stage()
-
+begin_data_stage()
 
 
 if select('#', ...) ~= 3 then
@@ -27,7 +27,7 @@ if catpat == "--help" then
     print("example: lua debug/search.lua upgrade - - # finds 'upgrade-item' the prototype category for upgrade planners")
 end
 
-local cat, prot, fields = fns.gadgets.text_search_data_raw(...)
+local cat, prot, fields = tools.text_search_data_raw(...)
 
 table.sort(cat)
 table.sort(prot)

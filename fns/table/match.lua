@@ -7,22 +7,22 @@ return function(table, fns)
     local match
     function table.match(candidate, reference)
 
-        if type(candidate) ~= "table" then return false end
+        if type(candidate) ~= "table" then return nil end
 
         for key, ref in pairs(reference) do
 
             local can = candidate[key]
 
-            if type(ref) == 'function' and ref(can) then return true end
+            if type(ref) == 'function' and ref(can) then return candidate end
 
-            if can == nil then return false end
+            if can == nil then return nil end
 
-            if type(ref) ~= type(can) then return false end
+            if type(ref) ~= type(can) then return nil end
 
             if type(can) == "table" then
-                return match(can, ref)
+                if match(can, ref) == nil then return nil end
             else
-                return ref == can
+                if ref ~= can then return nil end
             end
         end
 

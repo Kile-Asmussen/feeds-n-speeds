@@ -240,7 +240,7 @@ merge(data.raw.recipe, {
           ['battery'] = 5, ['copper-cable'] = 3, ['electronic-circuit'] = 1, ['iron-plate'] = 2
      },
      ['solar-panel'] = ingredients{
-          ['copper-cable'] = 20, ['plastic-bar'] = 10, ['coal'] = 1, ['electronic-circuit'] = 1,
+          ['copper-cable'] = 10, ['plastic-bar'] = 10, ['steel-plate'] = 1, ['electronic-circuit'] = 1,
      },
      ['substation'] = ingredients{
           ['big-electric-pole'] = 1, ['accumulator'] = 1, ['advanced-circuit'] = 5

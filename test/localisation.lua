@@ -67,6 +67,7 @@ local HIDDEN_TYPES = table.set{
     'burner-usage',
     'projectile',
     'stream',
+    'item-subgroup',
 }
 
 local ITSELF = table.set{

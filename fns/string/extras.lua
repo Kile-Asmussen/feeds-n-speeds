@@ -107,4 +107,9 @@ return function(string, fns)
         return function(s) return str .. s end
     end
 
+    function string.append(str)
+        assert(type(str) == 'string', "argument #1 must be a string")
+        return function(s) return s .. str end
+    end
+
 end

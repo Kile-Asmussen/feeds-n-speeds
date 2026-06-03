@@ -207,13 +207,69 @@ return function(fns)
             recipe = data.raw.recipe[recipe]
         end
 
-        assert(type(recipe) == 'table' and recipe.type == 'recipe', "not a recipe: " .. tostring(table.name))
+        assert(type(recipe) == 'table' and recipe.type == 'recipe', "not a recipe: " .. tostring(recipe))
 
         if recipe.main_product then return recipe.main_product end
         if #recipe.results == 1 then return recipe.results[1].name end
-        error("recipe " .. recipe .. ' has no main product', 2)
+        error("recipe " .. tostring(recipe.name) .. ' has no main product', 2)
     end
 
+    function gadgets.recipe_order(recipe)
+        if type(recipe) == 'string' then recipe = data.raw.recipe[recipe] end
+        if recipe.order then return recipe.order end
+        local proto, _ = gadgets.find_prototype(gadgets.main_product(recipe))
+        return proto and proto.order or ''
+    end
+
+    local function recipe_sort_key(name)
+        local recipe = data.raw.recipe[name]
+        local ok, product = pcall(gadgets.main_product, recipe)
+        local proto = ok and gadgets.find_prototype(product) or nil
+        local sg_name = recipe.subgroup or (proto and proto.subgroup)
+        local subgroup = sg_name and data.raw['item-subgroup'][sg_name]
+        local group    = subgroup and data.raw['item-group'][subgroup.group]
+        return
+            (group    and group.order    or ''),
+            (subgroup and subgroup.order or ''),
+            (recipe.order or (proto and proto.order) or '')
+    end
+
+    function gadgets.recipe_lt(a, b)
+        local ag, asg, ao = recipe_sort_key(a)
+        local bg, bsg, bo = recipe_sort_key(b)
+        if ag  ~= bg  then return ag  < bg  end
+        if asg ~= bsg then return asg < bsg end
+        return ao < bo
+    end
+
+    function gadgets.sort_tech_effects(effects)
+        local recipes   = table.icollect(effects, function(e) return table.match(e, { type = 'unlock-recipe' }) end)
+        local modifiers = table.icollect(effects, function(e) return not table.match(e, { type = 'unlock-recipe' }) and e or nil end)
+        table.sort(recipes, function(a, b) return gadgets.recipe_lt(a.recipe, b.recipe) end)
+        for _, m in ipairs(modifiers) do
+            recipes[#recipes + 1] = m
+        end
+        return recipes
+    end
+
+
+    gadgets.item_categories = {
+        'ammo', 'armor', 'blueprint', 'blueprint-book', 'capsule',
+        'deconstruction-item', 'gun', 'item', 'item-with-entity-data',
+        'item-with-inventory', 'module', 'rail-planner', 'repair-tool',
+        'selection-tool', 'space-platform-starter-pack', 'tool', 'upgrade-item',
+    }
+
+    function gadgets.find_prototype(name)
+        for _, cat in ipairs(gadgets.item_categories) do
+            if data.raw[cat] and data.raw[cat][name] then
+                return data.raw[cat][name], cat
+            end
+        end
+        if data.raw.fluid[name] then return data.raw.fluid[name], 'fluid' end
+        if data.raw.recipe[name] then return data.raw.recipe[name], 'recipe' end
+        return nil, nil
+    end
 
     gadgets.icons_size = table.with_default(64, {
         ['space-location']  = 512,
@@ -278,6 +334,7 @@ return function(fns)
         if scale == nil and floating then
             scale = ((expected_icon_size / 2) / icon_size) * scale_coefficient
         end
+        if spec.resize then scale = scale * spec.resize end
 
         local offset = spec.offset
         if offset == nil and floating == true and scale_coefficient ~= nil then
@@ -287,6 +344,9 @@ return function(fns)
         local shift = spec.shift
         if shift == nil and spec.dir then
             shift = gadgets.direction[spec.dir](offset)
+        end
+        if spec.resize then
+            math.vecmul(shift, spec.resize)
         end
 
         local tint = spec.tint

@@ -148,6 +148,7 @@ make_new_ones(data.raw['logistic-container'], upscale, {
     ['passive-provider-chest'] = {
         inventory_size = 30,
         inventory_type = "with_filters_and_bar",
+        localised_name = utils.null,
         auto_require_pavement = 'concrete',
         circuit_connector = shift_wire,
         max_health = 300,
@@ -168,6 +169,7 @@ make_new_ones(data.raw['logistic-container'], upscale, {
         inventory_size = 20,
         inventory_type = "with_filters_and_bar",
         auto_require_pavement = 'hazard-concrete',
+        localised_name = utils.null,
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,
