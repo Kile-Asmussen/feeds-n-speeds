@@ -13,13 +13,13 @@ data.raw.recipe.rail.ingredients = puts{
     ['stone'] = 8, ['iron-stick'] = 3, ['steel-plate'] = 1
 }
 
-local icons = fns.gadgets.icons
+local icon = fns.gadgets.icon
+local floating_icon = fns.gadgets.floating_icon
 
 local function rail_icons(name)
-    return icons{
-        type = 'recipe',
-        { data.raw['rail-planner'].rail.icon },
-        { data.raw.item[name].icon, size='small', dir='tl' },
+    return {
+        icon(data.raw['rail-planner'].rail.icon, 'recipe'),
+        floating_icon('topleft', data.raw.item[name].icon),
     }
 end
 
@@ -64,10 +64,9 @@ data:extend(rails)
 data:extend{{
     type = 'technology',
     name = fns 'concrete-rail',
-    icons = icons{
-        type = 'technology',
-        'technology/railway.png',
-        { 'technology/concrete.png', size = "small", dir = 'br', },
+    icons = {
+        icon('technology/railway.png', 'technology'),
+        floating_icon('bottomleft', 'technology/concrete.png', 'technology'),
     },
     prerequisites = {
         'concrete',

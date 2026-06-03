@@ -3,7 +3,8 @@
 local fns = require 'fns'
 local table = fns.table
 
-local icons = fns.gadgets.icons
+local icon = fns.gadgets.icon
+local floating_icon = fns.gadgets.floating_icon
 local inputs = fns.gadgets.throughputs
 
 local plasticon = data.raw.item['plastic-bar'].icon
@@ -18,10 +19,9 @@ local guns = fns.table.merge({
         localised_name = {"item-name.submachine-gun"},
         localised_description = {fns.locale_key("recipe-description", "plastic-furniture")},
         auto_unlocked_by = "military-3",
-        icons = icons{
-            type = 'recipe',
-            data.raw.gun['submachine-gun'].icon,
-            { plasticon, size = 'small', dir = 'br' }
+        icons = {
+            icon(data.raw.gun['submachine-gun'].icon, 'recipe'),
+            floating_icon('bottomleft', plasticon),
         },
         ingredients = inputs{
             ['copper-plate'] = 2,
@@ -36,10 +36,9 @@ local guns = fns.table.merge({
         localised_name = {"item-name.combat-shotgun"},
         localised_description = {fns.locale_key("recipe-description", "plastic-furniture")},
         auto_unlocked_by = "military-3",
-        icons = icons{
-            type = 'recipe',
-            data.raw.gun['combat-shotgun'].icon,
-            { plasticon, size = 'small', dir = 'br' }
+        icons = {
+            icon(data.raw.gun['combat-shotgun'].icon, 'recipe'),
+            floating_icon('bottomleft', plasticon),
         },
         ingredients = inputs{
             ['copper-plate'] = 4,

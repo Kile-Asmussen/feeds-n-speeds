@@ -1,7 +1,8 @@
 --! data: earlygame tech for mining with fluid, to allow sulfur mining
 local fns = require 'fns'
 local merge = fns.table.merge
-local icons = fns.gadgets.icons
+local icon = fns.gadgets.icon
+local floating_icon = fns.gadgets.floating_icon
 
 local tech = data.raw.technology
 
@@ -13,9 +14,9 @@ local wet = {
     type = 'technology',
     name = fns 'wet-drilling',
     essential = true,
-    icons = icons{ type='technology',
-        'technology/steam-power.png',
-        'technology/mining-productivity.png',
+    icons = {
+        icon('technology/steam-power.png', 'technology'),
+        icon('technology/mining-productivity.png', 'technology'),
     },
     prerequisites = { 'steam-power' },
     effects = { { type = 'mining-with-fluid', modifier = true, } },

@@ -2,7 +2,8 @@
 local fns = require 'fns'
 
 local puts = fns.gadgets.throughputs
-local icons = fns.gadgets.icons
+local icon = fns.gadgets.icon
+local floating_icon = fns.gadgets.floating_icon
 local merge = fns.table.merge
 
 data:extend{
@@ -16,10 +17,9 @@ data:extend{
         auto_unlocked_by = 'sulfur-processing',
         energy_required = 6,
         emissions_multiplier = 0.8,
-        icons = icons{
-            type = 'recipe',
-            { '__base__/graphics/icons/fluid/basic-oil-processing.png' },
-            { '__base__/graphics/icons/sulfur.png', size='small', dir = 'tl', },
+        icons = {
+            icon('__base__/graphics/icons/fluid/basic-oil-processing.png', 'recipe'),
+            floating_icon('topleft', '__base__/graphics/icons/sulfur.png'),
         },
         ingredients = puts{ ['crude-oil'] = 100 },
         results = puts{ ['petroleum-gas'] = 55, ['sulfur'] = 1 },
@@ -39,10 +39,9 @@ data:extend{
         auto_unlocked_by = 'advanced-oil-processing',
         energy_required = 6,
         emissions_multiplier = 0.8,
-        icons = icons{
-            type = 'recipe',
-            '__base__/graphics/icons/fluid/advanced-oil-processing.png',
-            { '__base__/graphics/icons/sulfur.png', size='small', dir = 'tl' },
+        icons = {
+            icon('__base__/graphics/icons/fluid/advanced-oil-processing.png', 'recipe'),
+            floating_icon('topleft', '__base__/graphics/icons/sulfur.png'),
         },
         ingredients = puts{ ['steam'] = 50, ['crude-oil'] = 100 },
         results = puts{ ['heavy-oil'] = 30, ['light-oil'] = 55, ['petroleum-gas'] = 70, ['sulfur'] = 2, },
@@ -62,10 +61,9 @@ data:extend{
         auto_unlocked_by = 'advanced-oil-processing',
         energy_required = 2.5,
         emissions_multiplier = 0.8,
-        icons = icons{
-            type = 'recipe', 
-            '__base__/graphics/icons/fluid/heavy-oil-cracking.png',
-            { '__base__/graphics/icons/sulfur.png', size='small', dir='tl', },
+        icons = {
+            icon('__base__/graphics/icons/fluid/heavy-oil-cracking.png', 'recipe'),
+            floating_icon('topleft', '__base__/graphics/icons/sulfur.png'),
         },
         ingredients = puts{ ['steam'] = 30, ['heavy-oil'] = 50 },
         results = puts{ ['light-oil'] = 40, ['sulfur'] = 1 },

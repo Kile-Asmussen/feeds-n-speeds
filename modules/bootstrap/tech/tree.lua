@@ -3,7 +3,8 @@
 local fns = require 'fns'
 local table = fns.table
 local utils = fns.utils
-local icons = fns.gadgets.icons
+local icon = fns.gadgets.icon
+local floating_icon = fns.gadgets.floating_icon
 
 local merge = fns.table.merge
 
@@ -12,9 +13,8 @@ data:extend{{
     name = fns 'lab-tech',
     order = 'a-a-z',
     essential = true,
-    icons = icons{
-        type = 'technology',
-        '__base__/graphics/technology/research-speed.png',
+    icons = {
+        icon('__base__/graphics/technology/research-speed.png', 'technology'),
     },
     effects = { { type = "unlock-circuit-network", modifier = true } },
     prerequisites = { 'steam-power' },

@@ -5,6 +5,7 @@ local gadgets = fns.gadgets
 
 local function add_subgroups(args)
     local base = data.raw['item-subgroup'][args[1]]
+    assert(base, "no such item-subgroup: " .. args[1])
     local n = string.byte('b')
     for i=2,#args do
         data:extend{table.merge(table.deepcopy(base), {
@@ -41,12 +42,12 @@ add_subgroups{
     'advanced-production-machine',
 }
 add_subgroups{
-    'modules',
-    'modules-2',
+    'module',
+    'module-2',
 }
 
-data.raw.subgroup['agriculture'] = nil
-data.raw.subgroup['environmental-protection'] = nil
+data.raw['item-subgroup']['agriculture'] = nil
+data.raw['item-subgroup']['environmental-protection'] = nil
 
 -- map[subgroup_id -> array[item/fluid/recipe id] + map[item/fluid/recipe id -> order]]
 local ordering = {
@@ -119,7 +120,7 @@ local ordering = {
         'lightning-collector',
         'fusion-reactor',
         'fusion-generator',
-    }
+    },
     ['extraction-machine'] = {
         'agricultural-tower',
         'captive-biter-spawner'
@@ -132,7 +133,7 @@ local ordering = {
         'biochamber', 'electromagnetic-plant', 'cryogenic-plant', 'foundry', 'biolab'
     },
     -- do something interesting with beacons. Logistics?
-    ['modules-2'] = {
+    ['module-2'] = {
         'productivity-module-1',
         'productivity-module-2',
         'productivity-module-3',

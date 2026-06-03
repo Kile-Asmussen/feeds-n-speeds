@@ -2,7 +2,8 @@
 local fns = require 'fns'
 local puts = fns.gadgets.throughputs
 local merge = fns.table.merge
-local icons = fns.gadgets.icons
+local icon = fns.gadgets.icon
+local floating_icon = fns.gadgets.floating_icon
 
 data.raw.recipe['burner-mining-drill'].auto_unlocked_by = 'steam-power'
 

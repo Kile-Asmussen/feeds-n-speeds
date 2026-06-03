@@ -29,9 +29,9 @@ local mini_reactor = table.merge(table.deepcopy(data.raw.reactor['heating-tower'
     auto_require_pavement = 'stone-path',
 
     icon = fns.utils.null,
-    icons = fns.gadgets.icons{
-        { "icons/small-lamp.png", tint_as_overlay = true, tint = { 1, 0.5, 0.5 } } ,
-        { "icons/heat-pipe.png", size="large", dir="b" }
+    icons = {
+        fns.gadgets.icon("icons/small-lamp.png", { tint_as_overlay = true, tint = { 1, 0.5, 0.5 } }),
+        { icon = '__base__/graphics/icons/heat-pipe.png', icon_size = 64, floating = true, scale = 0.4, shift = { 0, 9.6 } },
     },
 
     minable = { mining_time = 1.0, result = fns 'electric-heater' },
@@ -139,10 +139,9 @@ local mini_reactor_tech = {
             { 'chemical-science-pack', 1 }, 
         },
     },
-    icons = fns.gadgets.icons{
-        type = 'technology',
-        'technology/steam-power.png',
-        'technology/electric-energy-distribution-1.png',
+    icons = {
+        fns.gadgets.icon('technology/steam-power.png', 'technology'),
+        fns.gadgets.icon('technology/electric-energy-distribution-1.png', 'technology'),
     }
 }
 
@@ -221,9 +220,9 @@ local tank_o_sand = table.merge(table.deepcopy(data.raw.reactor['heating-tower']
     working_light_picture = fns.utils.null,
     icon = fns.utils.null,
     picture = { layers = {} },
-    icons = fns.gadgets.icons{
-        { "icons/storage-tank.png" } ,
-        { "icons/heat-pipe.png", size="large", dir="b" }
+    icons = {
+        fns.gadgets.icon("icons/storage-tank.png"),
+        { icon = '__base__/graphics/icons/heat-pipe.png', icon_size = 64, floating = true, scale = 0.4, shift = { 0, 9.6 } },
     },
     working_sound = fns.utils.null,
 })

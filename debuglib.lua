@@ -83,7 +83,7 @@ function debuglib.new_buffer(settings)
     assert(type(settings.indent) == 'string', "argument #1's indent field must be a string")
     assert(type(settings.root) == 'string', "argument #1's root field must be a string")
 
-    local res = table.overwrite({
+    local res = table.override({
         seen_tables = {
             [_ENV] = '_ENV', 
             [table.null] = 'table.null',

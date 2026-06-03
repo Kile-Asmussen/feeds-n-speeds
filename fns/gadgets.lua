@@ -271,7 +271,7 @@ return function(fns)
         return nil, nil
     end
 
-    gadgets.icons_size = table.with_default(64, {
+    gadgets.icon_size = table.with_default(64, {
         ['space-location']  = 512,
         ['achievement']     = 128,
         ['technology']      = 256,
@@ -279,101 +279,75 @@ return function(fns)
         ['small-shortcut']  = 24,
     })
 
-    gadgets.scale_coefficient = table.with_default(1.0, {
-        tiny   = 0.33,
-        small  = 0.5,
-        medium = 0.66,
-        large  = 0.8,
-        full   = 1.0, -- technically not needed
-    })
+    --- Produces a single floating IconData at scale 0.25, placed in a corner or center.
+    --- Intended as an overlay on top of a base icon in an icons[] array.
+    --- Modelled after vanilla barrelling recipes (empty-water-barrel).
+    --- position: "topleft" | "topright" | "bottomleft" | "center"
+    --- icon: path string (bare paths get __base__/graphics/ prepended)
+    --- extras: number (icon_size), string (prototype type name), or table of IconData overrides (tint, icon_size, etc.)
+    function gadgets.floating_icon(position, icon, extras)
 
-    gadgets.direction = table.with_default(function(x) return nil end, {
-        [true] = function(x) return { 0, 0 } end,
-        c = function(x) return { 0, 0 } end, 
-        l = function(x) return { -x, 0 } end,
-        r = function(x) return { x, 0 } end,
-        t = function(x) return { 0, -x } end,
-        b = function(x) return { 0, x } end,
-        tr = function(x) return { x, -x } end,
-        tl = function(x) return { -x, -x } end,
-        br = function(x) return { x, x } end,
-        bl = function(x) return { -x, x } end, -- technically not needed
-    })
+        extras = extras or { icon_size = 64 }
 
-    --- augmented IconData
-    --- dir : nil or c/l/r/t/b/tr/tl/br/br
-    ---    direction to shift a floating icon in
-    --- size : nil or tiny/small/medium/large/full
-    ---    how big the icon appears
-    --- type :  item, entity, recipe, etc.
-    ---    determines icon size in pixels
-    --- col : hexadecimal tint color
-    --- offset: how far to move the icon in any given direction
-    function gadgets.icon(spec)
-        local icon = spec[1] or spec.icon
-        assert(type(icon) == 'string', "gadgets.icon: no icon file")
+        if type(extras) == 'string' then
+            extras = { icon_size = gadgets.icon_size[extras] }
+        elseif type(extras) == 'number' then
+            extras = { icon_size = extras }
+        end
+        
+        assert(type(icon) == 'string', "fns.gadgets.floating_icon: argument #2 must be a string")
+        assert(type(extras) == 'table', "fns.gadgets.floating_icon: argument #3 must be number, string, or table")
+
+
+        local icon_size = extras.icon_size or 64
+        if not icon:startswith('__') then
+            icon = '__base__/graphics/' .. icon
+        end
+        local scale  = 0.25
+        local offset = icon_size / 8
+        local sx, sy
+        if position == 'topleft' then
+            sx, sy = -offset, -offset
+        elseif position == 'topright' then
+            sx, sy = offset, -offset
+        elseif position == 'bottomleft' then
+            sx, sy = -offset, offset
+        elseif position == 'center' then
+            sx, sy = 0, 0
+        else
+            error("fns.gadgets.floating_icon: argument #1 must be 'topleft', 'topright', 'bottomleft', or 'center'", 2)
+        end
+        
+        return table.override({
+            icon      = icon,
+            icon_size = icon_size,
+            floating  = true,
+            scale     = scale,
+            shift     = { sx, sy },
+        }, extras)
+    end
+
+    function gadgets.icon(icon, extras)
+        assert(type(icon) == 'string', "fns.gadgets.icon: argument #1 must be a string")
+
+        extras = extras or { }
+        if type(extras) == 'string' then
+            extras = { icon_size = gadgets.icon_size[extras] }
+        elseif type(extras) == 'number' then
+            extras = { icon_size = extras }
+        end
+
+        assert(type(extras) == 'table', "fns.gadgets.icon: argument #2 must be a number, string, or table")
+
         if not icon:startswith('__') then
             icon = '__base__/graphics/' .. icon
         end
 
-        local icon_type = spec.type or 'item'
-        local expected_icon_size = gadgets.icons_size[icon_type]
-        local icon_size = spec.icon_size or expected_icon_size
-
-        local floating = spec.floating
-        if floating == nil and spec.dir ~= nil then floating = true end
-
-        local scale_coefficient = nil
-        if spec.size then
-            scale_coefficient = gadgets.scale_coefficient[spec.size]
-        elseif spec.dir then
-            scale_coefficient = 0.5
-        end
-
-        local scale = spec.scale
-        if scale == nil and floating then
-            scale = ((expected_icon_size / 2) / icon_size) * scale_coefficient
-        end
-        if spec.resize then scale = scale * spec.resize end
-
-        local offset = spec.offset
-        if offset == nil and floating == true and scale_coefficient ~= nil then
-            offset = (expected_icon_size / 4) * (1 - scale_coefficient / 2)
-        end
-
-        local shift = spec.shift
-        if shift == nil and spec.dir then
-            shift = gadgets.direction[spec.dir](offset)
-        end
-        if spec.resize then
-            math.vecmul(shift, spec.resize)
-        end
-
-        local tint = spec.tint
-        if tint == nil and spec.col then
-            tint = gadgets.hexcolor(spec.col)
-        end
-
-        return {
+        return table.override({
             icon      = icon,
-            icon_size = icon_size,
-            floating  = floating,
-            shift     = shift,
-            scale     = scale,
-            tint      = tint,
-        }
-    end
-
-    function gadgets.icons(array)
-        local merger = table.dup_assoc(array)
-        local res = {}
-        for _, v in ipairs(array) do
-            if type(v) == 'string' then v = { v } end
-            table.merge(v, merger)
-            local icon = gadgets.icon(v)
-            table.insert(res, icon)
-        end
-        return res
+            icon_size = 64,
+            scale     = 0.5,
+        }, extras)
     end
 
     function gadgets.scale_vectors_and_numbers(factor, fields, vectors, stop_at)

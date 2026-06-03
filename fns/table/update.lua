@@ -3,14 +3,14 @@ return function(table, fns)
     local assert = fns.assert
     local pairs = table.pairs
 
-    function table.overwrite(tbl1, tbl2)
+    function table.override(tbl1, tbl2)
         for k, v in pairs(tbl2) do
             tbl1[k] = v
         end
 
         return tbl1
     end
-    table.declare_twoarg('overwrite')
+    table.declare_twoarg('override')
 
     function table.replace(tbl1, tbl2)
         for k, _ in pairs(tbl1) do

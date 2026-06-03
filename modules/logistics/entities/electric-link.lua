@@ -82,14 +82,9 @@ table.merge(link.chargable_graphics, {
     discharge_animation = table.deepcopy(charge_animation),
 })
 
-link.icons = fns.gadgets.icons{
-    { switch.icon, tint = { 1.0, 1.0, 0.6 }, },
-    {
-        data.raw['virtual-signal']['signal-rightwards-leftwards-arrow'].icon,
-        tint = { 0, 1, 0 },
-        size = 'medium',
-        dir = 'c',
-    },
+link.icons = {
+    fns.gadgets.icon(switch.icon, { tint = { 1.0, 1.0, 0.6 } }),
+    fns.gadgets.floating_icon('center', data.raw['virtual-signal']['signal-rightwards-leftwards-arrow'].icon, { tint = { 0, 1, 0 } }),
 }
 
 table.traverse(link.chargable_graphics, function(x)

@@ -2,17 +2,17 @@
 local fns = require 'fns'
 local table = fns.table
 local puts = fns.gadgets.throughputs
-local icons = fns.gadgets.icons
+local icon = fns.gadgets.icon
+local floating_icon = fns.gadgets.floating_icon
 
 local old_recipe = data.raw.recipe['stone-furnace']
 
 table.merge(old_recipe, {
     ingredients = puts{ stone = 20 },
     icon = fns.utils.null,
-    icons = icons{
-        type = 'recipe',
-        'icons/stone-furnace.png',
-        { 'icons/stone.png', size = 'tiny', dir = 'tl' },
+    icons = {
+        icon('icons/stone-furnace.png', 'recipe'),
+        floating_icon('topleft', 'icons/stone.png'),
     },
     energy_required = 6.0,
 })
@@ -29,10 +29,9 @@ local new_recipe = {
     localised_name = {"entity-name.stone-furnace"},
     order = 'a[stone-furnace]-b[stone-brick]',
     energy_required = 3.0,
-    icons = icons{
-        type = 'recipe',
-        'icons/stone-furnace.png',
-        { 'icons/stone-brick.png', size = 'tiny', dir = 'tl' },
+    icons = {
+        icon('icons/stone-furnace.png', 'recipe'),
+        floating_icon('topleft', 'icons/stone-brick.png'),
     },
     ingredients = puts{ ['stone-brick'] = 5 },
     results = puts{ ['stone-furnace'] = 1 },
@@ -42,10 +41,9 @@ local new_recipe = {
 local bmp = {
     type = 'technology',
     name = fns 'basic-materials-processing',
-    icons = icons{
-        type = 'technology',
-        { 'entity/stone-furnace/stone-furnace.png', icon_size = 146 },
-        'technology/steel-axe.png',
+    icons = {
+        icon('entity/stone-furnace/stone-furnace.png', 146),
+        icon('technology/steel-axe.png', 'technology'),
     },
     research_trigger = {
         type = 'craft-item',
