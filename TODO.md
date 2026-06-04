@@ -47,6 +47,19 @@
 
 ## Necessary tasks
 
+- [ ] **Icon cleanup**: Several icons have contrast/quality issues remaining after the gadgets.icons → gadgets.icon/floating_icon migration. Audit all mod icons in-game and fix any that look off.
+
+- [ ] **Recipe tweaks**: A pass over recipe ingredients/results is needed before the mod is complete. Known items:
+  - Pipes in recipe for electric drill
+  - Burner inserter needs sticks and bricks
+  - Burner drills should use furnaces
+  - Boilers also
+  - Less ore from rocks
+  - Chest inventory sizes
+  - Express transport belts need to depend on fast belts
+
+- [ ] **Recipe ordering**: `recipe-ordering.lua` needs substantial work to handle all mod recipes correctly. This is one of the larger remaining tasks before completion.
+
 - [ ] Tweak shit related to everything
   - Recipes
   - Less ore from rocks

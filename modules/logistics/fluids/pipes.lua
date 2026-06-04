@@ -45,16 +45,15 @@ local pipe_cross = '__base__/graphics/entity/pipe/pipe-cross.png'
 
 local instrumented_pipe = table.deepcopy(data.raw['storage-tank']['storage-tank'])
 instrumented_pipe.name              = fns 'instrumented-pipe'
-instrumented_pipe.localised_name    = { 'entity-name.' .. fns 'instrumented-pipe' }
-instrumented_pipe.collision_box     = { { -0.4, -0.4 }, { 0.4, 0.4 } }
+instrumented_pipe.collision_box     = { { -0.5, -0.5 }, { 0.5, 0.5 } }
 instrumented_pipe.selection_box     = { { -0.5, -0.5 }, { 0.5, 0.5 } }
 instrumented_pipe.two_direction_only = false
 instrumented_pipe.fluid_box.volume  = 100
 instrumented_pipe.fluid_box.pipe_connections = {
-    { position = {  0, -1 }, direction = defines.direction.north },
-    { position = {  1,  0 }, direction = defines.direction.east  },
-    { position = {  0,  1 }, direction = defines.direction.south },
-    { position = { -1,  0 }, direction = defines.direction.west  },
+    { position = { 0, 0 }, direction = defines.direction.north },
+    { position = { 0, 0 }, direction = defines.direction.east  },
+    { position = { 0, 0 }, direction = defines.direction.south },
+    { position = { 0, 0 }, direction = defines.direction.west  },
 }
 instrumented_pipe.minable           = { mining_time = 0.1, result = fns 'instrumented-pipe' }
 instrumented_pipe.corpse            = 'pipe-remnants'
@@ -66,7 +65,7 @@ instrumented_pipe.icon_draw_specification = { scale = 0.5 }
 instrumented_pipe.pictures = {
     picture = {
         sheets = {
-            { filename = pipe_cross, width = 128, height = 128, scale = 0.5, priority = 'extra-high' },
+            { filename = pipe_cross, width = 128, height = 128, frames = 1, scale = 0.5, priority = 'extra-high' },
         }
     },
     flow_sprite        = data.raw['storage-tank']['storage-tank'].pictures.flow_sprite,

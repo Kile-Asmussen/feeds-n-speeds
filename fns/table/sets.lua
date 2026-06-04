@@ -96,7 +96,7 @@ return function(table, fns)
     table.declare_twoarg('iall', 'function?')
 
     function table.all(tbl, pred)
-        table.all_pairs = quantify.all.vk(pairs)
+        table.all = quantify.all.vk(pairs)
     end
     table.all()
     table.declare_twoarg('all', 'function?')
@@ -182,7 +182,7 @@ return function(table, fns)
         if select('#', ...) >= 1 then
             default = ...
         end
-
+        
         while #tbl > 0 do
             local key = table.remove(tbl)
             assert(key ~= nil, "fns.table.intoset: nil key")

@@ -1,5 +1,6 @@
 --! data: hand-craftable engine unit recipe for early game
 local fns = require 'fns'
+local gadgets = fns.gadgets
 local table = fns.table
 
 local hand_engine = table.merge(table.deepcopy(data.raw.recipe['engine-unit']), {
@@ -15,11 +16,12 @@ local hand_engine = table.merge(table.deepcopy(data.raw.recipe['engine-unit']), 
         ['pipe'] = 2,
     },
     icons = {
-        { icon = 'icons/engine-unit.png' },
-        { icon = "__core__/graphics/icons/technology/constants/constant-equipment.png",
-            icon_size=128, scale = 0.125,
-            shift = { -4, 4 }, 
-        }
+        gadgets.icon('icons/engine-unit.png'),
+        gadgets.floating_icon("bottomleft",
+            "__core__/graphics/icons/technology/constants/constant-equipment.png",
+            128,
+            scale=0.125
+        )
     },
     auto_unlocked_by = 'steam-power',
 })

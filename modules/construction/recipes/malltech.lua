@@ -248,7 +248,4 @@ merge(data.raw.recipe, {
      ['power-switch'] = ingredients{
           ['electronic-circuit'] = 1, ['copper-cable'] = 10, ['electric-engine'] = 1, ['steel-plate'] = 5
      },
-
-     --
-
 })

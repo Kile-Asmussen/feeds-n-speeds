@@ -52,11 +52,15 @@ data.raw['item-subgroup']['environmental-protection'] = nil
 -- map[subgroup_id -> array[item/fluid/recipe id] + map[item/fluid/recipe id -> order]]
 local ordering = {
     storage = {
-        ['storage-chest'] = 'b[logistic]-a[storage]',
-        ['passive-provider-chest'] = 'b[logistic]-b[provider]',
-        ['active-provider-chest'] = 'b[logistic]-c[sender]',
-        ['requester-chest'] = 'b[logistic]-d[requester]',
-        ['buffer-chest'] = 'b[logistic]-e[buffer]',
+        fns'wooden-chest',
+        fns'iron-chest',
+        fns'steel-chest',
+        nil,
+        'storage-chest',
+        'passive-provider-chest',
+        'active-provider-chest',
+        'requester-chest',
+        'buffer-chest',
     },
     belt = {
         ['transport-belt'] = 'a-a',
@@ -97,7 +101,7 @@ local ordering = {
         'artillery-wagon',
         'car',
         'tank',
-        'spider-vehicle',
+        'spidertron',
     },
     ['logistic-network'] = {
         'repair-pack'
@@ -127,27 +131,68 @@ local ordering = {
     },
     ['smelting-machine'] = {
         'oil-refinery',
-        'uranium-centrifuge'
+        'centrifuge'
     },
     [fns 'advanced-production-machine'] = {
         'biochamber', 'electromagnetic-plant', 'cryogenic-plant', 'foundry', 'biolab'
     },
     -- do something interesting with beacons. Logistics?
-    ['module-2'] = {
-        'productivity-module-1',
+    [fns 'module-2'] = {
+        'productivity-module',
         'productivity-module-2',
         'productivity-module-3',
-        'quality-module-1',
+        'quality-module',
         'quality-module-2',
         'quality-module-3',
     }
 }
 
 for subgroup, spec in table.opairs(ordering) do
-    for name, order in table.opairs(spec) do
-        local proto = gadgets.find_prototype(name)
-        if not proto then error("recipe-ordering: no prototype found for '" .. name .. "'", 1) end
+    if not data.raw['item-subgroup'][subgroup] then
+        error("recipe-ordering: no such subgroup as "..subgroup, 1)
+    end
+    local run = string.byte('a')
+    local step = string.byte('a')
+
+    for i = 1, #spec do
+        local name = spec[i]
+        if not name then
+            run = run + 1
+            step = string.byte('a')
+        end
+        local ord = string.char(run) .. '-' .. string.char(step)
+
+        local proto
+        local entity = gadgets.find_entity_prototype(name)
+        if name == fns'wooden-chest' then
+            print(data.raw.container[name].name)
+            print(entity.name, entity.minable.result, entity.minable.resuts and entity.minable.resuts[1].name)
+        end
+        if entity then
+            entity.subgroup = subgroup
+            entity.order = ord
+            if not entity.minable then
+                print("not minable", entity.name)
+                goto skip
+            end
+
+            if entity.minable.result then
+                print(entity.name, entity.minable.result)
+                proto = gadgets.find_item_prototype(entity.minable.result)
+            elseif entity.minable.results and #entity.minable.results == 1 then
+                print(entity.name, entity.minable.results[1].name)
+                proto = gadgets.find_item_prototype(entity.minable.results[1].name)
+            end
+
+            ::skip::
+        end
+
+        if not proto then
+            proto = gadgets.find_item_prototype(name)
+            if not proto then error("recipe-ordering: no prototype found for '" .. name .. "'", 1) end
+        end
+
         proto.subgroup = subgroup
-        proto.order = order
+        proto.order = ord
     end
 end

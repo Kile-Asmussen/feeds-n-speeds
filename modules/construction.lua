@@ -8,16 +8,16 @@ local set = table.intoset
 
 construction.data = set{
     ['.entities.fix-quality'] = -1,
-
-    ['.recipes.crafting-times'] = -1,
+    ['.recipes.malltech'] = -1,
     
     '.tiles.collision-layers',
-    ['.tiles.pavement'] = -1,
-
-    ['.recipes.malltech'] = -1,
-
-    ['.entities.mining-times'] = -1,
+    
+    ['.tiles.pavement'] = 1,
+    ['.recipes.crafting-times'] = 1,
+    ['.entities.mining-times'] = 1,
 }
+
+print(serpent.block(construction.data))
 
 construction['data-updates'] = set{
     '.tiles.auto-pavement',

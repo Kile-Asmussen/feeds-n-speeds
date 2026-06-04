@@ -9,6 +9,7 @@ table.merge(table.deepcopy(data.raw.container[fns 'steel-chest']), {
     name = fns 'hopper',
     icon_draw_specification = { __merge=true, scale = 0.4 },
     localised_name = fns.utils.null,
+    draw_inventory_content = false,
     icon = '__FeedsNSpeeds__/graphics/icons/hopper.png',
     picture = table.assign{ 'layers', 1, 'filename',
         val = '__FeedsNSpeeds__/graphics/entity/hopper.png' },

@@ -27,7 +27,7 @@ production.data = set{
     '.recipes.concrete',
     '.recipes.misc',
     '.recipes.sulfur-processing',
-    ['.recipes.crafting-categories'] = -1,
+    ['.recipes.crafting-categories'] = 1,
     '.recipes.batteries-and-modules',
 
     '.science.packs',

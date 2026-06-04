@@ -4,6 +4,7 @@ local debuglib = namespace 'debuglib'
 
 local table = fns.table
 local string = fns.string
+local math = fns.math
 
 debuglib.recursion_limit = 2
 debuglib.serialize = false

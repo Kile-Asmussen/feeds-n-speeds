@@ -218,7 +218,7 @@ local item_names  = tools.collect_from_list(table.match{type='item'},  table.acc
 local ITEM_CATS = {
     'ammo', 'armor', 'blueprint', 'blueprint-book', 'capsule',
     'deconstruction-item', 'gun', 'item', 'item-with-entity-data',
-    'item-with-inventory', 'module', 'rail-planner', 'repair-tool',
+    'module', 'rail-planner', 'repair-tool',
     'selection-tool', 'space-platform-starter-pack', 'tool', 'upgrade-item',
 }
 

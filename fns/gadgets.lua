@@ -217,14 +217,14 @@ return function(fns)
     function gadgets.recipe_order(recipe)
         if type(recipe) == 'string' then recipe = data.raw.recipe[recipe] end
         if recipe.order then return recipe.order end
-        local proto, _ = gadgets.find_prototype(gadgets.main_product(recipe))
+        local proto, _ = gadgets.find_item_prototype(gadgets.main_product(recipe))
         return proto and proto.order or ''
     end
 
     local function recipe_sort_key(name)
         local recipe = data.raw.recipe[name]
         local ok, product = pcall(gadgets.main_product, recipe)
-        local proto = ok and gadgets.find_prototype(product) or nil
+        local proto = ok and gadgets.find_item_prototype(product) or nil
         local sg_name = recipe.subgroup or (proto and proto.subgroup)
         local subgroup = sg_name and data.raw['item-subgroup'][sg_name]
         local group    = subgroup and data.raw['item-group'][subgroup.group]
@@ -253,21 +253,34 @@ return function(fns)
     end
 
 
-    gadgets.item_categories = {
+    gadgets.item_categories = table.set{
         'ammo', 'armor', 'blueprint', 'blueprint-book', 'capsule',
         'deconstruction-item', 'gun', 'item', 'item-with-entity-data',
-        'item-with-inventory', 'module', 'rail-planner', 'repair-tool',
+        'module', 'rail-planner', 'repair-tool',
         'selection-tool', 'space-platform-starter-pack', 'tool', 'upgrade-item',
     }
 
-    function gadgets.find_prototype(name)
-        for _, cat in ipairs(gadgets.item_categories) do
-            if data.raw[cat] and data.raw[cat][name] then
-                return data.raw[cat][name], cat
+    function gadgets.find_item_prototype(name)
+        for cat, _ in table.opairs(gadgets.item_categories) do
+            if data.raw[cat] then
+                if data.raw[cat][name] then
+                    return data.raw[cat][name], cat
+                end
             end
         end
         if data.raw.fluid[name] then return data.raw.fluid[name], 'fluid' end
         if data.raw.recipe[name] then return data.raw.recipe[name], 'recipe' end
+        return nil, nil
+    end
+
+    function gadgets.find_entity_prototype(name)
+        for t, cat in table.opairs(data.raw) do
+            if not gadgets.item_categories[t] then
+                if cat[name] then
+                    return cat[name], t
+                end
+            end
+        end
         return nil, nil
     end
 
