@@ -20,7 +20,7 @@ local hand_engine = table.merge(table.deepcopy(data.raw.recipe['engine-unit']), 
         gadgets.floating_icon("bottomleft",
             "__core__/graphics/icons/technology/constants/constant-equipment.png",
             128,
-            scale=0.125
+            {scale=0.0625}
         )
     },
     auto_unlocked_by = 'steam-power',

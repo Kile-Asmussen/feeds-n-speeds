@@ -121,7 +121,7 @@ merge(data.raw.recipe, {
 
     -- Misc
      ['lab'] = ingredients{
-          ['engine-unit'] = 1, ['electronic-circuit'] = 10, ['stone-furnace'] = 1, ['transport-belt'] = 3, ['inserter'] = 3,
+          ['engine-unit'] = 1, ['electronic-circuit'] = 10, ['stone-furnace'] = 1, ['transport-belt'] = 3, ['inserter'] = 3, ['shotgun-shell'] = 1,
      },
 
      -- Furnaces
@@ -164,7 +164,7 @@ merge(data.raw.recipe, {
 
     -- Assembling machines
     ['assembling-machine-1'] = ingredients{
-         ['inserter'] = 3, ['electronic-circuit'] = 1, ['repair-pack'] = 2, ['iron-chest'] = 1
+         ['inserter'] = 3, ['repair-pack'] = 2, ['iron-chest'] = 1
     },
     ['assembling-machine-2'] = ingredients{
          ['fast-inserter'] = 4, ['decider-combinator'] = 2, ['pipe'] = 2, ['steel-chest'] = 1

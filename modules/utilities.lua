@@ -17,7 +17,7 @@ utilities.control = set{
 utilities.data = set{
     ['.tech-tweaks'] = -1,
     '.map-gen-presets',
-    ['.recipe-ordering'] = -100000,
+    ['.recipe-ordering'] = 1000,
 }
 
 utilities['data-updates'] = set{

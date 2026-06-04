@@ -159,6 +159,7 @@ for subgroup, spec in table.opairs(ordering) do
         if not name then
             run = run + 1
             step = string.byte('a')
+            goto continue
         end
         local ord = string.char(run) .. '-' .. string.char(step)
 
@@ -187,5 +188,6 @@ for subgroup, spec in table.opairs(ordering) do
 
         proto.subgroup = subgroup
         proto.order = ord
+        ::continue::
     end
 end

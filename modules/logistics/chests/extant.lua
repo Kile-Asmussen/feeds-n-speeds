@@ -6,7 +6,6 @@ local inputs = fns.gadgets.throughputs
 local merge = fns.table.merge
 local utils = fns.utils
 local set = fns.table.intoset
-error("fuck you")
 
 local upscale = table.traverse(fns.gadgets.scale_vectors_and_numbers(
   2.0,
