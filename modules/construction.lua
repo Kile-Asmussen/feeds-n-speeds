@@ -17,8 +17,6 @@ construction.data = set{
     ['.entities.mining-times'] = 1,
 }
 
-print(serpent.block(construction.data))
-
 construction['data-updates'] = set{
     '.tiles.auto-pavement',
 }

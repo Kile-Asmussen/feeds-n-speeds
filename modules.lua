@@ -132,8 +132,6 @@ function modules.order_dependencies(dependency_graph)
         return priorities[a] < priorities[b]
     end)
 
-    print(serpent.block(order))
-
     return order
 end
 

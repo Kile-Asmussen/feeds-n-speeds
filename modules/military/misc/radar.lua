@@ -2,8 +2,9 @@
 local fns = require 'fns'
 local inputs = fns.gadgets.throughputs
 
-fns.table.merge(data.raw.technology.radar, {
-  prerequisites = { 'lamp' },
+data.raw.technology.radar.prerequisites = { 'lamp' }
+
+fns.table.merge(data.raw.recipe.radar, {
   ingredients = inputs{
     ['small-lamp'] = 1,
     ['copper-cable'] = 8,

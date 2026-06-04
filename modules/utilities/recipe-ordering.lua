@@ -164,23 +164,16 @@ for subgroup, spec in table.opairs(ordering) do
 
         local proto
         local entity = gadgets.find_entity_prototype(name)
-        if name == fns'wooden-chest' then
-            print(data.raw.container[name].name)
-            print(entity.name, entity.minable.result, entity.minable.resuts and entity.minable.resuts[1].name)
-        end
         if entity then
             entity.subgroup = subgroup
             entity.order = ord
             if not entity.minable then
-                print("not minable", entity.name)
                 goto skip
             end
 
             if entity.minable.result then
-                print(entity.name, entity.minable.result)
                 proto = gadgets.find_item_prototype(entity.minable.result)
             elseif entity.minable.results and #entity.minable.results == 1 then
-                print(entity.name, entity.minable.results[1].name)
                 proto = gadgets.find_item_prototype(entity.minable.results[1].name)
             end
 
