@@ -87,7 +87,7 @@ merge(data.raw.recipe, {
     },
 
     ['express-transport-belt'] = {
-        results = puts{ ['turbo-transport-belt'] = 2 },
+        results = puts{ ['express-transport-belt'] = 2 },
         ingredients = puts{
             ['steel-plate'] = 2, ['iron-gear-wheel'] = 10, ['electric-engine-unit'] = 4, ['lubricant'] = 20
         },
@@ -185,7 +185,7 @@ merge(data.raw.recipe, {
           ['pipe'] = 10, ['storage-tank'] = 1, ['boiler'] = 3, ['steel-plate'] = 10,
      },
      ['pumpjack'] = ingredients{
-          ['pump'] = 1, ['pipe-to-ground'] = 2, ['engine-unit'] = 1, ['steel-plate'] = 5
+          ['pump'] = 1, ['pipe-to-ground'] = 2, ['engine-unit'] = 1, ['steel-plate'] = 5, ['burner-mining-drill'] = 1
      },
      ['pump'] = ingredients{
           ['engine-unit'] = 1, ['electronic-circuit'] = 1, ['pipe'] = 1

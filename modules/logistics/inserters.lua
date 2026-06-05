@@ -9,15 +9,15 @@ merge(data.raw.inserter, {
         extension_speed = 0.05,
         rotation_speed = 0.03,
         filter_slots = 4,
-        chases_belt_items = false
-        allow_burner_leech = true
+        chases_belt_items = false,
+        allow_burner_leech = true,
     },
     ['long-handed-inserter'] = merge{
         extension_speed = 0.1,
         rotation_speed = 0.03,
         filter_slots = 4,
-        chases_belt_items = false
-        allow_burner_leech = true
+        chases_belt_items = false,
+        allow_burner_leech = true,
     },
     [{
         'fast-inserter',
@@ -27,13 +27,13 @@ merge(data.raw.inserter, {
         rotation_speed = 0.05,
         extension_speed = 0.1,
         filter_slots = 4,
-        chases_belt_items = false
-        allow_burner_leech = true
+        chases_belt_items = false,
+        allow_burner_leech = true,
     },
     ['burner-inserter'] = merge{
         chases_belt_items = false,
         filter_slots = 1,
         rotation_speed = 0.015,
-        allow_burner_leech = true
+        allow_burner_leech = true,
     }
 })

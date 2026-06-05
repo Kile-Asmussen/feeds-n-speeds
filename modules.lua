@@ -12,8 +12,6 @@ modules.stages = set{
     'settings',
     'data',
     'data-updates',
-    'data-update-prototypes',
-    'data-update-edits',
     'control',
 }
 
@@ -29,12 +27,26 @@ function modules.load_stage(stage)
 
     assert(modules.stages[stage], "not a valid stage: " .. stage)
 
-    local deps = modules.stage_dependencies(stage)
+    local components = modules.list_stage_components(stage)
 
-    deps = modules.order_dependencies(deps)
+    components = modules.order_dependencies(components)
 
-    for _, dep in ipairs(deps) do 
-        require(dep)
+    for _, comp in ipairs(components) do 
+        require(comp)
+    end
+end
+
+function modules.print_stage_loading_order(stage)
+
+    assert(modules.stages[stage], "not a valid stage: " .. stage)
+
+    local components = modules.list_stage_components(stage)
+    local priorities
+
+    components, priorities = modules.order_dependencies(components)
+
+    for _, comp in ipairs(components) do
+        print('require ' .. ("%q"):format(comp) .. " -- " .. priorities[comp])
     end
 end
 
@@ -46,28 +58,27 @@ function modules.name(mod, name)
     end
 end
 
-function modules.stage_dependencies(stage)
+function modules.list_stage_components(stage)
     local dependencies = {}
 
     for _, mod in table.opairs(modules) do
         if namespace.is(mod) and mod/stage then
 
-            for name, deps in table.opairs(mod[stage]) do
+            for name, comp_deps in table.opairs(mod[stage]) do
                 name = modules.name(mod, name)
 
-                if type(deps) == 'table' then
-                    for dep, val in table.opairs(deps) do
-                        
-                        assert(type(val) == 'boolean', 'dependencies of a component '
-                            .. 'may not themselves have dependencies: ' .. fns.utils.tablepath(mod, { stage, dep }))
-
-                        local depname = modules.name(mod, dep)
-
-                        dependencies[name] = dependencies[name] or {}
-                        dependencies[name][depname] = val
+                if type(comp_deps) == 'string' then
+                    comp_deps = { [modules.name(comp_deps)] = true }
+                elseif type(comp_deps) == 'table' then
+                    local resolved = {}
+                    for dep, val in table.opairs(comp_deps) do
+                        resolved[modules.name(mod, dep)] = val and true or nil
                     end
-                else
-                    dependencies[name] = deps
+                    dependencies[name] = resolved
+                elseif type(comp_deps) == 'number' then
+                    dependencies[name] = comp_deps
+                elseif comp_deps then
+                    dependencies[name] = 0
                 end
             end
         end
@@ -75,8 +86,6 @@ function modules.stage_dependencies(stage)
 
     return dependencies
 end
-
-local debuglib = require 'debuglib'
 
 function modules.order_dependencies(dependency_graph)
     assert(type(dependency_graph) == 'table', "argument #1 must be a table")
@@ -102,7 +111,6 @@ function modules.order_dependencies(dependency_graph)
     local priorities = {}
 
     for component, deps in table.opairs(dependency_graph) do
-        if deps == true then deps = 0 end
         if type(deps) == 'number' then
             dependency_graph[component] = nil
             priorities[component] = deps
@@ -115,7 +123,11 @@ function modules.order_dependencies(dependency_graph)
 
         for component, deps in table.opairs(dependency_graph) do
             assert(type(deps) == 'table', "bad dependency in " .. component)
-            if table.all(deps, function(_, dep) return priorities[dep] end) then
+            if table.size(deps) == 0 then
+                priorities[component] = 0
+                dependency_graph[component] = nil
+                progress = true
+            elseif table.all(deps, function(_, dep) return priorities[dep] end) then
                 local max_prio = math.find_max(table.icollect(table.sorted_keys(deps), table.index(priorities)))
                 priorities[component] = max_prio + 1
                 dependency_graph[component] = nil
@@ -132,7 +144,7 @@ function modules.order_dependencies(dependency_graph)
         return priorities[a] < priorities[b]
     end)
 
-    return order
+    return order, priorities
 end
 
 return modules:seal(true)

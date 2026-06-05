@@ -271,16 +271,19 @@ function localisation.list_missing_locale_keys()
 
         local skipped = localisation.skipped_keys[cat] or {}
 
-        if not cat:match('%-description$') then
         for _, key in ipairs(keys_in_cat) do
-            if not skipped[key] and (not locale_map[cat] or not locale_map[cat][key]) then
+            local is_description = cat:match('%-description$')
+            local is_explicit = fns.explicit_localisation_keys[cat .. '.' .. key]
+            if not skipped[key]
+            and (not is_description or is_explicit)
+            and (not locale_map[cat] or not locale_map[cat][key])
+            then
                 if not any then
                     any = true
                     table.insert(res, '[' .. cat .. ']')
                 end
                 table.insert(res, key .. '=')
             end
-        end
         end
     end
 

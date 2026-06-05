@@ -13,11 +13,6 @@ _ENV.modlist = {}
 _ENV.QUIET = true
 begin_data_stage()
 
-
-if select('#', ...) ~= 3 then
-    error("\nusage: lua debug/search.lua <category fragment> <prototype fragment> <field fragment>")
-end
-
 local catpat, protpat, fieldpat = ...
 
 if catpat == "--help" then
@@ -25,6 +20,10 @@ if catpat == "--help" then
     print("searches data.raw's keys at three levels: prototype category names, prototype names, prototype field names")
     print("fragments are simple text search, not lua search patterns, use '-' to omit searching that level")
     print("example: lua debug/search.lua upgrade - - # finds 'upgrade-item' the prototype category for upgrade planners")
+end
+
+if select('#', ...) ~= 3 then
+    error("\nusage: lua debug/search.lua <category fragment> <prototype fragment> <field fragment>")
 end
 
 local cat, prot, fields = tools.text_search_data_raw(...)

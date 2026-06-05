@@ -212,10 +212,18 @@ table.insert(assmacs['cryogenic-plant'].crafting_categories, fns 'advanced-craft
 table.insert(assmacs['foundry'].crafting_categories, fns 'advanced-pressing')
 table.insert(assmacs['biochamber'].crafting_categories, fns 'advanced-crafting-organic')
 
+local decompose_categories = table.intoset{
+    'crafting',
+    'advanced-crafting',
+    'electronics',
+    'pressing',
+}
+
 for category, names in pairs(assignments) do
     for _, name in ipairs(names) do
         if data.raw.recipe[name] then
             data.raw.recipe[name].category = category
+            data.raw.recipe[name].allow_decomposition = decompose_categories[category] == true
         end
     end
 end

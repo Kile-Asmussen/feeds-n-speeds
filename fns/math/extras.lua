@@ -48,6 +48,7 @@ return function(math, fns)
 
     function math.find_max(tbl)
         assert(type(tbl) == 'table', "argument #1 must be a table")
+        if #tbl == 0 then return nil, nil end
         local ix = 0
         local max = -math.huge
         for i, n in ipairs(tbl) do
@@ -57,6 +58,6 @@ return function(math, fns)
                 max = n
             end
         end
-        return max, ix
+        if ix == 0 then return nil, nil else return max, ix end
     end
 end

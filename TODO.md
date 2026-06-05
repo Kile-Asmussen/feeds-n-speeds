@@ -18,11 +18,6 @@
   - Crusher
   - Crusher Mk 2
 
-- [ ] **Mini-reactor technology** (IMPORTANT): The mini-reactor is currently inaccessible in-game. Needs a new technology that unlocks it alongside heat pipes, heat exchangers, and steam turbines. This tech should sit in a larger energy branch that connects to accumulator/solar improvements, providing tiered energy storage options (mini-reactor → heat-based steam → supercapacitor accumulators).
-  - [ ] "Tank full of sand" heat battery
-  - [ ] Tertiary generator variants?
-  - [ ] Tertiary 
-
 - [ ] Solar power/accumulator extras
     - [ ] Accumulators should probably be more expensive (when the plastics/battery tweak is enabled) but hold more power
         - [ ] Find a nice ratio
