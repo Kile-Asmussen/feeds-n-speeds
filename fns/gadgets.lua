@@ -295,7 +295,7 @@ return function(fns)
     --- Produces a single floating IconData at scale 0.25, placed in a corner or center.
     --- Intended as an overlay on top of a base icon in an icons[] array.
     --- Modelled after vanilla barrelling recipes (empty-water-barrel).
-    --- position: "topleft" | "topright" | "bottomleft" | "center"
+    --- position: "topleft" | "topright" | "bottomleft" | "center" | "bottomright"
     --- icon: path string (bare paths get __base__/graphics/ prepended)
     --- extras: number (icon_size), string (prototype type name), or table of IconData overrides (tint, icon_size, etc.)
     function gadgets.floating_icon(position, icon, extras)
@@ -323,12 +323,14 @@ return function(fns)
             sx, sy = -offset, -offset
         elseif position == 'topright' then
             sx, sy = offset, -offset
+        elseif position == 'bottomright' then
+            sx, sy = offset, offset
         elseif position == 'bottomleft' then
             sx, sy = -offset, offset
         elseif position == 'center' then
             sx, sy = 0, 0
         else
-            error("fns.gadgets.floating_icon: argument #1 must be 'topleft', 'topright', 'bottomleft', or 'center'", 2)
+            error("fns.gadgets.floating_icon: argument #1 must be 'topleft', 'topright', 'bottomleft', 'bottomright', or 'center'", 2)
         end
         
         return table.override({

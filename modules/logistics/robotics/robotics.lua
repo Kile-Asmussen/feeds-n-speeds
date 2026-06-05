@@ -9,6 +9,7 @@ base.charging_station_count_affected_by_quality = true
 
 table.insert(data.raw.technology['robotics'].prerequisites, 'advanced-combinators')
 
+local floating_icon = fns.gadgets.floating_icon
 local sleeper = table.deepcopy(base)
 local log_only = table.deepcopy(base)
 local cons_only = table.deepcopy(base)
@@ -35,13 +36,7 @@ table.merge(sleeper, {
     icon = utils.null,
     icons = {
         { icon = data.raw.item.roboport.icon, icon_size = 64 },
-        { 
-            icon = data.raw.item['storage-chest'].icon,
-            icon_size = 64,
-            scale = 0.25,
-            floating = true,
-            shift = { -8, 8 }
-        },
+        floating_icon('bottomleft', data.raw.item['storage-chest'].icon),
     },
 })
 
@@ -63,13 +58,7 @@ table.merge(log_only, {
     icon = utils.null,
     icons = {
         { icon = data.raw.item.roboport.icon, icon_size = 64 },
-        { 
-            icon = data.raw.item['construction-robot'].icon,
-            icon_size = 64,
-            scale = 0.25,
-            floating = true,
-            shift = { 8, -8 },
-        },
+        floating_icon('topright', data.raw.item['logistic-robot'].icon),
     },
 })
 
@@ -84,13 +73,7 @@ table.merge(cons_only, {
     icon = utils.null,
     icons = {
         { icon = data.raw.item.roboport.icon, icon_size = 64 },
-        {
-            icon = data.raw.item['construction-robot'].icon,
-            icon_size = 64,
-            scale = 0.25,
-            floating = true,
-            shift = { 8, 8 },
-        },
+        floating_icon('topright', data.raw.item['construction-robot'].icon),
     },
     base_animation = table.merge{
         animation_speed = 0.75,
