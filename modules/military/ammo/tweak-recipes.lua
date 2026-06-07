@@ -95,6 +95,7 @@ merge(recipes, {
 
     ['piercing-rounds-magazine'] = merge{ 
         energy_required = 6,
+        results = puts { ['piercing-rounds-magazine'] = 2 },
         ingredients = puts{
             ['steel-plate'] = 1,
             ['firearm-magazine'] = 2,
@@ -105,6 +106,7 @@ merge(recipes, {
 
     ['piercing-shotgun-shell'] = merge{
         energy_required = 8,
+        results = puts { ['piercing-shotgun-shell'] = 2 },
         ingredients = puts{
             ['shotgun-shell'] = 2,
             ['steel-plate'] = 1,

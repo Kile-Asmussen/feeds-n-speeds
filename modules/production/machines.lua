@@ -6,9 +6,8 @@ local table = fns.table
 local merge = table.merge
 
 merge(data.raw['assembling-machine'], {
-    __rec = true,
-    ['assembling-machine-1'] = { auto_require_pavement = 'stone-path' },
-    ['assembling-machine-2'] = {
+    ['assembling-machine-1'] = merge{ auto_require_pavement = 'stone-path' },
+    ['assembling-machine-2'] = merge{
         auto_require_pavement = 'concrete',
         crafting_speed = 1.0
     },
@@ -23,6 +22,15 @@ merge(data.raw['assembling-machine'], {
                     { direction = defines.direction.west, flow_direction = 'input-output', position = {-1, 0} },
                 }
             }
+        }
+    }
+})
+
+merge(data.raw['furnace'], {
+    ['steel-furnace'] = merge{
+        auto_require_pavement = 'stone-path',
+        energy_source = merge{
+            effectivity = 1.1
         }
     }
 })
