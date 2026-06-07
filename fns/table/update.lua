@@ -84,10 +84,14 @@ return function(table, fns)
     --- if set in a sub-table will override the behavior of __rec set in the containing table
     function table.merge(tbl1, tbl2)
         tbl2 = table.flatten_keys(tbl2)
+        local strict = tbl2.__strict and true or false
 
         for k, v in pairs(tbl2) do
-        
-            if k == '__merge' or k == '__rec' then goto continue end
+            if k == '__merge' or k == '__rec' or k == '__strict' then goto continue end
+
+            if strict and tbl1[k] == nil then
+                error("Strict merge failed to find extant key " .. k, 2)
+            end
         
             local t = type(v)
         

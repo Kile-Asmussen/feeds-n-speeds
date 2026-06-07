@@ -11,7 +11,8 @@ utilities.settings = set{
 }
 
 utilities.control = set{
-    '.reset-tech'
+    '.reset-tech',
+    '.reset-difficulty',
 }
 
 utilities.data = set{
