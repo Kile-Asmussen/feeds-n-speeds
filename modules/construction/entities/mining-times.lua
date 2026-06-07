@@ -34,11 +34,11 @@ local times = {
         ['recycler'] = 1.5,
     },
     ['mining-drill'] = {
-        ['burner-mining-drill'] = 1,
-        ['electric-mining-drill'] = 1.5,
+        ['burner-mining-drill'] = 0.8,
+        ['electric-mining-drill'] = 1.0,
         -- ['']
-        ['pumpjack'] = 1.5,
-        ['big-mining-drill'] = 3.0,
+        ['pumpjack'] = 1.0,
+        ['big-mining-drill'] = 2.0,
     },
     ['lab'] = {
         ['lab'] = 1.0,
