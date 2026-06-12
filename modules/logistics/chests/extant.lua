@@ -44,12 +44,14 @@ merge(data.raw.recipe, {
         }
     },
     ['storage-chest'] = {
+        allow_decomposition = true,
         ingredients = inputs{
             ['steel-chest'] = 1,
             ['display-panel'] = 1,
         }
     },
     ['passive-provider-chest'] = {
+        allow_decomposition = true,
         ingredients = inputs{
             ['storage-chest'] = 1,
             ['display-panel'] = 3,
@@ -114,23 +116,22 @@ end
 
 make_new_ones(data.raw.container, upscale, {
     ['wooden-chest'] = {
-        circuit_connector = utils.null,
+        __del = {'circuit_connector', 'localised_name'},
         inventory_size = 10,
-        localised_name = utils.null,
         inventory_type = "normal",
         max_health = 100,
     },
     ['iron-chest'] = {
+        __del = 'localised_name',
         circuit_connector = shift_wire,
         inventory_type = 'with_bar',
-        localised_name = utils.null,
         inventory_size = 20,
         max_health = 250,
         quality_affects_inventory_size = true,
     },
     ['steel-chest'] = {
+        __del = 'localised_name',
         circuit_connector = shift_wire,
-        localised_name = utils.null,
         inventory_size = 50,
         auto_require_pavement = 'stone-path',
         inventory_type = 'with_filters_and_bar',
@@ -146,9 +147,9 @@ make_new_ones(data.raw.container, upscale, {
 
 make_new_ones(data.raw['logistic-container'], upscale, {
     ['passive-provider-chest'] = {
+        __del = 'localised_name',
         inventory_size = 30,
         inventory_type = "with_filters_and_bar",
-        localised_name = utils.null,
         auto_require_pavement = 'concrete',
         circuit_connector = shift_wire,
         max_health = 300,
@@ -166,10 +167,10 @@ make_new_ones(data.raw['logistic-container'], upscale, {
         quality_affects_inventory_size = true,
     },
     ['active-provider-chest'] = {
+        __del = 'localised_name',
         inventory_size = 20,
         inventory_type = "with_filters_and_bar",
         auto_require_pavement = 'hazard-concrete',
-        localised_name = utils.null,
         circuit_connector = shift_wire,
         max_health = 300,
         quality_affects_inventory_size = true,

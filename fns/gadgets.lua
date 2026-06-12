@@ -243,8 +243,8 @@ return function(fns)
     end
 
     function gadgets.sort_tech_effects(effects)
-        local recipes   = table.icollect(effects, function(e) return table.match(e, { type = 'unlock-recipe' }) end)
-        local modifiers = table.icollect(effects, function(e) return not table.match(e, { type = 'unlock-recipe' }) and e or nil end)
+        local recipes = table.icollect(effects, table.match{ type = 'unlock-recipe' })
+        local modifiers = table.icollect(effects, table.differs{ type = 'unlock-recipe'})
         table.sort(recipes, function(a, b) return gadgets.recipe_lt(a.recipe, b.recipe) end)
         for _, m in ipairs(modifiers) do
             recipes[#recipes + 1] = m
@@ -300,7 +300,7 @@ return function(fns)
     --- extras: number (icon_size), string (prototype type name), or table of IconData overrides (tint, icon_size, etc.)
     function gadgets.floating_icon(position, icon, extras)
 
-        extras = extras or { icon_size = 64 }
+        extras = extras or {}
 
         if type(extras) == 'string' then
             extras = { icon_size = gadgets.icon_size[extras] }

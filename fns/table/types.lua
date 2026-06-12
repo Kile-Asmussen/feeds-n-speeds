@@ -20,8 +20,7 @@ return function(table, fns)
 
     function table.has_array(tbl)
         assert(type(tbl) == "table", "has_array: argument #1 must be a table")
-        for _, v in ipairs(tbl) do return true end
-        return false
+        return tbl[1] and true or false
     end
 
     function table.is_array(tbl)

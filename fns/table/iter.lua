@@ -16,57 +16,43 @@ return function(table, fns)
 
     local function_or_table = { ['function'] = true, table = true }
 
-    function table.imap(tbl, func)
+     table.imap = table.twoarg(function_or_table, function(tbl, func)
         func = mapper(func)
         for i = 1, #tbl do
             tbl[i] = func(tbl[i], i)
         end
         return tbl
-    end
-    table.declare_twoarg('imap', function_or_table)
+    end, 'imap')
 
-    function table.map(tbl, func)
+    table.map = table.twoarg(function_or_table, function(tbl, func)
         func = mapper(func)
         for k, v in pairs(tbl) do
             tbl[k] = func(v, k)
         end
         return tbl
-    end
-    table.declare_twoarg('map', function_or_table)
+    end, 'map')
 
-    function table.project(tbl, func)
+    table.collect = table.twoarg(function_or_table, function(tbl, func)
+        local func = mapper(func)
         local res = {}
         for k, v in pairs(tbl) do
-            local k_, v_ = func(k, v)
-            if k_ ~= nil then res[k_] = v_ end
+            res[k] = func(v, k)
         end
         return res
-    end
-    table.declare_twoarg('project', 'function')
+    end, 'collect')
 
-    function table.collect(tbl, thing)
-        local func = thing
-        if type(thing) == 'table' then func = function(k) return thing[k] end end
-        local res = {}
-        for k, v in pairs(tbl) do
-            res[k] = func(v)
-        end
-        return res
-    end
-    table.declare_twoarg('collect', function_or_table)
-
-    local insert = table.insert
-    function table.icollect(tbl, thing)
-        local func = thing
-        if type(thing) == 'table' then func = function(k) return thing[k] end end
-        local res = {}
-        local n = 1
+    table.icollect = table.twoarg(function_or_table, function(tbl, func)
+        local func = mapper(func)
+        local res, n = {}, 1
         for i = 1, #tbl do
-            insert(res, func(tbl[i]))
+            local v = func(tbl[i])
+            if v ~= nil then
+                res[n] = v
+                n = n + 1
+            end
         end
         return res
-    end
-    table.declare_twoarg('icollect',  function_or_table)
+    end, 'icollect')
 
     local function opairs_iter(state)
         state.i = state.i + 1
@@ -76,10 +62,10 @@ return function(table, fns)
         end
     end
 
+    --- Iterate over ordered string keys
     function table.opairs(tbl, mapper)
-        mapper = mapper or {}
         assert(type(tbl) == 'table', "fns.table.opairs: argument #1 must be a table")
-        assert(type(mapper) == 'table', "fns.table.opairs: argument #1 must be a table")
+        assert(mapper == nil or type(mapper) == 'function' or type(mapper) == 'table', "fns.table.opairs: argument #2 must be a table or function")
         return opairs_iter, { i=0, keys=table.sorted_keys(tbl, mapper), tbl=tbl }, nil
     end
 

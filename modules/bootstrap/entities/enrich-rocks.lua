@@ -30,14 +30,13 @@ merge(data.raw['simple-entity'], {
     },
     ['big-rock'] = {
         minable = {
+            __del = {'result', 'count'},
             __merge = true,
             results = puts{
                 ['stone']      = { 18, 22 },
                 ['iron-ore']   = { 0, 8 },
                 ['copper-ore'] = { 0, 3 },
             },
-            result = fns.utils.null,
-            count = fns.utils.null,
         }
     }
 })
@@ -57,8 +56,7 @@ merge(data.raw['tree'], {
                 ['wood']   = 2,
                 ['sulfur'] = { 1, 0.1 },
             },
-            result = fns.utils.null,
-            count  = fns.utils.null,
+            __del = {'result', 'count'},
         }
     },
 })

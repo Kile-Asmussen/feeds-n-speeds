@@ -12,6 +12,8 @@ local function sh(shift, tbl)
 end
 
 local mini_reactor = table.merge(table.deepcopy(data.raw.reactor['heating-tower']), {
+    __del = {'icon', 'working_sound', 'meltdown_action', 'working_light_picture'},
+
     name = fns 'electric-heater',
 
     connection_patches_connected = table.deepcopy{
@@ -28,7 +30,6 @@ local mini_reactor = table.merge(table.deepcopy(data.raw.reactor['heating-tower'
     },
     auto_require_pavement = 'stone-path',
 
-    icon = fns.utils.null,
     icons = {
         fns.gadgets.icon("icons/small-lamp.png", { tint_as_overlay = true, tint = { 1, 0.5, 0.5 } }),
         { icon = '__base__/graphics/icons/heat-pipe.png', icon_size = 64, floating = true, scale = 0.4, shift = { 0, 9.6 } },
@@ -47,13 +48,11 @@ local mini_reactor = table.merge(table.deepcopy(data.raw.reactor['heating-tower'
         {
             property = 'pressure',
             min = 500,
-            max = 2000,
+            max = 4000,
         }
     },
 
     corpse = 'heat-pipe-remnants',
-
-    working_sound = fns.utils.null,
 
     consumption = "1MW",
     neighbour_bonus = 0,
@@ -65,7 +64,7 @@ local mini_reactor = table.merge(table.deepcopy(data.raw.reactor['heating-tower'
     },
 
     heat_buffer = {
-        max_temperature = 300,
+        max_temperature = 315,
         specific_heat = "100kJ",
         max_transfer = "1GW",
         connections = {
@@ -78,10 +77,6 @@ local mini_reactor = table.merge(table.deepcopy(data.raw.reactor['heating-tower'
 
     corpse = 'lamp-remnants',
     dying_explosion = 'lamp-explosion',
-
-    meltdown_action = fns.utils.null, -- maybe a hand-grenade?
-
-    working_light_picture = fns.utils.null,
 
     picture = {
         layers = {
@@ -152,19 +147,25 @@ data.raw.recipe['heat-pipe'].auto_unlocked_by = mini_reactor.name
 
 local boiler = data.raw.boiler.boiler
 local heat_boiler = table.merge(table.deepcopy(data.raw.boiler['heat-exchanger']), {
+    __del = {'icon', 'working_light_picture'},
     name = fns 'heat-boiler',
     energy_consumption = boiler.energy_consumption,
     target_temperature = boiler.target_temperature,
     energy_source = {
         __merge = true,
-        max_temperature = 300,
+        __rec = true,
+        __del = { 'heat_picture', 'minimum_glow_temperature' },
+        max_temperature = 315,
         min_working_temperature = boiler.target_temperature,
         specific_heat = "100kJ",
         max_transfer = "1GW",
     },
+    minable = {
+        __merge = true,
+        result = fns'heat-boiler',
+    },
     auto_require_pavement = 'stone-path',
     energy_consumption = "3.6MW",
-    icon = fns.utils.null,
     icons = {
         {
             icon = '__base__/graphics/icons/boiler.png',
@@ -180,7 +181,7 @@ local heat_boiler = table.merge(table.deepcopy(data.raw.boiler['heat-exchanger']
         }
     },
     pictures = table.deepcopy(data.raw.boiler[fns 'electroboiler'].pictures),
-    working_light_picture = fns.utils.null,
+    working_sound = table.deepcopy(data.raw.boiler[fns 'electroboiler'].working_sound),
 })
 
 local heat_boiler_item = table.merge(table.deepcopy(data.raw.item.boiler), {
@@ -205,26 +206,24 @@ data:extend{ heat_boiler, heat_boiler_item, heat_boiler_recipe }
 local tank = data.raw['storage-tank']['storage-tank']
 
 local tank_o_sand = table.merge(table.deepcopy(data.raw.reactor['heating-tower']), {
+    __del = {'icon', 'working_light_picture', 'working_sound'},
     name = fns 'tank-o-sand',
     minable = table.merge(table.deepcopy(tank.minable), { result = fns 'tank-o-sand' }),
     energy_source = { type = "void" },
     consumption = "0.001W",
     heat_buffer = {
         __merge = true,
+        __del = {'heat_picture'},
         max_temperature = 1000,
         specific_heat = "5MJ",
         max_transfer = "1GW",
-        heat_picture = fns.utils.null,
     },
     auto_require_pavement = 'stone-path',
-    working_light_picture = fns.utils.null,
-    icon = fns.utils.null,
     picture = { layers = {} },
     icons = {
         fns.gadgets.icon("icons/storage-tank.png"),
         { icon = '__base__/graphics/icons/heat-pipe.png', icon_size = 64, floating = true, scale = 0.4, shift = { 0, 9.6 } },
     },
-    working_sound = fns.utils.null,
 })
 
 tank_o_sand.picture.layers = {

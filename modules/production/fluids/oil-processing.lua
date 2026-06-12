@@ -9,7 +9,7 @@ for _, rec in ipairs{
 } do
     rec = data.raw.recipe[rec]
     if rec then
-        table.find(
+        table.ifind(
             rec.ingredients,
             table.match{type='fluid',name='water'}
         ).name='steam'

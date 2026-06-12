@@ -3,16 +3,17 @@ return function(table, fns)
     local assert = fns.assert
     local pairs = table.pairs
 
-    function table.override(tbl1, tbl2)
+    --- Write values of tbl2 into tbl1
+    table.override = table.twoarg(function(tbl1, tbl2)
         for k, v in pairs(tbl2) do
             tbl1[k] = v
         end
 
         return tbl1
-    end
-    table.declare_twoarg('override')
+    end, 'override')
 
-    function table.replace(tbl1, tbl2)
+    --- Replace values in tbl1 with values from tbl2
+    table.replace = table.twoarg(function(tbl1, tbl2)
         for k, _ in pairs(tbl1) do
             if tbl2[k] ~= nil then
                 tbl1[k] = tbl2[k]
@@ -20,10 +21,10 @@ return function(table, fns)
         end
 
         return tbl1
-    end
-    table.declare_twoarg('replace')
+    end, 'replace')
 
-    function table.include(tbl1, tbl2)
+    --- Add values from tbl2 to tbl1 if the keys are not populated
+    table.include = table.twoarg(function(tbl1, tbl2)
         for k, v in pairs(tbl2) do
             if tbl1[k] == nil then
                 tbl1[k] = v
@@ -31,33 +32,45 @@ return function(table, fns)
         end
 
         return tbl1
-    end
-    table.declare_twoarg('include')
+    end, 'include')
 
-    function table.transmute(tbl1, tbl2)
+    --- Apply functions tbl2 to tbl1's values according to keys
+    table.transmute = table.twoarg(function(tbl1, tbl2)
         for k, _ in pairs(tbl1) do
             local func = tbl2[k]
             assert(type(func) == 'function', "fns.table.transmute: argument #2 must only contain functions")
-            tbl1[k] = func(tbl1)
-        end
-    end
-    table.declare_twoarg('transmute')
-
-    function table.append(tbl1, tbl2)
-        for i = 1, #tbl2 do
-            table.insert(tbl1, tbl2[i])
+            tbl1[k] = func(tbl1[k], tbl1)
         end
         return tbl1
-    end
-    table.declare_twoarg('append')
+    end, 'transmute')
 
-    function table.cut(tbl, n)
-        while #tbl > n do
-            table.remove(tbl)
+    --- Append numeric keys to a table
+    table.append = table.twoarg(function(tbl1, tbl2)
+        local n = #tbl1
+        for i = 1, #tbl2 do
+            tbl1[n + i] = tbl2[i]
         end
-    end
-    table.declare_twoarg('cut', 'number')
+        return tbl1
+    end, 'append')
 
+    --- Cut a table down to a given size
+    table.cut = table.twoarg('number', function(tbl, n)
+        for i = #tbl, n, -1 do
+            tbl[i] = nil
+        end
+        return tbl
+    end, 'cut')
+
+    --- Delete the keys in the second table
+    table.delete = table.twoarg(function(tbl1, tbl2)
+        for i = 1, #tbl2 do
+            tbl1[tbl2[i]] = nil
+        end
+        return tbl1
+    end, 'delete')
+
+    --- Flatten table-valued keys in tbl into their contents
+    --- [{'a', 'b'}] = x   =>  a = x, b = x
     function table.flatten_keys(tbl)
         assert(type(tbl) == 'table', "argument #1 must be a table")
         local res = {}
@@ -71,23 +84,12 @@ return function(table, fns)
         return res
     end
 
-    local merge
-    --- Merge tbl2 into tbl1
-    --- tlb2 and its subtables can have special keys
-    ---
-    --- __rec : boolean?
-    --- if __rec is set to true, then merge all subtables instead of overwriting
-    --- despite the name 'rec' as in 'recursion', this does not propagate to subtables
-    --- it only applies for this single level
-    ---
-    --- __merge : boolean?
-    --- if set in a sub-table will override the behavior of __rec set in the containing table
-    function table.merge(tbl1, tbl2)
+    local function merge(tbl1, tbl2)
         tbl2 = table.flatten_keys(tbl2)
         local strict = tbl2.__strict and true or false
 
         for k, v in pairs(tbl2) do
-            if k == '__merge' or k == '__rec' or k == '__strict' then goto continue end
+            if k == '__merge' or k == '__rec' or k == '__strict' or k == '__del' then goto continue end
 
             if strict and tbl1[k] == nil then
                 error("Strict merge failed to find extant key " .. k, 2)
@@ -100,7 +102,7 @@ return function(table, fns)
         
             elseif t == 'table' and type(tbl1[k]) == 'table' then
 
-                if (tbl2.__rec or v.__merge == true) and v.__merge ~= false then
+                if (tbl2.__rec and v.__merge ~= false) or v.__merge then
                     merge(tbl1[k], v)
                 else
                     tbl1[k] = v
@@ -112,8 +114,64 @@ return function(table, fns)
         
             ::continue::
         end
+
+        local delete = tbl2.__del
+
+        if delete == nil then return tbl1 end
+
+        if delete ~= nil and type(delete) ~= 'table' then
+            delete = { delete }
+            tbl2.__del = delete
+        elseif #delete == 0 then
+            delete = nil
+            tbl2.__del = nil
+            return tbl1
+        end
+
+
+        if strict then
+            for i = 1, #delete do
+                if tbl1[delete[i]] ~= nil then
+                    tbl1[delete[i]] = nil
+                else
+                    error("Strict merge failed to find extant key " .. delete[i], 2)
+                end
+            end
+        else
+            for i = 1, #delete do
+                tbl1[delete[i]] = nil
+            end
+        end
+
         return tbl1
     end
-    merge = table.merge
-    table.declare_twoarg('merge')
+
+    --- Merge tbl2 into tbl1
+    --- See fns.table.twoarg in fns/table/base.lua
+    ---
+    --- Non-table values in tbl2 will be inserted directly into tbl1
+    --- Function values in tbl2 will be called with the corresponding value in tbl1
+    ---     and the return value will be inserted
+    ---
+    --- Table keys in tbl2 will be unrolled into separate keys,
+    ---     [{'a', 'b'}] = x   =>  a = x, b = x
+    --- 
+    --- Subtables will be inserted directly unless special keys are set:
+    ---
+    --- __rec : boolean?
+    --- if __rec is set to true, then merge all subtables instead of overwriting
+    --- despite the name 'rec' as in 'recursion', this does not propagate to subtables
+    --- it only applies for this single level
+    ---
+    --- __merge : boolean?
+    --- if set in a sub-table will override the behavior of __rec set in the containing table
+    ---
+    --- Futher special keys are available:
+    ---
+    --- __del : array[any]
+    --- if set will delete the given keys
+    ---
+    --- __strict : boolean?
+    --- if set, attempting to add new keys will be rejected
+    table.merge = table.twoarg(merge, 'merge')
 end

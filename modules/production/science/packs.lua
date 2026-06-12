@@ -33,9 +33,9 @@ recipes['logistic-science-pack'].ingredients = {
 recipes['chemical-science-pack'].category = 'crafting-with-fluid'
 recipes['chemical-science-pack'].ingredients = {
     { type = 'item', name = 'engine-unit', amount = 2 },
+    { type = 'item', name = 'electric-engine-unit', amount = 2 },
     { type = 'item', name = 'advanced-circuit', amount = 3 },
-    { type = 'item', name = 'concrete', amount = 10 },
-    { type = 'fluid', name = 'sulfuric-acid', amount = 10 },
+    { type = 'fluid', name = 'sulfuric-acid', amount = 20 },
 }
 
 recipes['military-science-pack'].category = 'crafting-with-fluid'
@@ -51,10 +51,10 @@ recipes['production-science-pack'].ingredients = {
     { type = 'item', name = 'rail', amount = 40 },
     { type = 'item', name = 'substation', amount = 1 },
     { type = 'item', name = 'productivity-module', amount = 1 },
-    { type = 'fluid', name = 'steam', amount = 200 },
+    { type = 'fluid', name = 'steam', amount = 210, minimum_temperature = 165 },
 }
 
-recipes['utility-science-pack'].emissions_multiplier = 1.5
+recipes['utility-science-pack'].emissions_multiplier = 3
 recipes['utility-science-pack'].category = 'crafting-with-fluid'
 table.insert(recipes['utility-science-pack'].ingredients,
     { type = 'fluid', name = 'water', amount = 1000 }

@@ -91,9 +91,22 @@ Game object identifiers are generated via `fns.name()` or its alias via operator
 
 ### Utility functions
 
-The `fns.table` module provides many useful functions, notably `fns.table.merge` defined in `./fns/table/updates.lua`, which is very powerful.
+The `fns.table` module provides many useful functions, as well as re-exporting all the standard library `table` functions.
 
-Additionally `gadgets.lua` contains some useful functions, notably `gadgets.throughputs` that creates the arrays used for ingredients and results of recipes.
+It cannot be imported directly, due to how the namespacing system works. Import `fns.lua`, it recursively imports `fns/table.lua`. The custom is to define `local table = fns.table` at the top of files.
+
+A lot of Factorio modding is editing tables.
+
+Five functions of note in `fns/table/updates.lua`:
+- `table.override`
+- `table.replace`
+- `table.include`
+- `table.transmute`
+- `table.merge`
+
+These can be used to avoid many assignment statements.
+
+Additionally `fns/gadgets.lua` contains some useful functions, notably `fns.gadgets.throughputs` that creates the arrays used for ingredients and results of recipes.
 
 ### Module Pattern
 

@@ -8,8 +8,9 @@ local function add_subgroups(args)
     assert(base, "no such item-subgroup: " .. args[1])
     local n = string.byte('b')
     for i=2,#args do
+        local name = fns(args[i])
         data:extend{table.merge(table.deepcopy(base), {
-            name = fns(args[i]),
+            name = name,
             order = base.order .. '-' .. string.char(n),
         })}
         n = n + 1
@@ -49,7 +50,7 @@ add_subgroups{
 data.raw['item-subgroup']['agriculture'] = nil
 data.raw['item-subgroup']['environmental-protection'] = nil
 
--- map[subgroup_id -> array[item/fluid/recipe id] + map[item/fluid/recipe id -> order]]
+-- map[subgroup_id -> array-map[integer index -> item/fluid/recipe id, item/fluid/recipe id -> order]]
 local ordering = {
     storage = {
         fns'wooden-chest',
@@ -63,36 +64,47 @@ local ordering = {
         'buffer-chest',
     },
     belt = {
-        ['transport-belt'] = 'a-a',
-        ['underground-belt'] = 'a-b',
-        ['splitter'] = 'a-c',
-        ['fast-transport-belt'] = 'b-a',
-        ['fast-underground-belt'] = 'b-c',
-        ['fast-splitter'] = 'b-c',
+        'transport-belt',
+        'underground-belt',
+        'splitter',
+        nil,
+        'fast-transport-belt',
+        'fast-underground-belt',
+        'fast-splitter',
     },
     [fns'better-belt'] = {
-        ['express-transport-belt'] = 'a-a',
-        ['express-underground-belt'] = 'a-b',
-        ['express-splitter'] = 'a-c',
-        ['turbo-transport-belt'] = 'b-a',
-        ['turbo-underground-belt'] = 'b-b',
-        ['turbo-splitter'] = 'b-c',
+        'express-transport-belt',
+        'express-underground-belt',
+        'express-splitter',
+        nil,
+        'turbo-transport-belt',
+        'turbo-underground-belt',
+        'turbo-splitter',
     },
     ['energy-pipe-distribution'] = {
         'small-electric-pole',
         'medium-electric-pole',
         'big-electric-pole',
         'substation',
+        nil,
         'pipe',
         'pipe-to-ground',
         'heat-pipe',
+        nil,
         'beacon',
     },
     [fns'energy-pipe-storage'] = {
         'accumulator',
         'power-switch',
+        fns'electric-link',
+        nil,
         'storage-tank',
         'pump',
+        'one-way-valve',
+        'overflow-valve',
+        'top-up-valve',
+        nil,
+        fns'tank-o-sand',
     },
     transport = {
         'locomotive',

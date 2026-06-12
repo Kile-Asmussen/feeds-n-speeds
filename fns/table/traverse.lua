@@ -6,25 +6,16 @@ return function(table, fns)
     local pairs = fns.table.pairs
     local ipairs = fns.table.ipairs
 
-    local search
-    function table.search(any, fn)
-        if fn(any) then return any end
-
-        if type(any) ~= 'table' then return nil end
-
-        for k, v in pairs(any) do
-            local found = search(v, fn)
-            if found ~= nil then return found end
-        end
-
-        return nil
-    end
-    search = table.search
-    table.declare_twoarg('search', 'function')
-
-
-    local traverse
-    function table.traverse(tbl, func)
+    --- Iterate in depth through a table, mapping values
+    ---
+    --- func is a function returning 2 values:
+    ---     - what to replace the current index with
+    ---     - if replacing should happen
+    ---
+    --- in the case of a subtable, a truthy value as the replace value
+    --- but a falsy should-replace value means iteration should not 
+    --- proceed into the sub-table.
+    local function traverse(tbl, func)
         for k, v in pairs(tbl) do
             if type(v) == 'table' then
                 local stop, replace = func(v, k)
@@ -42,19 +33,11 @@ return function(table, fns)
         end
         return tbl
     end
-    traverse = table.traverse
+    table.traverse = table.twoarg('function', traverse, 'traverse')
 
-    table.declare_twoarg('traverse', 'function')
-
-    function table.replace(tbl, a, b)
-        table.traverse(tbl, function(v)
-            if a == v then
-            return b, true
-            end
-        end)
-    end
-
-    function table.access(tbl, keys)
+    --- Descend into a table and its subtables according to a list of keys
+    --- and fetch the value at the bottom if any
+    table.access = table.twoarg(function(tbl, keys)
         for _, key in ipairs(keys) do
             if type(tbl) ~= 'table' then
                 return nil
@@ -68,12 +51,17 @@ return function(table, fns)
         end
         
         return tbl
-    end
-    table.declare_twoarg('access')
+    end, 'access')
 
-    function table.assign(tbl, keys)
+    --- Descend into a table and its subtables according to a list of keys
+    --- and assign the keys.val value at the bottom (will create tables as necessary)
+    table.assign = table.twoarg(function(tbl, keys)
         if #keys == 0 then
-            return keys.val
+            if type(keys.val) == 'function' then
+                return keys.val(tbl)
+            else
+                return keys.val
+            end
         end
 
         local last = table.remove(keys)
@@ -89,35 +77,14 @@ return function(table, fns)
             down = down[key]
         end
         
-        down[last] = keys.val
-
-        return tbl
-    end
-    table.declare_twoarg('assign')
-
-    function table.apply(tbl, keys)
-        if #keys == 0 then
-            error("table.apply: cannot apply to empty path", 3)
+        if type(keys.val) == 'function' then
+            down[last] = keys.val(down[last])
+        else
+            down[last] = keys.val
         end
 
-        local last = table.remove(keys)
-        local down = tbl
-        
-        for _, key in ipairs(keys) do
-            if down[key] == nil then down[key] = {} end
-
-            if type(down[key]) ~= 'table' then
-                down[key] = { __old = down[key] }
-            end
-
-            down = down[key]
-        end
-        
-        down[last] = keys.op(down[last])
-
         return tbl
-    end
-    table.declare_twoarg('apply')
+    end, 'assign')
 
     function table.index(tbl)
         assert(type(tbl) == "table", "table.index: argument #1 must be a table")
@@ -149,6 +116,7 @@ return function(table, fns)
         end
     end
 
+    --- Fully duplicating deepcopy, not suitable for recursive tables
     function table.deepcopy(tbl)
         if type(tbl) ~= 'table' then return tbl end
         local res = {}

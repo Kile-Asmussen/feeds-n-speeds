@@ -9,7 +9,7 @@ local old_recipe = data.raw.recipe['stone-furnace']
 
 table.merge(old_recipe, {
     ingredients = puts{ stone = 20 },
-    icon = fns.utils.null,
+    __del = 'icon',
     icons = {
         icon('icons/stone-furnace.png', 'recipe'),
         floating_icon('topleft', 'icons/stone.png'),
@@ -42,7 +42,7 @@ local bmp = {
     type = 'technology',
     name = fns 'basic-materials-processing',
     icons = {
-        icon('entity/stone-furnace/stone-furnace.png', 146),
+        icon('entity/stone-furnace/stone-furnace.png', { icon_size = 146, scale=0.6 }),
         icon('technology/steel-axe.png', 'technology'),
     },
     research_trigger = {

@@ -27,33 +27,33 @@ local merge = fns.table.merge
 
 merge(rails, { __rec = true,
     {
+        __del = 'icon',
         name = fns 'rail-1',
         order = 'a[rail]-a[rail]-b[stone-brick]',
         auto_unlocked_by = 'railway',
         ingredients = puts{ ['stone-brick'] = 4, ['iron-stick'] = 2, ['steel-plate'] = 1 },
         icons = rail_icons('stone-brick'),
+        allow_auto_recycle = false,
+        localised_name = {"item-name.rail"}
     },
     { 
+        __del = 'icon',
         name = fns 'rail-2',
         order = 'a[rail]-a[rail]-c[concrete]',
         auto_unlocked_by = fns 'concrete-rail',
         ingredients = puts{ ['concrete'] = 3, ['steel-plate'] = 1 },
         icons = rail_icons('concrete'),
+        allow_auto_recycle = false,
+        localised_name = {"item-name.rail"}
     },
     { 
+        __del = 'icon',
         name = fns 'rail-3',
         order = 'a[rail]-a[rail]-d[refined-concrete]',
         auto_unlocked_by = fns 'concrete-rail',
         ingredients = puts{ ['refined-concrete'] = 1, ['steel-plate'] = 1 },
         allow_productivity = true,
         icons = rail_icons('refined-concrete'),
-    }
-})
-
-merge(rails, {
-    __rec = true,
-    [{1,2,3}] = {
-        icon = fns.utils.null,
         allow_auto_recycle = false,
         localised_name = {"item-name.rail"}
     }

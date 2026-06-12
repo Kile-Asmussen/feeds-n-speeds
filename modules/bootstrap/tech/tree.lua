@@ -37,8 +37,7 @@ merge(data.raw.technology, {
             item = 'iron-plate',
             type = 'craft-item'
         },
-        unit = utils.null,
-        prerequisites = utils.null,
+        __del = {'unit', 'prerequisites'},
         localised_description = {fns.locale_key('technology-description', 'tweaked-steel-processing')}
     },
 
@@ -72,6 +71,7 @@ merge(data.raw.recipe, {
     [{
         'transport-belt',
         'inserter',
+        'repair-pack',
         'lab'
     }] = { auto_unlocked_by = fns 'lab-tech' },
     [{

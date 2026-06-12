@@ -1,6 +1,7 @@
---! data: unhide the three valve prototypes and add an instrumented pipe (1x1 storage tank)
+--! data: unhide the three valve prototypes
 local fns = require 'fns'
 local table = fns.table
+local gadgets = fns.gadgets
 local inputs = fns.gadgets.throughputs
 
 -- tints matching the logistic chest color language:
@@ -18,86 +19,26 @@ for name, tint in pairs(valve_tints) do
     local item   = data.raw.item[name]
 
     entity.hidden = false
-    item.hidden   = false
 
-    item.icons = {
-        { icon = entity.icon, icon_size = 64 },
-        { icon = entity.icon, icon_size = 64, tint = tint },
-    }
-
-    item.subgroup = 'energy-pipe-distribution'
-    item.auto_unlocked_by = 'fluid-handling'
+    table.merge(item, {
+        hidden   = false,
+        icons = {
+            gadgets.icon(data.raw.pipe.pipe.icon),
+            gadgets.floating_icon('topleft', data.raw['virtual-signal']['right-arrow'].icon, { scale = 0.33, tint = tint }),
+        },
+        __del = 'icon',
+        auto_unlocked_by = 'fluid-handling',
+    })
 end
 
 for name in pairs(valve_tints) do
     data:extend{{
         type             = 'recipe',
         name             = name,
-        ingredients      = inputs{ ['iron-plate'] = 2, ['pipe'] = 1 },
-        results          = { { type = 'item', name = name, amount = 1 } },
+        ingredients      = inputs{ ['copper-plate'] = 2, ['pipe'] = 1 },
+        results          = inputs{ [name] = 1 },
         energy_required  = 1,
         enabled          = false,
         auto_unlocked_by = 'fluid-handling',
     }}
 end
-
-local pipe_cross = '__base__/graphics/entity/pipe/pipe-cross.png'
-
-local instrumented_pipe = table.deepcopy(data.raw['storage-tank']['storage-tank'])
-instrumented_pipe.name              = fns 'instrumented-pipe'
-instrumented_pipe.collision_box     = { { -0.5, -0.5 }, { 0.5, 0.5 } }
-instrumented_pipe.selection_box     = { { -0.5, -0.5 }, { 0.5, 0.5 } }
-instrumented_pipe.two_direction_only = false
-instrumented_pipe.fluid_box.volume  = 100
-instrumented_pipe.fluid_box.pipe_connections = {
-    { position = { 0, 0 }, direction = defines.direction.north },
-    { position = { 0, 0 }, direction = defines.direction.east  },
-    { position = { 0, 0 }, direction = defines.direction.south },
-    { position = { 0, 0 }, direction = defines.direction.west  },
-}
-instrumented_pipe.minable           = { mining_time = 0.1, result = fns 'instrumented-pipe' }
-instrumented_pipe.corpse            = 'pipe-remnants'
-instrumented_pipe.dying_explosion   = 'pipe-explosion'
-instrumented_pipe.max_health        = 100
-instrumented_pipe.window_bounding_box = { { 0, 0 }, { 0, 0 } }
-instrumented_pipe.icon              = pipe_cross
-instrumented_pipe.icon_draw_specification = { scale = 0.5 }
-instrumented_pipe.pictures = {
-    picture = {
-        sheets = {
-            { filename = pipe_cross, width = 128, height = 128, frames = 1, scale = 0.5, priority = 'extra-high' },
-        }
-    },
-    flow_sprite        = data.raw['storage-tank']['storage-tank'].pictures.flow_sprite,
-    fluid_background   = data.raw.pipe.pipe.pictures.fluid_background,
-    gas_flow           = data.raw['storage-tank']['storage-tank'].pictures.gas_flow,
-    window_background  = data.raw['storage-tank']['storage-tank'].pictures.window_background,
-}
-
-data:extend{ instrumented_pipe }
-
-data:extend{
-    {
-        type            = 'item',
-        name            = fns 'instrumented-pipe',
-        icon            = pipe_cross,
-        icon_size       = 128,
-        icon_draw_specification = { scale = 0.5 },
-        place_result    = fns 'instrumented-pipe',
-        stack_size      = 50,
-        subgroup        = 'energy-pipe-distribution',
-        order           = 'c-b',
-        drop_sound      = data.raw.item.pipe.drop_sound,
-        pick_sound      = data.raw.item.pipe.pick_sound,
-        inventory_move_sound = data.raw.item.pipe.inventory_move_sound,
-    },
-    {
-        type             = 'recipe',
-        name             = fns 'instrumented-pipe',
-        ingredients      = inputs{ ['pipe'] = 1, ['electronic-circuit'] = 1 },
-        results          = { { type = 'item', name = fns 'instrumented-pipe', amount = 1 } },
-        energy_required  = 1,
-        enabled          = false,
-        auto_unlocked_by = 'fluid-handling',
-    },
-}

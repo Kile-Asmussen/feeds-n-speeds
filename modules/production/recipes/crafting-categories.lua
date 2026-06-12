@@ -113,6 +113,8 @@ local assignments = {
         'iron-chest',
         'steel-chest',
         fns 'barrel-tapper',
+        'underground-pipe',
+        'pipe',
 
         'firearm-magazine',
         'piercing-rounds-magazine',
@@ -139,6 +141,7 @@ local assignments = {
         fns 'big-steel-chest',
         fns 'big-steel-hopper',
         'storage-tank',
+        'low-density-structure',
 
         'cannon-shell',
         'explosive-cannon-shell',
@@ -146,6 +149,7 @@ local assignments = {
         'railgun-ammo',
 
         'gun-turret',
+        'engine-unit',
         fns 'shotgun-turret',
         fns 'cannon-turret',
     },

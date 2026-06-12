@@ -30,7 +30,7 @@ data:extend{
         effects = {},
         research_trigger = {
             type = 'craft-item',
-            item = 'concrete',
+            item = 'stone-wall',
             count = 100,
         },
     }

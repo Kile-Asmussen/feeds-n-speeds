@@ -25,7 +25,7 @@ nuclear_reactor.consumption = fns.gadgets.to_watts(10*turbine_output)
 heating_tower.consumption = fns.gadgets.to_watts(5*turbine_output)
 heat_exchanger.energy_consumption = fns.gadgets.to_watts(2*turbine_output)
 
-for _, reactor in ipairs {nuclear_reactor, heating_tower} do
+for _, reactor in ipairs{nuclear_reactor, heating_tower} do
     reactor.heat_buffer.min_working_temperature = water.max_temperature
     reactor.heat_buffer.max_temperature = max_temperature
 end
@@ -38,12 +38,7 @@ heat_exchanger.energy_source.min_working_temperature = high_temperature
 steam_turbine.maximum_temperature = high_temperature
 steam_turbine.energy_source.max_temperature = high_temperature
 
--- heating_tower.localised_description = {fns.locale_key('entity-description', 'tweaked-heating-tower')}
--- nuclear_reactor.localised_description = {fns.locale_key('entity-description', 'tweaked-nuclear-reactor')}
-
 nuclear_reactor.neighbour_bonus = 0.5
-
--- data.raw.technology['heating-tower'].localised_description = {fns.locale_key('technology-description', 'tweaked-heating-tower')}
 
 data.raw.recipe['acid-neutralisation'].results[1].temperature = high_temperature
 

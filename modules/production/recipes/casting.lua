@@ -3,17 +3,28 @@ local fns = require 'fns'
 local table = fns.table
 local recipes = data.raw.recipe
 
-recipes['casting-pipe'].allow_productivity = true
+recipes['casting-pipe'] = nil
 recipes['casting-pipe-to-ground'] = nil
-fns.gadgets.remove_unlocks{'casting-pipe-to-ground'}
+recipes['casting-low-density-structure'] = nil
+fns.gadgets.remove_unlocks{'casting-pipe-to-ground', 'casting-low-density-structure', 'casting-pipe'}
+data.raw.technology['low-density-structure-productivity'].effects = {
+  {
+    change = 0.1,
+    recipe = "low-density-structure",
+    type = "change-recipe-productivity"
+  },
+}
 
 table.merge(recipes['casting-iron-stick'], {
     ingredients = {{ type='fluid', name='molten-iron', amount=10 }},
     results = {{ type='item', name='iron-stick', amount=2 }},
 })
+table.merge(recipes['casting-copper-cable'], {
+    ingredients = {{ type='fluid', name='molten-copper', amount=10 }},
+    results = {{ type='item', name='copper-cable', amount=2 }},
+})
 
 for _, r in ipairs{
-    'casting-pipe',
     'casting-iron-gear-wheel',
     'casting-iron-stick',
     'casting-copper-cable',
@@ -21,37 +32,11 @@ for _, r in ipairs{
     recipes[r].energy_required = 1.6
 end
 
+for _, r in pairs(data.raw.recipe) do
+
+end
+
 data:extend{
-    {
-        type = 'recipe',
-        name = fns 'casting-engine',
-        allow_productivity = true,
-        allow_auto_recycle = false,
-        auto_unlocked_by = 'foundry',
-        subgroup = 'intermediate-product',
-        order = data.raw.item['engine-unit'].order .. '-a[casting]',
-        enabled = false,
-        icons = {
-            { icon=data.raw.item['engine-unit'].icon, },
-            {
-                icon='__space-age__/graphics/icons/fluid/molten-iron.png',
-                scale=0.33,
-                shift={6, -6},
-                floating=true
-            }
-        },
-        category = 'metallurgy',
-        ingredients = {
-            { type='fluid', name='molten-iron', amount=60 },
-            { type='item', name='steel-plate', amount=3 },
-            { type='item', name='iron-gear-wheel', amount=6 },
-            { type='item', name='pipe', amount=3 },
-        },
-        energy_required = 40,
-        results = {
-            { type='item', name='engine-unit', amount=4 }
-        }
-    },
     {
         type = 'recipe',
         name = fns 'casting-heat-pipe',
@@ -64,14 +49,18 @@ data:extend{
         icons = {
             {
                 icon=data.raw.item['heat-pipe'].icon,
-                scale=0.5,
-                shift={-4, 4},
             },
             {
                 icon='__space-age__/graphics/icons/fluid/molten-copper.png',
                 scale=0.33,
+                shift={-3, -6},
+                floating=true,
+            },
+            {
+                icon='__space-age__/graphics/icons/fluid/molten-iron.png',
+                scale=0.33,
                 shift={6, -6},
-                floating=true
+                floating=true,
             },
         },
         category = 'metallurgy',
@@ -95,21 +84,19 @@ local function melt_down(item, input, fluid, output)
         allow_productivity = false,
         auto_unlocked_by = 'foundry',
         group = 'intermediate-products',
-        localised_name = { fns.locale_key('recipe-name', 'melt-scrap'), 'item-name.' .. item },
+        localised_name = { fns.locale_key('recipe-name', 'melt-scrap'), {'item-name.' .. item} },
     
         icons = {
             {
-                icon=data.raw.item[item].icon,
-                scale=0.4,
-                shift={ 0, -3 },
-                floating=true
-            },
-            {
                 icon='__space-age__/graphics/icons/fluid/' .. fluid .. '.png',
-                scale=0.4,
+                scale=0.33,
                 shift={0, 0},
                 floating=true,
-            }
+            },
+            {
+                icon=data.raw.item[item].icon,
+                scale=0.5,
+            },
         },
         category = 'metallurgy',
         ingredients = {
@@ -127,5 +114,7 @@ melt_down('iron-gear-wheel', 20, 'molten-iron', 50)
 melt_down('copper-plate', 20, 'molten-copper', 50)
 melt_down('pipe', 20, 'molten-iron', 50)
 melt_down('steel-plate', 20, 'molten-iron', 150)
+melt_down('barrel', 20, 'molten-iron', 150)
 melt_down('iron-stick', 40, 'molten-iron', 50)
 melt_down('copper-cable', 40, 'molten-copper', 50)
+

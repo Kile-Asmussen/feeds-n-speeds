@@ -7,7 +7,7 @@ local merge = fns.table.merge
 merge(data.raw['electric-pole'], {
     __rec = true,
     ['small-electric-pole'] = {
-        circuit_connector = fns.utils.null,
+        __del = 'circuit_connector', 
     },
     ['medium-electric-pole'] = {
         auto_require_pavement = 'stone-path',

@@ -6,10 +6,10 @@ local puts = fns.gadgets.throughputs
 local hopper =
 table.merge(table.deepcopy(data.raw.container[fns 'steel-chest']), {
     __rec = true,
+    __del = 'localised_name',
     type = 'proxy-container',
     name = fns 'hopper',
     icon_draw_specification = { scale = 0.4 },
-    localised_name = fns.utils.null,
     draw_inventory_content = false,
     icon = '__FeedsNSpeeds__/graphics/icons/hopper.png',
     picture = table.assign{ 'layers', 1, 'filename',
@@ -17,18 +17,16 @@ table.merge(table.deepcopy(data.raw.container[fns 'steel-chest']), {
     minable = { result = fns 'hopper' }
 })
 
-local item =
-table.merge(table.deepcopy(data.raw.item['steel-chest']), {
+local item = table.merge(table.deepcopy(data.raw.item['steel-chest']), {
+    __del = 'icons',
     name = fns 'hopper',
-    localised_name = fns.utils.null,
     icon = '__FeedsNSpeeds__/graphics/icons/hopper.png',
-    icons = nil,
     place_result = fns 'hopper',
 })
 
 local recipe = table.merge(table.deepcopy(data.raw.recipe['steel-chest']), {
+    __del = 'localised_name',
     name = fns 'hopper',
-    localised_name = fns.utils.null,
     auto_require_pavement = 'stone-path',
     auto_unlock_by = 'automation',
     ingredients = puts{ ['steel-chest'] = 1, ['long-handed-inserter'] = 1 },

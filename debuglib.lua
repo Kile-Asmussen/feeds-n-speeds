@@ -63,7 +63,7 @@ function debuglib.p(data, root)
 end
 
 local __buffer_mt = { __index = debuglib, __tostring = table.concat,
-    __newindex = function() error("buffer can't be changed", 2) end
+    __newindex = function(b, n) if n ~= #b + 1 then error("buffer[".. #b .."] can't be changed (" .. tostring(n) .. ")", 2) end end
 }
 __buffer_mt.__metatable = __buffer_mt.__metatable
 
@@ -99,8 +99,12 @@ function debuglib.new_buffer(settings)
 end
 
 function debuglib.print(buffer, ...)
-    local args = { ... }
-    table.append(buffer, args)
+    if select('#', ...) == 0 then
+        return
+    end
+    local x = ...
+    table.insert(buffer, x)
+    buffer:print(select(2, ...))
 end
 
 local function print_tostring(buffer, data)

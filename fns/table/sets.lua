@@ -89,49 +89,37 @@ return function(table, fns)
         }
     }
 
-    function table.iall(tbl, pred)
-        table.iall = quantify.all.v(ipairs)
-    end
-    table.iall()
-    table.declare_twoarg('iall', 'function?')
+    table.iall = table.twoarg('function?', quantify.all.v(ipairs), 'iall')
+    table.all = table.twoarg('function?', quantify.all.vk(pairs), 'all')
+    table.iany = table.twoarg('function?', quantify.any.v(ipairs), 'iany')
+    table.any = table.twoarg('function?', quantify.any.vk(pairs), 'any')
 
-    function table.all(tbl, pred)
-        table.all = quantify.all.vk(pairs)
-    end
-    table.all()
-    table.declare_twoarg('all', 'function?')
-
-    function table.any(tbl, pred)
-        table.any = quantify.all.v(pairs)
-    end
-    table.any()
-    table.declare_twoarg('any', 'function?')
-
-    function table.iany(tbl, pred)
-        table.any = quantify.all.v(ipairs)
-    end
-    table.iany()
-    table.declare_twoarg('iany', 'function?')
-
-    function table.sorted_keys(tbl, mapper)
+    function table.sorted_keys(tbl, mapping)
         assert(type(tbl) == 'table', "fns.table.sorted_keys: argument #1 must be a table")
         
-        
-        if type(mapper) == 'table' then
-            mapper = table.index(mapper)
+        local mapper
+        if type(mapping) == 'table' then
+            mapper = function(ix) return mapping[ix] end
+        elseif type(mapping) == 'function' then
+            mapper = mapping
+        elseif mapping == nil then
+            mapper = function() end
+        else
+            error("fns.table.sorted_keys: argument #2 must be a table or function", 2)
         end
-        mapper = mapper or function() end
-        assert(type(mapper) == 'function', "fns.table.sorted_keys: argument #2 must be a table or function")
 
+        local n = 1
         local res = {}
 
         for k, _ in pairs(tbl) do
             if type(k) == 'string' then
-                table.insert(res, k)
+                res[n] = k
+                n = n + 1
             else
-                local mapped = mapper(k)
-                if type(mapped) == 'string' then
-                    table.insert(res, mapped)
+                k = mapper(k)
+                if type(k) == 'string' then
+                    res[n] = k
+                    n = n + 1
                 end
             end
         end
@@ -139,10 +127,6 @@ return function(table, fns)
         table.sort(res)
 
         return res
-    end
-
-    local function sort_tostring(a, b)
-        return tostring(a) < tostring(b)
     end
 
     table.fullset = {}
@@ -183,10 +167,11 @@ return function(table, fns)
             default = ...
         end
         
-        while #tbl > 0 do
-            local key = table.remove(tbl)
+        for i = #tbl, 1, -1 do
+            local key = tbl[i]
             assert(key ~= nil, "fns.table.intoset: nil key")
-            tbl[key] = true
+            tbl[key] = default
+            tbl[i] = nil
         end
         return tbl
     end

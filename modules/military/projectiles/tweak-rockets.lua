@@ -2,7 +2,7 @@
 local fns = require 'fns'
 local table = fns.table
 local rocket = data.raw.projectile.rocket 
-local find = fns.table.find
+local find = fns.table.ifind
 local match = fns.table.match
 
 rocket.acceleration = 0.02

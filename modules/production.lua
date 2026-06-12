@@ -11,14 +11,13 @@ production.settings = set{
 }
 
 production.data = set{
-    ['.energy.electroboiler'] = set { '.fluids.boil-water' },
-    ['.energy.nuclear-energy'] = set{ '.fluids.water' },
+    '.energy.electroboiler',
+    '.energy.nuclear-energy',
     ['.energy.mini-reactor'] = set{ '.energy.electroboiler', '.energy.nuclear-energy' },
 
     '.fluids.barrel-tapper',
     '.fluids.oil-processing',
-    '.fluids.water',
-    ['.fluids.boil-water'] = set{ '.fluids.water' },
+    '.fluids.atmospheric-moisture',
 
     ['.ores.infinite'] = set{ 'modules.bootstrap.worldgen.sulfur-ore' },
 
@@ -27,7 +26,7 @@ production.data = set{
     '.recipes.concrete',
     '.recipes.misc',
     '.recipes.sulfur-processing',
-    ['.recipes.crafting-categories'] = 1,
+    ['.recipes.crafting-categories'] = 1000,
     '.recipes.batteries-and-modules',
 
     '.science.packs',
