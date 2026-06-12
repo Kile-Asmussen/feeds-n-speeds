@@ -36,11 +36,10 @@ local turret_recipe = {
     name = fns 'shotgun-turret',
     enabled = false,
     ingredients = {
-        { type='item', name='electronic-circuit', amount=8 },
-        { type='item', name='steel-plate', amount=4 },
-        { type='item', name='combat-shotgun', amount=2 },
+        { type='item', name='electric-engine-unit', amount=2 },
+        { type='item', name='electronic-circuit', amount=5 },
+        { type='item', name='steel-plate', amount=8 },
         { type='item', name='iron-gear-wheel', amount=8 },
-        { type='item', name='stone-brick', amount=10 },
     },
     results = {
         { type = 'item', name = fns 'shotgun-turret', amount = 1 },

@@ -147,7 +147,7 @@ local assignments = {
         'explosive-cannon-shell',
         'artillery-shell',
         'railgun-ammo',
-
+        'flamethrower-turret',
         'gun-turret',
         'engine-unit',
         fns 'shotgun-turret',

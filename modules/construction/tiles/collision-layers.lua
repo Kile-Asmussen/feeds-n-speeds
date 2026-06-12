@@ -66,5 +66,6 @@ data.raw.tile['space-platform-foundation'].collision_mask.layers = {
 data.raw.tile['foundation'].collision_mask.layers = {
     [stone_path] = true,
     [concrete] = true,
+    [refined_concrete] = true,
     ground_tile = true,
 }

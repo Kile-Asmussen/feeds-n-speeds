@@ -41,7 +41,7 @@ table.merge(sleeper, {
     robot_slots_count = 14,
     construction_radius = 5,
     logistics_radius = 3,
-    radar_range = 1,
+    radar_range = 0,
     energy_usage = "15kW",
     charging_energy = "750kW",
     charging_slots = 6,
@@ -52,7 +52,7 @@ table.merge(sleeper, {
     minable = table.assign{ 'result', val = fns 'sleeper-roboport' },
     base_animation = {
         __merge = true,
-        animation_speed = 0.30,
+        animation_speed = 0.10,
         run_mode = 'backward',
         tint = { 1, 1, 0.0 },
     },

@@ -5,14 +5,12 @@ local tech = data.raw.technology
 
 table.insert(tech['gun-turret'].prerequisites, 'military')
 
-table.insert(tech['laser-turret'].prerequisites, 'gun-turret')
-table.insert(tech['flamethrower'].prerequisites, 'gun-turret')
-table.insert(tech['artillery'].prerequisites, 'gun-turret')
-table.insert(tech['rocket-turret'].prerequisites, 'gun-turret')
-table.insert(tech['railgun'].prerequisites, 'gun-turret')
-table.insert(tech['tesla-weapons'].prerequisites, 'gun-turret')
-
-table.insert(tech['laser-turret'].prerequisites, 'electric-engine')
+table.append(tech['laser-turret'].prerequisites, {'gun-turret'})
+table.append(tech['flamethrower'].prerequisites, {'gun-turret'})
+table.append(tech['artillery'].prerequisites, {'gun-turret'})
+table.append(tech['rocket-turret'].prerequisites, {'gun-turret'})
+table.append(tech['railgun'].prerequisites, {'gun-turret'})
+table.append(tech['tesla-weapons'].prerequisites, {'gun-turret'})
 
 table.insert(data.raw.technology.automobilism.prerequisites, 'gun-turret')
 

@@ -13,7 +13,7 @@ logistics.data = set{
     ['.chests.hopper'] = set{ '.chests.extant' },
 
     '.entities.electric-link',
-    '.entities.electric-poles',
+    '.electric-poles',
 
     ['.items.stack-sizes'] = -1,
     ['.inserters'] = -1,

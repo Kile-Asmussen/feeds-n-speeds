@@ -19,9 +19,7 @@ military.data = set{
     '.misc.radar',
     '.misc.concrete-walling',
 
-
     '.projectiles.tweak-rockets',
-    '.projectiles.cliffsplosives',
 
     '.tech.tree',
 

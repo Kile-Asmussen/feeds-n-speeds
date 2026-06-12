@@ -12,6 +12,7 @@ merge(recipes, {
         ingredients = puts{
             ['explosives'] = 10,
             ['steel-plate'] = 2,
+            ['calcite'] = 1,
             ['radar'] = 1,
         }
     },
@@ -149,7 +150,6 @@ merge(recipes, {
 
     ['railgun-ammo'] = merge{
         ingredients = puts{
-            ['copper-cable'] = 10,
             ['tungsten-carbide'] = 1,
             ['steel-plate'] = 5,
         }

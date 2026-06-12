@@ -5,32 +5,39 @@ local merge = fns.table.merge
 local append = fns.table.append
 
 merge(data.raw.technology, {
-    __rec = true,
-    ['logistics-2'] = {
-        prerequisites = { 'circuit-network', 'electric-engine' }
-    },
-    ['logistics-3'] = {
-        prerequisites = { 'production-science-pack', 'electric-engine', fns 'electric-heater' , 'advanced-combinators' }
-    },
-    ['railway'] = {
-        prerequisites = { 'circuit-network', 'engine', 'radar' }
-    },
-    ['automation-2'] = {
-        prerequisites = append{'fast-inserter', 'circuit-network'},
-    },
-    ['automation-3'] = {
-        prerequisites = append{'bulk-inserter', 'logistic-robotics'},
-    },
-    ['effect-transmission'] = {
-        prerequisites = append{'efficiency-module'}
-    },
-    ['electric-energy-distribution-2'] = {
-        prerequisites = append{'electric-energy-accumulators'}
-    },
-    ['uranium-processing'] = {
-        prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack', 'speed-module', 'electric-engine' 
-        },
-    }
+     __rec = true,
+     __strict = true,
+     ['logistics-2'] = {
+          prerequisites = { 'circuit-network', 'electric-engine' }
+     },
+     ['logistics-3'] = {
+          prerequisites = { 'production-science-pack', 'electric-engine', fns 'electric-heater' , 'advanced-combinators' }
+     },
+     ['railway'] = {
+          prerequisites = { 'circuit-network', 'engine', 'radar' }
+     },
+     ['solar-energy'] = {
+          prerequisites = { 'plastics' }
+     },
+     ['electric-energy-distribution-1'] = {
+          prerequisites = { 'automation-2' }
+     },
+     ['automation-2'] = {
+          prerequisites = append{'fast-inserter', 'circuit-network'},
+     },
+     ['automation-3'] = {
+          prerequisites = append{'bulk-inserter', 'logistic-robotics'},
+     },
+     ['effect-transmission'] = {
+          prerequisites = append{'efficiency-module'}
+     },
+     ['electric-energy-distribution-2'] = {
+          prerequisites = append{'electric-energy-accumulators'}
+     },
+     ['uranium-processing'] = {
+          prerequisites = { fns 'wet-drilling', 'concrete', 'chemical-science-pack', 'speed-module', 'electric-engine' 
+          },
+     }
 })
 
 local function ingredients(inputs)
@@ -188,7 +195,7 @@ merge(data.raw.recipe, {
           ['pump'] = 1, ['pipe-to-ground'] = 2, ['engine-unit'] = 1, ['steel-plate'] = 5, ['burner-mining-drill'] = 1
      },
      ['pump'] = ingredients{
-          ['engine-unit'] = 1, ['electronic-circuit'] = 1, ['pipe'] = 1
+          ['engine-unit'] = 1, ['electric-engine-unit'] = 1, ['pipe'] = 2
      },
 
 
@@ -240,12 +247,22 @@ merge(data.raw.recipe, {
           ['battery'] = 5, ['copper-cable'] = 3, ['electronic-circuit'] = 1, ['iron-plate'] = 2
      },
      ['solar-panel'] = ingredients{
-          ['copper-cable'] = 10, ['plastic-bar'] = 10, ['steel-plate'] = 1, ['electronic-circuit'] = 1,
+          ['copper-cable'] = 10, ['plastic-bar'] = 10, ['electronic-circuit'] = 1
+     },
+     ['medium-electric-pole'] = ingredients{
+          ['steel-plate'] = 1,
+          ['iron-stick'] = 4,
+          ['copper-cable'] = 2,
+     },
+     ['big-electric-pole'] = ingredients{
+          ['concrete'] = 4,
+          ['medium-electric-pole'] = 4,
+          ['copper-cable'] = 5,
      },
      ['substation'] = ingredients{
           ['big-electric-pole'] = 1, ['accumulator'] = 1, ['advanced-circuit'] = 5
      },
      ['power-switch'] = ingredients{
-          ['electronic-circuit'] = 1, ['copper-cable'] = 10, ['electric-engine'] = 1, ['steel-plate'] = 5
+          ['electric-engine-unit'] = 4, ['copper-cable'] = 10, ['steel-plate'] = 5
      },
 })

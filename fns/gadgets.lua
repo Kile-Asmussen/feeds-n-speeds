@@ -109,36 +109,6 @@ return function(fns)
 
     end
 
-    gadgets.icon_sizes = {
-        technology = 256,
-        recipe = 64,
-        item = 64,
-    }
-
-    gadgets.icon_scales = {
-        tiny = 0.25,
-        small = 0.33,
-        medium = 0.5,
-        big = 0.7,
-        huge = 1.0,
-    }
-
-    gadgets.icons_shifts = {
-        tiny = 8,
-        small = 6,
-        medium = 5,
-        big = 3,
-        huge = 0,
-    }
-
-    gadgets.icon_placements = {
-        upleft = { -1, 1 },
-        loleft = { -1, 1 },
-        upright = { 1, -1 },
-        loright = { 1, 1 },
-        center = { 0, 0 }
-    }
-
     function gadgets.color(col)
         assert(type(col) == 'table' or type(col) == 'string', "colors must be strings or tables")
         if type(col) == 'string' then return gadgets.hexcolor(col) end
@@ -292,6 +262,17 @@ return function(fns)
         ['small-shortcut']  = 24,
     })
 
+    function gadgets.icon_file_abbrev(name)
+        assert(type(name) == 'string', "gadgets.icon_file_abbrev: argument #1 must be a string")
+        if data.raw['virtual-signal'][name] then
+            return data.raw['virtual-signal'][name].icon
+        elseif not name:startswith('__') then
+            return  '__base__/graphics/' .. name
+        else
+            return name
+        end
+    end
+
     --- Produces a single floating IconData at scale 0.25, placed in a corner or center.
     --- Intended as an overlay on top of a base icon in an icons[] array.
     --- Modelled after vanilla barrelling recipes (empty-water-barrel).
@@ -313,9 +294,7 @@ return function(fns)
 
 
         local icon_size = extras.icon_size or 64
-        if not icon:startswith('__') then
-            icon = '__base__/graphics/' .. icon
-        end
+        icon = gadgets.icon_file_abbrev(icon)
         local scale  = 0.25
         local offset = icon_size / 8
         local sx, sy
@@ -354,9 +333,8 @@ return function(fns)
 
         assert(type(extras) == 'table', "fns.gadgets.icon: argument #2 must be a number, string, or table")
 
-        if not icon:startswith('__') then
-            icon = '__base__/graphics/' .. icon
-        end
+        icon = gadgets.icon_file_abbrev(icon)
+
 
         return table.override({
             icon      = icon,
