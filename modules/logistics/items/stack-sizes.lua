@@ -12,6 +12,8 @@ local stack_sizes = {
         ['electronic-circuit'] = 100,
         ['advanced-circuit'] = 100,
         ['processing-unit'] = 100,
+        ['engine-unit'] = 30,
+        ['electric-engine-unit'] = 30,
         
         --[=========[
            BUILDINGS

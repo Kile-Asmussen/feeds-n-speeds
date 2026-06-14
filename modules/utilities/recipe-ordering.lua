@@ -3,203 +3,387 @@ local fns = require 'fns'
 local table = fns.table
 local gadgets = fns.gadgets
 
-local function add_subgroups(args)
-    local base = data.raw['item-subgroup'][args[1]]
-    assert(base, "no such item-subgroup: " .. args[1])
-    local n = string.byte('b')
-    for i=2,#args do
-        local name = fns(args[i])
-        data:extend{table.merge(table.deepcopy(base), {
-            name = name,
-            order = base.order .. '-' .. string.char(n),
-        })}
-        n = n + 1
-    end
-    base.order = base.order .. '-a'
+local letters = {}
+local base_orderings = {}
+
+local function add_subgroup(base_name, new_name)
+    local base = data.raw['item-subgroup'][base_name]
+    
+    assert(base, "no such item-subgroup: " .. base_name)
+    
+    base_orderings[base_name] = base_orderings[base_name] or base.order
+
+    local order = base_orderings[base_name]
+
+    base.order = order .. '-a'
+
+    letters[base_name] = letters[base_name] or 'b'
+    
+    data:extend{table.merge(table.deepcopy(base), {
+        name = new_name,
+        order = base.order .. '-' .. letters[base_name],
+    })}
+
+    letters[base_name] = string.char(string.byte(letters[base_name]) + 1)
 end
-
-add_subgroups{
-    'belt',
-    'better-belt',
-}
-
-add_subgroups{
-    'energy-pipe-distribution',
-    'energy-pipe-storage',
-}
-
-add_subgroups{
-    'terrain',
-    'soil'
-}
-
-add_subgroups{
-    'energy',
-    'green-energy'
-}
-
-add_subgroups{
-    'production-machine',
-    'advanced-production-machine',
-}
-add_subgroups{
-    'module',
-    'module-2',
-}
 
 data.raw['item-subgroup']['agriculture'] = nil
 data.raw['item-subgroup']['environmental-protection'] = nil
 
--- map[subgroup_id -> array-map[integer index -> item/fluid/recipe id, item/fluid/recipe id -> order]]
+-- ordering : map[subgroup id -> subgroup settings]
+-- subgroup settings : array[order settings]
+-- order settings : array[id list] + { name : string }
+-- id list : string or array[string]
 local ordering = {
-    storage = {
-        fns'wooden-chest',
-        fns'iron-chest',
-        fns'steel-chest',
-        nil,
-        'storage-chest',
-        'passive-provider-chest',
-        'active-provider-chest',
-        'requester-chest',
-        'buffer-chest',
+    {
+        subgroup = 'storage',
+        {
+            name = 'chests',
+            { 'wooden-chest', fns'wooden-chest', },
+            { 'iron-chest', fns'iron-chest', },
+            { 'steel-chest', fns'steel-chest', },
+        },
+        {
+            name = 'logistics',
+            { 'storage-chest', fns'storage-chest', },
+            { 'passive-provider-chest', fns'passive-provider-chest', },
+            { 'active-provider-chest', fns'active-provider-chest', },
+            { 'requester-chest', fns'requester-chest', },
+            { 'buffer-chest', fns'buffer-chest', },
+        }
     },
-    belt = {
-        'transport-belt',
-        'underground-belt',
-        'splitter',
-        nil,
-        'fast-transport-belt',
-        'fast-underground-belt',
-        'fast-splitter',
+    {
+        subgroup = 'belt',
+        {
+            name = 'belts',
+            'transport-belt',
+            'underground-belt',
+            'splitter',
+        },
+        {
+            name = 'fast-belts',
+            'fast-transport-belt',
+            'fast-underground-belt',
+            'fast-splitter',
+        }
     },
-    [fns'better-belt'] = {
-        'express-transport-belt',
-        'express-underground-belt',
-        'express-splitter',
-        nil,
-        'turbo-transport-belt',
-        'turbo-underground-belt',
-        'turbo-splitter',
+    {
+        subgroup = fns'better-belt',
+        after = 'belt',
+        {
+            name = 'express-belts',
+            'express-transport-belt',
+            'express-underground-belt',
+            'express-splitter',
+        },
+        {
+            name = 'turbo-belts',
+            'turbo-transport-belt',
+            'turbo-underground-belt',
+            'turbo-splitter',
+        }
     },
-    ['energy-pipe-distribution'] = {
-        'small-electric-pole',
-        'medium-electric-pole',
-        'big-electric-pole',
-        'substation',
-        nil,
-        'pipe',
-        'pipe-to-ground',
-        'heat-pipe',
-        nil,
-        'beacon',
+    {
+        subgroup = 'energy-pipe-distribution',
+        {
+            name = 'electric',
+            'small-electric-pole',
+            'medium-electric-pole',
+            'big-electric-pole',
+            'substation',
+        },
+        {
+            name = 'fluids',
+            'pipe',
+            'pipe-to-ground',
+
+        },
+        {
+            name = 'heat',
+            'heat-pipe',
+        },
+        {
+            name = 'transmission',
+            'beacon',
+        }
     },
-    [fns'energy-pipe-storage'] = {
-        'accumulator',
-        'power-switch',
-        fns'electric-link',
-        nil,
-        'storage-tank',
-        'pump',
-        'one-way-valve',
-        'overflow-valve',
-        'top-up-valve',
-        nil,
-        fns'tank-o-sand',
+    {
+        subgroup = fns'energy-pipe-storage',
+        after = 'energy-pipe-distribution',
+        {
+            name = 'electric',
+            'accumulator',
+            'power-switch',
+            fns'electric-link',
+        },
+        {
+            name = 'fluids',
+            'storage-tank',
+            'pump',
+            'one-way-valve',
+            'overflow-valve',
+            'top-up-valve',
+            fns 'barrel-tapper',
+        },
+        {
+            name = 'heat',
+            fns'tank-o-sand',
+        }
     },
-    transport = {
-        'locomotive',
-        'cargo-wagon',
-        'fluid-wagon',
-        'artillery-wagon',
-        'car',
-        'tank',
-        'spidertron',
+    {
+        subgroup = 'transport',
+        {
+            name = 'railway',
+            'locomotive',
+            'cargo-wagon',
+            'fluid-wagon',
+            'artillery-wagon',
+        },
+        {
+            name = 'personal',
+            'car',
+            'tank',
+            'spidertron',
+        }
     },
-    ['logistic-network'] = {
-        'repair-pack'
+    {
+        subgroup = 'logistic-network',
+        {
+            name = 'tools',
+            'repair-pack',
+        },
+        {
+            name = 'robots',
+            'construction-robot',
+            'logistic-robot',
+        },
+        {
+            name = 'roboports',
+            'roboport',
+            fns'construction-roboport',
+            fns'logistics-roboport',
+            fns'sleeper-roboport',
+            fns'network-roboport',
+        }
     },
-    [fns'soil'] = {
-        'landfill',
-        'artificial-yumako-soil',
-        'overgrowth-yumako-soil',
-        'artificial-jellynut-soil',
-        'overgrowth-jellynut-soil',
-        'ice-platform',
+    {
+        subgroup = 'terrain',
+        {
+            name = 'pavements',
+            'stone-brick',
+            'concrete',
+            'refined-concrete',
+            'hazard-concrete',
+            'refined-hazard-concrete',
+            'foundation',
+        },
+        {
+            name = "terraforming",
+            'cliff-explosives'
+        }
     },
-    energy = {
-        'heating-tower'
+    {
+        subgroup = fns'soil',
+        after = 'terrain',
+        {
+            name = 'generic',
+            'landfill',
+        },
+        {
+            name = 'agriculture',
+            'artificial-yumako-soil',
+            'overgrowth-yumako-soil',
+            'artificial-jellynut-soil',
+            'overgrowth-jellynut-soil',
+        },
+        {
+            name = 'ice',
+            'ice-platform',
+        }
     },
-    [fns'green-energy'] = {
-        'solar-panel',
-        'nuclear-reactor',
-        'lightning-rod',
-        'lightning-collector',
-        'fusion-reactor',
-        'fusion-generator',
+    {
+        subgroup = 'energy',
+        {
+            name = 'boiler',
+            'boiler',
+            fns 'electoboiler',
+            fns 'heat-boiler',
+            'heat-exchanger',
+        },
+        {
+            name = 'generators',
+            'steam-engine',
+            'steam-turbine',
+        },
+        {
+            name = 'reactors',
+            'heating-tower'
+        },
     },
-    ['extraction-machine'] = {
-        'agricultural-tower',
-        'captive-biter-spawner'
+    {
+        subgroup = fns'green-energy',
+        after = 'energy',
+        {
+            name = 'electric',
+            'solar-panel',
+            'lightning-rod',
+            'lightning-collector',
+        },
+        {
+            name = 'heat',
+            fns 'mini-reactor',
+            'nuclear-reactor',
+        },
+        {
+            name = 'fusion',
+            'fusion-reactor',
+            'fusion-generator',
+        }
     },
-    ['smelting-machine'] = {
-        'oil-refinery',
-        'centrifuge'
+    {
+        subgroup = 'extraction-machine',
+        {
+            name = 'mining',
+            'burner-mining-drill',
+            'electric-mining-drill',
+            'big-mining-drill',
+            'pumpjack',
+        },
+        {
+            name = 'agriculture',
+            'agricultural-tower',
+            'captive-biter-spawner'
+        }
     },
-    [fns 'advanced-production-machine'] = {
-        'biochamber', 'electromagnetic-plant', 'cryogenic-plant', 'foundry', 'biolab'
+    {
+        subgroup = 'smelting-machine',
+        {
+            name = 'furnaces',
+            'stone-furnace',
+            fns 'stone-furnace',
+            'steel-furnace',
+            'electric-furnace',
+        },
+        {
+            name = 'chemistry',
+            'oil-refinery',
+        },
+        {
+            name = 'specialized',
+            'centrifuge',
+            'recycler',
+        },
+
     },
-    -- do something interesting with beacons. Logistics?
-    [fns 'module-2'] = {
-        'productivity-module',
-        'productivity-module-2',
-        'productivity-module-3',
-        'quality-module',
-        'quality-module-2',
-        'quality-module-3',
+    {
+        subgroup = 'production-machine',
+        {
+            name = 'assemblers',
+            'assembling-machine-1',
+            'assembling-machine-2',
+            'assembling-machine-3',
+        },
+        {
+            name = 'chemistry',
+            'chemical-plant',
+        },
+        {
+            name = 'science',
+            'lab'
+        }
+    },
+    {
+        subgroup = fns 'advanced-production-machine',
+        after = 'production-machine',
+        {
+            name = 'space-assemblers',
+            'biochamber', 'electromagnetic-plant', 'cryogenic-plant', 'foundry',
+        },
+        {
+            name = 'science',
+            'biolab'
+        }
+    },
+    {
+        subgroup = 'module',
+        {
+            name = 'speed',
+            'speed-module',
+            'speed-module-2',
+            'speed-module-3',
+        },
+        {
+            name = 'productivity',
+            'productivity-module',
+            'productivity-module-2',
+            'productivity-module-3',
+        },
+    },
+    {
+        subgroup = fns 'worse-module',
+        after = 'module',
+        {
+            name = 'efficiency',
+            'efficiency-module',
+            'efficiency-module-2',
+            'efficiency-module-3',
+        },
+        {
+            name = 'quality',
+            'quality-module',
+            'quality-module-2',
+            'quality-module-3',
+        }
     }
 }
 
-for subgroup, spec in table.opairs(ordering) do
-    if not data.raw['item-subgroup'][subgroup] then
-        error("recipe-ordering: no such subgroup as "..subgroup, 1)
+for r = 1, #ordering do
+    local runs = ordering[r]
+
+    if not data.raw['item-subgroup'][runs.subgroup] and data.raw['item-subgroup'][runs.after] then
+        add_subgroup(runs.after, runs.subgroup)
     end
-    local run = string.byte('a')
-    local step = string.byte('a')
 
-    for i = 1, #spec do
-        local name = spec[i]
-        if not name then
-            run = run + 1
-            step = string.byte('a')
-            goto continue
-        end
-        local ord = string.char(run) .. '-' .. string.char(step)
+    local subgroup = data.raw['item-subgroup'][runs.subgroup]
 
-        local proto
-        local entity = gadgets.find_entity_prototype(name)
-        if entity then
-            entity.subgroup = subgroup
-            entity.order = ord
-            if not entity.minable then
-                goto skip
-            end
-
-            if entity.minable.result then
-                proto = gadgets.find_item_prototype(entity.minable.result)
-            elseif entity.minable.results and #entity.minable.results == 1 then
-                proto = gadgets.find_item_prototype(entity.minable.results[1].name)
-            end
-
-            ::skip::
-        end
-
-        if not proto then
-            proto = gadgets.find_item_prototype(name)
-            if not proto then error("recipe-ordering: no prototype found for '" .. name .. "'", 1) end
-        end
-
-        proto.subgroup = subgroup
-        proto.order = ord
-        ::continue::
+    if not subgroup then
+        error("no such item-subgroup as " .. subgroup_name)
     end
+
+    for i = 1, #runs do
+        local run = runs[i]
+        if not run.name then 
+            error("no run name given (run #" .. i .. " in " .. subgroup.name .. ")", 1)
+        end
+        local major = string.char(string.byte('a') - 1 + i) .. '[' .. run.name .. ']'
+
+        for j = 1, #run do
+            local names = run[j]
+            if type(names) == 'string' then names = { names } end
+
+            for k = 1, #names do
+                local name = names[k]
+                local minor = string.char(string.byte('a') - 1 + j)
+                    .. '[' .. name .. ']'
+                
+                local order = major .. '-' .. minor
+                
+                local ent = gadgets.find_entity_prototype(name)
+                local item = gadgets.find_item_prototype(name)
+                local recipe = data.raw.recipe[name]
+                local item2 = gadgets.find_item_prototype(ent and ent.minable and ent.minable.result)
+                local ent2 = gadgets.find_entity_prototype((item and item.place_result) or (item2 and item2.place_result))
+
+                if ent then ent.order = order end
+                if ent2 then ent2.order = order end
+                if item then item.order = order end
+                if item2 then item2.order = order end
+                if recipe then recipe.order = order end
+            end
+        end
+    end
+end
+
+for _, subgroup in pairs(data.raw['item-subgroup']) do
+    subgroup.order = subgroup.order .. '[' .. subgroup.name .. ']'
 end

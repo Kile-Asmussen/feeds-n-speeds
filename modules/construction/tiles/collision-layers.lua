@@ -33,9 +33,6 @@ for _, tile in pairs(data.raw.tile) do
         tile.collision_mask.layers[concrete] = true
         if tile.name:find('hazard', 1, true) then
             tile.collision_mask.layers[hazard_concrete] = true
-        end
-
-        if tile.name:match('hazard') then
             tile.walking_speed_modifier = 0.9
         end
 
@@ -45,11 +42,6 @@ for _, tile in pairs(data.raw.tile) do
             if tile.name:find('hazard', 1, true) then
                 tile.collision_mask.layers[refined_hazard_concrete] = true
             end
-
-            if tile.name:match('hazard') then
-                tile.walking_speed_modifier = 1.0
-            end
-
         end
     end
 end

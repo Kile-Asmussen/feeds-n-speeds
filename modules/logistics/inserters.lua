@@ -4,17 +4,26 @@ local table = fns.table
 
 local merge = table.merge
 
+local function scale(v, k)
+    if k == 'scale' then
+        return v*2, true
+    elseif k == 'shift' then
+        fns.math.vecmul(v, 2.0)
+        return true
+    end
+end
+
 merge(data.raw.inserter, {
     ['inserter'] = merge{
         extension_speed = 0.05,
-        rotation_speed = 0.03,
+        rotation_speed = 0.025,
         filter_count = 4,
         chases_belt_items = false,
         allow_burner_leech = true,
     },
     ['long-handed-inserter'] = merge{
-        extension_speed = 0.1,
-        rotation_speed = 0.03,
+        extension_speed = 0.07,
+        rotation_speed = 0.025,
         filter_count = 4,
         chases_belt_items = false,
         allow_burner_leech = true,
@@ -33,19 +42,15 @@ merge(data.raw.inserter, {
     ['burner-inserter'] = merge{
         chases_belt_items = false,
         filter_count = 1,
-        rotation_speed = 0.015,
-        extension_speed = 0.025,
+        rotation_speed = 0.01,
+        extension_speed = 0.02,
         allow_burner_leech = true,
     }
 })
 
 local crane = table.deepcopy(data.raw.inserter['burner-inserter'])
 
-table.traverse(crane, function(v, k)
-    if k == 'scale' then
-        return v*2, true
-    end
-end)
+table.traverse(crane, scale)
 
 merge(crane, {
     __del = {'next_upgrade', 'icon'},
@@ -53,51 +58,47 @@ merge(crane, {
     bulk = true,
     energy_source = {
         type = 'electric',
-        priority = 'secondary-input',
+        usage_priority = 'secondary-input',
         drain = '5kW',
     },
     icons = {
         fns.gadgets.icon('icons/burner-inserter.png'),
-        fns.gadgets.floating_icon('bottomleft', 'icons/burner-inserter.png'),
-        fns.gadgets.floating_icon('topleft', 'icons/', { tint = { 0, 1, 0} }),
+        fns.gadgets.floating_icon('bottomleft', 'signal-stack-size', { scale = 0.35, tint = {0,0,0} }),
+        fns.gadgets.floating_icon('bottomleft', 'signal-stack-size'),
+        fns.gadgets.floating_icon('topleft', 'up-arrow', { tint = { 0, 1, 0} }),
     },
     uses_inserter_stack_size_bonus = false,
     allow_custom_vectors = false,
     wait_for_full_hand = true,
-    max_belt_stack_size = 10,
-    filter_count = 2,
-    circuit_wire_max_distance = 8,
-    extension_speed = 0.0125,
-    rotation_speed = 0.0075,
-    insert_position = { 0, 1.7 },
+    max_belt_stack_size = 1,
+    filter_count = 4,
+    circuit_wire_max_distance = 9,
+    rotation_speed = 0.0125,
+    extension_speed = 0.025,
+    insert_position = { 0, 1.9 },
     pickup_position = { 0, -1.5 },
-    starting_distance = 0.5,
     energy_per_movement = "200kJ",
     energy_per_rotation = "200kJ",
-    hand_size = 1000,
+    hand_size = 1.4,
+    stack_size_bonus = 249,
     max_health = 400,
+    order = 'z',
+    subgroup = 'inserter',
     heating_energy = '300kW',
-    collision_box = { { -1.3, -0.8 }, { 1.3, 0.8 } },
-    selection_box = { { -1.5, -1.0 }, { 1.5, 1.0 } },
+    collision_box = { { -0.15, -0.65 }, { 0.15, 0.65 } },
+    selection_box = { { -0.4, -0.6 }, { 0.4, 1.0 } },
     minable = { __merge = true, result = fns 'crane' },
     surface_conditions = {
-        { name = 'gravity', min = 0.1 }
+        { property = 'gravity', min = 0.1 }
     },
-    auto_require_pavement = 'hazard-concrete',
+    auto_require_pavement = 'refined-hazard-concrete',
     dying_explosion = 'locomotive-explosion',
     corpse = fns 'crane-remnants',
 })
 
-local crane_corpse = table.deepcopy(data.raw.corpse['inserter-remnants'])
+local crane_corpse = table.deepcopy(data.raw.corpse['burner-inserter-remnants'])
 
-table.traverse(crane_corpse.animation, function(v, k)
-    if k == 'scale' then
-        return v*2, true
-    elseif k == 'shift' then
-        fns.math.vecmul(v, 2.0)
-        return true
-    end
-end)
+table.traverse(crane_corpse.animation, scale)
 
 merge(crane_corpse, {
     name = fns 'crane-remnants',
@@ -110,9 +111,13 @@ merge(crane_corpse, {
 local crane_item = {
     type = "item",
     name = fns 'crane',
+    order = 'z',
+    subgroup = 'inserter',
     place_result = fns 'crane',
     stack_size = 5,
     icons = table.deepcopy(crane.icons),
+    order = 'z',
+
 }
 
 
@@ -121,13 +126,18 @@ local crane_recipe = {
     name = fns 'crane',
     category = 'advanced-crafting',
     energy_required = 10,
+    order = 'z',
+    subgroup = 'inserter',
     allow_decomposition = true,
+    icons = table.deepcopy(crane.icons),
     ingredients = fns.gadgets.throughputs{
         ['steel-plate'] = 10,
         ['electric-engine-unit'] = 10,
-        ['advanced-circuit'] = 2,
-        ['iron-chest'] = 1,
-        inserter = 1,
+        ['efficiency-module'] = 1,
+        ['bulk-inserter'] = 1,
+    },
+    results = fns.gadgets.throughputs{
+        [fns'crane'] = 1
     },
     auto_unlocked_by = fns 'crane',
 }
@@ -135,7 +145,7 @@ local crane_recipe = {
 local crane_tech = {
     type = 'technology',
     name = fns 'crane',
-    prerequisites = { 'advanced-circuit', 'automated-rail-transportation', fns'concrete-rail' },
+    prerequisites = { 'efficiency-module', 'automated-rail-transportation', fns'concrete-rail' },
     icons = {
         fns.gadgets.icon('technology/railway.png', 256),
         fns.gadgets.icon('technology/inserter-capacity.png', {icon_size=256, tint={0.5,0.5,0.5}}),

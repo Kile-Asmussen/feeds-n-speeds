@@ -222,6 +222,7 @@ local ITEM_CATS = {
     'selection-tool', 'space-platform-starter-pack', 'tool', 'upgrade-item',
 }
 
+
 function tools.master_check()
     tools.recursion_check()
     tools.bad_argument_number_nine()
