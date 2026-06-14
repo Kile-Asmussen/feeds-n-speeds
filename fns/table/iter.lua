@@ -16,32 +16,35 @@ return function(table, fns)
 
     local function_or_table = { ['function'] = true, table = true }
 
-     table.imap = table.twoarg(function_or_table, function(tbl, func)
+    function table.imap(tbl, func)
         func = mapper(func)
         for i = 1, #tbl do
             tbl[i] = func(tbl[i], i)
         end
         return tbl
-    end, 'imap')
+    end
+    table.twoarg(function_or_table, table.imap, 'imap')
 
-    table.map = table.twoarg(function_or_table, function(tbl, func)
+    function table.map(tbl, func)
         func = mapper(func)
         for k, v in pairs(tbl) do
             tbl[k] = func(v, k)
         end
         return tbl
-    end, 'map')
+    end
+    table.map = table.twoarg(function_or_table, table.map, 'map')
 
-    table.collect = table.twoarg(function_or_table, function(tbl, func)
+    function table.collect(tbl, func)
         local func = mapper(func)
         local res = {}
         for k, v in pairs(tbl) do
             res[k] = func(v, k)
         end
         return res
-    end, 'collect')
+    end
+    table.collect = table.twoarg(function_or_table, table.collect, 'collect')
 
-    table.icollect = table.twoarg(function_or_table, function(tbl, func)
+    function table.icollect(tbl, func)
         local func = mapper(func)
         local res, n = {}, 1
         for i = 1, #tbl do
@@ -52,7 +55,8 @@ return function(table, fns)
             end
         end
         return res
-    end, 'icollect')
+    end
+    table.icollect = table.twoarg(function_or_table, table.icollect, 'icollect')
 
     local function opairs_iter(state)
         state.i = state.i + 1

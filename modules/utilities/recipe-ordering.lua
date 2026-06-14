@@ -4,386 +4,402 @@ local table = fns.table
 local gadgets = fns.gadgets
 
 local letters = {}
-local base_orderings = {}
+local orderings = {}
 
-local function add_subgroup(base_name, new_name)
-    local base = data.raw['item-subgroup'][base_name]
-    
-    assert(base, "no such item-subgroup: " .. base_name)
-    
-    base_orderings[base_name] = base_orderings[base_name] or base.order
-
-    local order = base_orderings[base_name]
-
-    base.order = order .. '-a'
-
-    letters[base_name] = letters[base_name] or 'b'
-    
-    data:extend{table.merge(table.deepcopy(base), {
-        name = new_name,
-        order = base.order .. '-' .. letters[base_name],
-    })}
-
-    letters[base_name] = string.char(string.byte(letters[base_name]) + 1)
-end
 
 data.raw['item-subgroup']['agriculture'] = nil
 data.raw['item-subgroup']['environmental-protection'] = nil
+data.raw['item-subgroup']['energy-pipe-distribution'] = nil
+data.raw['item-subgroup']['intermediate-product'] = nil
 
 -- ordering : map[subgroup id -> subgroup settings]
 -- subgroup settings : array[order settings]
 -- order settings : array[id list] + { name : string }
 -- id list : string or array[string]
 local ordering = {
+    -- logistics
     {
         subgroup = 'storage',
-        {
-            name = 'chests',
-            { 'wooden-chest', fns'wooden-chest', },
-            { 'iron-chest', fns'iron-chest', },
-            { 'steel-chest', fns'steel-chest', },
-        },
-        {
-            name = 'logistics',
-            { 'storage-chest', fns'storage-chest', },
-            { 'passive-provider-chest', fns'passive-provider-chest', },
-            { 'active-provider-chest', fns'active-provider-chest', },
-            { 'requester-chest', fns'requester-chest', },
-            { 'buffer-chest', fns'buffer-chest', },
-        }
+        order = 'a',
+        'wooden-chest',
+        'iron-chest',
+        'steel-chest',
+        'storage-chest', 
+        'passive-provider-chest', 
+        'active-provider-chest', 
+        'requester-chest', 
+        'buffer-chest', 
     },
     {
         subgroup = 'belt',
-        {
-            name = 'belts',
-            'transport-belt',
-            'underground-belt',
-            'splitter',
-        },
-        {
-            name = 'fast-belts',
-            'fast-transport-belt',
-            'fast-underground-belt',
-            'fast-splitter',
-        }
+        after = true,
+        'transport-belt',
+        'underground-belt',
+        'splitter',
+        'fast-transport-belt',
+        'fast-underground-belt',
+        'fast-splitter',
     },
     {
         subgroup = fns'better-belt',
-        after = 'belt',
-        {
-            name = 'express-belts',
-            'express-transport-belt',
-            'express-underground-belt',
-            'express-splitter',
-        },
-        {
-            name = 'turbo-belts',
-            'turbo-transport-belt',
-            'turbo-underground-belt',
-            'turbo-splitter',
-        }
+        after = true,
+        'express-transport-belt',
+        'express-underground-belt',
+        'express-splitter',
+        'turbo-transport-belt',
+        'turbo-underground-belt',
+        'turbo-splitter',
     },
     {
-        subgroup = 'energy-pipe-distribution',
-        {
-            name = 'electric',
-            'small-electric-pole',
-            'medium-electric-pole',
-            'big-electric-pole',
-            'substation',
-        },
-        {
-            name = 'fluids',
-            'pipe',
-            'pipe-to-ground',
-
-        },
-        {
-            name = 'heat',
-            'heat-pipe',
-        },
-        {
-            name = 'transmission',
-            'beacon',
-        }
+        subgroup = fns'energy-distribution',
+        after = true,
+        'small-electric-pole',
+        'medium-electric-pole',
+        'big-electric-pole',
+        'substation',
+        'accumulator',
+        'power-switch',
+        fns'electric-link',
     },
     {
-        subgroup = fns'energy-pipe-storage',
-        after = 'energy-pipe-distribution',
-        {
-            name = 'electric',
-            'accumulator',
-            'power-switch',
-            fns'electric-link',
-        },
-        {
-            name = 'fluids',
-            'storage-tank',
-            'pump',
-            'one-way-valve',
-            'overflow-valve',
-            'top-up-valve',
-            fns 'barrel-tapper',
-        },
-        {
-            name = 'heat',
-            fns'tank-o-sand',
-        }
+        subgroup = fns'pipe-distribution',
+        after = true,
+        'pipe',
+        'pipe-to-ground',
+        'one-way-valve',
+        'overflow-valve',
+        'top-up-valve',
+        'storage-tank',
+        'pump',
+        fns 'barrel-tapper'
+    },
+    {
+        subgroup = fns'heat-distribution',
+        after = true,
+        'heat-pipe',
+        fns 'tank-o-sand',
     },
     {
         subgroup = 'transport',
-        {
-            name = 'railway',
-            'locomotive',
-            'cargo-wagon',
-            'fluid-wagon',
-            'artillery-wagon',
-        },
-        {
-            name = 'personal',
-            'car',
-            'tank',
-            'spidertron',
-        }
+        after = true,
+        'locomotive',
+        'cargo-wagon',
+        'fluid-wagon',
+        'artillery-wagon',
+        'car',
+        'tank',
+        'spidertron',
+    
     },
     {
         subgroup = 'logistic-network',
-        {
-            name = 'tools',
-            'repair-pack',
-        },
-        {
-            name = 'robots',
-            'construction-robot',
-            'logistic-robot',
-        },
-        {
-            name = 'roboports',
-            'roboport',
-            fns'construction-roboport',
-            fns'logistics-roboport',
-            fns'sleeper-roboport',
-            fns'network-roboport',
-        }
+        after = true,
+        'repair-pack',
+        'construction-robot',
+        'logistic-robot',
+        'roboport',
+        fns'construction-roboport',
+        fns'logistics-roboport',
+        fns'sleeper-roboport',
+        fns'network-roboport',
     },
     {
         subgroup = 'terrain',
-        {
-            name = 'pavements',
-            'stone-brick',
-            'concrete',
-            'refined-concrete',
-            'hazard-concrete',
-            'refined-hazard-concrete',
-            'foundation',
-        },
-        {
-            name = "terraforming",
-            'cliff-explosives'
-        }
+        'stone-brick',
+        'concrete',
+        fns'mechanical-concrete',
+        fns 'simple-concrete',
+        'refined-concrete',
+        'hazard-concrete',
+        'refined-hazard-concrete',
+        'foundation',
+        'cliff-explosives'
     },
     {
         subgroup = fns'soil',
-        after = 'terrain',
-        {
-            name = 'generic',
-            'landfill',
-        },
-        {
-            name = 'agriculture',
-            'artificial-yumako-soil',
-            'overgrowth-yumako-soil',
-            'artificial-jellynut-soil',
-            'overgrowth-jellynut-soil',
-        },
-        {
-            name = 'ice',
-            'ice-platform',
-        }
+        after = true,
+        'landfill',
+        'artificial-yumako-soil',
+        'overgrowth-yumako-soil',
+        'artificial-jellynut-soil',
+        'overgrowth-jellynut-soil',
+        'ice-platform',
     },
+    -- production 
     {
         subgroup = 'energy',
-        {
-            name = 'boiler',
-            'boiler',
-            fns 'electoboiler',
-            fns 'heat-boiler',
-            'heat-exchanger',
-        },
-        {
-            name = 'generators',
-            'steam-engine',
-            'steam-turbine',
-        },
-        {
-            name = 'reactors',
-            'heating-tower'
-        },
+        order = 'a',
+        fns 'electroboiler',
+        fns 'heat-boiler',
+        'heat-exchanger',
+        'steam-engine',
+        'steam-turbine',
+        'heating-tower'
     },
     {
         subgroup = fns'green-energy',
-        after = 'energy',
-        {
-            name = 'electric',
-            'solar-panel',
-            'lightning-rod',
-            'lightning-collector',
-        },
-        {
-            name = 'heat',
-            fns 'mini-reactor',
-            'nuclear-reactor',
-        },
-        {
-            name = 'fusion',
-            'fusion-reactor',
-            'fusion-generator',
-        }
+        after = true,
+        'solar-panel',
+        'lightning-rod',
+        'lightning-collector',
+        fns 'electric-heater',
+        'nuclear-reactor',
+        'fusion-reactor',
+        'fusion-generator',
     },
     {
         subgroup = 'extraction-machine',
-        {
-            name = 'mining',
-            'burner-mining-drill',
-            'electric-mining-drill',
-            'big-mining-drill',
-            'pumpjack',
-        },
-        {
-            name = 'agriculture',
-            'agricultural-tower',
-            'captive-biter-spawner'
-        }
+        'burner-mining-drill',
+        'electric-mining-drill',
+        'big-mining-drill',
+        'pumpjack',
+        'agricultural-tower',
+        'captive-biter-spawner'
     },
     {
         subgroup = 'smelting-machine',
-        {
-            name = 'furnaces',
-            'stone-furnace',
-            fns 'stone-furnace',
-            'steel-furnace',
-            'electric-furnace',
-        },
-        {
-            name = 'chemistry',
-            'oil-refinery',
-        },
-        {
-            name = 'specialized',
-            'centrifuge',
-            'recycler',
-        },
+        'stone-furnace',
+        fns 'stone-furnace',
+        'steel-furnace',
+        'electric-furnace',
+        'oil-refinery',
+        'centrifuge',
+        'recycler',
 
     },
     {
         subgroup = 'production-machine',
-        {
-            name = 'assemblers',
-            'assembling-machine-1',
-            'assembling-machine-2',
-            'assembling-machine-3',
-        },
-        {
-            name = 'chemistry',
-            'chemical-plant',
-        },
-        {
-            name = 'science',
-            'lab'
-        }
+        after = true,
+        'assembling-machine-1',
+        'assembling-machine-2',
+        'assembling-machine-3',
+        'chemical-plant',
+        'lab'
     },
     {
         subgroup = fns 'advanced-production-machine',
-        after = 'production-machine',
-        {
-            name = 'space-assemblers',
-            'biochamber', 'electromagnetic-plant', 'cryogenic-plant', 'foundry',
-        },
-        {
-            name = 'science',
-            'biolab'
-        }
+        after = true,
+        'biochamber',
+        'electromagnetic-plant',
+        'cryogenic-plant',
+        'foundry',
+        'biolab'
     },
     {
         subgroup = 'module',
-        {
-            name = 'speed',
-            'speed-module',
-            'speed-module-2',
-            'speed-module-3',
-        },
-        {
-            name = 'productivity',
-            'productivity-module',
-            'productivity-module-2',
-            'productivity-module-3',
-        },
+        after = true,
+        'speed-module',
+        'speed-module-2',
+        'speed-module-3',
+        'productivity-module',
+        'productivity-module-2',
+        'productivity-module-3',
     },
     {
         subgroup = fns 'worse-module',
-        after = 'module',
-        {
-            name = 'efficiency',
-            'efficiency-module',
-            'efficiency-module-2',
-            'efficiency-module-3',
-        },
-        {
-            name = 'quality',
-            'quality-module',
-            'quality-module-2',
-            'quality-module-3',
-        }
+        after = true,
+        'efficiency-module',
+        'efficiency-module-2',
+        'efficiency-module-3',
+        'quality-module',
+        'quality-module-2',
+        'quality-module-3',
+    },
+
+    -- intermediate products
+    {
+        subgroup = 'raw-material',
+        order = "a",
+        'iron-plate',
+        'copper-plate',
+        'steel-plate',
+        'tungsten-carbide',
+        'tungsten-plate',
+        'scrap-recycling',
+        'holmium-plate',
+        'lithium',
+        'lithium-plate',
+    },
+    {
+        subgroup = fns'metal-parts',
+        after = true,
+        'iron-gear-wheel',
+        'iron-stick',
+        'copper-cable',
+        'barrel',
+        'engine-unit',
+        fns'hand-engine-unit',
+        'electric-engine-unit',
+        fns'hand-electric-engine-unit',
+        'low-density-structure'
+    },
+    {
+        subgroup = fns'electronic-components',
+        after = true,
+        'electronic-circuit',
+        'advanced-circuit',
+        'processing-unit',
+        'quantum-processor',
+        'battery',
+        'flying-robot-frame',
+        'supercapacitor',
+        'superconductor',
+    },
+    {
+        subgroup = 'fluid',
+        after = true,
+        'steam-condensation',
+        'ice-melting',
+        'acid-neutralisation',
+        'sulfuric-acid',
+        'holmium-solution',
+        'electrolyte',
+        'ammonia',
+        'fluoroketone',
+        'fluoroketone-cooling',
+    },
+    {
+        subgroup = fns'petroleum',
+        after = true,
+        'basic-oil-processing',
+        fns'purifying-oil-processing',
+        'advanced-oil-processing',
+        fns'purifying-advanced-oil-processing',
+        'light-oil-cracking',
+        'heavy-oil-cracking',
+        fns'purifying-heavy-oil-cracking',
+        'coal-liquefaction',
+        'simple-coal-liquefaction',
+        'lubricant',
+    },
+    {
+        subgroup = fns'petroleum-derivates',
+        after = true,
+        'sulfur',
+        'plastic-bar',
+        'explosives',
+        'solid-fuel-from-petroleum-gas',
+        'solid-fuel-from-light-oil',
+        'solid-fuel-from-heavy-oil',
+        'solid-fuel-from-ammonia',
+        'rocket-fuel', 'ammonia-rocket-fuel',
+        'carbon',
+    },
+    {
+        subgroup = 'agriculture-products',
+        after = true,  
+    },
+    {
+        subgroup = 'nauvis-agriculture',
+        after = true,
+    },
+    {
+        subgroup = 'vulcanus-processes',
+        after = true,
+    },
+    {
+        subgroup = 'science-pack',
+        after = true,
+        'automation-science-pack',
+        'logistic-science-pack',
+        'military-science-pack',
+        'chemical-science-pack',
+        'production-science-pack',
+        'utility-science-pack',
+    },
+    {
+        subgroup = fns'space-science-pack',
+        after = true,   
+        'space-science-pack',
+        'metallurgic-science-pack',
+        'agricultural-science-pack',
+        'electromagnetic-science-pack',
+        'cryogenic-science-pack',
+        'promethium-science-pack',
     }
 }
 
+local prev_subgroup
 for r = 1, #ordering do
-    local runs = ordering[r]
+    local run = ordering[r]
 
-    if not data.raw['item-subgroup'][runs.subgroup] and data.raw['item-subgroup'][runs.after] then
-        add_subgroup(runs.after, runs.subgroup)
+    if not run.subgroup then error("missing subgroup in #" .. r, 1) end
+
+    if not data.raw['item-subgroup'][run.subgroup] then
+        data:extend{{
+            type = 'item-subgroup',
+            name = run.subgroup,
+            order = 'zzz[unassigned]',
+            group = 'other',
+        }}
     end
 
-    local subgroup = data.raw['item-subgroup'][runs.subgroup]
+    local subgroup = data.raw['item-subgroup'][run.subgroup]
 
-    if not subgroup then
-        error("no such item-subgroup as " .. subgroup_name)
+    if run.after == true then
+        run.after = prev_subgroup
+    end
+    prev_subgroup = run.subgroup
+
+    if run.after then
+        local prev =  data.raw['item-subgroup'][run.after]
+        if not prev then error("no such item subgroup " .. run.after) end
+        subgroup.order = string.char(prev.order:byte() + 1)
+    end
+    
+    if run.order then
+        subgroup.order = run.order
     end
 
-    for i = 1, #runs do
-        local run = runs[i]
-        if not run.name then 
-            error("no run name given (run #" .. i .. " in " .. subgroup.name .. ")", 1)
+    if run.group then
+        subgroup.group = run.group
+    end
+
+    for j = 1, #run do
+        local names = run[j]
+        if type(names) == 'string' then names = { recipe = names } end
+
+        if names.item == true then
+            names.item = names.recipe
         end
-        local major = string.char(string.byte('a') - 1 + i) .. '[' .. run.name .. ']'
+        if names.fluid == true then
+            names.fluid = names.recipe
+        end
+        if names.entity == true then
+            names.entity = names.recipe
+        end
 
-        for j = 1, #run do
-            local names = run[j]
-            if type(names) == 'string' then names = { names } end
+        local order = string.char(string.byte('a') - 1 + j)
+            
+        local recipe = data.raw.recipe[names.recipe]
+        if names.recipe and not recipe then
+            error("no such recipe as " .. names.recipe)
+        elseif recipe then
+            recipe.subgroup = subgroup.name
+            recipe.order = order
+        end
 
-            for k = 1, #names do
-                local name = names[k]
-                local minor = string.char(string.byte('a') - 1 + j)
-                    .. '[' .. name .. ']'
-                
-                local order = major .. '-' .. minor
-                
-                local ent = gadgets.find_entity_prototype(name)
-                local item = gadgets.find_item_prototype(name)
-                local recipe = data.raw.recipe[name]
-                local item2 = gadgets.find_item_prototype(ent and ent.minable and ent.minable.result)
-                local ent2 = gadgets.find_entity_prototype((item and item.place_result) or (item2 and item2.place_result))
+        local entity = gadgets.find_entity_prototype(names.entity)
+        if names.entity and not entity then
+            error("no such entity as " .. names.entity)
+        elseif entity then
+            entity.subgroup = subgroup.name
+            entity.order = order
+        end
 
-                if ent then ent.order = order end
-                if ent2 then ent2.order = order end
-                if item then item.order = order end
-                if item2 then item2.order = order end
-                if recipe then recipe.order = order end
-            end
+        local item = gadgets.find_item_prototype(names.item)
+        if names.item and not item then
+            error("no such item as " .. names.item)
+        elseif item then
+            item.subgroup = subgroup.name
+            item.order = order
+        end
+
+        local fluid = data.raw.fluid[names.fluid]
+        if names.fluid and not fluid then
+            error("no such fluid as " .. names.item)
+        elseif fluid then
+            fluid.order = order
         end
     end
-end
-
-for _, subgroup in pairs(data.raw['item-subgroup']) do
-    subgroup.order = subgroup.order .. '[' .. subgroup.name .. ']'
 end

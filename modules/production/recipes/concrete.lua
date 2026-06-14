@@ -1,4 +1,4 @@
---! data: changes to and new concrete recipes to account for tech tree complications with the paving requirements for entity construction
+--! data: changes to concrete recipe and alternative recipes to account for tech tree complications with the paving requirements for entity construction
 local fns = require 'fns'
 local recipes = data.raw.recipe
 local tech = data.raw.technology
@@ -6,6 +6,8 @@ local merge = fns.table.merge
 local puts = fns.gadgets.throughputs
 
 tech.concrete.prerequisites = { 'fluid-handling', 'advanced-material-processing' }
+
+data.raw.recipe['chemical-plant'].auto_unlocked_by = { 'oil-processing', 'concrete' }
 
 merge(recipes.concrete, {
     ingredients = puts{ ['stone-brick'] = 5, ['iron-stick'] = 2, ['water'] = 100 },
@@ -30,6 +32,7 @@ data:extend{
         type = 'recipe',
         name = fns 'simple-concrete',
         enabled = false,
+        category = fns 'hand-crafting',
         allow_auto_recycle = false,
         energy_required = 10,
         allow_speed = false,

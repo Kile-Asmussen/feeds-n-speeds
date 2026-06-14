@@ -25,12 +25,3 @@ merge(data.raw['assembling-machine'], {
         }
     }
 })
-
-merge(data.raw['furnace'], {
-    ['steel-furnace'] = merge{
-        auto_require_pavement = 'stone-path',
-        energy_source = merge{
-            effectivity = 1.1
-        }
-    }
-})

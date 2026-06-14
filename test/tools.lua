@@ -222,6 +222,20 @@ local ITEM_CATS = {
     'selection-tool', 'space-platform-starter-pack', 'tool', 'upgrade-item',
 }
 
+function tools.check_subgroups()
+    for _, cat in pairs(data.raw) do
+        for _, prot in pairs(cat) do
+            if prot.subgroup then
+                if not prot.name:find('recycling') then
+                    if not data.raw['item-subgroup'][prot.subgroup] then
+                        error("item subgroup " .. ('%q'):format(prot.subgroup) ..
+                            ' does not exist (of ' .. prot.type .. ' ' .. prot.name .. ')', 2)
+                    end
+                end
+            end
+        end
+    end
+end
 
 function tools.master_check()
     tools.recursion_check()
@@ -232,6 +246,7 @@ function tools.master_check()
     tools.check_refs('recipe', function(p) return item_names(p.ingredients) end, ITEM_CATS)
     tools.check_refs('recipe', function(p) return item_names(p.results) end, ITEM_CATS)
     tools.check_refs('technology', table.access{'prerequisites'}, 'technology')
+    tools.check_subgroups()
 end
 
 local function parse(needle)

@@ -44,7 +44,7 @@ data:extend{
         enabled = false,
         allow_auto_recycle = false,
         order = data.raw.item['heat-pipe'].order .. '-a[casting]',
-        subgroup = data.raw.item['heat-pipe'].subgroup,
+        subgroup = 'vulcanus-processes',
         auto_unlocked_by = 'foundry',
         icons = {
             {
@@ -83,7 +83,7 @@ local function melt_down(item, input, fluid, output)
         enabled = false,
         allow_productivity = false,
         auto_unlocked_by = 'foundry',
-        group = 'intermediate-products',
+        subgroup = 'vulcanus-processes',
         localised_name = { fns.locale_key('recipe-name', 'melt-scrap'), {'item-name.' .. item} },
     
         icons = {

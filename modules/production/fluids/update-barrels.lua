@@ -9,9 +9,9 @@ for _, fl in pairs(data.raw.fluid) do
     if barrel and empty then
         barrel.category = fns 'barrelling'
         barrel.ingredients[1], barrel.ingredients[2] = barrel.ingredients[2], barrel.ingredients[1]
+        barrel.auto_unlocked_by = {'automation-2', hidden=true}
+        
         empty.category = fns 'barrelling'
+        empty.auto_unlocked_by = {'automation-2', hidden=true}
     end
 end
-
-data.raw.recipe['water-barrel'].auto_unlocked_by = 'automation-2'
-data.raw.recipe['empty-water-barrel'].auto_unlocked_by = 'automation-2'

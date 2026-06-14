@@ -27,6 +27,12 @@ return function(table, fns)
 
         return candidate
     end
+    
+    --- Alias declared only for definition searching
+    function table.match(candidate, reference)
+        return match(candidate, reference)
+    end
+
     table.match = table.twoarg('any?', 'table', match, 'match')
 
     local function differs(candidate, reference)
@@ -53,6 +59,11 @@ return function(table, fns)
         return nil
     end
 
+    --- Alias declared only for definition searching
+    function table.differs(candidate, reference)
+        return differs(candidate, reference)
+    end
+
     table.differs = table.twoarg('any?', 'table', differs, 'differs')
 
     local function predicate(pred)
@@ -65,7 +76,8 @@ return function(table, fns)
         end
     end
 
-    table.ifind = table.twoarg('any', function(array, pred, reverse)
+
+    function table.ifind(array, pred, reverse)
         pred = predicate(pred)
 
         if not reverse then
@@ -87,9 +99,11 @@ return function(table, fns)
         end
 
         return nil, nil, nil
-    end, 'ifind')
+    end
+    table.ifind = table.twoarg('any', table.ifind, 'ifind')
 
-    table.find = table.twoarg('any', function(tbl, pred)
+
+    function table.find(tbl, pred)
         pred = predicate(pred)
 
         for k, v in pairs(tbl) do
@@ -97,7 +111,8 @@ return function(table, fns)
         end
 
         return nil, nil, nil
-    end, 'find')
+    end
+    table.find = table.twoarg('any', table.find, 'find')
 
     local function search(tbl, pred, keys)
         local map = pred(tbl)
@@ -117,21 +132,25 @@ return function(table, fns)
         end
     end
 
-    table.search = table.twoarg('any', function(tbl, pred)
+    function table.search(tbl, pred)
         pred = predicate(pred)
         return search(tbl, pred, {})
-    end, 'search')
+    end
+    
+    table.search = table.twoarg('any', table.search, 'search')
 
-    table.reverse_lookup = table.twoarg('any', function(tbl, pred)
+
+    function table.reverse_lookup (tbl, pred)
         local pred = predicate(pred)
         for k, v in pairs(tbl) do
             local res = pred(v)
             if res then return k, res end
         end
         return nil, nil
-    end, 'reverse_lookup')
+    end
+    table.reverse_lookup = table.twoarg('any', table.reverse_lookup, 'reverse_lookup')
 
-    table.remove_matching = table.twoarg('any', function(array, pred, all)
+    function table.remove_matching(array, pred, all)
         local pred = predicate(pred)
         if all then
             local res = {}
@@ -149,5 +168,6 @@ return function(table, fns)
                 return nil
             end
         end
-    end, 'remove_matching')
+    end
+    table.remove_matching = table.twoarg('any', table.remove_matching, 'remove_matching')
 end

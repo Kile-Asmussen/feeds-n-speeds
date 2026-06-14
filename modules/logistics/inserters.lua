@@ -96,6 +96,14 @@ merge(crane, {
     corpse = fns 'crane-remnants',
 })
 
+merge(crane, table.select(
+    data.raw.inserter['stack-inserter'],
+    {
+        'hand_open_frozen', 'hand_open_picture', 'hand_open_shadow',
+        'hand_closed_frozen', 'hand_closed_picture', 'hand_closed_shadow',
+    }
+))
+
 local crane_corpse = table.deepcopy(data.raw.corpse['burner-inserter-remnants'])
 
 table.traverse(crane_corpse.animation, scale)

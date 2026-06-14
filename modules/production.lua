@@ -17,7 +17,6 @@ production.data = set{
 
     '.fluids.barrel-tapper',
     '.fluids.oil-processing',
-    '.fluids.atmospheric-moisture',
 
     ['.ores.infinite'] = set{ 'modules.bootstrap.worldgen.sulfur-ore' },
 

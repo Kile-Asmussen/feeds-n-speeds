@@ -4,16 +4,17 @@ return function(table, fns)
     local pairs = table.pairs
 
     --- Write values of tbl2 into tbl1
-    table.override = table.twoarg(function(tbl1, tbl2)
+    function table.override(tbl1, tbl2)
         for k, v in pairs(tbl2) do
             tbl1[k] = v
         end
 
         return tbl1
-    end, 'override')
+    end
+    table.override = table.twoarg(table.override, 'override')
 
     --- Replace values in tbl1 with values from tbl2
-    table.replace = table.twoarg(function(tbl1, tbl2)
+    function table.replace(tbl1, tbl2)
         for k, _ in pairs(tbl1) do
             if tbl2[k] ~= nil then
                 tbl1[k] = tbl2[k]
@@ -21,10 +22,11 @@ return function(table, fns)
         end
 
         return tbl1
-    end, 'replace')
+    end
+    table.replace = table.twoarg(table.replace, 'replace')
 
     --- Add values from tbl2 to tbl1 if the keys are not populated
-    table.include = table.twoarg(function(tbl1, tbl2)
+    function table.include(tbl1, tbl2)
         for k, v in pairs(tbl2) do
             if tbl1[k] == nil then
                 tbl1[k] = v
@@ -32,46 +34,51 @@ return function(table, fns)
         end
 
         return tbl1
-    end, 'include')
+    end
+    table.include = table.twoarg(table.include, 'include')
 
     --- Apply functions tbl2 to tbl1's values according to keys
-    table.transmute = table.twoarg(function(tbl1, tbl2)
+    function table.transmute(tbl1, tbl2)
         for k, _ in pairs(tbl1) do
             local func = tbl2[k]
             assert(type(func) == 'function', "fns.table.transmute: argument #2 must only contain functions")
             tbl1[k] = func(tbl1[k], tbl1)
         end
         return tbl1
-    end, 'transmute')
+    end
+    table.transmute = table.twoarg(table.transmute, 'transmute')
 
     --- Append numeric keys to a table
-    table.append = table.twoarg(function(tbl1, tbl2)
+    function table.append(tbl1, tbl2)
         local n = #tbl1
         for i = 1, #tbl2 do
             tbl1[n + i] = tbl2[i]
         end
         return tbl1
-    end, 'append')
+    end
+    table.append = table.twoarg(table.append, 'append')
 
     --- Cut a table down to a given size
-    table.cut = table.twoarg('number', function(tbl, n)
+    function table.cut(tbl, n)
         for i = #tbl, n, -1 do
             tbl[i] = nil
         end
         return tbl
-    end, 'cut')
+    end
+    table.cut = table.twoarg('number', table.cut, 'cut')
 
     --- Delete the keys in the second table
-    table.delete = table.twoarg(function(tbl1, tbl2)
+    function table.delete(tbl1, tbl2)
         for i = 1, #tbl2 do
             tbl1[tbl2[i]] = nil
         end
         return tbl1
-    end, 'delete')
+    end
+    table.delete = table.twoarg(table.delete, 'delete')
 
     --- Flatten table-valued keys in tbl into their contents
     --- [{'a', 'b'}] = x   =>  a = x, b = x
-    function table.flatten_keys(tbl)
+    local function flatten_keys(tbl)
         assert(type(tbl) == 'table', "argument #1 must be a table")
         local res = {}
         for k, v in pairs(tbl) do
@@ -85,7 +92,7 @@ return function(table, fns)
     end
 
     local function merge(tbl1, tbl2)
-        tbl2 = table.flatten_keys(tbl2)
+        tbl2 = flatten_keys(tbl2)
         local strict = tbl2.__strict and true or false
 
         for k, v in pairs(tbl2) do
@@ -173,5 +180,9 @@ return function(table, fns)
     ---
     --- __strict : boolean?
     --- if set, attempting to add new keys will be rejected
+    function table.merge(tbl1, tbl2)
+        return merge(tbl1, tbl2)
+    end
+
     table.merge = table.twoarg(merge, 'merge')
 end

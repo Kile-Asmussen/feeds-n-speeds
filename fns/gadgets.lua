@@ -230,6 +230,10 @@ return function(fns)
         'selection-tool', 'space-platform-starter-pack', 'tool', 'upgrade-item',
     }
 
+    gadgets.non_entity_categories = table.set{
+        'technology', 'fluid', 'resource'
+    }
+
     function gadgets.find_item_prototype(name)
         for cat, _ in table.opairs(gadgets.item_categories) do
             if data.raw[cat] then
@@ -245,7 +249,7 @@ return function(fns)
 
     function gadgets.find_entity_prototype(name)
         for t, cat in table.opairs(data.raw) do
-            if not gadgets.item_categories[t] then
+            if not gadgets.item_categories[t] and not gadgets.non_entity_categories[t] then
                 if cat[name] then
                     return cat[name], t
                 end
