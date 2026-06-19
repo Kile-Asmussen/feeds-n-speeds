@@ -23,6 +23,19 @@ modules:require 'military'
 modules:require 'logistics'
 modules:require 'utilities'
 
+function modules.print_stage(stage)
+
+    assert(modules.stages[stage], "not a valid stage: " .. stage)
+
+    local components = modules.list_stage_components(stage)
+
+    components = modules.order_dependencies(components)
+
+    for _, comp in ipairs(components) do 
+        print(("require %q"):format(comp))
+    end
+end
+
 function modules.load_stage(stage)
 
     assert(modules.stages[stage], "not a valid stage: " .. stage)

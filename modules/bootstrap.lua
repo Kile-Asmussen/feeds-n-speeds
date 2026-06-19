@@ -19,7 +19,7 @@ bootstrap.data = set{
     '.worldgen.sulfur-ore',
     '.worldgen.noise-expressions',
     '.worldgen.sulfur-item',
-    'modules.bootstrap.worldgen.starting-patch-shape',
+    '.worldgen.starting-patch-shape',
     ['.worldgen.fix-ore-config'] = set{
         '.worldgen.sulfur-ore',
         '.worldgen.noise-expressions',

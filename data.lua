@@ -1,3 +1,1 @@
-
-require('modules')
-    .load_stage 'data'
+require('modules').load_stage 'data'

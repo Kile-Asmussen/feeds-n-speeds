@@ -6,35 +6,26 @@ CLAUDE.md export-ignore
 **/*.png binary
 
 *.md export-ignore
-*.xcf export-ignore
-**/*.xcf export-ignore
 
-slop/* export-ignore
-.claude/* export-ignore
+slop export-ignore
+.claude export-ignore
 
-src/*.rs export-ignore
+src export-ignore
 Cargo.toml export-ignore
 Cargo.lock export-ignore
 target export-ignore
 
-build-scripts/** export-ignore
+build-scripts export-ignore
 Makefile export-ignore
 
-debug-*.lua export-ignore
 test.lua export-ignore
-test/**/* export-ignore
-unit-tests.lua
-unit-tests-trusted.lua
-unit-tests/**/* export-ignore
+test export-ignore
 
 .* export-ignore
-.direnv/* export-ignore
+.direnv export-ignore
 flake.* export-ignore
-
-/graphics/base/* export-ignore
 
 TODO.md export-ignore
 
-zzz/ export-ignore
-zzz/*/ export-ignore
-zzz/**/* export-ignore
+modules.lua export-ignore
+modules/*.lua export-ignore

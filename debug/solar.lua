@@ -1,14 +1,14 @@
 
 local fns = require 'fns'
-fns.use()
 
 local gadgets = fns.gadgets
+local table = fns.table
 
 local debuglib = require 'debuglib'
 require 'test'
 
 debuglib.recursion_limit = 10
-data.begin_data_stage()
+begin_data_stage()
 
 local default = {}
 
@@ -46,10 +46,13 @@ for name, planet in pairs(data.raw.planet) do
     local sunset_production = (production / 2) * sunset_fraction
     local sunrise_production = (production / 2) * sunrise_fraction
 
+    local average_production = day_production + sunset_production + sunrise_production
+
     table.merge(planet, {
         ['solar-panel'] = {
             peak_production = gadgets.to_watts(production),
-            average_production = gadgets.to_watts(day_production + sunset_production + sunrise_production),
+            average_production = gadgets.to_watts(average_production),
+            total_energy_per_cycle = gadgets.to_joules(average_production * seconds)
         },
         ['day-night-cycle'] = {
             total = seconds,
@@ -58,7 +61,7 @@ for name, planet in pairs(data.raw.planet) do
             sunrise = sunrise_length,
             night = night_length,
         },
-        ['daytime-parameters'] = table.collect(daytime_parameters, function(n) return n * seconds end)
+        ['daytime-parameters'] = table.collect(daytime_parameters, function(n) return n * seconds end),
     })
 end
 

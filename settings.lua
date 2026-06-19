@@ -1,3 +1,1 @@
-
-require('modules')
-    .load_stage 'settings'
+require('modules').load_stage 'settings'

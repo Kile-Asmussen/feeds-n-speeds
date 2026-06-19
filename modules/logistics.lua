@@ -7,8 +7,6 @@ local logistics = require('namespace')('logistics')
 local set = table.intoset
 
 logistics.data = set{
-    '.fluids.pipes',
-
     '.chests.extant',
     ['.chests.hopper'] = set{ '.chests.extant' },
 

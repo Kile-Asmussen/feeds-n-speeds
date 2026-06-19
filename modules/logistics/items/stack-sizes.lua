@@ -11,7 +11,7 @@ local stack_sizes = {
         ['steel-plate'] = 50,
         ['electronic-circuit'] = 100,
         ['advanced-circuit'] = 100,
-        ['processing-unit'] = 100,
+        ['processing-unit'] = 50,
         ['engine-unit'] = 30,
         ['electric-engine-unit'] = 30,
         
