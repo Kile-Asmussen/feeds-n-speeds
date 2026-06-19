@@ -1,31 +1,49 @@
 * text=auto
 
-CLAUDE.md export-ignore
-
 *.png binary
 **/*.png binary
 
 *.md export-ignore
 
-slop export-ignore
-.claude export-ignore
+debuglib.lua
+debug export-ignore
+debug/* export-ignore
+debug/**/* export-ignore
 
-src export-ignore
+.claude export-ignore
+.claude/* export-ignore
+.claude/**/* export-ignore
+slop export-ignore
+slop/* export-ignore
+slop/**/* export-ignore
+
 Cargo.toml export-ignore
 Cargo.lock export-ignore
 target export-ignore
+target/* export-ignore
+target/**/* export-ignore
+src export-ignore
+src/* export-ignore
+src/**/* export-ignore
 
-build-scripts export-ignore
 Makefile export-ignore
+build-scripts export-ignore
+build-scripts/* export-ignore
+build-scripts/**/* export-ignore
+
+graphics/*.mg export-ignore
+graphics/**/*.mg export-ignore
 
 test.lua export-ignore
 test export-ignore
+test/* export-ignore
+test/**/* export-ignore
 
 .* export-ignore
-.direnv export-ignore
 flake.* export-ignore
-
-TODO.md export-ignore
+.direnv export-ignore
+.direnv/* export-ignore
+.direnv/**/* export-ignore
 
 modules.lua export-ignore
 modules/*.lua export-ignore
